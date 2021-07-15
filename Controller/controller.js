@@ -1,6 +1,7 @@
 //this is the server controller where i do send data to the back end....
 const User = require('../Model/user')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const SALT_ROUNDS = 6  // tell bcrypt how many times to randomize the generation of salt. usually 6 is enough.
 
@@ -12,32 +13,19 @@ const postCreateUser = async (req, res, next) => {
     // console.log(req.body)
     const hashedPassword = await bcrypt.hash(req.body.password, SALT_ROUNDS)
 
-    const newUser = {
+    const newUser = new User ({
         FirstName: req.body.firstName,
         LastName: req.body.lastName,
         Email: req.body.email,
-        password: hashedPassword,
-    }
-    console.log(newUser)
-
-    //CREATE USER
-    // const newUser = new User ({
-    //     // id: req.body.id,
-    //     FirstName: req.body.firstName,
-    //     LastName: req.body.lastName,
-    //     Address: req.body.address,
-    //     Number: req.body.number,
-    //     Email: req.body.email,
-    // })
+        Password: hashedPassword,
+    })
     // console.log(newUser)
-    // // //SAVE USER IN THE DB
-    // newUser.save()
-    // .then(result => {
-    //     // send a response to the front end
-    //     res.status(200).json(result)
-    // })
-    // .catch(err => res.status(400).json(err))
-        
+    const user = await newUser.save()
+    console.log(user)
+    
+    const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+    // send a response to the front end
+    res.status(200).json(token)
 }
 
 //RETRIEVE ALL USER
