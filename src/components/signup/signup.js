@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import services from '../util/services'
 import NavBar from '../Nav/navbar';
+import jwt_decode from "jwt-decode";
 import './signup.css';
 
 
@@ -10,20 +11,22 @@ export default function Signup() {
     register, 
     handleSubmit,
     formState: { errors },
-    // reset
   } = useForm();
 
 
-  const onSubmit =  (data) => {
-    console.log(data)
-    services.create(data)
-    .then(res => {
-      console.log(res)
-    })
-    .catch(e => {
-      console.log(e);
-    });
-    // reset();
+  const onSubmit = async (data) => {
+    try{
+      const result = await services.create(data)
+      console.log(result)
+      
+      let token = result.data
+      localStorage.setItem('token', token);  
+      const userDoc = jwt_decode(token); 
+      // this.props.setUserInState(userDoc.user)
+      console.log(userDoc.user)
+    }catch(err){
+      console.log(err)
+    }
   };
   
      return (
