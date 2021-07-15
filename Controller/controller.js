@@ -18,6 +18,7 @@ const postCreateUser = async (req, res, next) => {
         Number: req.body.number,
         Email: req.body.email,
     })
+    console.log(newUser)
     // //SAVE USER IN THE DB
     newUser.save()
     .then(result => {
@@ -28,7 +29,7 @@ const postCreateUser = async (req, res, next) => {
         
 }
 
-//RETRIVE ALL USER
+//RETRIEVE ALL USER
 const getHompage = async(req, res, next) => {
     await User.find().then(users => {
         res.send({users});
@@ -37,7 +38,7 @@ const getHompage = async(req, res, next) => {
 }
 
 
-//RETRIVE A USER BY ID
+//RETRIEVE A USER BY ID
 const getAUserByID = (req, res, next) => {
     const id = req.params.id;
     User.findById(id)

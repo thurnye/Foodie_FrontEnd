@@ -1,74 +1,31 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import { useForm } from "react-hook-form";
 import services from '../util/services'
 import NavBar from '../Nav/navbar';
 import './signup.css';
 
 
+export default function Signup() {
+  const {
+    register, 
+    handleSubmit,
+    formState: { errors },
+    // reset
+  } = useForm();
 
 
- export default class createAnAccount extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      firstName: '',
-      lastName: '',
-      address: '',
-      number: '',
-      email: '',
-    };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  onChange(e) {
-    this.setState({[e.target.name]: e.target.value})
-  }
-
- 
-    
-  onSubmit(e) {
-    e.preventDefault();
-    const newUser = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      address: this.state.address,
-      number: this.state.number,
-      email: this.state.email,
-      }
-    services.create(newUser)
+  const onSubmit =  (data) => {
+    console.log(data)
+    services.create(data)
     .then(res => {
       console.log(res)
-      this.props.history.push(`/`)
-       // this.setState({
-      //   // id: response.newUser.id,
-      //   firstName: response.newUser.firstName,
-      //   lastName: response.newUser.lastName,
-      //   address: response.newUser.address,
-      //   number: response.newUser.number,
-      //   email: response.newUser.email,
-      // });
-      // console.log(response.newUser);
-
     })
     .catch(e => {
       console.log(e);
     });
-    }
-
-    newUser() {
-      this.setState({
-          id: null,
-          firstName: '',
-          lastName: '',
-          address: '',
-          number: '',
-          email: '',
-        
-      });
-    }
-
-   render() { 
+    // reset();
+  };
+  
      return (
         <React.Fragment>
           <NavBar/>
@@ -80,7 +37,7 @@ import './signup.css';
                   <hr></hr>
                 </div>
                 <div className="card-body">
-                  <form noValidate onSubmit={this.onSubmit}>
+                  <form noValidate onSubmit={handleSubmit(onSubmit)}>
                     <div className="form">
                       
                       {/* First Name */}
@@ -88,60 +45,113 @@ import './signup.css';
                         <label  className="col-sm-3 col-form-label">First Name</label>
                         <div className="col-sm-9
                         ">
-                          <input name="firstName" type="text" className="form-control" id="inputFirstName" value={this.state.firstName} onChange={this.onChange}/>
+                          <input
+                          id="firstName"
+                          className="form-control"
+                          aria-invalid={errors.firstName ? "true" : "false"} 
+                          {...register("firstName", {
+                            required: "required",
+                            pattern: {
+                              value: /^[A-Za-z]+$/i ,
+                              message: "first name required"
+                            }
+                          })}
+                          type="text"/>
+                          {errors.firstName && <span role="alert">{errors.firstName.message}</span>}
                         </div>
                       </div>
 
                       {/* Last Name */}
                       <div className="form-group row">
                         <label  className="col-sm-3 col-form-label">Last Name</label>
-                        <div className="col-sm-9
-                        ">
-                          <input name="lastName" type="text" className="form-control" id="inputlastName" value={this.state.lastName} onChange={this.onChange}/>
+                        <div className="col-sm-9">
+                          <input 
+                          id="lastName"
+                          className="form-control"
+                          aria-invalid={errors.lastName ? "true" : "false"}
+                          {...register("lastName", {
+                            required: "required",
+                            pattern: {
+                              value: /^[A-Za-z]+$/i ,
+                              message: "last name required"
+                            }
+                          })}
+                          type="text"/>
+                          {errors.lastName && <span role="alert">{errors.lastName.message}</span>}
                         </div>
                       </div>
 
-                      {/* Address */}
-                      <div className="form-group row">
-                        <label  className="col-sm-3 col-form-label">Address</label>
-                        <div className="col-sm-9
-                        ">
-                        <textarea name="address" className="form-control" id="inputAddress" rows="3" value={this.state.address} onChange={this.onChange}></textarea>
-                        </div>
-                      </div>
-
-                      {/* Number */}
-                      <div className="form-group row">
-                        <label  className="col-sm-3 col-form-label">Phone No.</label>
-                        <div className="col-sm-9
-                        ">
-                          <input name="number" className="form-control" id="inputNumber" value={this.state.number} onChange={this.onChange}/>
-                        </div>
-                      </div>
 
                       {/* Email */}
                       <div className="form-group row">
                         <label  className="col-sm-3 col-form-label">Email</label>
-                        <div className="col-sm-9
-                        ">
-                          <input name="email" type="email" className="form-control" id="inputEmail3" value={this.state.email} onChange={this.onChange}/>
+                        <div className="col-sm-9">
+                          <input
+                            id="email"
+                            className="form-control"
+                            aria-invalid={errors.email ? "true" : "false"}
+                            {...register("email", {
+                              required: "required",
+                              pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: "Please enter a valid email"
+                              }
+                            })}
+                            type="email"
+                            placeholder="example@mail.com"
+                          />
+                            {errors.email && <span role="alert">{errors.email.message}</span>}
                         </div>
                       </div>
-                      
-                    </div>
 
-                    <div className="getCook">  
-                      <button type="submit" className="btn">Let's get my Cook</button>
+
+                      {/* Password */}
+                      <div className="form-group row">
+                        <label  className="col-sm-3 col-form-label">Password</label>
+                        <div className="col-sm-9">
+                          <input
+                            id="password"
+                            className="form-control"
+                            aria-invalid={errors.password ? "true" : "false"}
+                            {...register("password", {
+                              required: "required",
+                              minLength: {
+                                value: 5,
+                                message: "min length is 5"
+                              }
+                            })}
+                            type="password"
+                            placeholder="password"
+                          />
+                          {errors.password && <span role="alert">{errors.password.message}</span>}
+                        </div>
+                      </div>
+
+                    </div>
+                    <div className="getForm">  
+                      <button type="submit" className="btn">Sign Up</button>
                     </div>
                   </form>
 
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                
+                
+                
                 </div>
                 
               </div>
             </div>
             </section>
         </React.Fragment>
-    )}
+    )
 }
 
 
