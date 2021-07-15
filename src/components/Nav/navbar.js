@@ -1,13 +1,30 @@
 import React from 'react';
-
-
+import {useSelector, useDispatch} from 'react-redux'
+import { useHistory } from "react-router-dom";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import {userActions} from '../../store/userSlice'
 import './navbar.css';
 
 
 
-const navbar = () => {
+function Header(){
+    const user = useSelector(state => state.userLog.user)
+    const dispatch = useDispatch()
+    const history = useHistory();
+
+
+    
+  const logoutHandler = (e) => {
+    e.preventDefault()
+    dispatch(userActions.logout())
+    let token = localStorage.getItem('token')
+    if (token){
+        localStorage.removeItem('token')
+        history.push("/");
+    }
+    
+  }
     return (
         <React.Fragment>
 
@@ -22,8 +39,9 @@ const navbar = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto m-auto nav-bar">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/signin">SignUp</Nav.Link>
-                        <Nav.Link href="/login">Login</Nav.Link>
+                        {!user && <Nav.Link href="/signin">SignUp</Nav.Link>}
+                        {!user && <Nav.Link href="/login">Login</Nav.Link>}
+                        {user &&  <button onClick={logoutHandler}>Logout</button>}
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>   
@@ -33,4 +51,4 @@ const navbar = () => {
     );
 }
 
-export default navbar;
+export default Header;

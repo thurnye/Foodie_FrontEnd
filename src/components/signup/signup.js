@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import jwt_decode from "jwt-decode";
 import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import services from '../util/services'
 import NavBar from '../Nav/navbar';
@@ -10,6 +11,7 @@ import './signup.css';
 
 export default function Signup() {
    const dispatch = useDispatch()
+   const history = useHistory();
   const {
     register, 
     handleSubmit,
@@ -28,10 +30,10 @@ export default function Signup() {
       console.log(userDoc.user)
 
       // store the user in redux state
-      dispatch(userActions.login({
-        user: userDoc
-      }))
-      
+      // dispatch(userActions.login({
+      //   user: userDoc
+      // }))
+      history.push("/");
     }catch(err){
       console.log(err)
     }
