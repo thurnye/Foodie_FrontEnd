@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import jwt_decode from "jwt-decode";
 import { useForm } from "react-hook-form";
+import {useDispatch} from 'react-redux';
 import services from '../util/services'
 import NavBar from '../Nav/navbar';
-import jwt_decode from "jwt-decode";
+import {userActions } from '../../store/userSlice'
 import './signup.css';
 
 
 export default function Signup() {
+   const dispatch = useDispatch()
   const {
     register, 
     handleSubmit,
@@ -22,8 +25,13 @@ export default function Signup() {
       let token = result.data
       localStorage.setItem('token', token);  
       const userDoc = jwt_decode(token); 
-      // this.props.setUserInState(userDoc.user)
       console.log(userDoc.user)
+
+      // store the user in redux state
+      dispatch(userActions.login({
+        user: userDoc
+      }))
+      
     }catch(err){
       console.log(err)
     }
