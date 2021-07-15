@@ -10,26 +10,55 @@ const SALT_ROUNDS = 6  // tell bcrypt how many times to randomize the generation
 
 //Creating A User
 const postCreateUser = async (req, res, next) => {
-    // console.log(req.body)
-    const hashedPassword = await bcrypt.hash(req.body.password, SALT_ROUNDS)
+    try { 
+        // console.log(req.body)
+        const hashedPassword = await bcrypt.hash(req.body.password, SALT_ROUNDS)
 
-    const newUser = new User ({
-        FirstName: req.body.firstName,
-        LastName: req.body.lastName,
-        Email: req.body.email,
-        Password: hashedPassword,
-    })
-    // console.log(newUser)
-    const user = await newUser.save()
-    console.log(user)
-    
-    const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
-    // send a response to the front end
-    res.status(200).json(token)
+        const newUser = new User ({
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            password: hashedPassword,
+        })
+        // console.log(newUser)
+        const user = await newUser.save()
+        const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+        // send a response to the front end
+        res.status(200).json(token)
+
+    }catch(err){
+        res.status(400).json('Bad Credentials');
+    }
 }
 
+// Login a User
+const getLogIn = async (req, res) => {
+    
+    try {
+        console.log(req.body)
+      const user = await User.findOne({ email: req.body.email });
+      console.log(user)
+          // check password. if it's bad throw an error.
+          if (!(await bcrypt.compare(req.body.password, user.password))) throw new Error();
+  
+      // if we got to this line, password is ok. give user a new token.
+      const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+      res.json(token)
+    } catch {
+      res.status(400).json('Bad Credentials');
+    }
+}
+
+
+
+
+
+
+
+
+
 //RETRIEVE ALL USER
-const getHompage = async(req, res, next) => {
+const getHomepage = async(req, res, next) => {
     await User.find().then(users => {
         res.send({users});
     })
@@ -92,7 +121,8 @@ const postDelete = async (req, res, next) => {
 
 module.exports = {
     postCreateUser,
-    getHompage,
+    getLogIn,
+    getHomepage,
     getAUserByID,
     getEdit,
     postEdit, 

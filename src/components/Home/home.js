@@ -1,14 +1,16 @@
 import React from 'react';
+import {useSelector} from 'react-redux'
 import NavBar from '../Nav/navbar';
 import List from '../ListOfUsers/displayUsers'
 
-const home = () => {
+const Home = () => {
+    const user = useSelector(state => state.userLog.user)
     return (
         <React.Fragment>
             <NavBar/>
         <div>
             <h2>All Users</h2>
-            <List/>
+            {user && <List/>}
             <hr/>
            
         </div>
@@ -16,4 +18,4 @@ const home = () => {
     );
 }
 
-export default home;
+export default Home;

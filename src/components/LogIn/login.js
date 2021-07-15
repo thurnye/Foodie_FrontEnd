@@ -1,82 +1,119 @@
-import React, { Component } from 'react';
+import React from 'react';
+import jwt_decode from "jwt-decode";
+import { useForm } from "react-hook-form";
+import { useHistory } from "react-router-dom";
+import {useDispatch} from 'react-redux';
+import services from '../util/services'
 import NavBar from '../Nav/navbar';
+import Nav from 'react-bootstrap/Nav';
+import {userActions } from '../../store/userSlice'
 
 
+export default function LogIn() {
+   const dispatch = useDispatch()
+   const history = useHistory();
+  const {
+    register, 
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
- export default class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      number: '',
-      email: '',
-    };
 
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
+  const onSubmit = async (data) => {
+    try{
+      const result = await services.postLogin(data)
+      
+      let token = result.data
+      localStorage.setItem('token', token);  
+      const userDoc = jwt_decode(token); 
 
-  onChange(e) {
-    this.setState({[e.target.name]: e.target.value})
-  }
-
-  onSubmit(e) {
-    
-  }
-
-   render() { 
+      // store the user in redux state
+      dispatch(userActions.login({
+        user: userDoc
+      }))
+      history.push("/");
+    }catch(err){
+      console.log(err)
+    }
+  };
+  
      return (
         <React.Fragment>
           <NavBar/>
-            <section className="guest">
+          <section className="guest">
             <div className="sign-up">
               <div className="card" style= {{width: "30rem"}} >
                 <div className="card-header">
-                  <h5 className="card-title"> I WANT a cook</h5>
+                  <h5 className="card-firstName">Login into your account</h5>
                   <hr></hr>
                 </div>
                 <div className="card-body">
-                  <form noValidate onSubmit={this.onSubmit}>
+                  <form noValidate onSubmit={handleSubmit(onSubmit)}>
                     <div className="form">
-
-                      {/* Number */}
-                      <div className="form-group row">
-                        <label htmlFor="number" className="col-sm-3 col-form-label">Phone No.</label>
-                        <div className="col-sm-9
-                        ">
-                          <input name="number"  className="form-control" id="inputNumber" value={this.state.number} onChange={this.onChange}/>
-                        </div>
-                      </div>
-
                       {/* Email */}
                       <div className="form-group row">
-                        <label htmlFor="inputEmail3" className="col-sm-3 col-form-label">Email</label>
-                        <div className="col-sm-9
-                        ">
-                          <input name="email" type="email" className="form-control" id="inputEmail3" value={this.state.email} onChange={this.onChange}/>
+                        <label  className="col-sm-3 col-form-label">Email</label>
+                        <div className="col-sm-9">
+                          <input
+                            id="email"
+                            className="form-control"
+                            aria-invalid={errors.email ? "true" : "false"}
+                            {...register("email", {
+                              required: "required",
+                              pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: "Please enter a valid email"
+                              }
+                            })}
+                            type="email"
+                            placeholder="example@mail.com"
+                          />
+                            {errors.email && <span role="alert">{errors.email.message}</span>}
                         </div>
                       </div>
-                      
-                    </div>
 
-                    <div className="getCook">  
+
+                      {/* Password */}
+                      <div className="form-group row">
+                        <label  className="col-sm-3 col-form-label">Password</label>
+                        <div className="col-sm-9">
+                          <input
+                            id="password"
+                            className="form-control"
+                            aria-invalid={errors.password ? "true" : "false"}
+                            {...register("password", {
+                              required: "required",
+                              minLength: {
+                                value: 5,
+                                message: "min length is 5"
+                              }
+                            })}
+                            type="password"
+                            placeholder="password"
+                          />
+                          {errors.password && <span role="alert">{errors.password.message}</span>}
+                        </div>
+                      </div>
+
+                    </div>
+                    <div className="getForm">  
                       <button type="submit" className="btn">Login</button>
                     </div>
                   </form>
-                  <div className="faster-easier-sign-up">
-                      <p> Create an account for faster and easier</p>
-                      <div className="social-icon d-flex container">
-                      <a href="#" className="img"><i className="fa fa-google"></i></a>
-                      <a href="#" className="img"><i className="fa fa-facebook"></i></a>
-                      </div>
-                  </div>
-
+                  <p className="createAccount">
+                    <span><small>Don't have an account?</small></span>
+                    <span><small><Nav.Link href="/signin">Create An Account</Nav.Link></small></span>
+                  </p>
                 </div>
                 
               </div>
             </div>
             </section>
         </React.Fragment>
-    )}
+    )
 }
+
+
+
 
 

@@ -2,9 +2,21 @@ import http from './http-commons';
 
 class StuffDataService {
 
+  // signup
   create(data) {
     return http.post("/api", data);
   }
+
+  // login
+  postLogin(data) {
+    return http.post(`/api/user/login`, data);
+  }
+
+
+
+
+
+  // ------------------------------------
   find() {
     return http.get("/");
   }

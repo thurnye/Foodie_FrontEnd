@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import jwt_decode from "jwt-decode";
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -27,12 +27,11 @@ export default function Signup() {
       let token = result.data
       localStorage.setItem('token', token);  
       const userDoc = jwt_decode(token); 
-      console.log(userDoc.user)
 
       // store the user in redux state
-      // dispatch(userActions.login({
-      //   user: userDoc
-      // }))
+      dispatch(userActions.login({
+        user: userDoc
+      }))
       history.push("/");
     }catch(err){
       console.log(err)
@@ -46,7 +45,7 @@ export default function Signup() {
             <div className="sign-up">
               <div className="card" style= {{width: "30rem"}} >
                 <div className="card-header">
-                  <h5 className="card-firstName"> I WANT a cook</h5>
+                  <h5 className="card-firstName"> Create an Account</h5>
                   <hr></hr>
                 </div>
                 <div className="card-body">

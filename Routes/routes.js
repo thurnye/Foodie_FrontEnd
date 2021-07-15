@@ -2,10 +2,18 @@ const Controller = require('../Controller/controller');
 const router = require('express').Router()
 
 //get all users
-router.get('/', Controller.getHompage)
+router.get('/', Controller.getHomepage)
  
 //post new user
 router.post('/api', Controller.postCreateUser);
+
+// POST /api/users/login
+router.post('/api/user/login', Controller.getLogIn);
+
+
+
+
+// =============================================
 
 //getting a user item by id
 router.get('/api/:id', Controller.getAUserByID);
