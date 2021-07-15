@@ -19,19 +19,16 @@ export default class displayUsers extends Component {
         })
         .catch( err=> console.log(err))
     }
-
-
-
     render() {
        const Inventory =  this.state.data.map((el)=> {
             return (
-                <div class="card" key={el._id}>
-                        <img src="" class="card-img-top" alt="anImage"/>
-                        <div class="card-body">
-                        <h5 class="card-title">{el.FirstName} {el.LastName}</h5>
-                        <p class="card-text">{el.Address} </p>
-                        <p class="card-text">{el.Number} </p>
-                        <p class="card-text">{el.Email} </p>
+                <div className="card" key={el._id}>
+                        <img src="" className="card-img-top" alt="anImage"/>
+                        <div className="card-body">
+                        <h5 className="card-title">{el.firstName} {el.lastName}</h5>
+                        <p className="card-text">{el.Address} </p>
+                        <p className="card-text">{el.Number} </p>
+                        <p className="card-text">{el.email} </p>
                         </div>
                         <Link to={{
                                 pathname: `/findbyid/${el._id}` ,
