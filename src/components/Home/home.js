@@ -3,7 +3,6 @@ import {useSelector} from 'react-redux'
 import Nav from 'react-bootstrap/Nav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Share2,Bookmark, Video } from 'react-feather';
-import $ from 'jquery'
 
 import JumbotronImg1 from '../../public/images/img1.jpeg'
 import ImgHolder from '../../public/images/imgPlaceholder.jpeg'
@@ -86,7 +85,7 @@ const Home = () => {
                                         </div>
                                         <div className="content-share-icon">
                                         <div className="share">
-                                            <p className="card-icon"><Share2 strokeWidth="1"/> </p>
+                                            <p className="card-icon card-share-icon"><Share2 strokeWidth="1"/> </p>
                                             
                                         </div>
                                         {/* <ul className="my-social-icon">
@@ -107,7 +106,7 @@ const Home = () => {
                                         </ul> */}
                                         
                                         <p className="bookmark">
-                                            <span className="card-icon"><Bookmark strokeWidth="1"/> </span>
+                                            <span className="card-icon card-share-icon"><Bookmark strokeWidth="1"/> </span>
                                         </p>
 
                                     </div>
@@ -391,8 +390,8 @@ const Home = () => {
                             <div className="col-md-8 recipes-card-container">
                                 <div className="card mb-3 recipe-card">
                                     <div className="row g-0">
-                                        <div className="col-md-5 recipe-card-img">
-                                            <img src={Img6} className="img-fluid rounded-start" alt="recipe"/>
+                                        <div className="col-md-5 recipe-card-img ">
+                                            <img src={Img6} className="img-fluid rounded-start " alt="recipe"/>
                                         </div>
                                         <div className="col-md-7">
                                             <div className="card-body recipe-card-content">
@@ -403,7 +402,7 @@ const Home = () => {
                                                     </p>
                                                     
                                                 </div>
-                                                <h5 className="card-title content-title">The best fluffy buttermilk pancakes with triple berry sauce</h5>
+                                                <h5 className="card-title content-title"><a href="#">The best fluffy buttermilk pancakes with triple berry sauce</a></h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -427,7 +426,7 @@ const Home = () => {
                                                         <span><small><b>SUPER EASY</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title">Chocolate banana pancakes</h5>
+                                                <h5 className="card-title content-title"><a href="#">Chocolate banana pancakes</a></h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -447,7 +446,7 @@ const Home = () => {
                                                         <span><small><b> 0 : 30</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title">Cinnamon french toast with cream cheese glaze and berry syrup</h5>
+                                                <h5 className="card-title content-title"><a href="#">Cinnamon french toast with cream cheese glaze and berry syrup</a></h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -471,7 +470,7 @@ const Home = () => {
                                                         <span><small><b>SUPER EASY</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title">Peanut butter pancakes</h5>
+                                                <h5 className="card-title content-title"><a href="#">Peanut butter pancakes</a></h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -491,7 +490,7 @@ const Home = () => {
                                                         <span><small><b> 0 : 30</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title">Traditional French breakfast croissant and coffee</h5>
+                                                <h5 className="card-title content-title"><a href="#">Traditional French breakfast croissant and coffee</a></h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -515,7 +514,7 @@ const Home = () => {
                                                         <span><small><b>SUPER EASY</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title">One-pot pasta primavera</h5>
+                                                <h5 className="card-title content-title"><a href="#">One-pot pasta primavera</a></h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -535,7 +534,7 @@ const Home = () => {
                                                         <span><small><b> 0 : 30</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title">Quick & easy chocolate cake with berries from scratch recipe</h5>
+                                                <h5 className="card-title content-title"><a href="#">Quick & easy chocolate cake with berries from scratch recipe</a></h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -559,7 +558,7 @@ const Home = () => {
                                                         <span><small><b>SUPER EASY</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title">Carrot and walnut cake</h5>
+                                                <h5 className="card-title content-title"><a href="#">Carrot and walnut cake</a></h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -574,27 +573,27 @@ const Home = () => {
                                         <div className="category-items container">
                                             <div className="row">
                                                 <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top" src={Cat1} alt="Popular"/> </a>
+                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat1} alt="Popular"/> </a>
                                                     <p>Popular</p>
                                                 </div>
                                                 <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top" src={Cat2} alt="Pizza"/> </a>
+                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat2} alt="Pizza"/> </a>
                                                     <p>Pizza</p>
                                                 </div>
                                                 <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top" src={Cat3} alt="Meat"/> </a>
+                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat3} alt="Meat"/> </a>
                                                     <p>Meat</p>
                                                 </div>
                                                 <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top" src={Cat4} alt="Lunch"/> </a>
+                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat4} alt="Lunch"/> </a>
                                                     <p>Lunch</p>
                                                 </div>
                                                 <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top" src={Cat5} alt="Greens"/> </a>
+                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat5} alt="Greens"/> </a>
                                                     <p>Greens</p>
                                                 </div>
                                                 <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top" src={Cat6} alt="Desserts"/> </a>
+                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat6} alt="Desserts"/> </a>
                                                     <p>Desserts</p>
                                                 </div>
                                             </div>
@@ -784,7 +783,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl1} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Marshmallow light and easy cake</a></h6>
+                                    <h6 class="card-title popular-week-title "><a href="#">Marshmallow light and easy cake</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -792,7 +791,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl2} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Cupcakes with pistachio pudding</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Cupcakes with pistachio pudding</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -800,7 +799,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl3} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Baked chicken legs with garlic and Dijon</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Baked chicken legs with garlic and Dijon</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -808,7 +807,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl4} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">French onion soup with veggie stock</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">French onion soup with veggie stock</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -816,7 +815,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl5} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Make chicken paella in under an hour</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Make chicken paella in under an hour</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -824,7 +823,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl6} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Pumpkin soup with cheese and cinnamon</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Pumpkin soup with cheese and cinnamon</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -832,7 +831,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl7} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Easy ground beef recipes with bacon</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Easy ground beef recipes with bacon</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -840,7 +839,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl8} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Avocado toast with valerianella and egg</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Avocado toast with valerianella and egg</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -848,7 +847,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl9} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">How to make fast margherita pizza</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">How to make fast margherita pizza</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -856,7 +855,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl10} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Avocado toast with spinach and egg</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Avocado toast with spinach and egg</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -864,7 +863,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl11} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Deliciously spicy Thai chili crab recipe</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Deliciously spicy Thai chili crab recipe</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -872,7 +871,7 @@ const Home = () => {
                             <div class="card">
                                 <img class="card-img-top" src={Ppl12} alt="Card image cap"/>
                                 <div class="card-body popular-body">
-                                    <h6 class="card-title"><a href="#">Creamy potato soup with almond milk</a></h6>
+                                    <h6 class="card-title popular-week-title"><a href="#">Creamy potato soup with almond milk</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -883,38 +882,26 @@ const Home = () => {
             <section className="forum">
                 <div className="container">
                     <div className="card text-center" style={{backgroundImage: `url(${Bg4})`}}>
-                            <div className="view overlay my-4">
-                                <div className="container ">
-                                    <div className="forum-card">
-                                        <div className="card-body forum-content">
-                                            <h2 class="card-title h2-responsive forum-title">Easy Meals Forum</h2>
-                                            <h5>
-                                                <span className="forum-data">186.281 users, </span>
-                                                <span className="forum-data">184.853 recipes, </span>
-                                                <span className="forum-data">1.432.915 photos</span>
-                                            </h5>
-                                            <div className="join-forum">
+                        <div className="view overlay my-4">
+                            <div className="container ">
+                                <div className="forum-card">
+                                    <div className="card-body forum-content">
+                                        <h2 class="card-title h2-responsive forum-title">Easy Meals Forum</h2>
+                                        <h5>
+                                            <span className="forum-data">186.281 users, </span>
+                                            <span className="forum-data">184.853 recipes, </span>
+                                            <span className="forum-data">1.432.915 photos</span>
+                                        </h5>
+                                        <div className="join-forum">
                                             <Nav.Link href="/" className="content-title btn  btn-warning">Join Now!</Nav.Link>
-                                            </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
-                                
+                                    
                             </div>
+                                
                         </div>
-                    {/* <div class="jumbotron card card-image" style={{backgroundImage: `url(${Bg4})`}}>
-  <div class="text-white text-center py-5 px-4">
-    <div>
-      <h2 class="card-title h1-responsive pt-3 mb-5 font-bold"><strong>Easy Meals Forum </strong></h2>
-      <p class="mx-5 mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat fugiat, laboriosam, voluptatem,
-        optio vero odio nam sit officia accusamus minus error nisi architecto nulla ipsum dignissimos. Odit sed qui, dolorum!
-      </p>
-      <Nav.Link href="/" className="content-title btn  btn-warning">Join Now!</Nav.Link>
-      <a class="btn btn-outline-white btn-md"><i class="fas fa-clone left"></i> View project</a>
-    </div>
-  </div>
-</div> */}
+                    </div>
                 </div>
             </section>
             
