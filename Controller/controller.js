@@ -11,7 +11,6 @@ const SALT_ROUNDS = 6  // tell bcrypt how many times to randomize the generation
 //Creating A User
 const postCreateUser = async (req, res, next) => {
     try { 
-        // console.log(req.body)
         const hashedPassword = await bcrypt.hash(req.body.password, SALT_ROUNDS)
 
         const newUser = new User ({
@@ -20,7 +19,6 @@ const postCreateUser = async (req, res, next) => {
             email: req.body.email,
             password: hashedPassword,
         })
-        // console.log(newUser)
         const user = await newUser.save()
         const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
         // send a response to the front end

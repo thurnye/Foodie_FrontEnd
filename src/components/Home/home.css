@@ -1,0 +1,466 @@
+.home .jumbotron {
+    /* border: 2px dotted red; */
+    background-attachment: fixed;
+    background-color: #cccccc;
+    /* height: 60vh; */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.home .container{
+    /* border: 2px dotted blue; */
+}
+.jumbotron-content{
+    background-color: white;
+    color: black;
+    text-align: initial !important;
+    padding: 0.9rem 1rem;
+    max-width: 540px;
+}
+.jumbotron-content .nav-link{
+    padding:0;
+    margin-right: 5px;
+}
+.content-title{
+    color: black;
+    /* font-size: 25px; */
+    /* text-align: center !important; */
+}
+.editor{
+    justify-content: space-between;
+    align-items: center;
+}
+.content-author{
+    display: flex;
+    align-items: center;
+}
+.content-author p{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    /* margin-top: -7px; */
+    font-size: 12px;
+}
+.content-author p .text-muted{
+    margin-top: -6px;
+}
+.content-img img {
+    width: 30px;
+    border-radius: 50%;
+}
+
+
+/* ====================================================================== */
+/* Three Card Group */
+
+.three-card-group{
+    margin-top: 7vh;
+}
+
+.three-card-group .card-body{
+    padding: 0;
+}
+.three-card-group .card-body .content-title{
+    padding: 0;
+}
+.three-card-group .card-body .content-author a{
+    padding-left: 0px;
+}
+
+
+.three-card-group  .content-share-icon,
+.home .content-share-icon{
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 18px;
+}
+.home .content-share-icon{
+    width: 75px;
+}
+.three-card-group .content-share-icon p{
+   margin:0;
+   border: 1px solid #f1eeee;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+.three-card-group  .content-share-icon .bookmark{
+   margin:0;
+   background-color: #f7f7f7;
+    
+}
+
+/* ========================================================= */
+/* Vegan Books */
+.vegan-books{
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+.vegan-books .jumbotron {
+    /* border: 2px dotted red; */
+    background-attachment: fixed;
+    background-color: #cccccc;
+    /* height: fit-content; */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.vegan-jumbotron{
+    width: 18rem
+}
+.vegan-books .card-title{
+    font-size: 1.7rem;
+}
+.vegan-book-covers .book-img {
+   padding: 0;
+}
+/* ================================================================ */
+
+.recent-recipe{
+    /* border: 2px dotted red; */
+}
+.recipes-card-container{
+    margin-bottom: 10vh;
+}
+.recent-recipe .recipe-intro{
+    display: flex;
+    justify-content: initial;
+    align-items: baseline;
+}
+.recent-recipe .strokes{
+    display: none;
+
+}
+.recent-recipe .recipes{
+    margin-top: 3vh;
+}
+.recipes-card-container{
+    /* border: 2px dotted blue; */
+
+}
+.recipe-card .row {
+    justify-content: center;
+    align-items: center;
+}
+
+.category-img-container{
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+/* ==================================================== */
+.newsLetter{
+    background-color: #f5f5f5;
+    margin-top: 5vh;
+}
+
+/* ============================================ */
+.latest-recipes{
+    margin-top: 5vh;
+}
+.latest-recipes .row{
+    align-items: center;
+}
+.latest-recipes .latest-recipe-body{
+    padding-left: 0;
+}
+.latest-recipes .latest-recipe-title{
+    font-size: inherit;
+    margin-bottom: 0;
+}
+/* ============================================== */
+/* Follow-us */
+.my-social-medias{
+    margin-top: 5vh;
+}
+.my-social-icon{
+    display: flex;
+    padding: 0;
+    width: 1005;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ==================================================== */
+
+.new-recipe .jumbotron{
+    /* background-attachment: fixed; */
+    background-color: #cccccc;
+    height: fit-content;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* margin-bottom:  25vh  */
+
+}
+.new-recipe h1{
+    font-size: 33px;
+}
+.new-recipe-intro{
+    box-sizing: border-box;
+    max-width: 640px;
+    margin-top:  3vh; 
+}
+
+ .recipe-video .my-video{
+    margin-top:  5vh; 
+    margin-bottom:  5vh 
+} 
+/* ========================================== */
+/* Magazines */
+.magazine-brands{
+    margin-top: 10vh;
+    margin-bottom: 10vh
+}
+.owl-carousel .item .item-img{
+    width: 120px;
+}
+
+/* ====================================================== */
+.popular-this-week{
+    margin-top: 7vh;
+}
+.popular-body{
+    padding: 0;
+    margin-top: 10px;
+}
+.popular-body h6 a{
+    text-decoration: none;
+    color: black;
+}
+.popular-container{
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5vh;
+}
+
+/* ========================================================= */
+/* Forum */
+.forum{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+.forum .card{
+    background-color: none;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    /* background-size: cover; */
+}
+.forum-card{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-clip: border-box;
+    /* border: 1px solid rgba(0,0,0,.125); */
+    border-radius: .25rem;
+}
+.forum-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.forum-content h5{
+    margin-top: 2vh;
+    margin-bottom: 4vh;
+}
+.forum-content h2{
+    text-align: center;
+}
+.forum-content .join-forum{
+    max-width: fit-content;
+}
+/* =============================================== */
+/* footer */
+.footer{
+    background-color:  black;
+    color:white;
+    border:1px solid white;
+    margin-bottom:2px
+}
+.footer-container{
+    background-color:  black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.footer-container p,
+.footer-container ul{
+   margin-bottom: 0;
+   margin-left: 15px;
+    margin-right: 15px;
+}
+.footer-container ul li{
+    margin-left: 15px;
+}
+
+
+
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 300px) { 
+    .home .jumbotron {
+        /* height: 68vh;    */
+    }
+ }
+@media (min-width: 322px) { 
+    .home .jumbotron {
+        /* height: 60vh; */
+        
+    }
+ }
+
+@media (min-width: 520px) { 
+    .home .jumbotron {
+        /* height: 132vh; */
+        
+    }
+    .footer{
+        height: 15vh;
+    }
+    .footer-container{
+        height: 15vh;
+    }
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    .home .jumbotron {
+        /* height: 100vh; */
+    }
+    .recent-recipe .strokes{
+        display: block;
+        border: 1px solid #c4cac7;
+        width: 80%;
+        height: 10px;
+        border-right: none;
+        border-left: none;
+        margin-left: 12px;
+    
+    }
+    .popular-container span{
+        border: 1px solid #c4cac7;
+        border-left: none;
+        border-right: none;
+        width: 300px;
+        height: 10px;
+        width:80%;
+    }
+    .popular-container h5{
+        width:100%;
+        margin: auto 5px
+    }
+    
+    
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+    .home .jumbotron {
+        /* height: 60vh; */
+        
+    }
+    .vegan-jumbotron{
+        width: 38rem
+    }
+    .vegan-books .card-title{
+        font-size: 3rem;
+    }
+    .footer{
+        height: 6vh;
+    }
+    .footer-container{
+        height: 6vh;
+    }
+ 
+ }
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+    .jumbotron-content{
+        width: 30rem!important;
+    }
+    .editor{
+
+    margin-top: 35px;
+
+    }
+ }
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {  }
+
+
+
+
+a{
+    color: black;
+}
+
+.jumbotron-content .card-text, p, button,input{
+    font-family: 'Catamaran', sans-serif;
+}
+.content-title, h1,h2,h3,h4,h5,h6,
+.content-author p,
+.category-img-container p,
+.latest-recipes a{
+    font-family: 'Merriweather', serif;
+    color: black;
+}
+
+.card{
+    border: none;
+}
+ul li{
+    list-style: none;
+}
+.card-body{
+    text-align: initial;
+}
+.mask p{
+    margin-top: 10px;
+}
+ .mask p:first-child{
+    margin-right: 20px;
+}
+.mask .card-icon{
+    font-weight: lighter;
+    color: #a5a5a5;
+}
+.category-container{
+    border: 1px solid #c4cac7
+
+}
+
+.category{
+    text-align: center;
+    font-family: Catamaran,sans-serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    /* font-weight: 600; */
+    letter-spacing: .1em;
+    color: #2d2d28;
+    /* display: inline-block; */
+    position: relative;
+    top: -29px;
+    padding: 0px 16px;
+    background-color: #fff;
+    z-index: 5;
+    margin-bottom: 5px;
+    width: fit-content;
+    margin: auto;
+}
