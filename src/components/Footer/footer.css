@@ -1,0 +1,27 @@
+/* footer */
+.footer{
+    background-color:  black;
+    color:white;
+    border:1px solid white;
+    margin-bottom:2px;
+    /* position: absolute; */
+    /* bottom: -5vh; */
+    /* width: 100%; */
+
+}
+.footer-container{
+    background-color:  black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+.footer-container p,
+.footer-container ul{
+   margin-bottom: 0;
+   margin-left: 15px;
+    margin-right: 15px;
+}
+.footer-container ul li{
+    margin-left: 15px;
+}

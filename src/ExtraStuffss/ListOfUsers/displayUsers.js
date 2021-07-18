@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link } from 'react-router-dom';
-import services from '../util/services'
+import services from '../../components/util/services'
 
 export default class displayUsers extends Component {
 

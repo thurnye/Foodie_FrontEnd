@@ -287,29 +287,6 @@
     max-width: fit-content;
 }
 /* =============================================== */
-/* footer */
-.footer{
-    background-color:  black;
-    color:white;
-    border:1px solid white;
-    margin-bottom:2px
-}
-.footer-container{
-    background-color:  black;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    
-}
-.footer-container p,
-.footer-container ul{
-   margin-bottom: 0;
-   margin-left: 15px;
-    margin-right: 15px;
-}
-.footer-container ul li{
-    margin-left: 15px;
-}
 
 
 /* global styles */
