@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import services from '../util/services'
-import NavBar from '../Nav/navbar';
 import {userActions } from '../../store/userSlice'
 import './signup.css';
 
@@ -40,7 +39,6 @@ export default function Signup() {
   
      return (
         <React.Fragment>
-          <NavBar/>
           <section className="guest">
             <div className="sign-up">
               <div className="card" style= {{width: "30rem"}} >
