@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import services from '../util/services'
 import Nav from 'react-bootstrap/Nav';
-import {userActions } from '../../store/userSlice'
+import {userActions } from '../store/userSlice'
 
 
 export default function LogIn() {

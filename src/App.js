@@ -4,19 +4,23 @@ import jwt_decode from "jwt-decode";
 import {useSelector, useDispatch} from 'react-redux'
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'font-awesome/css/font-awesome.min.css';
-// import 'hover.css/css/hover-min.css'
-import './public/css/hover.css'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import {far} from "@fortawesome/free-regular-svg-icons"
-import './App.css';
 import {userActions } from './store/userSlice'
+
+
 import NavBar from './components/Nav/navbar'
-import Home from './components/Home/home';
-import Signup from './components/signup/signup';
-import Login from './components/LogIn/login';
+import Home from './pages/home';
+import Signup from './pages/signup';
+import Login from './pages/login';
+// import Footer from './components/Footer/footer'
+
+
+import './public/css/hover.css'
+import './App.css';
+
 
 library.add(fab, fas, far)
 const history = require("history").createBrowserHistory()  
@@ -47,6 +51,7 @@ function App() {
           {!user && <Route path="/signin" component={Signup} /> }
           {!user && <Route path="/login" component={Login} />}
         </Switch>
+        {/* <Footer /> */}
       </Router>
     </React.Fragment>
     

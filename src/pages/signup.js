@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import services from '../util/services'
-import {userActions } from '../../store/userSlice'
-import './signup.css';
+import {userActions } from '../store/userSlice'
+import '../public/css/signup.css'
 
 
 export default function Signup() {
