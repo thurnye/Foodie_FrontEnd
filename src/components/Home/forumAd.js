@@ -12,7 +12,7 @@ export default function forumAd() {
                             <div className="container ">
                                 <div className="forum-card">
                                     <div className="card-body forum-content">
-                                        <h2 class="card-title h2-responsive forum-title">Easy Meals Forum</h2>
+                                        <h2 className="card-title h2-responsive forum-title">Easy Meals Forum</h2>
                                         <h5>
                                             <span className="forum-data">186.281 users, </span>
                                             <span className="forum-data">184.853 recipes, </span>

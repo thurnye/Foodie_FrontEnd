@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Video } from 'react-feather';
 
@@ -28,7 +29,15 @@ export default function recentRecipeList() {
                                                     </p>
                                                     
                                                 </div>
-                                                <h5 className="card-title content-title"><a href="#">The best fluffy buttermilk pancakes with triple berry sauce</a></h5>
+                                                <h5 className="card-title content-title">
+                                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("the best fluffy buttermilk pancakes with triple berry sauce").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">The best fluffy buttermilk pancakes with triple berry sauce</Link>
+                                                    
+                                                </h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -52,7 +61,15 @@ export default function recentRecipeList() {
                                                         <span><small><b>SUPER EASY</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title"><a href="#">Chocolate banana pancakes</a></h5>
+                                                <h5 className="card-title content-title">
+                                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("chocolate banana pancakes").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">Chocolate banana pancakes</Link>
+                                                    
+                                                </h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -72,7 +89,15 @@ export default function recentRecipeList() {
                                                         <span><small><b> 0 : 30</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title"><a href="#">Cinnamon french toast with cream cheese glaze and berry syrup</a></h5>
+                                                <h5 className="card-title content-title">
+                                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("cinnamon french toast with cream cheese glaze and berry syrup").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">Cinnamon french toast with cream cheese glaze and berry syrup</Link>
+                                                    
+                                                </h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -96,7 +121,15 @@ export default function recentRecipeList() {
                                                         <span><small><b>SUPER EASY</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title"><a href="#">Peanut butter pancakes</a></h5>
+                                                <h5 className="card-title content-title">
+                                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("peanut butter pancakes").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">Peanut butter pancakes</Link>
+                                                    
+                                                </h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -116,7 +149,15 @@ export default function recentRecipeList() {
                                                         <span><small><b> 0 : 30</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title"><a href="#">Traditional French breakfast croissant and coffee</a></h5>
+                                                <h5 className="card-title content-title">
+                                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("traditional French breakfast croissant and coffee").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">Traditional French breakfast croissant and coffee</Link>
+                                                    
+                                                </h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -140,7 +181,15 @@ export default function recentRecipeList() {
                                                         <span><small><b>SUPER EASY</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title"><a href="#">One-pot pasta primavera</a></h5>
+                                                <h5 className="card-title content-title">
+                                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("one-pot pasta primavera").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">One-pot pasta primavera</Link>
+                                                    
+                                                </h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -160,7 +209,15 @@ export default function recentRecipeList() {
                                                         <span><small><b> 0 : 30</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title"><a href="#">Quick & easy chocolate cake with berries from scratch recipe</a></h5>
+                                                <h5 className="card-title content-title">
+                                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("quick & easy chocolate cake with berries from scratch recipe").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">Quick & easy chocolate cake with berries from scratch recipe</Link>
+                                                    
+                                                </h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>
@@ -184,7 +241,15 @@ export default function recentRecipeList() {
                                                         <span><small><b>SUPER EASY</b></small></span>
                                                     </p>
                                                 </div>
-                                                <h5 className="card-title content-title"><a href="#">Carrot and walnut cake</a></h5>
+                                                <h5 className="card-title content-title">
+                                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("carrot and walnut cake").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">Carrot and walnut cake</Link>
+                                                    
+                                                </h5>
                                                 <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                             </div>
                                         </div>

@@ -10,14 +10,13 @@ import NewsLetter from './newsLetter';
 import AppAdvert from './appAdvert';
 import MySocialMedia from './mySocialMedia';
 import UtubeAdvert from './utube'
-
+import Headings from '../../UI/heading'
 export default function recentRecipe() {
     return (
         <>
              <section className="recent-recipe">
-            <div className="recipe-intro container">
-                <h3>Recent recipes</h3>
-                <div className="strokes"></div>
+            <div className="container">
+                <Headings title="Recent recipes"/>
             </div>
             <div className="recipes container">
                     <div className="card mb-3">

@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link } from 'react-router-dom';
 import Rp1 from '../../../public/images/latestRecipes/rp1.jpeg'
 import Rp2 from '../../../public/images/latestRecipes/rp2.jpeg'
 import Rp3 from '../../../public/images/latestRecipes/rp3.jpeg'
@@ -16,7 +17,14 @@ export default function latestRecipesList() {
                                                 </div>
                                                 <div className="col-md-7">
                                                     <div className="card-body latest-recipe-body">
-                                                        <h5 className="card-title latest-recipe-title"><a href="#">Cupcakes with coconut oil</a></h5>
+                                                        <h5 className="card-title latest-recipe-title">
+                                                            <Link to={{
+                                                                pathname: `/recipe` ,
+                                                                search: `?q=${("cupcakes with coconut oil").replaceAll(" ", "-")}`,
+                                                                // state: {postId: post._id},
+                                                            }}
+                                                            className="content-title">Cupcakes with coconut oil</Link>
+                                                        </h5>
                                                         <p className="card-text"><small className="text-muted">July 17th, 2021</small></p>
                                                     </div>
                                                 </div>
@@ -29,7 +37,14 @@ export default function latestRecipesList() {
                                                 </div>
                                                 <div className="col-md-7">
                                                     <div className="card-body latest-recipe-body">
-                                                        <h5 className="card-title latest-recipe-title"><a href="#">Easy breakfast meal prep</a></h5>
+                                                        <h5 className="card-title latest-recipe-title">
+                                                            <Link to={{
+                                                                pathname: `/recipe` ,
+                                                                search: `?q=${("easy breakfast meal prep").replaceAll(" ", "-")}`,
+                                                                // state: {postId: post._id},
+                                                            }}
+                                                            className="content-title">Easy breakfast meal prep</Link>
+                                                        </h5>
                                                         <p className="card-text"><small className="text-muted">July 17th, 2021</small></p>
                                                     </div>
                                                 </div>
@@ -42,7 +57,14 @@ export default function latestRecipesList() {
                                                 </div>
                                                 <div className="col-md-7">
                                                     <div className="card-body latest-recipe-body">
-                                                        <h5 className="card-title latest-recipe-title"><a href="#">Brownies with walnuts</a></h5>
+                                                        <h5 className="card-title latest-recipe-title">
+                                                            <Link to={{
+                                                                pathname: `/recipe` ,
+                                                                search: `?q=${("brownies with walnuts").replaceAll(" ", "-")}`,
+                                                                // state: {postId: post._id},
+                                                            }}
+                                                            className="content-title">Brownies with walnuts</Link>
+                                                        </h5>
                                                         <p className="card-text"><small className="text-muted">July 17th, 2021</small></p>
                                                     </div>
                                                 </div>

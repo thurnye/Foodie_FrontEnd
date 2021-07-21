@@ -27,6 +27,9 @@
     /* font-size: 25px; */
     /* text-align: center !important; */
 }
+.card-title a{
+    text-decoration: none;
+}
 .editor{
     justify-content: space-between;
     align-items: center;
@@ -133,7 +136,7 @@
 .recipes-card-container{
     margin-bottom: 10vh;
 }
-.recent-recipe .recipe-intro{
+/* .recent-recipe .recipe-intro{
     display: flex;
     justify-content: initial;
     align-items: baseline;
@@ -141,7 +144,7 @@
 .recent-recipe .strokes{
     display: none;
 
-}
+} */
 .recent-recipe .recipes{
     margin-top: 3vh;
 }
@@ -395,7 +398,7 @@ ul li{
     .home .jumbotron {
         /* height: 100vh; */
     }
-    .recent-recipe .strokes{
+    /* .recent-recipe .strokes{
         display: block;
         border: 1px solid #c4cac7;
         width: 80%;
@@ -404,7 +407,7 @@ ul li{
         border-left: none;
         margin-left: 12px;
     
-    }
+    } */
     .popular-container span{
         border: 1px solid #c4cac7;
         border-left: none;

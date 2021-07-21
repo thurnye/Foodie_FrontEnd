@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link } from 'react-router-dom';
 
 import Ppl1 from '../../public/images/popular/ppl1.jpeg'
 import Ppl2 from '../../public/images/popular/ppl2.jpeg'
@@ -22,101 +23,185 @@ export default function thisWeekPopular() {
                     <h5>The most popular recipes this week</h5>
                     <span></span>
                 </div>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl1} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title "><a href="#">Marshmallow light and easy cake</a></h6>
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl1} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title ">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("marshmallow light and easy cake").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Marshmallow light and easy cake</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl2} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Cupcakes with pistachio pudding</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl2} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("cupcakes with pistachio pudding").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Cupcakes with pistachio pudding</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl3} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Baked chicken legs with garlic and Dijon</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl3} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("baked chicken legs with garlic and Dijon").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Baked chicken legs with garlic and Dijon</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl4} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">French onion soup with veggie stock</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl4} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("crench onion soup with veggie stock").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>French onion soup with veggie stock</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl5} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Make chicken paella in under an hour</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl5} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("make chicken paella in under an hour").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Make chicken paella in under an hour</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl6} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Pumpkin soup with cheese and cinnamon</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl6} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("pumpkin soup with cheese and cinnamon").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Pumpkin soup with cheese and cinnamon</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl7} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Easy ground beef recipes with bacon</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl7} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("easy ground beef recipes with bacon").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Easy ground beef recipes with bacon</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl8} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Avocado toast with valerianella and egg</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl8} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("avocado toast with valerianella and egg").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Avocado toast with valerianella and egg</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl9} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">How to make fast margherita pizza</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl9} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("how to make fast margherita pizza").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>How to make fast margherita pizza</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl10} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Avocado toast with spinach and egg</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl10} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("avocado toast with spinach and egg").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Avocado toast with spinach and egg</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl11} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Deliciously spicy Thai chili crab recipe</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl11} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("deliciously spicy Thai chili crab recipe").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Deliciously spicy Thai chili crab recipe</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                            <div class="card">
-                                <img class="card-img-top" src={Ppl12} alt="Card image cap"/>
-                                <div class="card-body popular-body">
-                                    <h6 class="card-title popular-week-title"><a href="#">Creamy potato soup with almond milk</a></h6>
+                        <div className="col-lg-2 col-md-3 col-sm-4 col-6">
+                            <div className="card">
+                                <img className="card-img-top" src={Ppl12} alt="popularThisWeek"/>
+                                <div className="card-body popular-body">
+                                    <h6 className="card-title popular-week-title">
+                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("creamy potato soup with almond milk").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}>Creamy potato soup with almond milk</Link>
+                                        
+                                    </h6>
                                 </div>
                             </div>
                         </div>

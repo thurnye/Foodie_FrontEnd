@@ -1,6 +1,7 @@
 import React from 'react'
 import Bg2 from '../../public/images/jumbotron/bg2.jpeg'
 import Nav from 'react-bootstrap/Nav';
+import {Link } from 'react-router-dom';
 import { Share2,Bookmark, Video } from 'react-feather';
 import ImgHolder from '../../public/images/imgPlaceholder.jpeg'
 
@@ -14,7 +15,12 @@ export default function homeJumbotron() {
                             <div className="card jumbotron-content" >
                                 <div className="card-body">
                                     <h5 className="card-title">
-                                    <Nav.Link href="/" className="content-title">Mixed berry pie with fresh fruits</Nav.Link>
+                                    <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title">Mixed berry pie with fresh fruits</Link>
                                     </h5>
                                     <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                     <div className="editor d-flex ">
