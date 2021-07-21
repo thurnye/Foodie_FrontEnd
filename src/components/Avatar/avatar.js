@@ -7,7 +7,7 @@ export default function avatar() {
     return (
         <>
             <Link to={{
-                pathname: `/` ,
+                pathname: `/author` ,
                 // search: `?q=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
                 // state: {postId: post._id},
                 }}

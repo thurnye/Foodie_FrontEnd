@@ -3,7 +3,7 @@ import Bg2 from '../../public/images/jumbotron/bg2.jpeg'
 import Nav from 'react-bootstrap/Nav';
 import {Link } from 'react-router-dom';
 import { Share2,Bookmark, Video } from 'react-feather';
-import ImgHolder from '../../public/images/imgPlaceholder.jpeg'
+import Avatar from '../Avatar/avatar'
 
 export default function homeJumbotron() {
     return (
@@ -25,9 +25,7 @@ export default function homeJumbotron() {
                                     <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                     <div className="editor d-flex ">
                                         <div className="content-author">
-                                            <Nav.Link href="/" className="content-img">
-                                                <img src={ImgHolder} alt="author" />
-                                            </Nav.Link>
+                                                <Avatar/>
                                             <p>
                                                 <span><small>LAURA DERN</small></span>
                                                 <span className="text-muted"><small>May 08, 2021</small></span>

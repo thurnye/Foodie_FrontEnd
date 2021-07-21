@@ -39,6 +39,8 @@ function Header(){
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="mr-auto m-auto nav-bar">
                         <Nav.Link href="/">Home</Nav.Link>
+                        <Nav.Link href="/all-recipes">Recipes</Nav.Link>
+                        <Nav.Link href="/forum">Forum</Nav.Link>
                         {!user && <Nav.Link href="/login">Login</Nav.Link>}
                         {user &&  <button className="nav-link btn" onClick={logoutHandler}>Logout</button>}
                         </Nav>
