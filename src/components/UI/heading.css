@@ -1,0 +1,21 @@
+.headings{
+    display: flex;
+    justify-content: initial;
+    align-items: baseline;
+}
+ .strokes{
+    display: none;
+}
+
+@media (min-width: 768px) { 
+    .strokes{
+        display: block;
+        border: 1px solid #c4cac7;
+        width: 80%;
+        height: 10px;
+        border-right: none;
+        border-left: none;
+        margin-left: 12px;
+    
+    } 
+ }

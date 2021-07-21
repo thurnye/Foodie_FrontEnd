@@ -12,33 +12,33 @@ export default function magazineBrands() {
              <section className="magazine-brands container">
                 <div className="container magazine-brands-container">
                     
-                        <div class="owl-carousel owl-theme">
-                        <div class='item'>
+                        <div className="owl-carousel owl-theme">
+                        <div className='item'>
                             <div className="item-img">
                                 <img src={Mg1} className="img-fluid rounded-start" alt="recipe"/>
                             </div>
                         </div>
-                        <div class='item'>
+                        <div className='item'>
                             <div className="item-img">
                                 <img src={Mg2} className="img-fluid rounded-start" alt="recipe"/>
                             </div>
                         </div>
-                        <div class='item'>
+                        <div className='item'>
                             <div className="item-img">
                                 <img src={Mg3} className="img-fluid rounded-start" alt="recipe"/>
                             </div>
                         </div>
-                        <div class='item'>
+                        <div className='item'>
                             <div className="item-img">
                                 <img src={Mg4} className="img-fluid rounded-start" alt="recipe"/>
                             </div>
                         </div>
-                        <div class='item'>
+                        <div className='item'>
                             <div className="item-img">
                                 <img src={Mg5} className="img-fluid rounded-start" alt="recipe"/>
                             </div>
                         </div>
-                        <div class='item'>
+                        <div className='item'>
                             <div className="item-img">
                                 <img src={Mg6} className="img-fluid rounded-start" alt="recipe"/>
                             </div>

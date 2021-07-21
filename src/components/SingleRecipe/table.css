@@ -1,0 +1,9 @@
+.table-container{
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+}
+.table th:first-child{
+    padding-right: 0;
+    width: 50px;
+    border-right: 2px solid #dee2e6;
+}

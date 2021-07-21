@@ -14,9 +14,9 @@ export default function newRelease() {
                         </div>
                    
                         <div className="recipe-video container">
-                        <iframe width="435" height="301" className="my-video col-md-6 col-12" src="https://www.youtube.com/embed/_tmq1PT_88c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <iframe width="435" height="301" className="my-video col-md-6 col-12" src="https://www.youtube.com/embed/_tmq1PT_88c" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-                        <iframe width="460" height="301" className="my-video col-md-6 col-12"  src="https://www.youtube.com/embed/MD7pkEhojKM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> 
+                        <iframe width="460" height="301" className="my-video col-md-6 col-12"  src="https://www.youtube.com/embed/MD7pkEhojKM" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe> 
 
                         </div>
                     </div>

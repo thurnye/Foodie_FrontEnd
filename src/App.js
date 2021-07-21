@@ -13,6 +13,7 @@ import {userActions } from './store/userSlice'
 
 import NavBar from './components/Nav/navbar'
 import Home from './pages/home';
+import singleRecipe from './pages/singleRecipe'
 import Signup from './pages/signup';
 import Login from './pages/login';
 // import Footer from './components/Footer/footer'
@@ -50,6 +51,7 @@ function App() {
           <Route path="/"  exact component={Home} />
           {!user && <Route path="/signin" component={Signup} /> }
           {!user && <Route path="/login" component={Login} />}
+          <Route path="/recipe" component={singleRecipe} />
         </Switch>
         {/* <Footer /> */}
       </Router>
