@@ -2,8 +2,8 @@ import React from 'react'
 import Nav from 'react-bootstrap/Nav';
 import {Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Share2,Bookmark, Video } from 'react-feather';
-import ImgHolder from '../../public/images/imgPlaceholder.jpeg'
+import { Share2,Bookmark} from 'react-feather';
+// import ImgHolder from '../../public/images/imgPlaceholder.jpeg'
 import Avatar from '../Avatar/avatar'
 import Img2 from '../../public/images/tier3/img2.jpeg'
 import Img3 from '../../public/images/tier3/img3.jpeg'

@@ -2,8 +2,8 @@ import React from 'react'
 
 export default function forum() {
     return (
-        <div>
+        <d>
             this is the forum page
-        </div>
+        </d>
     )
 }
