@@ -1,0 +1,56 @@
+.resultList .card-body{
+    padding: 0;
+    
+}
+.resultList .card-body h5 {
+    margin-top: 0px;
+}
+.resultList .result-item{
+    margin-bottom: 5vh;
+}
+.resultList .result-body p{
+    margin-top: 10px;
+}
+.resultList .result-body p span{
+    margin-right: 10px;
+}
+/* ===================================================== */
+
+.filter{
+    /* border: 2px dotted red; */
+}
+.filter-indicator{
+    margin: 20px 0;
+}
+::-webkit-input-placeholder {
+    font-style: italic;
+ }
+ :-moz-placeholder {
+    font-style: italic;  
+ }
+ ::-moz-placeholder {
+    font-style: italic;  
+ }
+ :-ms-input-placeholder {  
+    font-style: italic; 
+ }
+ 
+a.showMore {
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 20px;
+    color: #0077c8;
+    text-decoration: none;
+  }
+  a.showMore:after {
+    content: "+ VIEW MORE";
+  }
+  a.showMore.showLess:after {
+    content: "- VIEW LESS";
+  }
+  
+  h4 {
+    margin: 0px 0px 4px 0px;
+  }

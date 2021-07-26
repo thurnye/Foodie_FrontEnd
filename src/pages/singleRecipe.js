@@ -22,10 +22,8 @@ import CommentForm from '../components/SingleRecipe/commentForm';
 
 export default function singleMeal() {
     return (
-        <>
+        
             <section className="">
-            <div className=" container">
-            </div>
             <div className=" container">
                     <div className="card mb-3">
                         <div className="row g-0">
@@ -36,13 +34,13 @@ export default function singleMeal() {
                                 <Headings title="Ingredients"/>
                                 <Tables/>
                                 <NutrientsInfo/>
-                               <Directions/>
-                               <Notes/>
-                               <FavBkmkPrt/>
-                               <Tags/>
-                               <BookAd/>
-                               <Recommendations/>
-                               <CommentForm/>
+                                <Directions/>
+                                <Notes/>
+                                <FavBkmkPrt/>
+                                <Tags/>
+                                <BookAd/>
+                                <Recommendations/>
+                                <CommentForm/>
                             </div>
                             <div className="col-md-4 ">
                                 <AppAdvert />
@@ -56,6 +54,6 @@ export default function singleMeal() {
                     </div>
             </div>
             </section>
-        </>
+        
     )
 }
