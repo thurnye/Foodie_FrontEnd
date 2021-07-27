@@ -4,7 +4,7 @@ export default function newsLetter() {
     return (
         <>
             <div className="newsLetter mb-3 ">
-                <form className="text-center border border-light p-5" action="#!">
+                <form className="text-center border border-light p-3" action="#!">
                     <h4 className="h4 mb-4">Never Miss A Post!</h4>
                     <p>Sign up for free and be the first to get notified about updates.</p>
                     <input type="email" id="defaultSubscriptionFormEmail" className="form-control mb-4" placeholder="e-mail"/>

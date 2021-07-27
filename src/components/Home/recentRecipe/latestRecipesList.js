@@ -16,7 +16,7 @@ export default function latestRecipesList() {
                                                     <img src={Rp1} className="img-fluid rounded-start" alt="latestRecipe"/>
                                                 </div>
                                                 <div className="col-md-7">
-                                                    <div className="card-body latest-recipe-body">
+                                                    <div className=" latest-recipe-body">
                                                         <h5 className="card-title latest-recipe-title">
                                                             <Link to={{
                                                                 pathname: `/recipe` ,
@@ -36,7 +36,7 @@ export default function latestRecipesList() {
                                                     <img src={Rp2} className="img-fluid rounded-start" alt="latestRecipe"/>
                                                 </div>
                                                 <div className="col-md-7">
-                                                    <div className="card-body latest-recipe-body">
+                                                    <div className=" latest-recipe-body">
                                                         <h5 className="card-title latest-recipe-title">
                                                             <Link to={{
                                                                 pathname: `/recipe` ,
@@ -56,7 +56,7 @@ export default function latestRecipesList() {
                                                     <img src={Rp3} className="img-fluid rounded-start" alt="latestRecipe"/>
                                                 </div>
                                                 <div className="col-md-7">
-                                                    <div className="card-body latest-recipe-body">
+                                                    <div className=" latest-recipe-body">
                                                         <h5 className="card-title latest-recipe-title">
                                                             <Link to={{
                                                                 pathname: `/recipe` ,
