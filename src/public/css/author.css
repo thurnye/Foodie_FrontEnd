@@ -1,0 +1,66 @@
+.welcome-heading-img{
+    text-align: center;
+    margin: 3vh 0;
+}
+.my-recipes-list{
+    margin-bottom: 4vh;
+}
+.my-recipes-list .card-title a{
+    font-size: 12px;
+}
+.resources{
+    margin-top: 5vh;
+    margin-bottom: 12vh;
+}
+.resourses-items .resourses-item{
+    list-style: disc !important;
+}
+/* ================================================================ */
+.partnership{
+    background-color: #f7f7f7f7;
+}
+.partnership .d-flex{
+    flex-wrap: wrap;
+    
+}
+.partnership .d-flex h5{
+    width: 100%;
+    margin-top: 3vh;
+}
+.partnership .d-flex .learn-more{
+    height: 50px
+}
+.partnership .d-flex a{
+    padding: 13px;
+    color: white;
+    background: black;
+    cursor: pointer;
+}
+.partnership .d-flex p{
+    margin-top: 3vh;
+}
+/* media query greater than 1000 */
+@media (min-width: 1000px) { 
+    .partnership{
+        padding: 0;
+    }
+    .partnership .d-flex{
+        flex-wrap: initial;
+        align-items: center;
+    }
+    .partnership .d-flex h5{
+        max-width: 160px;
+        text-align: center;
+        padding: 11px;
+    }
+    .partnership .d-flex p{
+        max-width: 316px;
+        padding: 11px 0;
+    }
+    .partnership .d-flex .learn-more{
+        height: fit-content;
+        margin-top: 20px;
+    }
+  
+
+ }
