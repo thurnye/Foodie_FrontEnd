@@ -15,7 +15,33 @@ const userSchema = new Schema({
   },
   password: {
     type: Schema.Types.String,
-  }
+  },
+  avatar: {
+    type: Schema.Types.String,
+  },
+  briefIntro: {
+    type: Schema.Types.String,
+  },
+  aboutMe: {
+    type: Schema.Types.String,
+  },
+  resourceInfo: {
+    type: Schema.Types.String,
+  },
+  resourceList:[{
+    type: Object
+  }],
+  socialMedia:[{
+    type: Object
+  }],
+  myRecipes: [
+    {
+      trip: {
+        type: Schema.Types.ObjectId,
+        ref: 'Recipes',
+      }
+    }
+  ]
     
 },
    
