@@ -1,0 +1,84 @@
+
+                                            <div className="col form-fields">
+                                                <div className="card my-recipe-card">
+                                                    <div>
+                                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title"><Edit strokeWidth="1"/></Link>
+                                                        <button></button>
+                                                        <button><Trash2 strokeWidth="1"/></button>
+                                                    </div>
+                                                    <img src={Img2} className="card-img-top" alt="recipeResult"/>
+                                                    <div className="card-body my-recipes-body ">
+                                                        
+                                                        <h6 className="card-title">
+                                                            <Link to={{
+                                                                pathname: `/recipe` ,
+                                                                search: `?q=${("smoked tofu salad with spicy peanut sauce").toLocaleLowerCase().replaceAll(" ", "-")}`,
+                                                                // state: {postId: post._id},
+                                                            }}
+                                                            className="result-title">Smoked tofu salad with spicy peanut sauce</Link>
+                                                        </h6>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="col form-fields">
+                                                <div className="card my-recipe-card">
+                                                    <div>
+                                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title"><Edit strokeWidth="1"/></Link>
+                                                        <button></button>
+                                                        <button><Trash2 strokeWidth="1"/></button>
+                                                    </div>
+                                                    <img src={Img3} className="card-img-top" alt="recipeResult"/>
+                                                    <div className="card-body my-recipes-body ">
+                                                        
+                                                        <h6 className="card-title">
+                                                            <Link to={{
+                                                                pathname: `/recipe` ,
+                                                                search: `?q=${("5 antioxidant-powered smoothie recipes").toLocaleLowerCase().replaceAll(" ", "-")}`,
+                                                                // state: {postId: post._id},
+                                                            }}
+                                                            className="result-title">5 antioxidant-powered smoothie recipes</Link>
+                                                        </h6>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="col form-fields">
+                                                <div className="card my-recipe-card">
+                                                    <div>
+                                                        <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    className="content-title"><Edit strokeWidth="1"/></Link>
+                                                        <button></button>
+                                                        <button><Trash2 strokeWidth="1"/></button>
+                                                    </div>
+                                                    <img src={Img4} className="card-img-top" alt="recipeResult"/>
+                                                    <div className="card-body my-recipes-body ">
+                                                        <h6 className="card-title">
+                                                            <Link to={{
+                                                                pathname: `/recipe` ,
+                                                                search: `?q=${("stuffed avocado with vegetables and fruit").toLocaleLowerCase().replaceAll(" ", "-")}`,
+                                                                // state: {postId: post._id},
+                                                            }}
+                                                            className="result-title">Stuffed avocado with vegetables and fruit</Link>
+                                                        </h6>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>    
+                                        

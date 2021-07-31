@@ -100,7 +100,7 @@ export default function LogIn() {
                   </form>
                   <p className="createAccount">
                     <span><small>Don't have an account?</small></span>
-                    <span><small><Nav.Link href="/signin">Create An Account</Nav.Link></small></span>
+                    <span><small><Nav.Link href="/signup" style={{color: '#0077c8'}}>Create An Account</Nav.Link></small></span>
                   </p>
                 </div>
                 

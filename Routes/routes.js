@@ -10,7 +10,8 @@ router.post('/api', Controller.postCreateUser);
 // POST /api/users/login
 router.post('/api/user/login', Controller.getLogIn);
 
-
+//post the edited user
+router.post('/edit/:id', Controller.postUserOtherInfo);
 
 
 // =============================================
@@ -22,7 +23,7 @@ router.get('/api/:id', Controller.getAUserByID);
 router.get('/edit/:id', Controller.getEdit);
 
 //post the edited user
-router.post('/edit/:id', Controller.postEdit);
+// router.post('/edit/:id', Controller.postEdit);
 
 //post delete
 router.post('/api/:id', Controller.postDelete);

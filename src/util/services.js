@@ -7,6 +7,11 @@ class StuffDataService {
     return http.post("/api", data);
   }
 
+  // update user
+  postEdit(id, data) {
+    return http.post(`/edit/${id}`, data);
+  }
+
   // login
   postLogin(data) {
     return http.post(`/api/user/login`, data);

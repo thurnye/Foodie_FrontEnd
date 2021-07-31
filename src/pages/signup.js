@@ -21,7 +21,7 @@ export default function Signup() {
   const onSubmit = async (data) => {
     try{
       const result = await services.create(data)
-      console.log(result)
+      // console.log(result)
       
       let token = result.data
       localStorage.setItem('token', token);  
@@ -31,7 +31,7 @@ export default function Signup() {
       dispatch(userActions.login({
         user: userDoc
       }))
-      history.push("/");
+      history.push("/new-account");
     }catch(err){
       console.log(err)
     }

@@ -21,7 +21,7 @@ function Header(){
     let token = localStorage.getItem('token')
     if (token){
         localStorage.removeItem('token')
-        history.push("/");
+        history.push("/login");
     }
     
   }

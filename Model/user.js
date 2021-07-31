@@ -19,10 +19,13 @@ const userSchema = new Schema({
   avatar: {
     type: Schema.Types.String,
   },
-  briefIntro: {
+  slogan: {
     type: Schema.Types.String,
   },
   aboutMe: {
+    type: Schema.Types.String,
+  },
+  location: {
     type: Schema.Types.String,
   },
   resourceInfo: {
