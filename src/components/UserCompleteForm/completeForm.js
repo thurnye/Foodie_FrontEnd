@@ -259,7 +259,7 @@ export default function CompleteForm() {
                                 
                                 {/* MY RECIPE LIST */}
                                 <div className="col-md-6 user-recipe-list">
-                                    <UserRecipeList/>
+                                    <UserRecipeList />
                                    
                                 </div>
                             </div>

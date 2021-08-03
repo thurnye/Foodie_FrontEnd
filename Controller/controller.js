@@ -82,7 +82,7 @@ const postUserOtherInfo = (req, res, next) => {
     .catch(err => res.status(400).json(err));
     
 }
- 
+
 
 
 
