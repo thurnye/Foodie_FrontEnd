@@ -314,7 +314,8 @@ a:hover,
 .content-title, h1,h2,h3,h4,h5,h6,
 .content-author p,
 .category-img-container p,
-.latest-recipes a{
+.latest-recipes a,
+.fieldset .legend{
     font-family: 'Merriweather', serif;
     color: black;
 }

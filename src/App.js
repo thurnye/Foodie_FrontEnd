@@ -3,6 +3,7 @@ import {Router, Switch, Route} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import {useSelector, useDispatch} from 'react-redux'
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import 'font-awesome/css/font-awesome.min.css';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -19,6 +20,7 @@ import Author from './pages/author';
 import Forum from './pages/forum';
 import Signup from './pages/signup';
 import Login from './pages/login';
+import UserCompleteForm from './pages/userCompleteForm';
 // import Footer from './components/Footer/footer'
 
 
@@ -52,12 +54,15 @@ function App() {
       <NavBar/>
         <Switch>
           <Route path="/"  exact component={Home} />
-          {!user && <Route path="/signin" component={Signup} /> }
+          {!user && <Route path="/signup" component={Signup} /> }
           {!user && <Route path="/login" component={Login} />}
+          {user && <Route path="/new-account" component={UserCompleteForm} />}
+          
           <Route path="/recipe" component={singleRecipe} />
           <Route path="/all-recipes" component={AllRecipe} />
           <Route path="/forum" component={Forum} />
           <Route path="/author" component={Author} />
+
         </Switch>
         {/* <Footer /> */}
       </Router>

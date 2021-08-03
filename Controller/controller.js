@@ -47,6 +47,41 @@ const getLogIn = async (req, res) => {
     }
 }
 
+// POSTING USER OTHER INFOs
+const postUserOtherInfo = (req, res, next) => {
+    console.log(req.body)
+    const id = req.params.id;
+
+    User.findById(id)
+    .then(user => {
+        user.firstName =  req.body.firstName;
+        user.lastName =  req.body.lastName;
+        user.email =  req.body.email;
+        user.avatar =  "";
+        user.slogan =  req.body.slogan;
+        user.aboutMe =  req.body.aboutMe;
+        user.location =  req.body.location;
+        user.resourceInfo =  req.body.myResource;
+        user.resourceList = [];
+        user.socialMedia[0] = {
+            facebook : req.body.facebook,
+            twitter : req.body.twitter,
+            linkedIn : req.body.linkedIn,
+            pinterest : req.body.pinterest,
+
+        }
+        
+
+        return user.save()
+    })
+    .then((user) => {
+        console.log(user)
+        const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+        res.status(200).json(token)
+    })
+    .catch(err => res.status(400).json(err));
+    
+}
 
 
 
@@ -121,6 +156,7 @@ module.exports = {
     postCreateUser,
     getLogIn,
     getHomepage,
+    postUserOtherInfo,
     getAUserByID,
     getEdit,
     postEdit, 
