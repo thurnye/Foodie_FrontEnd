@@ -21,6 +21,7 @@ import Forum from './pages/forum';
 import Signup from './pages/signup';
 import Login from './pages/login';
 import UserCompleteForm from './pages/userCompleteForm';
+import NewRecipe from './pages/newRecipe'
 // import Footer from './components/Footer/footer'
 
 
@@ -57,6 +58,7 @@ function App() {
           {!user && <Route path="/signup" component={Signup} /> }
           {!user && <Route path="/login" component={Login} />}
           {user && <Route path="/new-account" component={UserCompleteForm} />}
+          {user && <Route path="/new-recipe" component={NewRecipe} />}
           
           <Route path="/recipe" component={singleRecipe} />
           <Route path="/all-recipes" component={AllRecipe} />

@@ -122,7 +122,7 @@
 }
 .nutrient-container h5{
     background-color: #fee86d;
-    padding: 21px 16px;
+    /* padding: x 16px; */
     -webkit-box-flex: 0;
     -ms-flex: 0 0 20%;
     flex: 0 0 20%;
@@ -348,7 +348,7 @@ button:active {
 /* // Large devices (desktops, 992px and up) */
 @media (min-width: 992px) { 
     
- 
+    
  }
 
 /* // X-Large devices (large desktops, 1200px and up) */
@@ -357,7 +357,7 @@ button:active {
         flex-direction: row;
     }
     .nutrient-container h5{
-        /* width: ; */
+        padding: 46px 16px;
     }
  }
 

@@ -42,6 +42,7 @@ function Header(){
                         <Nav.Link href="/all-recipes">Recipes</Nav.Link>
                         <Nav.Link href="/forum">Forum</Nav.Link>
                         {!user && <Nav.Link href="/login">Login</Nav.Link>}
+                        {user && <Nav.Link href="/new-recipe">Add Recipe</Nav.Link>}
                         {user &&  <button className="nav-link btn" onClick={logoutHandler}>Logout</button>}
                         </Nav>
                     </Navbar.Collapse>

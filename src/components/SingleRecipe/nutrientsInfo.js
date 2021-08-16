@@ -11,7 +11,7 @@ export default function nutrientsInfo() {
                  <div className="card-body nutrients-contents container">
                             <p className="col-4 col-sm-4 col-md-2" >
                                 <span>200g</span>
-                                <span>Fat</span>
+                                <span>Sat.Fat</span>
                             </p>
                             <p className="col-4 col-sm-4 col-md-2">
                                 <span>100g</span>
@@ -20,6 +20,14 @@ export default function nutrientsInfo() {
                             <p className="col-4 col-sm-4 col-md-2">
                                 <span>146g</span>
                                 <span>Sugars</span>
+                            </p>
+                            <p className="col-4 col-sm-4 col-md-2">
+                                <span>146mg</span>
+                                <span>Cholesterol</span>
+                            </p>
+                            <p className="col-4 col-sm-4 col-md-2">
+                                <span>146g</span>
+                                <span>Sodium</span>
                             </p>
                             <p className="col-4 col-sm-4 col-md-2">
                                 <span>436g</span>
