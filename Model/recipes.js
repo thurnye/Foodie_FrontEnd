@@ -7,18 +7,19 @@ const recipesSchema = new Schema({
         type: String,
         require: true
     },
-    duration: {
-        type: Number,
-        require: true
-    },
-    level: {
+    description: {
         type: String,
         require: true
     },
-    serving: {
-        type: Number,
-        require: true
-    },
+    duration: [{
+        type: Object, required: true
+    }],
+    level: [{
+        type: Object, required: true
+    }],
+    serving: [{
+        type: Object, required: true
+    }],
     
     thumbnail: {
         type: String,
