@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import jwt_decode from "jwt-decode";
 import {Link } from 'react-router-dom';
-// import { Edit, Trash2 } from 'react-feather';
+import { Edit, Trash2 } from 'react-feather';
 import MetaData from '../metaData'
 
 
@@ -28,6 +28,9 @@ export default function NewRecipeForm() {
     const [selectedServing, setSelectedServing] = useState(null);
     const [selectedDuration, setSelectedDuration] = useState(null);
     const [selectedLevel, setSelectedLevel] = useState(null);
+    const [main, setMain] = useState({mainList: "", mainArray : []});
+    const [dressing, setDressing] = useState({dressingList: "", dressingArray : []});
+
     const {
         register, 
         handleSubmit,
@@ -66,49 +69,90 @@ export default function NewRecipeForm() {
         )
     })
 
+   
 
-
-
-  const onSubmit = async (data) => {
-    try{
-        console.log(data)
-        console.log(selectedTag)
-        console.log(selectedCat)
-        console.log(selectedServing)
-        console.log(selectedLevel)
-        console.log(selectedDuration)
-        
-        const allData = {
-            recipeName: data.recipe_name,
-            description: data.description,
-            serving: [selectedServing],
-            category: [selectedCat],
-            duration: [selectedDuration],
-            level: [selectedLevel],
-            tags: selectedTag
+    const addItem = (e, ingredientType) => {
+        e.preventDefault();
+        if(ingredientType === 'main'){
+            if (main.mainList !== undefined && main.mainList !== "") {
+                setMain({
+                  mainArray: main.mainArray.concat({
+                    mainList: main.mainList,
+                    id: Date.now()
+                  }),
+                  mainList: ""
+                });
+            }
+        }else{
+            if (dressing.dressingList !== undefined && dressing.dressingList !== "") {
+                setDressing({
+                  dressingArray: dressing.dressingArray.concat({
+                    dressingList: dressing.dressingList,
+                    id: Date.now()
+                  }),
+                  dressingList: ""
+                });
+            }
         }
-        console.log("AllDATA:",allData)
-
-
-
-
-
-    //   const result =  await services.postEdit(user._id, data)
-    //   console.log(result)
-    //   let token = result.data
-    //   localStorage.setItem('token', token);  
-    //   const userDoc = jwt_decode(token); 
-
-    //   // store the user in redux state
-    //   dispatch(userActions.login({
-    //     user: userDoc
-    //   }))
-    //   history.push("/");
-      
-    }catch(err){
-      console.log(err)
+        
     }
-  };
+   
+
+    const removeMainIngredientItem = (id,ingredientType) => {
+        if(ingredientType === 'main'){
+            setMain({
+                mainArray: main.mainArray.filter((item) => {
+                  return item.id !== id;
+                })
+            });
+        }else{
+            setDressing({
+                dressingArray: dressing.dressingArray.filter((item) => {
+                  return item.id !== id;
+                })
+            });
+        }
+        
+
+        
+    }
+    
+    const onSubmit = async (data) => {
+        try{
+            const allData = {
+                recipeName: data.recipe_name,
+                description: data.description,
+                serving: [selectedServing],
+                category: [selectedCat],
+                duration: [selectedDuration],
+                level: [selectedLevel],
+                tags: selectedTag,
+                mainIngredients: main.mainArray,
+                dressingIngredients: dressing.dressingArray
+            }
+            console.log("AllDATA:",allData)
+           
+
+
+
+
+
+        //   const result =  await services.postEdit(user._id, data)
+        //   console.log(result)
+        //   let token = result.data
+        //   localStorage.setItem('token', token);  
+        //   const userDoc = jwt_decode(token); 
+
+        //   // store the user in redux state
+        //   dispatch(userActions.login({
+        //     user: userDoc
+        //   }))
+        //   history.push("/");
+        
+        }catch(err){
+        console.log(err)
+        }
+    };
     return (
         <div className="recipeForm">
             <div className="container">
@@ -231,10 +275,10 @@ export default function NewRecipeForm() {
                                     {/* TAB BUTTONS */}
                                     <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li className="nav-item" role="presentation">
-                                            <button className=" pill-btn btn-warning nav-link active" id="pills-nutritionFacts-tab" data-bs-toggle="pill" data-bs-target="#pills-nutritionFacts" type="button" role="tab" aria-controls="pills-nutritionFacts" aria-selected="false">Nutrition Facts</button>
+                                            <button className=" pill-btn btn-warning nav-link " id="pills-nutritionFacts-tab" data-bs-toggle="pill" data-bs-target="#pills-nutritionFacts" type="button" role="tab" aria-controls="pills-nutritionFacts" aria-selected="false">Nutrition Facts</button>
                                         </li>
                                         <li className="nav-item" role="presentation">
-                                            <button className=" pill-btn btn-warning nav-link" id="pills-ingredients-tab" data-bs-toggle="pill" data-bs-target="#pills-ingredients" type="button" role="tab" aria-controls="pills-ingredients" aria-selected="false">Ingredients</button>
+                                            <button className=" pill-btn btn-warning nav-link active" id="pills-ingredients-tab" data-bs-toggle="pill" data-bs-target="#pills-ingredients" type="button" role="tab" aria-controls="pills-ingredients" aria-selected="false">Ingredients</button>
                                         </li>
                                        
                                         <li className="nav-item" role="presentation">
@@ -242,15 +286,13 @@ export default function NewRecipeForm() {
                                         </li>
                                     </ul>
 
-                                    
-
-                                        {/* NUTRITIONS-FACTS ITEMS, INGREDIENTS ITEMS, DIRECTIONS-STEPS, TAGS ITEMS */}
+                                    {/* NUTRITIONS-FACTS ITEMS, INGREDIENTS ITEMS, DIRECTIONS-STEPS, TAGS ITEMS */}
                                     <div className="tab-content" id="pills-tabContent">
                                         
                                         {/* NUTRITION FACTS*/}
-                                        <div className="tab-pane fade show active" id="pills-nutritionFacts" role="tabpanel" aria-labelledby="pills-nutritionFacts-tab">
+                                        <div className="tab-pane " id="pills-nutritionFacts" role="tabpanel" aria-labelledby="pills-nutritionFacts-tab">
                                             <div>
-                                                <div>
+                                                <div className="requiredNutrients">
                                                     <span className="text-muted"><i>*all fields are required</i></span>
                                                 </div>
                                                 <div className="row row-cols-1 row-cols-md-2 g-4">
@@ -259,9 +301,9 @@ export default function NewRecipeForm() {
                                                         return (
                                                             <div className="col form-fields" key={el.name}>
                                                         
-                                                                <div class="input-group ">
-                                                                    <span class="input-group-text">{name}*</span>
-                                                                    <input type="number" class="form-control" 
+                                                                <div className="input-group ">
+                                                                    <span className="input-group-text">{name}*</span>
+                                                                    <input type="number" className="form-control" 
                                                                     aria-invalid={errors.name ? "true" : "false"} 
                                                                     {...register(`${name}`, {
                                                                         required: "required*",
@@ -270,7 +312,7 @@ export default function NewRecipeForm() {
                                                                         }
                                                                     })}
                                                                     />
-                                                                    <span class="input-group-text">{el.unit}</span>
+                                                                    <span className="input-group-text">{el.unit}</span>
                                                                 </div>
                                                                 {errors.name && <span role="alert" className="requiredField">{errors.name.message}</span>}
                                                             </div> 
@@ -282,16 +324,76 @@ export default function NewRecipeForm() {
                                         </div>
                                         
                                         
-                                        
-                                        {/* MY SOURCE LIST */}
-                                        <div className="tab-pane fade" id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
-                                        <div class="card mb-3">
-                                                <div class="row g-0">
-                                                    <div class="col-md-6">
-                                                Main Ingredients
+                                        {/* INGREDIENTS */}
+                                        <div className="tab-pane fade show active" id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
+                                        <div className="card mb-3">
+                                                <div className="row g-0">
+                                                    <div className="col-md-6 ingredient-container-main">
+                                                    <h6>Main Ingredients</h6>
+                                                        <div>
+                                                            {main.mainArray.map((item, index) => (
+                                                                <ul key={index} className="ingredient-items">
+                                                                <li className="ingredient-item">
+                                                                    {item.mainList}
+                                                                    <Trash2 
+                                                                    strokeWidth="1" 
+                                                                    size="25"
+                                                                    color="salmon"
+                                                                    onClick={() => {
+                                                                        removeMainIngredientItem(item.id, 'main');
+                                                                    }}
+                                                                    />
+                                                                </li>
+                                                                </ul>
+                                                            ))}
+                                                        </div>
+                                                        <div className="row row-cols-1 row-cols-md-12 g-4">
+                                                            <div className="col form-fields additional-field">
+                                                                <input 
+                                                                type="text"
+                                                                name="mainIngredientItem" 
+                                                                value={main.mainList || ""}
+                                                                className="form-control" 
+                                                                id="exampleInputRecipeName"
+                                                                onChange={(ev) => setMain({...main, mainList: ev.target.value})} 
+                                                                />
+                                                                <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e, 'main')}/>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-6">
-                                                    Dressing
+                                                    <div className="col-md-6 ingredient-container-dressing">
+                                                        <h6>Dressing Ingredients</h6>
+                                                        <div>
+                                                            {dressing.dressingArray.map((item, index) => (
+                                                                <ul key={index} className="ingredient-items">
+                                                                <li className="ingredient-item">
+                                                                    {item.dressingList}
+                                                                    
+                                                                    <Trash2 
+                                                                    strokeWidth="1" 
+                                                                    size="25"
+                                                                    color="salmon"
+                                                                    onClick={() => {
+                                                                        removeMainIngredientItem(item.id, 'dressing');
+                                                                    }}
+                                                                    />
+                                                                </li>
+                                                                </ul>
+                                                            ))}
+                                                        </div>
+                                                        <div className="row row-cols-1 row-cols-md-12 g-4">
+                                                            <div className="col form-fields additional-field">
+                                                                <input 
+                                                                type="text"
+                                                                name="mainIngredientItem" 
+                                                                value={dressing.dressingList || ""}
+                                                                className="form-control" 
+                                                                id="exampleInputRecipeName"
+                                                                onChange={(ev) => setDressing({...dressing, dressingList: ev.target.value})} 
+                                                                />
+                                                                <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e,'dressing')}/>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
