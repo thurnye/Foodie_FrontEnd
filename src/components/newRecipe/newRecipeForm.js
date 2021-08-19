@@ -15,6 +15,7 @@ import services from '../../util/services'
 import '../../public/css/newRecipe.css'
 import {userActions} from '../../store/userSlice'
 import { data } from 'jquery';
+import AddDirections from './addDirections'
 
 export default function NewRecipeForm() {
     // console.log(Tags)
@@ -115,6 +116,9 @@ export default function NewRecipeForm() {
         
 
         
+    }
+    const getDirections = (e) => {
+
     }
     
     const onSubmit = async (data) => {
@@ -278,11 +282,11 @@ export default function NewRecipeForm() {
                                             <button className=" pill-btn btn-warning nav-link " id="pills-nutritionFacts-tab" data-bs-toggle="pill" data-bs-target="#pills-nutritionFacts" type="button" role="tab" aria-controls="pills-nutritionFacts" aria-selected="false">Nutrition Facts</button>
                                         </li>
                                         <li className="nav-item" role="presentation">
-                                            <button className=" pill-btn btn-warning nav-link active" id="pills-ingredients-tab" data-bs-toggle="pill" data-bs-target="#pills-ingredients" type="button" role="tab" aria-controls="pills-ingredients" aria-selected="false">Ingredients</button>
+                                            <button className=" pill-btn btn-warning nav-link " id="pills-ingredients-tab" data-bs-toggle="pill" data-bs-target="#pills-ingredients" type="button" role="tab" aria-controls="pills-ingredients" aria-selected="false">Ingredients</button>
                                         </li>
                                        
                                         <li className="nav-item" role="presentation">
-                                            <button className=" pill-btn btn-warning nav-link" id="pills-directions-tab" data-bs-toggle="pill" data-bs-target="#pills-directions" type="button" role="tab" aria-controls="pills-directions" aria-selected="false">Direction</button>
+                                            <button className=" pill-btn btn-warning nav-link active" id="pills-directions-tab" data-bs-toggle="pill" data-bs-target="#pills-directions" type="button" role="tab" aria-controls="pills-directions" aria-selected="false">Direction</button>
                                         </li>
                                     </ul>
 
@@ -325,83 +329,84 @@ export default function NewRecipeForm() {
                                         
                                         
                                         {/* INGREDIENTS */}
-                                        <div className="tab-pane fade show active" id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
-                                        <div className="card mb-3">
-                                                <div className="row g-0">
-                                                    <div className="col-md-6 ingredient-container-main">
-                                                    <h6>Main Ingredients</h6>
-                                                        <div>
-                                                            {main.mainArray.map((item, index) => (
-                                                                <ul key={index} className="ingredient-items">
-                                                                <li className="ingredient-item">
-                                                                    {item.mainList}
-                                                                    <Trash2 
-                                                                    strokeWidth="1" 
-                                                                    size="25"
-                                                                    color="salmon"
-                                                                    onClick={() => {
-                                                                        removeMainIngredientItem(item.id, 'main');
-                                                                    }}
+                                        <div className="tab-pane fade " id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
+                                            <div className="card mb-3">
+                                                    <div className="row g-0">
+                                                        <div className="col-md-6 ingredient-container-main">
+                                                        <h6>Main Ingredients</h6>
+                                                            <div>
+                                                                {main.mainArray.map((item, index) => (
+                                                                    <ul key={index} className="ingredient-items">
+                                                                    <li className="ingredient-item">
+                                                                        {item.mainList}
+                                                                        <Trash2 
+                                                                        strokeWidth="1" 
+                                                                        size="25"
+                                                                        color="salmon"
+                                                                        onClick={() => {
+                                                                            removeMainIngredientItem(item.id, 'main');
+                                                                        }}
+                                                                        />
+                                                                    </li>
+                                                                    </ul>
+                                                                ))}
+                                                            </div>
+                                                            <div className="row row-cols-1 row-cols-md-12 g-4">
+                                                                <div className="col form-fields additional-field">
+                                                                    <input 
+                                                                    type="text"
+                                                                    name="mainIngredientItem" 
+                                                                    value={main.mainList || ""}
+                                                                    className="form-control" 
+                                                                    id="exampleInputRecipeName"
+                                                                    onChange={(ev) => setMain({...main, mainList: ev.target.value})} 
                                                                     />
-                                                                </li>
-                                                                </ul>
-                                                            ))}
+                                                                    <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e, 'main')}/>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div className="row row-cols-1 row-cols-md-12 g-4">
-                                                            <div className="col form-fields additional-field">
-                                                                <input 
-                                                                type="text"
-                                                                name="mainIngredientItem" 
-                                                                value={main.mainList || ""}
-                                                                className="form-control" 
-                                                                id="exampleInputRecipeName"
-                                                                onChange={(ev) => setMain({...main, mainList: ev.target.value})} 
-                                                                />
-                                                                <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e, 'main')}/>
+                                                        <div className="col-md-6 ingredient-container-dressing">
+                                                            <h6>Dressing Ingredients</h6>
+                                                            <div>
+                                                                {dressing.dressingArray.map((item, index) => (
+                                                                    <ul key={index} className="ingredient-items">
+                                                                    <li className="ingredient-item">
+                                                                        {item.dressingList}
+                                                                        
+                                                                        <Trash2 
+                                                                        strokeWidth="1" 
+                                                                        size="25"
+                                                                        color="salmon"
+                                                                        onClick={() => {
+                                                                            removeMainIngredientItem(item.id, 'dressing');
+                                                                        }}
+                                                                        />
+                                                                    </li>
+                                                                    </ul>
+                                                                ))}
+                                                            </div>
+                                                            <div className="row row-cols-1 row-cols-md-12 g-4">
+                                                                <div className="col form-fields additional-field">
+                                                                    <input 
+                                                                    type="text"
+                                                                    name="mainIngredientItem" 
+                                                                    value={dressing.dressingList || ""}
+                                                                    className="form-control" 
+                                                                    id="exampleInputRecipeName"
+                                                                    onChange={(ev) => setDressing({...dressing, dressingList: ev.target.value})} 
+                                                                    />
+                                                                    <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e,'dressing')}/>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div className="col-md-6 ingredient-container-dressing">
-                                                        <h6>Dressing Ingredients</h6>
-                                                        <div>
-                                                            {dressing.dressingArray.map((item, index) => (
-                                                                <ul key={index} className="ingredient-items">
-                                                                <li className="ingredient-item">
-                                                                    {item.dressingList}
-                                                                    
-                                                                    <Trash2 
-                                                                    strokeWidth="1" 
-                                                                    size="25"
-                                                                    color="salmon"
-                                                                    onClick={() => {
-                                                                        removeMainIngredientItem(item.id, 'dressing');
-                                                                    }}
-                                                                    />
-                                                                </li>
-                                                                </ul>
-                                                            ))}
-                                                        </div>
-                                                        <div className="row row-cols-1 row-cols-md-12 g-4">
-                                                            <div className="col form-fields additional-field">
-                                                                <input 
-                                                                type="text"
-                                                                name="mainIngredientItem" 
-                                                                value={dressing.dressingList || ""}
-                                                                className="form-control" 
-                                                                id="exampleInputRecipeName"
-                                                                onChange={(ev) => setDressing({...dressing, dressingList: ev.target.value})} 
-                                                                />
-                                                                <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e,'dressing')}/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div> 
 
                                         {/* DIRECTIONS */}
-                                        <div className="tab-pane fade" id="pills-directions" role="tabpanel" aria-labelledby="pills-directions-tab">
-                                            directions
+                                        <div className="tab-pane fade show active" id="pills-directions" role="tabpanel" aria-labelledby="pills-directions-tab">
+                                                <AddDirections getDirections={getDirections}/>
+                                                
                                         </div> 
                                     </div>
 
