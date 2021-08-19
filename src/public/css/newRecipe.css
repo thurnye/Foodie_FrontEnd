@@ -31,7 +31,30 @@
     margin-top: 5vh;
     margin-bottom: 2vh;
 }
-
+.method-steps{
+    /* border: none; */
+    /* border-bottom: 1px solid #dadada;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; */
+}
+.step-del{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2vh;
+}
+.imgPreview{
+    margin-bottom: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid #dadada; */
+}
+/* disable the submit button in the drag and drop */
+.dzu-submitButtonContainer {
+   
+    /* display: none; */
+}
 /* // Medium devices (tablets, 768px and up) */
 @media (min-width: 768px) { 
     .ingredient-container-dressing h6, .ingredient-container-main h6 {
@@ -42,6 +65,10 @@
     .ingredient-container-dressing {
         border-top: none;
         border-left: 1px solid #cababa;
+    }
+    .imgPreview  {
+        margin-right: 10px
+        
     }
     
  }
