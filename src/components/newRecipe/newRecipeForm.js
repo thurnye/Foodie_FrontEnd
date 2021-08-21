@@ -16,6 +16,7 @@ import '../../public/css/newRecipe.css'
 import {userActions} from '../../store/userSlice'
 import { data } from 'jquery';
 import AddDirections from './addDirections'
+import Thumbnail from './thumbnail'
 
 export default function NewRecipeForm() {
     // console.log(Tags)
@@ -31,6 +32,8 @@ export default function NewRecipeForm() {
     const [selectedLevel, setSelectedLevel] = useState(null);
     const [main, setMain] = useState({mainList: "", mainArray : []});
     const [dressing, setDressing] = useState({dressingList: "", dressingArray : []});
+    const [note, setNote] = useState({noteList: "", noteArray : []});
+    const [directions, setDirections] = useState(null)
 
     const {
         register, 
@@ -72,6 +75,8 @@ export default function NewRecipeForm() {
 
    
 
+   
+
     const addItem = (e, ingredientType) => {
         e.preventDefault();
         if(ingredientType === 'main'){
@@ -82,6 +87,16 @@ export default function NewRecipeForm() {
                     id: Date.now()
                   }),
                   mainList: ""
+                });
+            }
+        } else if(ingredientType === 'note'){
+            if (note.noteList !== undefined && note.noteList !== "") {
+                setNote({
+                  noteArray: note.noteArray.concat({
+                    noteList: note.noteList,
+                    id: Date.now()
+                  }),
+                  noteList: ""
                 });
             }
         }else{
@@ -106,6 +121,12 @@ export default function NewRecipeForm() {
                   return item.id !== id;
                 })
             });
+        }else if(ingredientType === 'note'){
+            setNote({
+                noteArray: note.noteArray.filter((item) => {
+                  return item.id !== id;
+                })
+            });
         }else{
             setDressing({
                 dressingArray: dressing.dressingArray.filter((item) => {
@@ -118,8 +139,9 @@ export default function NewRecipeForm() {
         
     }
     const getDirections = (e) => {
-
+        setDirections(e)
     }
+    
     
     const onSubmit = async (data) => {
         try{
@@ -132,7 +154,11 @@ export default function NewRecipeForm() {
                 level: [selectedLevel],
                 tags: selectedTag,
                 mainIngredients: main.mainArray,
-                dressingIngredients: dressing.dressingArray
+                dressingIngredients: dressing.dressingArray,
+                directions: directions,
+                notes: note.noteArray,
+                author: '',
+
             }
             console.log("AllDATA:",allData)
            
@@ -163,45 +189,95 @@ export default function NewRecipeForm() {
                 <form noValidate onSubmit={handleSubmit(onSubmit)}>
                     <div className="form">
                         <div className="received-data">
-                            {/* Name and Description */}
-                            <div className="row row-cols-1 row-cols-md-12 g-4">
-                               
-                                <div className="col form-fields">
-                                    <label htmlFor="exampleInputRecipeName" className="form-label">Name</label>
-                                    <input 
-                                    type="text" 
-                                    className="form-control" 
-                                    id="exampleInputRecipeName" 
-                                     aria-invalid={errors.recipe_name ? "true" : "false"} 
-                                    {...register("recipe_name", {
-                                        required: "Recipe Name is required*",
-                                        pattern: {
-                                        message: "recipe name required*"
-                                        }
-                                    })}
-                                    />
-                                    {errors.recipe_name && <span role="alert" className="requiredField">{errors.recipe_name.message}</span>}
-                                </div>
-                                {/* Description */}
-                                <div className="col form-fields">
-                                    <label htmlFor="exampleFormControlMyRecipeDesc" className="form-label">Tell us briefly about your recipe </label>
-                                    <textarea 
-                                    className="form-control" 
-                                    id="exampleFormControlMyRecipeDesc" 
-                                    rows="5"
-                                    aria-invalid={errors.description ? "true" : "false"}
-                                    {...register("description", {
-                                    required: "Description field is required*",
-                                    pattern: {
-                                        message: "required*"
-                                        }
-                                    })}
-                                    ></textarea>
-                             
-                                    {errors.description && <span role="alert" className="requiredField">{errors.description.message}</span>}
-                                </div>
+                            <div class="card mb-3" >
+                                <div class="row g-0">
+                                    <div class="col-md-8">
+                                        <div className="col form-fields">
+                                            <label htmlFor="exampleInputRecipeName" className="form-label">Name</label>
+                                            <input 
+                                            type="text" 
+                                            className="form-control" 
+                                            id="exampleInputRecipeName" 
+                                            aria-invalid={errors.recipe_name ? "true" : "false"} 
+                                            {...register("recipe_name", {
+                                                required: "Recipe Name is required*",
+                                                pattern: {
+                                                message: "recipe name required*"
+                                                }
+                                            })}
+                                            />
+                                            {errors.recipe_name && <span role="alert" className="requiredField">{errors.recipe_name.message}</span>}
+
+
+                                            {/* <div className="row row-cols-1 row-cols-md-2 g-4"> */}
+                                                {/* No of Servings */}
+                                                {/* <div className="col form-fields">
+                                                    <label htmlFor="exampleInputServing" className="form-label">Serving</label>
+                                                    <Select
+                                                        closeMenuOnSelect={false}
+                                                        components={animatedComponents}
+                                                        defaultValue={selectedServing}
+                                                        onChange={setSelectedServing}
+                                                        options={servingOptions}
+                                                    />
+                                                </div> */}
+                              
+                                                {/* Category */}
+                                                {/* <div className="col form-fields">
+                                                    <label htmlFor="exampleInputCategory" className="form-label">Category</label>
+                                                    <Select
+                                                        closeMenuOnSelect={false}
+                                                        components={animatedComponents}
+                                                        defaultValue={selectedCat}
+                                                        onChange={setSelectedCat}
+                                                        options={catOptions}
+                                                    />
+                                                </div> */}
                                 
+                               
+                                
+                                            {/* </div> */}
+                            
+                            
+                                        </div>
+
+                                        {/* Description */}
+                                        <div className="col form-fields">
+                                            <label htmlFor="exampleFormControlMyRecipeDesc" className="form-label">Tell us briefly about your recipe </label>
+                                            <textarea 
+                                                className="form-control" 
+                                                id="exampleFormControlMyRecipeDesc" 
+                                                rows="10"
+                                                aria-invalid={errors.description ? "true" : "false"}
+                                                {...register("description", {
+                                                required: "Description field is required*",
+                                                pattern: {
+                                                    message: "required*"
+                                                    }
+                                                })}
+                                            ></textarea>
+                                    
+                                            {errors.description && <span role="alert" className="requiredField">{errors.description.message}</span>}
+                                        </div>
+
+
+
+                                    </div>
+                                <div class="col-md-4">
+                                    <Thumbnail/>
+                                </div>
                             </div>
+                        </div>
+
+
+
+
+
+
+
+
+                        {/* Name and Description */}
+                        
                             
                             <div className="row row-cols-1 row-cols-md-4 g-4">
                                 {/* No of Servings */}
@@ -273,154 +349,195 @@ export default function NewRecipeForm() {
                             </div>
                             
                                {/* NUTRITIONS, INGREDIENTS, DIRECTIONS, TAGS */}
-                        <div className="card mb-3 recipeInformation" >
-                            <div className="row g-0">
-                                <div className="col-md-12">
-                                    {/* TAB BUTTONS */}
-                                    <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                        <li className="nav-item" role="presentation">
-                                            <button className=" pill-btn btn-warning nav-link " id="pills-nutritionFacts-tab" data-bs-toggle="pill" data-bs-target="#pills-nutritionFacts" type="button" role="tab" aria-controls="pills-nutritionFacts" aria-selected="false">Nutrition Facts</button>
-                                        </li>
-                                        <li className="nav-item" role="presentation">
-                                            <button className=" pill-btn btn-warning nav-link " id="pills-ingredients-tab" data-bs-toggle="pill" data-bs-target="#pills-ingredients" type="button" role="tab" aria-controls="pills-ingredients" aria-selected="false">Ingredients</button>
-                                        </li>
-                                       
-                                        <li className="nav-item" role="presentation">
-                                            <button className=" pill-btn btn-warning nav-link active" id="pills-directions-tab" data-bs-toggle="pill" data-bs-target="#pills-directions" type="button" role="tab" aria-controls="pills-directions" aria-selected="false">Direction</button>
-                                        </li>
-                                    </ul>
-
-                                    {/* NUTRITIONS-FACTS ITEMS, INGREDIENTS ITEMS, DIRECTIONS-STEPS, TAGS ITEMS */}
-                                    <div className="tab-content" id="pills-tabContent">
+                            <div className="card mb-3 recipeInformation" >
+                                <div className="row g-0">
+                                    <div className="col-md-12">
+                                        {/* TAB BUTTONS */}
+                                        <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                            <li className="nav-item" role="presentation">
+                                                <button className=" pill-btn btn-warning nav-link active " id="pills-nutritionFacts-tab" data-bs-toggle="pill" data-bs-target="#pills-nutritionFacts" type="button" role="tab" aria-controls="pills-nutritionFacts" aria-selected="false">Nutrition Facts</button>
+                                            </li>
+                                            <li className="nav-item" role="presentation">
+                                                <button className=" pill-btn btn-warning nav-link " id="pills-ingredients-tab" data-bs-toggle="pill" data-bs-target="#pills-ingredients" type="button" role="tab" aria-controls="pills-ingredients" aria-selected="false">Ingredients</button>
+                                            </li>
                                         
-                                        {/* NUTRITION FACTS*/}
-                                        <div className="tab-pane " id="pills-nutritionFacts" role="tabpanel" aria-labelledby="pills-nutritionFacts-tab">
-                                            <div>
-                                                <div className="requiredNutrients">
-                                                    <span className="text-muted"><i>*all fields are required</i></span>
+                                            <li className="nav-item" role="presentation">
+                                                <button className=" pill-btn btn-warning nav-link " id="pills-directions-tab" data-bs-toggle="pill" data-bs-target="#pills-directions" type="button" role="tab" aria-controls="pills-directions" aria-selected="false">Direction</button>
+                                            </li>
+                                        </ul>
+
+                                        {/* NUTRITIONS-FACTS ITEMS, INGREDIENTS ITEMS, DIRECTIONS-STEPS, TAGS ITEMS */}
+                                        <div className="tab-content" id="pills-tabContent">
+                                            
+                                            {/* NUTRITION FACTS*/}
+                                            <div className="tab-pane show active" id="pills-nutritionFacts" role="tabpanel" aria-labelledby="pills-nutritionFacts-tab">
+                                                <div>
+                                                    <div className="requiredNutrients">
+                                                        <span className="text-muted"><i>*all fields are required</i></span>
+                                                    </div>
+                                                    <div className="row row-cols-1 row-cols-md-2 g-4">
+                                                        {MetaData[0].nutrients.map(el => {
+                                                            const name = el.name
+                                                            return (
+                                                                <div className="col form-fields" key={el.name}>
+                                                            
+                                                                    <div className="input-group ">
+                                                                        <span className="input-group-text">{name}*</span>
+                                                                        <input type="number" className="form-control" 
+                                                                        aria-invalid={errors.name ? "true" : "false"} 
+                                                                        {...register(`${name}`, {
+                                                                            required: "required*",
+                                                                            pattern: {
+                                                                            message: "required*"
+                                                                            }
+                                                                        })}
+                                                                        />
+                                                                        <span className="input-group-text">{el.unit}</span>
+                                                                    </div>
+                                                                    {errors.name && <span role="alert" className="requiredField">{errors.name.message}</span>}
+                                                                </div> 
+                                                            )
+                                                        })}
+                                                    </div>
+                            
                                                 </div>
-                                                <div className="row row-cols-1 row-cols-md-2 g-4">
-                                                    {MetaData[0].nutrients.map(el => {
-                                                        const name = el.name
-                                                        return (
-                                                            <div className="col form-fields" key={el.name}>
-                                                        
-                                                                <div className="input-group ">
-                                                                    <span className="input-group-text">{name}*</span>
-                                                                    <input type="number" className="form-control" 
-                                                                    aria-invalid={errors.name ? "true" : "false"} 
-                                                                    {...register(`${name}`, {
-                                                                        required: "required*",
-                                                                        pattern: {
-                                                                        message: "required*"
-                                                                        }
-                                                                    })}
-                                                                    />
-                                                                    <span className="input-group-text">{el.unit}</span>
+                                            </div>
+                                            
+                                            
+                                            {/* INGREDIENTS */}
+                                            <div className="tab-pane fade " id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
+                                                <div className="card mb-3">
+                                                        <div className="row g-0">
+                                                            <div className="col-md-6 ingredient-container-main">
+                                                            <h6>Main Ingredients</h6>
+                                                                <div>
+                                                                    {main.mainArray.map((item, index) => (
+                                                                        <ul key={index} className="ingredient-items">
+                                                                        <li className="ingredient-item">
+                                                                            {item.mainList}
+                                                                            <Trash2 
+                                                                            strokeWidth="1" 
+                                                                            size="25"
+                                                                            color="salmon"
+                                                                            onClick={() => {
+                                                                                removeMainIngredientItem(item.id, 'main');
+                                                                            }}
+                                                                            />
+                                                                        </li>
+                                                                        </ul>
+                                                                    ))}
                                                                 </div>
-                                                                {errors.name && <span role="alert" className="requiredField">{errors.name.message}</span>}
-                                                            </div> 
-                                                        )
-                                                    })}
+                                                                <div className="row row-cols-1 row-cols-md-12 g-4">
+                                                                    <div className="col form-fields additional-field">
+                                                                        <input 
+                                                                        type="text"
+                                                                        name="mainIngredientItem" 
+                                                                        value={main.mainList || ""}
+                                                                        className="form-control" 
+                                                                        id="exampleInputRecipeName"
+                                                                        onChange={(ev) => setMain({...main, mainList: ev.target.value})} 
+                                                                        />
+                                                                        <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e, 'main')}/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div className="col-md-6 ingredient-container-dressing">
+                                                                <h6>Dressing Ingredients</h6>
+                                                                <div>
+                                                                    {dressing.dressingArray.map((item, index) => (
+                                                                        <ul key={index} className="ingredient-items">
+                                                                        <li className="ingredient-item">
+                                                                            {item.dressingList}
+                                                                            
+                                                                            <Trash2 
+                                                                            strokeWidth="1" 
+                                                                            size="25"
+                                                                            color="salmon"
+                                                                            onClick={() => {
+                                                                                removeMainIngredientItem(item.id, 'dressing');
+                                                                            }}
+                                                                            />
+                                                                        </li>
+                                                                        </ul>
+                                                                    ))}
+                                                                </div>
+                                                                <div className="row row-cols-1 row-cols-md-12 g-4">
+                                                                    <div className="col form-fields additional-field">
+                                                                        <input 
+                                                                        type="text"
+                                                                        name="mainIngredientItem" 
+                                                                        value={dressing.dressingList || ""}
+                                                                        className="form-control" 
+                                                                        id="exampleInputRecipeName"
+                                                                        onChange={(ev) => setDressing({...dressing, dressingList: ev.target.value})} 
+                                                                        />
+                                                                        <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e,'dressing')}/>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                 </div>
-                           
+                                            </div> 
+
+                                            {/* DIRECTIONS */}
+                                            <div className="tab-pane fade " id="pills-directions" role="tabpanel" aria-labelledby="pills-directions-tab">
+                                                    <AddDirections getDirections={getDirections}/>
+                                                    
+                                            </div> 
+                                        </div>
+
+                                    
+                                    </div>
+                                    
+                                    
+                                    
+                                    
+                                </div>
+                            </div>
+
+                            <div className="row row-cols-1 row-cols-md-2 g-4">
+                               {/* Description */}
+                               <div className="col form-fields">
+                                   <label htmlFor="exampleFormControlMyRecipeDesc" className="form-label">Additional Notes</label>
+
+                                        <div>
+                                            {note.noteArray.map((item, index) => (
+                                                <ul key={index} className="ingredient-items">
+                                                <li className="ingredient-item">
+                                                    {item.noteList}
+                                                    <Trash2 
+                                                    strokeWidth="1" 
+                                                    size="25"
+                                                    color="salmon"
+                                                    onClick={() => {
+                                                        removeMainIngredientItem(item.id, 'note');
+                                                    }}
+                                                    />
+                                                </li>
+                                                </ul>
+                                            ))}
+                                        </div>
+                                        <div className="row row-cols-1 row-cols-md-12 g-4">
+                                            <div className="col form-fields additional-field">
+                                                <textarea 
+                                                type="text"
+                                                name="note" 
+                                                value={note.noteList || ""}
+                                                className="form-control" 
+                                                id="exampleInputRecipeName"
+                                                onChange={(ev) => setNote({...note, noteList: ev.target.value})} 
+                                                ></textarea>
+                                                <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e, 'note')}/>
                                             </div>
                                         </div>
-                                        
-                                        
-                                        {/* INGREDIENTS */}
-                                        <div className="tab-pane fade " id="pills-ingredients" role="tabpanel" aria-labelledby="pills-ingredients-tab">
-                                            <div className="card mb-3">
-                                                    <div className="row g-0">
-                                                        <div className="col-md-6 ingredient-container-main">
-                                                        <h6>Main Ingredients</h6>
-                                                            <div>
-                                                                {main.mainArray.map((item, index) => (
-                                                                    <ul key={index} className="ingredient-items">
-                                                                    <li className="ingredient-item">
-                                                                        {item.mainList}
-                                                                        <Trash2 
-                                                                        strokeWidth="1" 
-                                                                        size="25"
-                                                                        color="salmon"
-                                                                        onClick={() => {
-                                                                            removeMainIngredientItem(item.id, 'main');
-                                                                        }}
-                                                                        />
-                                                                    </li>
-                                                                    </ul>
-                                                                ))}
-                                                            </div>
-                                                            <div className="row row-cols-1 row-cols-md-12 g-4">
-                                                                <div className="col form-fields additional-field">
-                                                                    <input 
-                                                                    type="text"
-                                                                    name="mainIngredientItem" 
-                                                                    value={main.mainList || ""}
-                                                                    className="form-control" 
-                                                                    id="exampleInputRecipeName"
-                                                                    onChange={(ev) => setMain({...main, mainList: ev.target.value})} 
-                                                                    />
-                                                                    <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e, 'main')}/>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6 ingredient-container-dressing">
-                                                            <h6>Dressing Ingredients</h6>
-                                                            <div>
-                                                                {dressing.dressingArray.map((item, index) => (
-                                                                    <ul key={index} className="ingredient-items">
-                                                                    <li className="ingredient-item">
-                                                                        {item.dressingList}
-                                                                        
-                                                                        <Trash2 
-                                                                        strokeWidth="1" 
-                                                                        size="25"
-                                                                        color="salmon"
-                                                                        onClick={() => {
-                                                                            removeMainIngredientItem(item.id, 'dressing');
-                                                                        }}
-                                                                        />
-                                                                    </li>
-                                                                    </ul>
-                                                                ))}
-                                                            </div>
-                                                            <div className="row row-cols-1 row-cols-md-12 g-4">
-                                                                <div className="col form-fields additional-field">
-                                                                    <input 
-                                                                    type="text"
-                                                                    name="mainIngredientItem" 
-                                                                    value={dressing.dressingList || ""}
-                                                                    className="form-control" 
-                                                                    id="exampleInputRecipeName"
-                                                                    onChange={(ev) => setDressing({...dressing, dressingList: ev.target.value})} 
-                                                                    />
-                                                                    <input type="button" className="add-input" value="Add" onClick={(e) => addItem(e,'dressing')}/>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                            </div>
-                                        </div> 
-
-                                        {/* DIRECTIONS */}
-                                        <div className="tab-pane fade show active" id="pills-directions" role="tabpanel" aria-labelledby="pills-directions-tab">
-                                                <AddDirections getDirections={getDirections}/>
-                                                
-                                        </div> 
-                                    </div>
-
-                                   
-                                </div>
-                                
-                                
-                                
-                                
-                            </div>
-                        </div>
-
-                    
-                                
+                                   <span className="text-muted"></span>
+                               </div>
+                               
+                           </div>
+                           
+                           
+                                                                    
+                                    
                         </div>
                         <div className="getRecipe">  
                             <input type="submit" className="btn btn-dark btn-block submit-user-info"/>

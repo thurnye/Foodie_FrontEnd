@@ -1,31 +1,51 @@
 import React, { useState } from 'react'
 import { Trash2 } from 'react-feather';
-import DropZone from './dropZone'
+import 'react-dropzone-uploader/dist/styles.css'
 
 
 
 
-export default function AddDirections() {
+export default function AddDirections(props) {
 
     const [directions, setDirections] = useState({
         form: [{ 
             steps: "" ,
-            imageUrl:[]
+            imageUrl: null
             
         }]
     });
     const [imgUrl, setImgUrl] = useState(null)
-    const [data, setData] = useState(null)
+    
+    // const [data, setData] = useState(null)
 
     const [errorMessage, setErrorMessage]=useState(null)
 
-   
+    let filesArray = [];
+    let filesCollection = [];
 
+    const [files, setFiles] = useState(null)
+
+
+    const multiImagePreview = (e, index) => {
+        const items = directions.form;
+        items[index].imageUrl= e.target.files
+
+        filesArray.push(e.target.files)
+        for (let i = 0; i < filesArray[0].length; i++) {
+            filesCollection.push(URL.createObjectURL(filesArray[0][i]))
+        }
+        setFiles(filesCollection)
+    }
+
+
+    const removeImagePreview = (index) => {
+        // const content = filesCollection.splice(index, 1);
+    }
+
+  
     const handleChange = (e, index) => {
         const items = directions.form;
-        items[index][e.target.name] = e.target.value;
-        
-
+        items[index][e.target.name]= e.target.value
         setDirections({
             form: items
         });
@@ -48,7 +68,9 @@ export default function AddDirections() {
     
     const addNewRow = () => {
         const items = directions.form;
-        const blankRow = { steps: "", imageUrl:[]};
+        const blankRow = { steps: "", imageUrl: null};
+        filesArray = []
+        setFiles([])
         setDirections({
             form: [...items, blankRow]
         });
@@ -65,30 +87,61 @@ export default function AddDirections() {
                 setErrorMessage(errMessage)
             }
         }
-
         // if there is no blank field
         if(!errMessage){
             setErrorMessage(null)
-            const { form } = directions;   
-            console.log("Form data :", form);
-            console.log(data)
-            
-            
-            
-            
+            const { form } = directions; 
 
-           
+            // get the compiled data  
+            const compiledData = []
+             form.forEach( el => {
+                const steps = el.steps
+                const allFiles = el.imageUrl
+                const acceptedFiles =[]
 
-            // add the image
+                // if there is file attachment
+                if(allFiles){
 
+                    for(let i=0; i< allFiles.length; i++){
+                        acceptedFiles.push(allFiles[i])
+                    }
+                    const url = `https://api.cloudinary.com/v1_1/xperiacloud/upload`
+    
+                    // stores the url of the images
+                    let compiledImgUrl = []
+    
+                    acceptedFiles.forEach( async(acceptedFiles)=>{
+                        const formData = new FormData();
+                        formData.append('file', acceptedFiles)
+                        formData.append('upload_preset', 'Xperia')
+                        
+                        const response = await fetch(url, {
+                            method : 'post',
+                            body: formData
+                        })
+                        const data = await response.json()
+                        compiledImgUrl.push(data.url)
+                    })
+                    compiledData.push({
+                        steps: steps,
+                        imgUrl: compiledImgUrl 
+                    })
+                }
+                else{
+                    // if no file attachement
+                    compiledData.push({
+                        steps: steps,
+                        imgUrl: allFiles 
+                    })
+                }
+                
+             })
 
-            // props.getDirections()
+            //  send the compiled data
+            props.getDirections(compiledData)
+
         }
-
     };
-
-
-
 
     return (
         <>
@@ -120,7 +173,19 @@ export default function AddDirections() {
 
                         {/* Images */}
                         <div className="col form-fields">
-                            <DropZone/>
+                            <div className="container">
+                                <div class="row row-cols-2 row-cols-md-4 g-4">
+                                </div>
+                            </div>
+            
+                            <div className="form-group mb-3">
+                                <input 
+                                type="file" 
+                                className="form-control" 
+                                onChange={(e) => multiImagePreview(e, index)} 
+                                multiple
+                                 />
+                            </div>
                         </div>      
                     </div>
                 </div>
