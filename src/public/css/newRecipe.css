@@ -70,6 +70,13 @@
         margin-right: 10px
         
     }
+    .imgThumbnail{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        margin-top: 6vh;
+    }
     
  }
 
