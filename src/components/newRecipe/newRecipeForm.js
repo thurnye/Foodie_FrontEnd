@@ -34,6 +34,8 @@ export default function NewRecipeForm() {
     const [dressing, setDressing] = useState({dressingList: "", dressingArray : []});
     const [note, setNote] = useState({noteList: "", noteArray : []});
     const [directions, setDirections] = useState(null)
+    const [thumbnail, setThumbnail] = useState(null)
+    const [error, setError] = useState(false)
 
     const {
         register, 
@@ -141,26 +143,55 @@ export default function NewRecipeForm() {
     const getDirections = (e) => {
         setDirections(e)
     }
+    const getThumbnail = (e) => {
+        setThumbnail(e)
+    }
     
     
     const onSubmit = async (data) => {
         try{
-            const allData = {
-                recipeName: data.recipe_name,
-                description: data.description,
-                serving: [selectedServing],
-                category: [selectedCat],
-                duration: [selectedDuration],
-                level: [selectedLevel],
-                tags: selectedTag,
-                mainIngredients: main.mainArray,
-                dressingIngredients: dressing.dressingArray,
-                directions: directions,
-                notes: note.noteArray,
-                author: '',
-
+            const nutrients = [
+                {name: 'calories' ,unit: 'g', value:data.calories},
+                {name: 'satFat', unit: 'g', value: data.satFat},
+                {name: 'carbs', unit: 'g', value: data.carbs},
+                {name: 'protein', unit: 'g', value: data.protein},
+                {name: 'cholesterol', unit: 'mg', value: data.cholesterol},
+                {name: 'sodium', unit: 'mg', value: data.sodium},
+                {name: 'sugar', unit: 'g', value: data.sugar},
+                {name: 'fibers', unit: 'g', value: data.fibers}
+            ]
+            let errorMessage= false
+            for (let i=0; i < nutrients.length; i++){
+                let value = nutrients[i].value
+                if (!value){
+                    errorMessage = true
+                    setError(true)
+                    // return;
+                }
             }
-            console.log("AllDATA:",allData)
+            if(errorMessage === false){
+                const allData = {
+                    recipeName: data.recipe_name,
+                    description: data.description,
+                    serving: [selectedServing],
+                    category: [selectedCat],
+                    duration: [selectedDuration],
+                    level: [selectedLevel],
+                    tags: selectedTag,
+                    mainIngredients: main.mainArray,
+                    dressingIngredients: dressing.dressingArray,
+                    directions: directions,
+                    notes: note.noteArray,
+                    author: '',
+                    thumbnail: thumbnail,
+                    nutritionFacts: nutrients
+    
+                }
+    
+                console.log("AllDATA:",allData)
+            }
+
+            
            
 
 
@@ -207,38 +238,6 @@ export default function NewRecipeForm() {
                                             })}
                                             />
                                             {errors.recipe_name && <span role="alert" className="requiredField">{errors.recipe_name.message}</span>}
-
-
-                                            {/* <div className="row row-cols-1 row-cols-md-2 g-4"> */}
-                                                {/* No of Servings */}
-                                                {/* <div className="col form-fields">
-                                                    <label htmlFor="exampleInputServing" className="form-label">Serving</label>
-                                                    <Select
-                                                        closeMenuOnSelect={false}
-                                                        components={animatedComponents}
-                                                        defaultValue={selectedServing}
-                                                        onChange={setSelectedServing}
-                                                        options={servingOptions}
-                                                    />
-                                                </div> */}
-                              
-                                                {/* Category */}
-                                                {/* <div className="col form-fields">
-                                                    <label htmlFor="exampleInputCategory" className="form-label">Category</label>
-                                                    <Select
-                                                        closeMenuOnSelect={false}
-                                                        components={animatedComponents}
-                                                        defaultValue={selectedCat}
-                                                        onChange={setSelectedCat}
-                                                        options={catOptions}
-                                                    />
-                                                </div> */}
-                                
-                               
-                                
-                                            {/* </div> */}
-                            
-                            
                                         </div>
 
                                         {/* Description */}
@@ -264,21 +263,11 @@ export default function NewRecipeForm() {
 
                                     </div>
                                 <div class="col-md-4">
-                                    <Thumbnail/>
+                                    <Thumbnail getThumbnail={getThumbnail}/>
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
-
-                        {/* Name and Description */}
-                        
-                            
+                                {/* Name and Description */}
                             <div className="row row-cols-1 row-cols-md-4 g-4">
                                 {/* No of Servings */}
                                 <div className="col form-fields">
@@ -365,6 +354,7 @@ export default function NewRecipeForm() {
                                                 <button className=" pill-btn btn-warning nav-link " id="pills-directions-tab" data-bs-toggle="pill" data-bs-target="#pills-directions" type="button" role="tab" aria-controls="pills-directions" aria-selected="false">Direction</button>
                                             </li>
                                         </ul>
+                                        {error && <span role="alert" className="requiredField">missing value(s), make sure all fields are completed</span>}
 
                                         {/* NUTRITIONS-FACTS ITEMS, INGREDIENTS ITEMS, DIRECTIONS-STEPS, TAGS ITEMS */}
                                         <div className="tab-content" id="pills-tabContent">
@@ -384,17 +374,13 @@ export default function NewRecipeForm() {
                                                                     <div className="input-group ">
                                                                         <span className="input-group-text">{name}*</span>
                                                                         <input type="number" className="form-control" 
-                                                                        aria-invalid={errors.name ? "true" : "false"} 
-                                                                        {...register(`${name}`, {
-                                                                            required: "required*",
-                                                                            pattern: {
-                                                                            message: "required*"
-                                                                            }
-                                                                        })}
+                                                                        // aria-invalid={errors.name ? "true" : "false"} 
+                                                                        {...register(`${name}` )}
+                                                                        required
                                                                         />
+                                                                        <input type="hidden" value={el.unit} {...register('unit')}/>
                                                                         <span className="input-group-text">{el.unit}</span>
                                                                     </div>
-                                                                    {errors.name && <span role="alert" className="requiredField">{errors.name.message}</span>}
                                                                 </div> 
                                                             )
                                                         })}

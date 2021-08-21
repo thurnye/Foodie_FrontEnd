@@ -25,14 +25,14 @@ const metaData = [{
         'Easy', 'Medium', 'Hard'
     ],
     nutrients: [
-        {name: 'Calories',unit: 'g'},
-        {name: 'Sat Fat',unit: 'g'},
-        {name: 'Carbs',unit: 'g'},
-        {name: 'Protein',unit: 'g'},
-        {name: 'Cholesterol',unit: 'mg'},
-        {name: 'Sodium',unit: 'mg'},
-        {name: 'Sugar',unit: 'g'},
-        {name: 'Fibers',unit: 'g'}
+        {name: 'calories',unit: 'g'},
+        {name: 'satFat',unit: 'g'},
+        {name: 'carbs',unit: 'g'},
+        {name: 'protein',unit: 'g'},
+        {name: 'cholesterol',unit: 'mg'},
+        {name: 'sodium',unit: 'mg'},
+        {name: 'sugar',unit: 'g'},
+        {name: 'fibers',unit: 'g'}
     ]
 }]
 
