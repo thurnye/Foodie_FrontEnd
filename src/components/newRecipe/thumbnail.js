@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import thumbnail from '../../public/images/placeholders/thumbnail.jpeg'
-export default function MultiFileUploadComponent () {
+export default function MultiFileUploadComponent (props) {
 
     const filesArray = [];
     const filesCollection = [];
@@ -9,19 +9,40 @@ export default function MultiFileUploadComponent () {
 
 
     const multiImagePreview = (event) => {
-        filesArray.push(event.target.files)
+        const file = event.target.files
+        filesArray.push(file)
         for (let i = 0; i < filesArray[0].length; i++) {
             filesCollection.push(URL.createObjectURL(filesArray[0][i]))
         }
         setFiles(filesCollection)
+        const acceptedFiles = []
+        // send the thumbnail to the
+
+        if(file){
+
+            for(let i=0; i< file.length; i++){
+                acceptedFiles.push(file[i])
+            }
+            const url = `https://api.cloudinary.com/v1_1/xperiacloud/upload`
+
+            acceptedFiles.forEach( async(acceptedFiles)=>{
+                const formData = new FormData();
+                formData.append('file', acceptedFiles)
+                formData.append('upload_preset', 'Xperia')
+                
+                const response = await fetch(url, {
+                    method : 'post',
+                    body: formData
+                })
+                const data = await response.json()
+                props.getThumbnail(data.url)
+            })
+
+            
+        }
+        
     }
 
-
-    const removeImagePreview = (index) => {
-        // const content = filesCollection.splice(index, 1);
-    }
-
-    
     return (
         <>
         <div className="container">
