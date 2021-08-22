@@ -17,6 +17,17 @@ class StuffDataService {
     return http.post(`/api/user/login`, data);
   }
 
+   // create experience -> post new recipe
+  postRecipe(data) {
+    return http.post("/api/recipe", data);
+  }
+
+
+
+  // create experience comments
+  postComment(data) {
+    return http.post("/api/recipe/comment", data);
+  }
 
 
 
