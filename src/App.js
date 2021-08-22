@@ -20,7 +20,7 @@ import Author from './pages/author';
 import Forum from './pages/forum';
 import Signup from './pages/signup';
 import Login from './pages/login';
-import UserCompleteForm from './pages/userCompleteForm';
+import completeRegistration from './pages/completeRegistrationForm';
 import NewRecipe from './pages/newRecipe'
 // import Footer from './components/Footer/footer'
 
@@ -57,7 +57,7 @@ function App() {
           <Route path="/"  exact component={Home} />
           {!user && <Route path="/signup" component={Signup} /> }
           {!user && <Route path="/login" component={Login} />}
-          {user && <Route path="/new-account" component={UserCompleteForm} />}
+          {user && <Route path="/new-account" component={completeRegistration} />}
           {user && <Route path="/new-recipe" component={NewRecipe} />}
           
           <Route path="/recipe" component={singleRecipe} />

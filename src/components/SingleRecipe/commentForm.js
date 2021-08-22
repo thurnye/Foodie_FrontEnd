@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Nav from 'react-bootstrap/Nav';
 import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
@@ -9,31 +9,48 @@ import services from '../../util/services'
 export default function CommentForm()  {
   const user = useSelector(state => state.userLog.user)
   const history = useHistory();
+
+  const [ratingErr, setRatingErr] =  useState(null)
+
   const {
     register, 
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-    
+  
   const onSubmit = async (data) => {
-    // try{
-      // console.log(data)    
-    //   const result = await services.postComment(data)
-    //   console.log(result)
-      
-    //   let token = result.data
-    //   localStorage.setItem('token', token);  
-    //   const userDoc = jwt_decode(token); 
+    try{
+      const ratings = data.ratings
 
-    //   // store the user in redux state
-    //   dispatch(userActions.login({
-    //     user: userDoc
-    //   }))
-    //   history.push("/");
-    // }catch(err){
-    //   console.log(err)
-    // }
+      if(!ratings){  //if ratings !== null
+        setRatingErr('*rating is required')
+      }else{
+        setRatingErr(null)
+        
+        const comment= {
+          ...data, 
+          userId: user.user._id
+          // recipeId: ''  --> add the recipe Id
+        }
+
+        const result = await services.postComment(comment)
+        console.log(result)
+      }
+          
+      
+      // let token = result.data
+      // localStorage.setItem('token', token);  
+      // const userDoc = jwt_decode(token); 
+
+      // // store the user in redux state
+      // dispatch(userActions.login({
+      //   user: userDoc
+      // }))
+      // history.push("/");
+    }catch(err){
+      console.log(err)
+    }
   };
 
 
@@ -62,7 +79,9 @@ export default function CommentForm()  {
               <input type="radio" id="1-star" name="rating" defaultValue="1" {...register("ratings")}/>
               <label htmlFor="1-star" className="star">&#9733;</label>
             </div>
+            {/* rating error message */}
           </div>
+            {ratingErr && <div className="ratingErr"><span role="alert" >{ratingErr}</span></div>}
           <div className="form">
             <div className="form-group row">
               <div className="col-sm-9">
@@ -73,7 +92,6 @@ export default function CommentForm()  {
                 {...register("comment", {
                   required: "*Please add your comment to submit*",
                   pattern: {
-                    value: /^[A-Za-z]+$/i ,
                     message: "Comment required"
                   }
                 })}

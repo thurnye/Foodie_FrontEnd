@@ -1,6 +1,7 @@
 //this is the server controller where i do send data to the back end....
 const User = require('../Model/user')
 const Recipe = require('../Model/recipes')
+const Comment = require('../Model/comments')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -48,8 +49,8 @@ const getLogIn = async (req, res) => {
     }
 }
 
-// POSTING USER OTHER INFOs
-const postUserOtherInfo = (req, res, next) => {
+// POSTING Updated User
+const postUpdatedUser = (req, res, next) => {
     console.log(req.body)
     const id = req.params.id;
 
@@ -85,8 +86,6 @@ const postUserOtherInfo = (req, res, next) => {
 const postNewRecipe = async (req, res, next) => {
     try{
         const authorId = req.body.author
-        // console.log(authorId)
-        // console.log(req.body)
         const newRecipe = new Recipe({
             author: authorId,
             recipeName: req.body.recipeName,
@@ -106,13 +105,13 @@ const postNewRecipe = async (req, res, next) => {
         })
         let savedRecipe = await newRecipe.save()
         const recipeId = {recipe: savedRecipe._id}
-        const foundUser = await User.find({_id: authorId})
+        const foundUser = await User.findById(authorId)
 
-        foundUser[0].myRecipes.push(recipeId)
+        foundUser.myRecipes.push(recipeId)
         
-        await foundUser[0].save()
+        await foundUser.save()
 
-        const user =  await User.find({_id: authorId}).populate({
+        const user =  await User.findById(authorId).populate({
             path: 'myRecipes.recipe'
         }).exec()
         const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
@@ -127,35 +126,27 @@ const postNewRecipe = async (req, res, next) => {
 //Post a Comment
 const postComment = async (req, res, next) => {
     try{
-        console.log(req.body)
-
+        const dummyRecipeId = '612299a9f9995003fb8759a1'
+        // console.log(req.body)
+        const newComment = new Comment ({
+                comment: req.body.comment,
+                rating: req.body.ratings,
+                userId: req.body.userId,
+                recipeId: dummyRecipeId
+            })
+            // console.log('before save')
+            const savedComment = await newComment.save()
+            console.log(savedComment)
+            // console.log('after save')
+            const commentId = {comment:savedComment._id}
+        const foundRecipe = await Recipe.findById(dummyRecipeId)
+            foundRecipe.comments.push(commentId)
+            const recipe = await foundRecipe.save()
+            console.log(recipe)
+            res.status(200).json()
     }catch(err){
         res.status(400).json(err)
-    }
-    // const postId = req.body.postId     
-    // const loggedInUserId = req.body.loggedInUserId  
-    // const newComment = new Comment ({
-    //     comment: req.body.comment,
-    //     userId: loggedInUserId,
-    //     postId: postId
-    // })
-    // newComment.save()
-    // .then(resp => {
-    //     const commentId = {comment:resp._id}
-    //     // find the Post or Trip
-    //     Post.findById(postId)
-    //     .then(post => {
-    //         // Push the comment into the right post
-    //         const comments = post.comments
-    //         comments.push(commentId)
-    //             post.save().then(result => {
-    //                 res.status(200).json(result)
-    //             })
-            
-    //     })
-    // })
-    // .catch(err => console.log(err))
-        
+    } 
 }
 
 
@@ -234,7 +225,7 @@ const postComment = async (req, res, next) => {
 module.exports = {
     postCreateUser,
     getLogIn,
-    postUserOtherInfo,
+    postUpdatedUser,
     postNewRecipe,
     postComment,
     

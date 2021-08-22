@@ -292,6 +292,11 @@ button:active {
     justify-content: flex-start;
     align-items: center;
 }
+.ratingErr{
+    margin-top: -15px;
+    margin-bottom: 20px;
+    color: salmon;
+}
 .star-rating {
     display:flex;
     flex-direction: row-reverse;
