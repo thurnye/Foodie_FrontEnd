@@ -29,10 +29,7 @@ class StuffDataService {
     return http.post("/api/recipe/comment", data);
   }
 
-
-
-
-  // ------------------------------------
+  // get all recipes
   find() {
     return http.get("/");
   }
@@ -40,6 +37,12 @@ class StuffDataService {
   findById(id) {
     return http.get(`/api/${id}`);
   }
+
+
+  // ------------------------------------
+ 
+
+  
   
   findOne(id) {
     return http.get(`/edit/${id}`);

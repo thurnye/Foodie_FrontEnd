@@ -35,9 +35,7 @@ const postCreateUser = async (req, res, next) => {
 const getLogIn = async (req, res) => {
     
     try {
-        console.log(req.body)
       const user = await User.findOne({ email: req.body.email });
-      console.log(user)
           // check password. if it's bad throw an error.
           if (!(await bcrypt.compare(req.body.password, user.password))) throw new Error();
   
@@ -51,7 +49,6 @@ const getLogIn = async (req, res) => {
 
 // POSTING Updated User
 const postUpdatedUser = (req, res, next) => {
-    console.log(req.body)
     const id = req.params.id;
 
     User.findById(id)
@@ -74,7 +71,6 @@ const postUpdatedUser = (req, res, next) => {
         return user.save()
     })
     .then((user) => {
-        console.log(user.socialMedia)
         const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
         res.status(200).json(token)
     })
@@ -122,11 +118,73 @@ const postNewRecipe = async (req, res, next) => {
     }    
 }
 
+//RETRIEVE ALL RECIPES
+const getAllRecipes = async(req, res, next) => {
+    try{
+        const recipes =  await Recipe.find().populate('author').exec()
+        res.status(200).json(recipes)
+
+    }catch(err){
+        res.status(400).json(err)
+    }   
+}
+//RETRIVE A Post BY ID
+const getOneRecipe = async (req, res, next) => {
+    try{
+        const recipeId = req.params.id;
+        const recipe = await Recipe.findById(recipeId)
+        .populate({
+            path: 'author',
+            populate:({
+                path: 'comments.comment',
+                populate: ({ 
+                    path: 'userId',
+                    populate: {path: 'post'}
+                }) 
+            })
+        })
+        .exec()
+        res.status(200).json(recipe)
+
+    }catch(err){
+        res.status(400).json(err)
+    }   
+    
+    // Post.findById(postId)
+    // .populate({
+    //     path: 'comments.comment',
+    //     populate: ({ 
+    //         path: 'userId',
+    //         populate: {path: 'post'}
+    //     }),
+    // })
+    // .exec()
+    // .then(post => {
+    //     // console.log(post)
+    //     User.findById(post.author)
+    //     .populate({
+    //         path: 'post.trip',
+    //         populate:({
+    //             path: 'comments.comment',
+    //             populate: ({ 
+    //                 path: 'userId',
+    //                 populate: {path: 'post'}
+    //             }) 
+    //         })
+    //     })
+    //     .exec()
+    //     .then(author => {
+    //         res.send({author, post})
+    //     })
+    // })
+    // .catch(err => res.status(400).json(err))
+}
+
 
 //Post a Comment
 const postComment = async (req, res, next) => {
     try{
-        const dummyRecipeId = '612299a9f9995003fb8759a1'
+        const dummyRecipeId = '6122ae3b20f6f014e79c9509'
         // console.log(req.body)
         const newComment = new Comment ({
                 comment: req.body.comment,
@@ -148,6 +206,7 @@ const postComment = async (req, res, next) => {
         res.status(400).json(err)
     } 
 }
+
 
 
 
@@ -228,6 +287,8 @@ module.exports = {
     postUpdatedUser,
     postNewRecipe,
     postComment,
+    getAllRecipes,
+    getOneRecipe,
     
     
     

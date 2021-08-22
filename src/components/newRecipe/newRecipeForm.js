@@ -321,9 +321,6 @@ export default function NewRecipeForm() {
                                     
                                             {errors.description && <span role="alert" className="requiredField">{errors.description.message}</span>}
                                         </div>
-
-
-
                                     </div>
                                 <div className="col-md-4">
                                     <Thumbnail getThumbnail={getThumbnail}/>
