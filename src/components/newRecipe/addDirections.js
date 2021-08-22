@@ -174,7 +174,7 @@ export default function AddDirections(props) {
                         {/* Images */}
                         <div className="col form-fields">
                             <div className="container">
-                                <div class="row row-cols-2 row-cols-md-4 g-4">
+                                <div className="row row-cols-2 row-cols-md-4 g-4">
                                 </div>
                             </div>
             

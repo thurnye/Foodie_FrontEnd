@@ -46,15 +46,15 @@ export default function MultiFileUploadComponent (props) {
     return (
         <>
         <div className="container">
-            <div class="imgThumbnail">
+            <div className="imgThumbnail">
 
-                    <div class="card" >
+                    <div className="card" >
                         {files && (files).map((res, index) => (
-                            <img src={res} class="card-img-top" alt="thumbnail" key={index}/>
+                            <img src={res} className="card-img-top" alt="thumbnail" key={index}/>
                         ))} 
-                        {!files && <img src={thumbnail} class="card-img-top" alt="thumbnail"/>} 
+                        {!files && <img src={thumbnail} className="card-img-top" alt="thumbnail"/>} 
                         
-                        <label class="btn btn-primary">
+                        <label className="btn btn-primary">
                             Choose Thumbnail file&hellip; <input type="file" style={{display: "none"}} onChange={multiImagePreview}/>
                         </label>
 

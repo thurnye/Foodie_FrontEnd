@@ -12,7 +12,7 @@ export default function table() {
     return (
         <>
             <div className="table-container table-responsive">
-            <table class="table caption-top">
+            <table className="table caption-top">
                 <thead>
                     <tr>
                     <th scope="col"></th>
@@ -56,7 +56,7 @@ export default function table() {
        
             <div className="table-container table-responsive">
                 <h5>For Dressing</h5>
-            <table class="table caption-top">
+            <table className="table caption-top">
                 <thead>
                     <tr>
                     <th scope="col"></th>

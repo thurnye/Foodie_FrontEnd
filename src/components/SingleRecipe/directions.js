@@ -23,15 +23,15 @@ export default function directions() {
                         Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur
                         </p>
                         <div className="step-1-img">
-                            <div class="row row-cols-1 row-cols-md-3 g-4">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <img src={Img1} class="card-img-top" alt="step1Image"/>
+                            <div className="row row-cols-1 row-cols-md-3 g-4">
+                                <div className="col-md-6">
+                                    <div className="card">
+                                        <img src={Img1} className="card-img-top" alt="step1Image"/>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <img src={Img2} class="card-img-top" alt="step1Image"/>
+                                <div className="col-md-6">
+                                    <div className="card">
+                                        <img src={Img2} className="card-img-top" alt="step1Image"/>
                                     </div>
                                 </div>
                                 
@@ -55,10 +55,10 @@ export default function directions() {
                         Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur
                         </p>
                         <div className="step-1-img">
-                            <div class="row row-cols-1 row-cols-md-3 g-4">
-                                <div class="col-md-6">
-                                    <div class="card">
-                                        <img src={Img6} class="card-img-top" alt="step1Image"/>
+                            <div className="row row-cols-1 row-cols-md-3 g-4">
+                                <div className="col-md-6">
+                                    <div className="card">
+                                        <img src={Img6} className="card-img-top" alt="step1Image"/>
                                     </div>
                                 </div>
                              </div>
@@ -81,20 +81,20 @@ export default function directions() {
                         Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur
                         </p>
                         <div className="step-1-img">
-                            <div class="row row-cols-1 row-cols-md-3 g-4">
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <img src={Img3} class="card-img-top" alt="step1Image"/>
+                            <div className="row row-cols-1 row-cols-md-3 g-4">
+                                <div className="col-md-4">
+                                    <div className="card">
+                                        <img src={Img3} className="card-img-top" alt="step1Image"/>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <img src={Img4} class="card-img-top" alt="step1Image"/>
+                                <div className="col-md-4">
+                                    <div className="card">
+                                        <img src={Img4} className="card-img-top" alt="step1Image"/>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <img src={Img5} class="card-img-top" alt="step1Image"/>
+                                <div className="col-md-4">
+                                    <div className="card">
+                                        <img src={Img5} className="card-img-top" alt="step1Image"/>
                                     </div>
                                 </div>
                              </div>

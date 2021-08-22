@@ -14,6 +14,12 @@ router.post('/api/user/login', Controller.getLogIn);
 router.post('/edit/:id', Controller.postUserOtherInfo);
 
 
+//post new user experience ---> this will be the post recipe
+router.post('/api/recipe', Controller.postNewRecipe);
+
+//post new user experience comment -------> this is the comment for a recipe
+router.post('/api/recipe/comment', Controller.postComment);
+
 // =============================================
 
 //getting a user item by id

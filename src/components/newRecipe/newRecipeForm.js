@@ -36,6 +36,7 @@ export default function NewRecipeForm() {
     const [directions, setDirections] = useState(null)
     const [thumbnail, setThumbnail] = useState(null)
     const [error, setError] = useState(false)
+    const [dataError, setDataError] = useState(null)
 
     const {
         register, 
@@ -75,7 +76,6 @@ export default function NewRecipeForm() {
         )
     })
 
-   
 
    
 
@@ -150,6 +150,9 @@ export default function NewRecipeForm() {
     
     const onSubmit = async (data) => {
         try{
+            let errorMessage= false
+            let dataError = []
+
             const nutrients = [
                 {name: 'calories' ,unit: 'g', value:data.calories},
                 {name: 'satFat', unit: 'g', value: data.satFat},
@@ -160,16 +163,43 @@ export default function NewRecipeForm() {
                 {name: 'sugar', unit: 'g', value: data.sugar},
                 {name: 'fibers', unit: 'g', value: data.fibers}
             ]
-            let errorMessage= false
+            
             for (let i=0; i < nutrients.length; i++){
                 let value = nutrients[i].value
-                if (!value){
+                if (!value || directions === null ){
                     errorMessage = true
-                    setError(true)
-                    // return;
+                    dataError.push({name: 'nutrientFact', errorMessage: '*nutrition fact fields are required'})
+                    // setError(true)
                 }
             }
-            if(errorMessage === false){
+            // check the option values for unchosen field
+            if(
+                selectedTag === null ||
+                selectedCat === null ||
+                selectedServing === null ||
+                selectedDuration === null ||
+                selectedLevel === null 
+            ){  
+                errorMessage = true
+                dataError.push({ name: 'options', errorMessage: '*missing tag, category, serving, duration or level is required'})
+            }
+
+            // Check for Ingredients
+            if( main.mainArray.length === 0 || dressing.dressingArray.length === 0){
+                errorMessage = true
+                dataError.push({name: 'ingredients', errorMessage: '*ingredient field is required'})
+            }
+
+            // Check for directions
+            if( directions === null  || dressing.dressingArray.length === 0){
+                errorMessage = true
+                dataError.push({name: 'directions', errorMessage: '*directions field is required'})
+            }
+            setDataError(dataError)
+            
+
+            if((errorMessage === false) || (dataError.length === 0)){
+                
                 const allData = {
                     recipeName: data.recipe_name,
                     description: data.description,
@@ -182,13 +212,14 @@ export default function NewRecipeForm() {
                     dressingIngredients: dressing.dressingArray,
                     directions: directions,
                     notes: note.noteArray,
-                    author: '',
+                    author: user._id,
                     thumbnail: thumbnail,
                     nutritionFacts: nutrients
     
                 }
     
                 console.log("AllDATA:",allData)
+                const result = await services.postRecipe(allData) 
             }
 
             
@@ -214,15 +245,38 @@ export default function NewRecipeForm() {
         console.log(err)
         }
     };
+    let errorIngredient; 
+    let errorDirection;
+    let errorNutrients;
+    let errorOptions;
+
+    dataError && dataError.map(el => {
+        
+        if(el.name === 'ingredients'){
+            errorIngredient = el.errorMessage
+        }
+        if(el.name === 'directions'){
+            errorDirection = el.errorMessage
+        }
+        if(el.name === 'nutrientFact'){
+            errorNutrients = el.errorMessage
+        }
+        if(el.name === 'options'){
+            errorOptions = el.errorMessage
+        }
+        
+        return (errorIngredient,errorDirection, errorNutrients)
+    })
     return (
         <div className="recipeForm">
             <div className="container">
                 <form noValidate onSubmit={handleSubmit(onSubmit)}>
                     <div className="form">
                         <div className="received-data">
-                            <div class="card mb-3" >
-                                <div class="row g-0">
-                                    <div class="col-md-8">
+                            <div className="card mb-3" >
+                                <div className="row g-0">
+                                    {/* Name and Description */}
+                                    <div className="col-md-8">
                                         <div className="col form-fields">
                                             <label htmlFor="exampleInputRecipeName" className="form-label">Name</label>
                                             <input 
@@ -262,12 +316,13 @@ export default function NewRecipeForm() {
 
 
                                     </div>
-                                <div class="col-md-4">
+                                <div className="col-md-4">
                                     <Thumbnail getThumbnail={getThumbnail}/>
                                 </div>
                             </div>
                         </div>
-                                {/* Name and Description */}
+                                {/* serving, category, level, duration */}
+                                <div><span role="alert" className="requiredField">{errorOptions}</span></div>
                             <div className="row row-cols-1 row-cols-md-4 g-4">
                                 {/* No of Servings */}
                                 <div className="col form-fields">
@@ -320,6 +375,7 @@ export default function NewRecipeForm() {
                             </div>
                             
                             {/* Tags */}
+
                             <div className="row row-cols-1 row-cols-md-12 g-4">
                                
                                 <div className="col form-fields">
@@ -344,17 +400,23 @@ export default function NewRecipeForm() {
                                         {/* TAB BUTTONS */}
                                         <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                             <li className="nav-item" role="presentation">
-                                                <button className=" pill-btn btn-warning nav-link active " id="pills-nutritionFacts-tab" data-bs-toggle="pill" data-bs-target="#pills-nutritionFacts" type="button" role="tab" aria-controls="pills-nutritionFacts" aria-selected="false">Nutrition Facts</button>
+                                                <button className={ errorNutrients ? " pill-btn btn-danger nav-link active " :  " pill-btn btn-warning nav-link active "} id="pills-nutritionFacts-tab" data-bs-toggle="pill" data-bs-target="#pills-nutritionFacts" type="button" role="tab" aria-controls="pills-nutritionFacts" aria-selected="false">Nutrition Facts</button>
                                             </li>
                                             <li className="nav-item" role="presentation">
-                                                <button className=" pill-btn btn-warning nav-link " id="pills-ingredients-tab" data-bs-toggle="pill" data-bs-target="#pills-ingredients" type="button" role="tab" aria-controls="pills-ingredients" aria-selected="false">Ingredients</button>
+                                                <button className={ errorIngredient ? " pill-btn btn-danger nav-link " :  " pill-btn btn-warning nav-link  "} id="pills-ingredients-tab" data-bs-toggle="pill" data-bs-target="#pills-ingredients" type="button" role="tab" aria-controls="pills-ingredients" aria-selected="false">Ingredients</button>
                                             </li>
                                         
                                             <li className="nav-item" role="presentation">
-                                                <button className=" pill-btn btn-warning nav-link " id="pills-directions-tab" data-bs-toggle="pill" data-bs-target="#pills-directions" type="button" role="tab" aria-controls="pills-directions" aria-selected="false">Direction</button>
+                                                <button className={ errorDirection ? " pill-btn btn-danger nav-link " :  " pill-btn btn-warning nav-link  "}  id="pills-directions-tab" data-bs-toggle="pill" data-bs-target="#pills-directions" type="button" role="tab" aria-controls="pills-directions" aria-selected="false">Direction</button>
                                             </li>
                                         </ul>
-                                        {error && <span role="alert" className="requiredField">missing value(s), make sure all fields are completed</span>}
+
+                                        {/* Error Message for Tabs */}
+                                         <div><span role="alert" className="requiredField">{errorNutrients}</span></div>
+                                         <div><span role="alert" className="requiredField">{errorIngredient}</span></div>
+                                        <div><span role="alert" className="requiredField">{errorDirection}</span></div>
+                                        
+                                        
 
                                         {/* NUTRITIONS-FACTS ITEMS, INGREDIENTS ITEMS, DIRECTIONS-STEPS, TAGS ITEMS */}
                                         <div className="tab-content" id="pills-tabContent">
@@ -374,7 +436,6 @@ export default function NewRecipeForm() {
                                                                     <div className="input-group ">
                                                                         <span className="input-group-text">{name}*</span>
                                                                         <input type="number" className="form-control" 
-                                                                        // aria-invalid={errors.name ? "true" : "false"} 
                                                                         {...register(`${name}` )}
                                                                         required
                                                                         />
@@ -482,7 +543,7 @@ export default function NewRecipeForm() {
                             </div>
 
                             <div className="row row-cols-1 row-cols-md-2 g-4">
-                               {/* Description */}
+                               {/* Additional Note */}
                                <div className="col form-fields">
                                    <label htmlFor="exampleFormControlMyRecipeDesc" className="form-label">Additional Notes</label>
 

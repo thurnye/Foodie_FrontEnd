@@ -152,6 +152,80 @@ const postDelete = async (req, res, next) => {
     .catch(err => res.status(400).json(err))
 }
 
+//Create New Recipe
+const postNewRecipe = async (req, res, next) => {
+    try{
+        console.log(req.body)
+
+    }catch(err){
+        res.status(400).json(err)
+    }
+    // const userId = req.body.userId
+    // console.log(req.body.tags)
+    // const newPost = new Post ({
+    //     author : userId,
+    //     title: req.body.title,
+    //     city: req.body.city,
+    //     country: req.body.country,
+    //     tags: [req.body.tags],
+    //     story: req.body.story,
+    //     images:[req.body.images]
+
+    // })
+    // newPost.save().then((resp) => {
+    //     const postId = {trip: resp._id}
+    //     User.findById(userId)
+    //     .then(user => {
+    //         // push the id into the user post array
+    //         user.post.push(postId)
+    //         user.save()
+    //         .then(result => {
+    //             res.status(200).json(result)
+
+    //         })
+    //     })
+    // })
+    // .catch(err => res.status(400).json(err))
+        
+}
+
+
+//Post a Comment
+const postComment = async (req, res, next) => {
+    try{
+        console.log(req.body)
+
+    }catch(err){
+        res.status(400).json(err)
+    }
+    // const postId = req.body.postId     
+    // const loggedInUserId = req.body.loggedInUserId  
+    // const newComment = new Comment ({
+    //     comment: req.body.comment,
+    //     userId: loggedInUserId,
+    //     postId: postId
+    // })
+    // newComment.save()
+    // .then(resp => {
+    //     const commentId = {comment:resp._id}
+    //     // find the Post or Trip
+    //     Post.findById(postId)
+    //     .then(post => {
+    //         // Push the comment into the right post
+    //         const comments = post.comments
+    //         comments.push(commentId)
+    //             post.save().then(result => {
+    //                 res.status(200).json(result)
+    //             })
+            
+    //     })
+    // })
+    // .catch(err => console.log(err))
+        
+}
+
+
+
 module.exports = {
     postCreateUser,
     getLogIn,
@@ -160,5 +234,7 @@ module.exports = {
     getAUserByID,
     getEdit,
     postEdit, 
-    postDelete
+    postDelete,
+    postNewRecipe,
+    postComment,
 }

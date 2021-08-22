@@ -7,9 +7,9 @@ export default function coverImage() {
     return (
         <>
             <section className="coverImg">
-                <div class="jumbotron p-0">
-                    <div class="view overlay rounded-top">
-                        <img src={img11} class="img-fluid" alt="coverImage"/>
+                <div className="jumbotron p-0">
+                    <div className="view overlay rounded-top">
+                        <img src={img11} className="img-fluid" alt="coverImage"/>
                     </div>
                 </div>
                 <div className="container cover-tags">
