@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
+import services from '../util/services'
+import {useDispatch} from 'react-redux'
+import {recipesActions} from '../store/allRecipesSlice'
 import AppAdvert from '../components/Home/recentRecipe/appAdvert'
 import NewsLetter from '../components/Home/recentRecipe/newsLetter'
 import LatestRecipesList from '../components/Home/recentRecipe/latestRecipesList'
@@ -20,7 +23,30 @@ import BookAd from '../components/SingleRecipe/bookAd';
 import Recommendations from '../components/SingleRecipe/recommendations';
 import CommentForm from '../components/SingleRecipe/commentForm';
 
-export default function singleMeal() {
+
+export default function SingleMeal(props) {
+    const recipeId = props.location.state.recipeId
+    const dispatch = useDispatch()
+    const [recipe, setRecipe] = useState(null)
+    // console.log(recipeId)
+    
+    useEffect(() => {
+        const fetchRecipe = async () => {
+          const result = await services.findById(recipeId)
+        setRecipe(result.data)
+
+        // store the recipe in redux state
+        dispatch(recipesActions.getSingleRecipes({
+            data: result.data
+        })
+        )
+        }
+        fetchRecipe()
+      }, 
+    [recipeId, dispatch])
+    
+    
+    
     return (
         
             <section className="">
@@ -28,7 +54,7 @@ export default function singleMeal() {
                     <div className="card mb-3">
                         <div className="row g-0">
                             <div className="col-md-8 " style={{marginBottom: '5vh'}}>
-                                <h1>40 Mother’s Day Breakfast and Brunch Recipes</h1>
+                            {recipe && <h1>{recipe.recipeName}</h1>}
                                 <Share />
                                 <CoverImg/>
                                 <Headings title="Ingredients"/>

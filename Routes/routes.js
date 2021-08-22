@@ -13,12 +13,17 @@ router.post('/api/user/login', Controller.getLogIn);
 router.post('/edit/:id', Controller.postUpdatedUser);
 
 
-//post new user experience ---> this will be the post recipe
+//post new recipe ---> this will be the post recipe
 router.post('/api/recipe', Controller.postNewRecipe);
 
+//get all recipes
+router.get('/', Controller.getAllRecipes)
 
-//post new user experience comment -------> this is the comment for a recipe
+//post new user comment 
 router.post('/api/recipe/comment', Controller.postComment);
+
+//getting a recipe by id
+router.get('/api/:id', Controller.getOneRecipe);
 
 // =============================================
 

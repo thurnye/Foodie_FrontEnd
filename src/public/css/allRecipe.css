@@ -2,6 +2,15 @@
     padding: 0;
     
 }
+.result-item a:hover{
+    /* text-decoration: none; */
+}
+.result-item a:hover > h5{
+    color: #504f4f
+}
+.allRecipeImg{
+    height: 250px;
+}
 .resultList .card-body h5 {
     margin-top: 0px;
 }
