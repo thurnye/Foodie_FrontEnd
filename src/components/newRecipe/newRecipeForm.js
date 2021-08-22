@@ -195,11 +195,20 @@ export default function NewRecipeForm() {
                 errorMessage = true
                 dataError.push({name: 'directions', errorMessage: '*directions field is required'})
             }
+            let thumbnailPlaceholder;
+
+            if(thumbnail){
+                thumbnailPlaceholder = thumbnail
+            }else{
+                thumbnailPlaceholder = "https://res.cloudinary.com/xperiacloud/image/upload/v1629597183/thumbnail_zzgfju.jpg"
+            }
+            console.log(thumbnailPlaceholder)
+
             setDataError(dataError)
             
 
             if((errorMessage === false) || (dataError.length === 0)){
-                
+
                 const allData = {
                     recipeName: data.recipe_name,
                     description: data.description,
@@ -213,13 +222,23 @@ export default function NewRecipeForm() {
                     directions: directions,
                     notes: note.noteArray,
                     author: user._id,
-                    thumbnail: thumbnail,
+                    thumbnail: thumbnailPlaceholder,
                     nutritionFacts: nutrients
     
                 }
     
                 console.log("AllDATA:",allData)
-                const result = await services.postRecipe(allData) 
+                const result = await services.postRecipe(allData)
+                console.log(result)
+                  let token = result.data
+                  localStorage.setItem('token', token);  
+                  const userDoc = jwt_decode(token); 
+
+                  // store the user in redux state
+                  dispatch(userActions.login({
+                    user: userDoc
+                  }))
+                  history.push("/"); 
             }
 
             
@@ -229,17 +248,7 @@ export default function NewRecipeForm() {
 
 
 
-        //   const result =  await services.postEdit(user._id, data)
-        //   console.log(result)
-        //   let token = result.data
-        //   localStorage.setItem('token', token);  
-        //   const userDoc = jwt_decode(token); 
-
-        //   // store the user in redux state
-        //   dispatch(userActions.login({
-        //     user: userDoc
-        //   }))
-        //   history.push("/");
+        
         
         }catch(err){
         console.log(err)

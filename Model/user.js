@@ -37,9 +37,8 @@ const userSchema = new Schema({
   socialMedia:[{
     type: Object
   }],
-  myRecipes: [
-    {
-      trip: {
+  myRecipes: [{
+      recipe: {
         type: Schema.Types.ObjectId,
         ref: 'Recipes',
       }
