@@ -1,8 +1,7 @@
 const Controller = require('../Controller/controller');
 const router = require('express').Router()
 
-//get all users
-router.get('/', Controller.getHomepage)
+
  
 //post new user
 router.post('/api', Controller.postCreateUser);
@@ -22,17 +21,21 @@ router.post('/api/recipe/comment', Controller.postComment);
 
 // =============================================
 
+//get all users
+// router.get('/', Controller.getHomepage)
+
+
 //getting a user item by id
-router.get('/api/:id', Controller.getAUserByID);
+// router.get('/api/:id', Controller.getAUserByID);
 
 //get user to edit
-router.get('/edit/:id', Controller.getEdit);
+// router.get('/edit/:id', Controller.getEdit);
 
 //post the edited user
 // router.post('/edit/:id', Controller.postEdit);
 
 //post delete
-router.post('/api/:id', Controller.postDelete);
+// router.post('/api/:id', Controller.postDelete);
 
 
 

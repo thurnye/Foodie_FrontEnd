@@ -37,14 +37,13 @@ const recipesSchema = new Schema({
         type: Number,
         require: true
     },
-    additionalNotes: {
-        type: String,
-        require: true
-    },
-    ingredients: [{
+    notes: [{
         type: Object, required: true
     }],
-    ingDressings: [{
+    mainIngredients: [{
+        type: Object, required: true
+    }],
+    dressingIngredients: [{
         type: Object, required: true
     }],
     nutritionFacts: [{

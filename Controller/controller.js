@@ -1,5 +1,6 @@
 //this is the server controller where i do send data to the back end....
 const User = require('../Model/user')
+const Recipe = require('../Model/recipes')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -63,19 +64,16 @@ const postUserOtherInfo = (req, res, next) => {
         user.location =  req.body.location;
         user.resourceInfo =  req.body.myResource;
         user.resourceList = [];
-        user.socialMedia[0] = {
+        user.socialMedia= [{
             facebook : req.body.facebook,
             twitter : req.body.twitter,
             linkedIn : req.body.linkedIn,
-            pinterest : req.body.pinterest,
-
-        }
-        
-
+            pinterest : req.body.pinterest
+            }]
         return user.save()
     })
     .then((user) => {
-        console.log(user)
+        console.log(user.socialMedia)
         const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
         res.status(200).json(token)
     })
@@ -83,110 +81,46 @@ const postUserOtherInfo = (req, res, next) => {
     
 }
 
-
-
-
-
-
-
-
-//RETRIEVE ALL USER
-const getHomepage = async(req, res, next) => {
-    await User.find().then(users => {
-        res.send({users});
-    })
-    .catch(err => res.status(400).json(err))
-}
-
-
-//RETRIEVE A USER BY ID
-const getAUserByID = (req, res, next) => {
-    const id = req.params.id;
-    User.findById(id)
-    .then(data => {
-        res.send({data})
-    })
-    .catch(err => res.status(400).json(err))
-}
-
-
-
-//  GETTING A USER TO EDIT
-const getEdit = (req, res, next) => {
-    const id = req.params.id;
-    User.findById(id)
-    .then(data => {
-        res.send({data})
-    })
-    .catch(err => res.status(400).json(err))
-}
-
-// POSTING UPDATED USER INFO
-const postEdit = (req, res, next) => {
-    const id = req.body.id;
-    User.findById(id)
-    .then(user => {
-        user.FirstName = req.body.firstName;
-        user.LastName = req.body.lastName;
-        user.Address = req.body.address;
-        user.Number = req.body.number;
-        user.Email = req.body.email;
-        return user.save()
-    })
-    .then((user) => {
-        // send a response to the front end
-        res.status(200).json(user)
-    })
-    .catch(err => res.status(400).json(err));
-}
-
-//DELETING A USER
-const postDelete = async (req, res, next) => {
-    const id = req.params.id;
-    console.log(id)
-    await User.findByIdAndDelete(id)
-    .then(result => {
-        console.log(result)
-          res.status(200).json(result)
-      })
-    .catch(err => res.status(400).json(err))
-}
-
 //Create New Recipe
 const postNewRecipe = async (req, res, next) => {
     try{
-        console.log(req.body)
+        const authorId = req.body.author
+        // console.log(authorId)
+        // console.log(req.body)
+        const newRecipe = new Recipe({
+            author: authorId,
+            recipeName: req.body.recipeName,
+            description: req.body.description,
+            serving: req.body.serving,
+            category: req.body.category,
+            duration: req.body.duration,
+            level: req.body.level,
+            tags: req.body.tags,
+            mainIngredients: req.body.mainIngredients,
+            dressingIngredients: req.body.dressingIngredients,
+            directions: req.body.directions,
+            notes: req.body.notes,
+            thumbnail: req.body.thumbnail,
+            nutritionFacts: req.body.nutritionFacts
+
+        })
+        let savedRecipe = await newRecipe.save()
+        const recipeId = {recipe: savedRecipe._id}
+        const foundUser = await User.find({_id: authorId})
+
+        foundUser[0].myRecipes.push(recipeId)
+        
+        await foundUser[0].save()
+
+        const user =  await User.find({_id: authorId}).populate({
+            path: 'myRecipes.recipe'
+        }).exec()
+        const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+        res.status(200).json(token)
 
     }catch(err){
         res.status(400).json(err)
-    }
-    // const userId = req.body.userId
-    // console.log(req.body.tags)
-    // const newPost = new Post ({
-    //     author : userId,
-    //     title: req.body.title,
-    //     city: req.body.city,
-    //     country: req.body.country,
-    //     tags: [req.body.tags],
-    //     story: req.body.story,
-    //     images:[req.body.images]
-
-    // })
-    // newPost.save().then((resp) => {
-    //     const postId = {trip: resp._id}
-    //     User.findById(userId)
-    //     .then(user => {
-    //         // push the id into the user post array
-    //         user.post.push(postId)
-    //         user.save()
-    //         .then(result => {
-    //             res.status(200).json(result)
-
-    //         })
-    //     })
-    // })
-    // .catch(err => res.status(400).json(err))
-        
+    }    
 }
 
 
@@ -226,15 +160,94 @@ const postComment = async (req, res, next) => {
 
 
 
+
+
+
+// --------------------------------------
+
+// //RETRIEVE ALL USER 
+// const getHomepage = async(req, res, next) => {
+//     await User.find().then(users => {
+//         res.send({users});
+//     })
+//     .catch(err => res.status(400).json(err))
+// }
+
+
+// //RETRIEVE A USER BY ID
+// const getAUserByID = (req, res, next) => {
+//     const id = req.params.id;
+//     User.findById(id)
+//     .then(data => {
+//         res.send({data})
+//     })
+//     .catch(err => res.status(400).json(err))
+// }
+
+
+
+// //  GETTING A USER TO EDIT
+// const getEdit = (req, res, next) => {
+//     const id = req.params.id;
+//     User.findById(id)
+//     .then(data => {
+//         res.send({data})
+//     })
+//     .catch(err => res.status(400).json(err))
+// }
+
+// // POSTING UPDATED USER INFO
+// const postEdit = (req, res, next) => {
+//     const id = req.body.id;
+//     User.findById(id)
+//     .then(user => {
+//         user.FirstName = req.body.firstName;
+//         user.LastName = req.body.lastName;
+//         user.Address = req.body.address;
+//         user.Number = req.body.number;
+//         user.Email = req.body.email;
+//         return user.save()
+//     })
+//     .then((user) => {
+//         // send a response to the front end
+//         res.status(200).json(user)
+//     })
+//     .catch(err => res.status(400).json(err));
+// }
+
+// //DELETING A USER
+// const postDelete = async (req, res, next) => {
+//     const id = req.params.id;
+//     console.log(id)
+//     await User.findByIdAndDelete(id)
+//     .then(result => {
+//         console.log(result)
+//           res.status(200).json(result)
+//       })
+//     .catch(err => res.status(400).json(err))
+// }
+
+
+
+
+
 module.exports = {
     postCreateUser,
     getLogIn,
-    getHomepage,
     postUserOtherInfo,
-    getAUserByID,
-    getEdit,
-    postEdit, 
-    postDelete,
     postNewRecipe,
     postComment,
+    
+    
+    
+    
+    
+    
+    
+    
+    // getHomepage,
+    // getAUserByID,
+    // getEdit,
+    // postEdit, 
+    // postDelete,
 }
