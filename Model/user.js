@@ -43,6 +43,20 @@ const userSchema = new Schema({
         ref: 'Recipes',
       }
     }
+  ],
+  bookmarks: [{
+      recipe: {
+        type: Schema.Types.ObjectId,
+        ref: 'Recipes',
+      }
+    }
+  ],
+  favorites: [{
+      recipe: {
+        type: Schema.Types.ObjectId,
+        ref: 'Recipes',
+      }
+    }
   ]
     
 },

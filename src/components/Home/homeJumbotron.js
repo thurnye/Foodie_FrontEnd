@@ -2,6 +2,7 @@ import React from 'react'
 import Bg2 from '../../public/images/jumbotron/bg2.jpeg'
 import Nav from 'react-bootstrap/Nav';
 import {Link } from 'react-router-dom';
+import truncateText from '../UI/truncate'
 import { Share2,Bookmark, Video } from 'react-feather';
 import Avatar from '../Avatar/avatar'
 
@@ -22,7 +23,16 @@ export default function homeJumbotron() {
                                     }}
                                     className="content-title">Mixed berry pie with fresh fruits</Link>
                                     </h5>
-                                    <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
+                                    
+                                    <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
+                                        <Link to={{
+                                                pathname: `/recipe` ,
+                                                search: `?q=${("mixed berry pie with fresh fruits").toLowerCase().replaceAll(" ", "-")}`,
+                                                // state: {postId: post._id},
+                                            }}
+                                            style={{color: '#1e8aff'}}>Read More</Link>
+                                    </p>
+
                                     <div className="editor d-flex ">
                                         <div className="content-author">
                                                 <Avatar/>

@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import {Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Share2,Bookmark} from 'react-feather';
+import truncateText from '../UI/truncate'
 // import ImgHolder from '../../public/images/imgPlaceholder.jpeg'
 import Avatar from '../Avatar/avatar'
 import Img2 from '../../public/images/tier3/img2.jpeg'
@@ -10,6 +11,15 @@ import Img3 from '../../public/images/tier3/img3.jpeg'
 import Img4 from '../../public/images/tier3/img4.jpeg'
 
 export default function threeCards() {
+    // const truncateText = function(str) {
+    //       const length = 130;
+    //       const ending = ' . . .  '
+    //     if (str.length > length) {
+    //       return str.substring(0, length - ending.length) + ending;
+    //     } else {
+    //       return str;
+    //     }
+    //   };
     return (
         <>
              <section className="three-card-group">
@@ -26,7 +36,7 @@ export default function threeCards() {
                                         <span><small><b>30 MINUTES</b></small></span>
                                     </p>
                                     <p>
-                                        <span className="card-icon"><FontAwesomeIcon icon={['far', 'thumbs-up']} /> </span>
+                                        <span className="card-icon"><FontAwesomeIcon icon={['far', 'thumbs-up']}/> </span>
                                         <span><small><b>SUPER EASY</b></small></span>
                                     </p>
                                 </div>
@@ -41,7 +51,17 @@ export default function threeCards() {
                                     className="content-title">40 Mother’s Day Breakfast and Brunch Recipes</Link>
                                 </h5>
 
-                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
+                                <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
+                                <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("40 mother’s day breakfast and brunch recipes").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    style={{color: '#1e8aff'}}>Read More</Link>
+                                </p>
+
+                                
+                                
 
                                 <div className="editor d-flex ">
                                     <div className="content-author">
@@ -114,7 +134,14 @@ export default function threeCards() {
                                     className="content-title">Slow cooker apple cinnamon oatmeal pot</Link>
                                 </h5>
 
-                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
+                                <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
+                                <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("slow cooker apple cinnamon oatmeal pot").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    style={{color: '#1e8aff'}}>Read More</Link>
+                                </p>
 
                                 <div className="editor d-flex ">
                                     <div className="content-author">
@@ -189,7 +216,14 @@ export default function threeCards() {
                                     className="content-title">Fudge waffles with ice cream and chocolate sauce</Link>
                                 </h5>
 
-                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
+                                <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
+                                <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("fudge waffles with ice cream and chocolate sauce").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    style={{color: '#1e8aff'}}>Read More</Link>
+                                </p>
 
                                 <div className="editor d-flex ">
                                     <div className="content-author">

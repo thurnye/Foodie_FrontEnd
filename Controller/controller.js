@@ -1,7 +1,7 @@
 //this is the server controller where i do send data to the back end....
 const User = require('../Model/user')
 const Recipe = require('../Model/recipes')
-const Comment = require('../Model/comments')
+const Review = require('../Model/review')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -128,77 +128,50 @@ const getAllRecipes = async(req, res, next) => {
         res.status(400).json(err)
     }   
 }
-//RETRIVE A Post BY ID
+//RETRIVE A Recipe BY ID
 const getOneRecipe = async (req, res, next) => {
     try{
         const recipeId = req.params.id;
         const recipe = await Recipe.findById(recipeId)
         .populate({
-            path: 'author',
-            populate:({
-                path: 'comments.comment',
-                populate: ({ 
-                    path: 'userId',
-                    populate: {path: 'post'}
-                }) 
-            })
+            path: 'reviews.review',
+            populate: ({ 
+                path: 'userId',
+                populate: {path: 'myRecipes.recipe'}
+            }) 
+        })
+        .populate({
+            path: 'author'
         })
         .exec()
+            
         res.status(200).json(recipe)
+       
 
     }catch(err){
         res.status(400).json(err)
     }   
-    
-    // Post.findById(postId)
-    // .populate({
-    //     path: 'comments.comment',
-    //     populate: ({ 
-    //         path: 'userId',
-    //         populate: {path: 'post'}
-    //     }),
-    // })
-    // .exec()
-    // .then(post => {
-    //     // console.log(post)
-    //     User.findById(post.author)
-    //     .populate({
-    //         path: 'post.trip',
-    //         populate:({
-    //             path: 'comments.comment',
-    //             populate: ({ 
-    //                 path: 'userId',
-    //                 populate: {path: 'post'}
-    //             }) 
-    //         })
-    //     })
-    //     .exec()
-    //     .then(author => {
-    //         res.send({author, post})
-    //     })
-    // })
-    // .catch(err => res.status(400).json(err))
 }
 
 
-//Post a Comment
-const postComment = async (req, res, next) => {
+//Post a Review
+const postReview = async (req, res, next) => {
     try{
-        const dummyRecipeId = '6122ae3b20f6f014e79c9509'
-        // console.log(req.body)
-        const newComment = new Comment ({
-                comment: req.body.comment,
+        const recipeId = req.body.recipeId
+        const newReview = new Review ({
+                review: req.body.review,
                 rating: req.body.ratings,
                 userId: req.body.userId,
-                recipeId: dummyRecipeId
+                recipeId: recipeId
             })
             // console.log('before save')
-            const savedComment = await newComment.save()
-            console.log(savedComment)
-            // console.log('after save')
-            const commentId = {comment:savedComment._id}
-        const foundRecipe = await Recipe.findById(dummyRecipeId)
-            foundRecipe.comments.push(commentId)
+
+            const savedReview = await newReview.save()
+            console.log(savedReview)
+        //     // console.log('after save')
+            const reviewId = {review:savedReview._id}
+        const foundRecipe = await Recipe.findById(recipeId)
+            foundRecipe.reviews.push(reviewId)
             const recipe = await foundRecipe.save()
             console.log(recipe)
             res.status(200).json()
@@ -286,7 +259,7 @@ module.exports = {
     getLogIn,
     postUpdatedUser,
     postNewRecipe,
-    postComment,
+    postReview,
     getAllRecipes,
     getOneRecipe,
     

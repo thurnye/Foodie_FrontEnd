@@ -39,7 +39,7 @@
 }
 .content-author{
     display: flex;
-    align-items: center;
+    /* align-items: center; */
 }
 .content-author p{
     display: flex;

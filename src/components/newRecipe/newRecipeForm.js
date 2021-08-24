@@ -200,7 +200,7 @@ export default function NewRecipeForm() {
             if(thumbnail){
                 thumbnailPlaceholder = thumbnail
             }else{
-                thumbnailPlaceholder = "https://res.cloudinary.com/xperiacloud/image/upload/v1629597183/thumbnail_zzgfju.jpg"
+                thumbnailPlaceholder = "https://res.cloudinary.com/xperiacloud/image/upload/v1629663748/thePlaceholder_mvj9tj.png"
             }
             console.log(thumbnailPlaceholder)
 

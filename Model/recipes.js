@@ -33,7 +33,7 @@ const recipesSchema = new Schema({
         type: Object, required: true
     }],
 
-    review: {
+    rating: {
         type: Number,
         require: true
     },
@@ -52,10 +52,10 @@ const recipesSchema = new Schema({
     directions: [{
         type: Object, required: true
     }],
-    comments: [{
-        comment: {
+    reviews: [{
+        review: {
         type: Schema.Types.ObjectId,
-        ref: 'Comments',
+        ref: 'Reviews',
         }
     }],
     author: {

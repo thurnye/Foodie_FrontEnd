@@ -19,8 +19,8 @@ router.post('/api/recipe', Controller.postNewRecipe);
 //get all recipes
 router.get('/', Controller.getAllRecipes)
 
-//post new user comment 
-router.post('/api/recipe/comment', Controller.postComment);
+//post new user review 
+router.post('/api/recipe/review', Controller.postReview);
 
 //getting a recipe by id
 router.get('/api/:id', Controller.getOneRecipe);
