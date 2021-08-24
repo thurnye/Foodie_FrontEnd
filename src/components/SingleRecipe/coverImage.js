@@ -3,7 +3,8 @@ import {useSelector} from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Tag } from 'react-feather';
 import img11 from '../../public/images/recentRecipes/img11.jpeg';
-import Ratings from './ratings';
+// import Ratings from './ratings';
+import ReactStars from "react-rating-stars-component";
 
 
 export default function CoverImage() {
@@ -46,7 +47,17 @@ export default function CoverImage() {
                     <div className="about-recipe">
                         <p>{recipe.description}</p>
                     </div>
-                    <Ratings/>
+                    {/* <Ratings/> */}
+                    <div className="rating">
+                        <ReactStars
+                            size={18}
+                            half={true}
+                            value={recipe.rating}
+                            color2={"#fc6"}
+                            edit={false}
+                        />
+                        <p className="text-muted">({recipe.rating}/5) </p>
+                    </div>
                 </>
             }
                 {/* <div className="jumbotron p-0">

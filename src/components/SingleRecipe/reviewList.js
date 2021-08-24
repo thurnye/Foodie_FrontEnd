@@ -1,22 +1,25 @@
-import React from 'react'
+import React,{useState} from 'react'
 import moment from 'moment';
 import {useSelector} from 'react-redux'
 import Avatar from '../Avatar/avatar'
-import Ratings from './ratings'
+import ReactStars from "react-rating-stars-component";
+// import Ratings from './ratings'
 import '../../public/css/review.css'
 
 export default function ReviewList() {
     const recipe = useSelector(state => state.recipesData.singleRecipe)
+    // const [color, setColor] = useState("#564f74");
     // const reviews = recipe.reviews
-    // recipe && recipe.reviews.map(el => {
-    //     console.log(el.review.review)
-    //     console.log(el.review.userId)
-    // })
+    recipe && recipe.reviews.map(el => {
+        console.log(el.review)
+        // console.log(el.review.userId)
+    })
     // the mark is 170 length
     // if it is less than 130 do not show, if it greater than 130 && less than 170 show few less 
     return (
         <>
             {recipe && recipe.reviews.map((el, index) => {
+                // let rating = 
                 return(
                     <div key={index}>         
                         {/* <h5>Reviews</h5> */}
@@ -24,7 +27,7 @@ export default function ReviewList() {
                             <div className="row row-cols-1 row-cols-md-12 g-4 review " key={index}>
                                 <div className="col">
                                     <div className="row row-cols-2 row-cols-md-2 g-4" style={{marginTop: "15px"}}>
-                                        <div className="col-md-8" >
+                                        <div className="col-md-8" style={{paddingRight: "0"}}>
                                             <div className="content-share-author">
                                                 <div className="share-img-container">
                                                     <Avatar img={recipe.author.avatar}/>
@@ -39,7 +42,17 @@ export default function ReviewList() {
                                         </div>
                                         {/* rating */}
                                         <div className="col-md-4 review-ratings">
-                                            <Ratings/>
+                                            {/* <Ratings/> */}
+                                            <ReactStars
+                                                size={12}
+                                                half={true}
+                                                value={el.review.rating}
+                                                color2={"#fc6"}
+                                                edit={false}
+                                                onChange={newRating => {
+                                                console.log(newRating);
+                                                }}
+                                            />
                                         </div>      
                                     </div>
                                 </div>

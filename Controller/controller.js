@@ -132,7 +132,7 @@ const getAllRecipes = async(req, res, next) => {
 const getOneRecipe = async (req, res, next) => {
     try{
         const recipeId = req.params.id;
-        const recipe = await Recipe.findById(recipeId)
+        const recipeData = await Recipe.findById(recipeId)
         .populate({
             path: 'reviews.review',
             populate: ({ 
@@ -144,9 +144,18 @@ const getOneRecipe = async (req, res, next) => {
             path: 'author'
         })
         .exec()
-            
-        res.status(200).json(recipe)
-       
+
+        if(recipeData.reviews.length > 0 ){
+            const rating = []
+            recipeData.reviews.map(el => rating.push(parseInt(el.review.rating)))
+            const sum = rating.reduce((a, b) => a + b)
+            const average = sum / rating.length
+            recipeData.rating = average.toFixed(1)
+            const recipe = await recipeData.save()
+            res.status(200).json(recipe)
+       }else{
+            res.status(200).json(recipeData) 
+       }
 
     }catch(err){
         res.status(400).json(err)
@@ -159,22 +168,23 @@ const postReview = async (req, res, next) => {
     try{
         const recipeId = req.body.recipeId
         const newReview = new Review ({
-                review: req.body.review,
-                rating: req.body.ratings,
-                userId: req.body.userId,
-                recipeId: recipeId
-            })
-            // console.log('before save')
+            review: req.body.review,
+            rating: req.body.ratings,
+            userId: req.body.userId,
+            recipeId: recipeId
+        })
+        const savedReview = await newReview.save()
 
-            const savedReview = await newReview.save()
-            console.log(savedReview)
-        //     // console.log('after save')
-            const reviewId = {review:savedReview._id}
+        const reviewId = {review:savedReview._id}
         const foundRecipe = await Recipe.findById(recipeId)
-            foundRecipe.reviews.push(reviewId)
-            const recipe = await foundRecipe.save()
-            console.log(recipe)
-            res.status(200).json()
+        foundRecipe.reviews.push(reviewId)
+
+        const recipe = await foundRecipe.save()
+
+
+
+        console.log(recipe)
+        res.status(200).json()
     }catch(err){
         res.status(400).json(err)
     } 
