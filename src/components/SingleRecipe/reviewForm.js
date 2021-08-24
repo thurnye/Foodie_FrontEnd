@@ -92,7 +92,6 @@ export default function ReviewForm()  {
                 })}
                 type="text"
                 placeholder="your review*"
-                maxLength='450'
                 rows="10"></textarea>
                 {errors.review && <span role="alert" style={{color: 'salmon'}}>{errors.review.message}</span>}
                 <div className="getReview"> 
