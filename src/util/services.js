@@ -25,8 +25,8 @@ class StuffDataService {
 
 
   // create experience comments
-  postComment(data) {
-    return http.post("/api/recipe/comment", data);
+  postReview(data) {
+    return http.post("/api/recipe/review", data);
   }
 
   // get all recipes

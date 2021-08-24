@@ -3,15 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './table.css'
 import $ from 'jquery'
 import Tick from '../UI/tick'
+import {useSelector} from 'react-redux'
 
-export default function table() {
+export default function Ingredients() {
 
-   
+    const recipe = useSelector(state => state.recipesData.singleRecipe)
 
-
+    
     return (
         <>
             <div className="table-container table-responsive">
+            <h5>Main Ingredients</h5>
             <table className="table caption-top">
                 <thead>
                     <tr>
@@ -20,7 +22,17 @@ export default function table() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                {recipe && recipe.mainIngredients.map((el, index) => {
+                    return(
+                        <tr key={index}>
+                        <th scope="row" name="ingredient1" >
+                            <Tick/>
+                        </th>
+                        <td>{el.mainList}</td>
+                    </tr>
+                    )
+                } )}
+                    {/* <tr>
                         <th scope="row" name="ingredient1" >
                             <Tick/>
                         </th>
@@ -43,13 +55,14 @@ export default function table() {
                             <Tick/>
                         </th>
                         <td>1 ½ cups peeled and chopped golden potato or sweet potato (large bite-size pieces)</td>
-                    </tr>
+                    </tr> 
                     <tr>
                         <th scope="row">
                             <Tick/>
                         </th>
                         <td>0.17 cup chopped walnuts or pecans (or sub other nut or seed of choice)</td>
                     </tr>
+                    */}
                 </tbody>
             </table>
         </div>
@@ -64,7 +77,17 @@ export default function table() {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                {recipe && recipe.dressingIngredients.map((el, index) => {
+                    return(
+                        <tr key={index}>
+                        <th scope="row" name="ingredient1" >
+                            <Tick/>
+                        </th>
+                        <td>{el.dressingList}</td>
+                    </tr>
+                    )
+                } )}
+                    {/* <tr>
                         <th scope="row" name="ingredient1" >
                             <Tick/>
                         </th>
@@ -87,7 +110,7 @@ export default function table() {
                             <Tick/>
                         </th>
                         <td>1 tablespoon honey (light brown sugar or maple syrup also works)</td>
-                    </tr>
+                    </tr> */}
                 </tbody>
             </table>
         </div>

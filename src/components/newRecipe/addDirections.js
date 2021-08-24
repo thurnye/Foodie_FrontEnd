@@ -6,9 +6,11 @@ import 'react-dropzone-uploader/dist/styles.css'
 
 
 export default function AddDirections(props) {
+    
 
     const [directions, setDirections] = useState({
-        form: [{ 
+        form: [{
+            title: "", 
             steps: "" ,
             imageUrl: null
             
@@ -68,7 +70,7 @@ export default function AddDirections(props) {
     
     const addNewRow = () => {
         const items = directions.form;
-        const blankRow = { steps: "", imageUrl: null};
+        const blankRow = { title: "", steps: "", imageUrl: null};
         filesArray = []
         setFiles([])
         setDirections({
@@ -79,22 +81,30 @@ export default function AddDirections(props) {
     
 
     const saveAll = () => {
-        let errMessage;
+        // console.log(directions)
+        const errMessage =[];
         // check for blank field in directions
         for(let i =0; i < directions.form.length; i++ ){
+           
+            if(!directions.form[i].title){
+                errMessage.push(`*missing title`)
+                setErrorMessage(errMessage)
+            }
             if(!directions.form[i].steps){
-                errMessage = `*missing step`
+                errMessage.push(`*missing step`)
                 setErrorMessage(errMessage)
             }
         }
         // if there is no blank field
-        if(!errMessage){
+        if(errMessage.length === 0){
+            console.log(directions)
             setErrorMessage(null)
             const { form } = directions; 
 
             // get the compiled data  
             const compiledData = []
              form.forEach( el => {
+                const title = el.title
                 const steps = el.steps
                 const allFiles = el.imageUrl
                 const acceptedFiles =[]
@@ -123,6 +133,7 @@ export default function AddDirections(props) {
                         compiledImgUrl.push(data.url)
                     })
                     compiledData.push({
+                        title: title,
                         steps: steps,
                         imgUrl: compiledImgUrl 
                     })
@@ -130,6 +141,7 @@ export default function AddDirections(props) {
                 else{
                     // if no file attachement
                     compiledData.push({
+                        title: title,
                         steps: steps,
                         imgUrl: allFiles 
                     })
@@ -139,14 +151,14 @@ export default function AddDirections(props) {
 
             //  send the compiled data
             props.getDirections(compiledData)
+            console.log(compiledData)
 
         }
     };
-
     return (
         <>
             <h1>Add Directions</h1>
-            <span className="requiredField">{errorMessage}</span>
+            {errorMessage && errorMessage && errorMessage.map((el, index) => <div key={index}><span className="requiredField">{el}</span></div>)}
             {directions.form &&
             directions.form.map((item, index) => (
                 <div key={index}>
@@ -161,6 +173,18 @@ export default function AddDirections(props) {
                     </div>
                     <div className="row row-cols-1 row-cols-md-2 g-4">
                         <div className="col form-fields">
+                            <div className="form-fields">
+                                <label htmlFor="exampleInputStepTitle" className="form-label">Title</label>
+                                <input 
+                                type="text" 
+                                className="form-control" 
+                                id="exampleInputStepTitle"
+                                name="title" 
+                                value={item.title}
+                                onChange={(e) => handleChange(e, index)}
+                            />
+                                        {/* {errors.stepTitle && <span role="alert">{errors.stepTitle.message}</span>} */}
+                            </div>
                             <textarea 
                             className="form-control method-steps" 
                             id="exampleFormControlMyRecipeDesc" 

@@ -1,15 +1,16 @@
 import React from 'react'
+import {useSelector} from 'react-redux'
 import Heading from '../UI/heading'
 
-export default function notes() {
+export default function Notes() {
+    const recipe = useSelector(state => state.recipesData.singleRecipe)
     return (
         <section className="note">
             <div className="note-heading">
                 <Heading title="Notes"/>
             </div>
             <div className="recipe-note">
-                <p>*Nutrition info is a rough estimate based on the ingredients. Note that values may vary from case to case.</p>
-                <p>*As with all recipes, there is a number of ways you can get things done. If you believe that some of the instructions can be improved, or have a good alternative solution, feel free to leave a comment.</p>
+                {recipe && recipe.notes.map((el, index) => <p key={index}>*{el.noteList}</p> )}
             </div>
         </section>
     )

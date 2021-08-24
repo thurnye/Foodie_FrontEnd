@@ -6,8 +6,10 @@ import {useSelector, useDispatch} from 'react-redux'
 import Heading from '../UI/heading';
 import services from '../../util/services'
 
-export default function CommentForm()  {
+export default function ReviewForm()  {
   const user = useSelector(state => state.userLog.user)
+  const recipe = useSelector(state => state.recipesData.singleRecipe)
+  
   const history = useHistory();
 
   const [ratingErr, setRatingErr] =  useState(null)
@@ -28,26 +30,17 @@ export default function CommentForm()  {
       }else{
         setRatingErr(null)
         
-        const comment= {
+        const review= {
           ...data, 
-          userId: user.user._id
-          // recipeId: ''  --> add the recipe Id
+          userId: user.user._id,
+          recipeId: recipe._id
         }
+        console.log(review)
 
-        const result = await services.postComment(comment)
+        const result = await services.postReview(review)
         console.log(result)
+        // refresh the page if the status is 200
       }
-          
-      
-      // let token = result.data
-      // localStorage.setItem('token', token);  
-      // const userDoc = jwt_decode(token); 
-
-      // // store the user in redux state
-      // dispatch(userActions.login({
-      //   user: userDoc
-      // }))
-      // history.push("/");
     }catch(err){
       console.log(err)
     }
@@ -56,9 +49,9 @@ export default function CommentForm()  {
 
   return(
     <React.Fragment>
-      <div className="comment-form">
-        <div className="comment-heading">
-          <Heading title="Leave a Reply"/>
+      <div className="review-form">
+        <div className="review-heading">
+          <Heading title="Add Review"/>
         </div>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className="rating">
@@ -86,26 +79,27 @@ export default function CommentForm()  {
             <div className="form-group row">
               <div className="col-sm-9">
                 <textarea
-                id="comment"
+                id="review"
                 className="form-control"
-                aria-invalid={errors.comment ? "true" : "false"} 
-                {...register("comment", {
-                  required: "*Please add your comment to submit*",
+                aria-invalid={errors.review ? "true" : "false"} 
+                {...register("review", {
+                  required: "*Please add your review to submit*",
                   pattern: {
-                    message: "Comment required"
+                    message: "Review required"
                   }
                 })}
                 type="text"
-                placeholder="your comment*"
+                placeholder="your review*"
+                maxLength='450'
                 rows="10"></textarea>
-                {errors.comment && <span role="alert" style={{color: 'salmon'}}>{errors.comment.message}</span>}
+                {errors.review && <span role="alert" style={{color: 'salmon'}}>{errors.review.message}</span>}
               </div>
             </div>
           </div>
-          <div className="getComment"> 
-          {/* {!user && <Nav.Link href="/login" className="btn btn-dark btn-block">Post Comment</Nav.Link>} */}
-          {/* {user && <button className="btn btn-dark btn-block" type="submit">Post Comment</button>} */}
-          <button className="btn btn-dark btn-block" type="submit">Post Comment</button>
+          <div className="getReview"> 
+          {!user && <Nav.Link href="/login" className="btn btn-dark btn-block">Post Review</Nav.Link>}
+          {user && <button className="btn btn-dark btn-block" type="submit">Post Review</button>}
+          {/* <button className="btn btn-dark btn-block" type="submit">Post Review</button> */}
           </div>
         </form>
       </div>

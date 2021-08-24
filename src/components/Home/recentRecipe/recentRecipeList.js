@@ -2,7 +2,7 @@ import React from 'react'
 import {Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Video } from 'react-feather';
-
+import truncateText from '../../UI/truncate'
 import Img6 from '../../../public/images/recentRecipes/img6.jpeg'
 import Img7 from '../../../public/images/recentRecipes/img7.jpeg'
 import Img8 from '../../../public/images/recentRecipes/img8.jpeg'
@@ -38,7 +38,14 @@ export default function recentRecipeList() {
                                     className="content-title">The best fluffy buttermilk pancakes with triple berry sauce</Link>
                                                     
                                                 </h5>
-                                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
+                                                <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
+                                <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${("the best fluffy buttermilk pancakes with triple berry sauce").replaceAll(" ", "-")}`,
+                                        // state: {postId: post._id},
+                                    }}
+                                    style={{color: '#1e8aff'}}>Read More</Link>
+                                </p>
                                             </div>
                                         </div>
                                     </div>

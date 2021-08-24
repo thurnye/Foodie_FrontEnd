@@ -245,7 +245,11 @@ button:active {
 .tags p span:first-child{
     margin-left: 15px;
 }
-
+.recipe-tag{
+    background-color: #f7f7f7;
+    margin-right: 10px;
+    padding: 5px;
+}
 
 /* ============================================================ */
 /* BookAd */
@@ -325,7 +329,13 @@ button:active {
   .star-rating label:hover ~ label {
     color:#fc0;
   }
+/* =============================================================== */
 
+.review-ratings .rating{
+    display: flex;
+    justify-content: flex-end;
+    
+}
 /* // Small devices (landscape phones, 576px and up) */
 @media (min-width: 300px) { 
     
