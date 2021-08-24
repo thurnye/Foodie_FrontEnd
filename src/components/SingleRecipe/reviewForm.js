@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux'
 import Heading from '../UI/heading';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import services from '../../util/services'
 
 export default function ReviewForm()  {
@@ -49,10 +50,11 @@ export default function ReviewForm()  {
 
   return(
     <React.Fragment>
+        
       <div className="review-form">
-        <div className="review-heading">
-          <Heading title="Add Review"/>
-        </div>
+      <div className="recommend-heading">
+        <h5>Let us know how you like it</h5>
+            </div>
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className="rating">
             <h6><small className="text-muted">Rating:</small></h6>
@@ -93,14 +95,15 @@ export default function ReviewForm()  {
                 maxLength='450'
                 rows="10"></textarea>
                 {errors.review && <span role="alert" style={{color: 'salmon'}}>{errors.review.message}</span>}
-              </div>
-            </div>
-          </div>
-          <div className="getReview"> 
+                <div className="getReview"> 
           {!user && <Nav.Link href="/login" className="btn btn-dark btn-block">Post Review</Nav.Link>}
           {user && <button className="btn btn-dark btn-block" type="submit">Post Review</button>}
           {/* <button className="btn btn-dark btn-block" type="submit">Post Review</button> */}
           </div>
+              </div>
+            </div>
+          </div>
+          
         </form>
       </div>
       <hr/>

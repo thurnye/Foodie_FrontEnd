@@ -5,11 +5,11 @@ export default function ratings() {
     return (
         <>
             <div className="rating">
-            <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
-            <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
-            <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
-            <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
-            <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
+                <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
+                <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
+                <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
+                <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
+                <span className="rating-star"><FontAwesomeIcon icon={['far', 'star']} /> </span>
             </div>
         </>
     )

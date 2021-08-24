@@ -94,8 +94,9 @@
 /* ======================================================================= */
 
 /* Ratings */
-.coverImg .rating:after{
-    content: 'Reviews';
+.coverImg .rating:before{
+    content: 'Ratings';
+    margin-right: 5px;
     color: black;
     font-family: 'Merriweather', serif;
     margin-left: 10px;
@@ -328,6 +329,9 @@ button:active {
   .star-rating label:hover,
   .star-rating label:hover ~ label {
     color:#fc0;
+  }
+  .getReview{
+      margin-top: 2vh;
   }
 /* =============================================================== */
 
