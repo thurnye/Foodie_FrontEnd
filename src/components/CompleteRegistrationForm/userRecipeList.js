@@ -53,7 +53,7 @@ export default function UserRecipeList() {
                                 <div className="card my-recipe-card">
                                     <div className="card-actions">
                                         <Link to={{
-                                            pathname: `/new-recipe` ,
+                                            pathname: `/my-recipe/edit` ,
                                             search: `?t=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
                                             state: {recipeId: el.recipe._id, edit: true},
                                         }}

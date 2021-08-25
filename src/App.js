@@ -22,6 +22,7 @@ import Signup from './pages/signup';
 import Login from './pages/login';
 import completeRegistration from './pages/completeRegistrationForm';
 import NewRecipe from './pages/newRecipe'
+import UpdateRecipe from './pages/updateRecipe'
 // import Footer from './components/Footer/footer'
 
 
@@ -59,6 +60,7 @@ function App() {
           {!user && <Route path="/login" component={Login} />}
           {user && <Route path="/new-account" component={completeRegistration} />}
           {user && <Route path="/new-recipe" component={NewRecipe} />}
+          {user && <Route path="/my-recipe/edit" component={UpdateRecipe} />}
           
           <Route path="/recipe" component={singleRecipe} />
           <Route path="/all-recipes" component={AllRecipe} />
