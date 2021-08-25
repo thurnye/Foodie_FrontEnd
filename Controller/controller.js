@@ -35,15 +35,18 @@ const postCreateUser = async (req, res, next) => {
 const getLogIn = async (req, res) => {
     
     try {
-      const user = await User.findOne({ email: req.body.email });
+        const user = await User.findOne({ email: req.body.email }).populate({
+            path: 'myRecipes.recipe'
+        }).exec()
+        console.log(user)
           // check password. if it's bad throw an error.
-          if (!(await bcrypt.compare(req.body.password, user.password))) throw new Error();
+        if (!(await bcrypt.compare(req.body.password, user.password))) throw new Error();
   
-      // if we got to this line, password is ok. give user a new token.
-      const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
-      res.json(token)
+        // if we got to this line, password is ok. give user a new token.
+        const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+        res.json(token)
     } catch {
-      res.status(400).json('Bad Credentials');
+        res.status(400).json('Bad Credentials');
     }
 }
 
@@ -190,6 +193,46 @@ const postReview = async (req, res, next) => {
     } 
 }
 
+//DELETING A RECIPE
+const postDeleteARecipe = async (req, res, next) => {
+    try{ 
+        // console.log(req.params.id)
+        const recipeId = req.params.id;
+        let authorId = ''
+
+        const recipe =  await Recipe.findById(recipeId)
+        // console.log(recipe)
+
+        authorId = recipe.author._id
+        // console.log(authorId)
+        
+
+        // // delete recipe from author account
+        const foundUser = await User.findById(authorId).populate({
+            path: 'myRecipes.recipe'
+        }).exec()
+        const recipes = foundUser.myRecipes
+
+        const delRecipe = recipes.findIndex(el => el.recipe._id.toString() === recipeId.toString())
+
+
+        // delete relations
+        recipes.splice(delRecipe, 1)
+
+        await Review.deleteMany({ _id: recipeId})
+
+        recipe.remove()
+
+        const user = await foundUser.save()
+        
+
+        const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+        res.status(200).json(token)
+
+    }catch(err){
+        res.status(400).json(err)
+    } 
+}
 
 
 
@@ -272,6 +315,7 @@ module.exports = {
     postReview,
     getAllRecipes,
     getOneRecipe,
+    postDeleteARecipe,
     
     
     
