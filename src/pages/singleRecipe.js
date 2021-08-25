@@ -82,7 +82,7 @@ export default function SingleMeal(props) {
                         
                             </>
                         }
-                        {!recipe && <h1>Loading...</h1>}
+                        {!recipe && <h1>Loading</h1>}
                     </div>
                 </div>
             </div>
