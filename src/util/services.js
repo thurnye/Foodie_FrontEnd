@@ -34,8 +34,14 @@ class StuffDataService {
     return http.get("/");
   }
 
+  // get one recipe
   findById(id) {
     return http.get(`/api/${id}`);
+  }
+
+  // remove Recipe
+  removeRecipe(id) {
+    return http.post(`/api/removeRecipe/${id}`);
   }
 
 

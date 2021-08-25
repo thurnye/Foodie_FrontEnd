@@ -227,9 +227,9 @@ export default function NewRecipeForm() {
     
                 }
     
-                console.log("AllDATA:",allData)
+                // console.log("AllDATA:",allData)
                 const result = await services.postRecipe(allData)
-                console.log(result)
+                // console.log(result)
                   let token = result.data
                   localStorage.setItem('token', token);  
                   const userDoc = jwt_decode(token); 
