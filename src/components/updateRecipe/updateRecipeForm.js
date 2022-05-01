@@ -288,6 +288,14 @@ export default function NewRecipeForm() {
                 console.log("AllDATA:",allData)
                 const result = await services.postUpdatedRecipe(id, allData)
                 console.log(result)
+                let token = result.data
+                localStorage.setItem('token', token);  
+                const userDoc = jwt_decode(token); 
+
+                // store the user in redux state
+                dispatch(userActions.login({
+                    user: userDoc
+                }))
                   
                   history.push("/new-account"); 
             }

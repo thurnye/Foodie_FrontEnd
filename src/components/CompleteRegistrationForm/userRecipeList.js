@@ -19,6 +19,7 @@ export default function UserRecipeList() {
     myRecipes.map(el => {
         // console.log(el.recipe._id)
     })
+    console.log("user", user)
 
       //DELETE A Recipe
     const deleteRecipe = async (id) => {
