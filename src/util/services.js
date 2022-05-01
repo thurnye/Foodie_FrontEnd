@@ -39,6 +39,11 @@ class StuffDataService {
     return http.get(`/api/${id}`);
   }
 
+  //updateRecipe
+  postUpdatedRecipe(id, data) {
+    return http.post(`/api/recipe/update/${id}`, data);
+  }
+
   // remove Recipe
   removeRecipe(id) {
     return http.post(`/api/removeRecipe/${id}`);
@@ -54,9 +59,9 @@ class StuffDataService {
     return http.get(`/edit/${id}`);
   }
 
-  postEdit(id, data) {
-    return http.post(`/edit/${id}`, data);
-  }
+  // postEdit(id, data) {
+  //   return http.post(`/edit/${id}`, data);
+  // }
 
   remove(id) {
     return http.post(`/api/${id}`);

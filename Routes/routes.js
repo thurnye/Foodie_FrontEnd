@@ -25,6 +25,9 @@ router.post('/api/recipe/review', Controller.postReview);
 //getting a recipe by id
 router.get('/api/:id', Controller.getOneRecipe);
 
+//update a recipe by id
+router.post('/api/recipe/update/:id', Controller.getRecipeUpdate);
+
 //delete a recipe
 router.post('/api/removeRecipe/:id', Controller.postDeleteARecipe);
 

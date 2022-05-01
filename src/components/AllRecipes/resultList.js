@@ -51,8 +51,8 @@ export default function ResultList() {
                             <img src={el.thumbnail} className="card-img-top allRecipeImg" alt="recipeResult" />
                             <div className="card-body result-body">
                                  <p>
-                                    <span className="duration"><small><strong><Clock strokeWidth="1" size="15"/> {el.duration[0].value.toUpperCase()}</strong></small></span>
-                                    <span className="level"><small><strong><ThumbsUp strokeWidth="1" size="15"/> {el.level[0].value.toUpperCase()}</strong></small></span>
+                                    <span className="duration"><small><strong><Clock strokeWidth="1" size="15"/> {el.duration[0].value}</strong></small></span>
+                                    <span className="level"><small><strong><ThumbsUp strokeWidth="1" size="15"/> {el.level[0].value}</strong></small></span>
                                 </p>
                                 <h5 className="card-title result-title">{el.recipeName}</h5>
                             </div>

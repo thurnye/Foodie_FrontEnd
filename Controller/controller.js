@@ -193,6 +193,70 @@ const postReview = async (req, res, next) => {
     } 
 }
 
+//UPDATING A RECIPE
+const getRecipeUpdate = async(req, res, next) => {
+    try{
+        // console.log("id", req.params.id)
+        console.log("loggedUserId:", req.body.loggedUser)
+        
+        const loggedUser = req.body.loggedUser
+        
+        //find the receipe 
+        const recipe = await Recipe.findById(req.params.id)
+        // console.log("recipe", recipe)
+        if(recipe.author.toString() === loggedUser.toString()){
+            recipe.recipeName= req.body.recipeName
+            recipe.description= req.body.description
+            recipe.serving= req.body.serving
+            recipe.category= req.body.category
+            recipe.duration= req.body.duration
+            recipe.level= req.body.level
+            recipe.tags= req.body.tags
+            recipe.mainIngredients= req.body.mainIngredients
+            recipe.dressingIngredients= req.body.dressingIngredients
+            recipe.directions= req.body.directions
+            recipe.notes= req.body.notes
+            recipe.thumbnail= req.body.thumbnail
+            recipe.nutritionFacts= req.body.nutritionFacts
+
+            recipe.save()
+            res.status(200).json()
+        }
+
+        const newRecipe = new Recipe({
+            recipeName: req.body.recipeName,
+            description: req.body.description,
+            serving: req.body.serving,
+            category: req.body.category,
+            duration: req.body.duration,
+            level: req.body.level,
+            tags: req.body.tags,
+            mainIngredients: req.body.mainIngredients,
+            dressingIngredients: req.body.dressingIngredients,
+            directions: req.body.directions,
+            notes: req.body.notes,
+            thumbnail: req.body.thumbnail,
+            nutritionFacts: req.body.nutritionFacts
+
+        })
+        // let savedRecipe = await newRecipe.save()
+        // const recipeId = {recipe: savedRecipe._id}
+        // const foundUser = await User.findById(authorId)
+
+        // foundUser.myRecipes.push(recipeId)
+        
+        // await foundUser.save()
+
+        // const user =  await User.findById(authorId).populate({
+        //     path: 'myRecipes.recipe'
+        // }).exec()
+        // const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+        // res.status(200).json(token)
+    }catch(err){
+
+    }
+}
+
 //DELETING A RECIPE
 const postDeleteARecipe = async (req, res, next) => {
     try{ 
@@ -315,6 +379,7 @@ module.exports = {
     postReview,
     getAllRecipes,
     getOneRecipe,
+    getRecipeUpdate,
     postDeleteARecipe,
     
     

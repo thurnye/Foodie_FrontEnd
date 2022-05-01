@@ -20,12 +20,12 @@ import Thumbnail from './thumbnail'
 
 export default function NewRecipeForm() {
     const dispatch = useDispatch()
-    // const history = useHistory();
+    const history = useHistory();
     const animatedComponents = makeAnimated();
 
     const user = useSelector(state => state.userLog.user.user)
     const recipe = useSelector(state => state.recipesData.singleRecipe)
-  
+    const [id, setId] = useState()
     // Updated Values
     const [selectedTag, setSelectedTag] = useState(null);
     const [selectedCat, setSelectedCat] = useState(null);
@@ -39,11 +39,13 @@ export default function NewRecipeForm() {
     const [thumbnail, setThumbnail] = useState(null)
     const [error, setError] = useState(false)
     const [dataError, setDataError] = useState(null)
+    
 
 
     // Add the mainingredient inside the mainArray
     useEffect(() => {
         // imported Values
+        console.log(recipe)
         if(recipe){
             // put dressing inside the dressing Array
             const dressingVal = []
@@ -70,9 +72,13 @@ export default function NewRecipeForm() {
                 }
                 noteVal.push(item)  
             })
-            console.log(dressingVal)
-            console.log(mainVal)
-            console.log(noteVal)
+            setId(recipe._id)
+            setSelectedCat(recipe.category)
+            setSelectedDuration(recipe.duration)
+            setSelectedLevel(recipe.level)
+            setSelectedServing(recipe.serving)
+            setSelectedTag(recipe.tags)
+            setThumbnail(recipe.thumbnail)
             setMain({
                     mainArray: main.mainArray.concat(mainVal),
                 })
@@ -212,7 +218,6 @@ export default function NewRecipeForm() {
         try{
             let errorMessage= false
             let dataError = []
-
             const nutrients = [
                 {name: 'calories' ,unit: 'g', value:data.calories},
                 {name: 'satFat', unit: 'g', value: data.satFat},
@@ -239,37 +244,30 @@ export default function NewRecipeForm() {
                 selectedServing === null ||
                 selectedDuration === null ||
                 selectedLevel === null 
-            ){  
-                errorMessage = true
-                dataError.push({ name: 'options', errorMessage: '*missing tag, category, serving, duration or level is required'})
-            }
-
-            // Check for Ingredients
-            if( main.mainArray.length === 0 || dressing.dressingArray.length === 0){
-                errorMessage = true
-                dataError.push({name: 'ingredients', errorMessage: '*ingredient field is required'})
-            }
-
-            // Check for directions
-            if( directions === null  || dressing.dressingArray.length === 0){
-                errorMessage = true
-                dataError.push({name: 'directions', errorMessage: '*directions field is required'})
-            }
-            let thumbnailPlaceholder;
-
-            if(thumbnail){
-                thumbnailPlaceholder = thumbnail
-            }else{
-                thumbnailPlaceholder = "https://res.cloudinary.com/xperiacloud/image/upload/v1629663748/thePlaceholder_mvj9tj.png"
-            }
-            console.log(thumbnailPlaceholder)
-
-            setDataError(dataError)
-            
+                ){  
+                    errorMessage = true
+                    dataError.push({ name: 'options', errorMessage: '*missing tag, category, serving, duration or level is required'})
+                }
+                
+                // Check for Ingredients
+                if( main.mainArray.length === 0 || dressing.dressingArray.length === 0){
+                    errorMessage = true
+                    dataError.push({name: 'ingredients', errorMessage: '*ingredient field is required'})
+                }
+                
+                // Check for directions
+                if( directions === null  || dressing.dressingArray.length === 0){
+                    errorMessage = true
+                    dataError.push({name: 'directions', errorMessage: '*directions field is required'})
+                }
+                
+                
+                setDataError(dataError)
+                
 
             if((errorMessage === false) || (dataError.length === 0)){
-
                 const allData = {
+                    loggedUser: user._id,
                     recipeName: data.recipe_name,
                     description: data.description,
                     serving: [selectedServing],
@@ -282,23 +280,16 @@ export default function NewRecipeForm() {
                     directions: directions,
                     notes: note.noteArray,
                     author: user._id,
-                    thumbnail: thumbnailPlaceholder,
+                    thumbnail: thumbnail,
                     nutritionFacts: nutrients
     
                 }
     
                 console.log("AllDATA:",allData)
-                // const result = await services.postRecipe(allData)
-                // // console.log(result)
-                //   let token = result.data
-                //   localStorage.setItem('token', token);  
-                //   const userDoc = jwt_decode(token); 
-
-                //   // store the user in redux state
-                //   dispatch(userActions.login({
-                //     user: userDoc
-                //   }))
-                //   history.push("/"); 
+                const result = await services.postUpdatedRecipe(id, allData)
+                console.log(result)
+                  
+                  history.push("/new-account"); 
             }
 
             
@@ -315,6 +306,7 @@ export default function NewRecipeForm() {
         }
     };
 
+    
     let errorIngredient; 
     let errorDirection;
     let errorNutrients;
@@ -389,7 +381,7 @@ export default function NewRecipeForm() {
                                             </div>
                                         </div>
                                     <div className="col-md-4">
-                                        <Thumbnail getThumbnail={getThumbnail}/>
+                                        <Thumbnail getThumbnail={getThumbnail} thumbnail={thumbnail}/>
                                     </div>
                                 </div>
                             </div>
