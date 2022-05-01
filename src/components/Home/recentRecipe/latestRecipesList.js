@@ -4,6 +4,8 @@ import Rp1 from '../../../public/images/latestRecipes/rp1.jpeg'
 import Rp2 from '../../../public/images/latestRecipes/rp2.jpeg'
 import Rp3 from '../../../public/images/latestRecipes/rp3.jpeg'
 
+import "../../../public/css/latestRecipeList.css"
+
 export default function latestRecipesList() {
     return (
         <>

@@ -1,0 +1,41 @@
+
+ /* X-Small devices (portrait phones, less than 576px) */
+ /* No media query for `xs` since this is the default in Bootstrap */
+
+ /* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767px) { 
+    .three-card-group .view{
+
+    }
+    .three-card-group .mask{
+
+    }
+    .three-card-group .card-title{
+        font-size: 15px;
+    }
+    .three-card-group .card-text{
+        font-size: 13px;
+    }
+    .three-card-group .editor  {
+        /* border: 2px dotted red; */
+        
+    }
+    .three-card-group .editor p {
+        /* border: 2px dotted blue; */
+        width: 68px;
+    }
+    .three-card-group .content-share-icon .share,
+    .three-card-group .content-share-icon .bookmark {
+        width: 20px;
+        height: 20px;
+        /* border: 2px dotted yellow; */
+    }
+    .three-card-group .share span svg, 
+    .three-card-group .bookmark span svg{
+        /* border: 2px dotted black; */
+        width: 20px;
+        height: 20px;
+
+    }
+ }
+

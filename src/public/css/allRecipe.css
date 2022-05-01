@@ -13,12 +13,14 @@
 }
 .resultList .card-body h5 {
     margin-top: 0px;
+    font-size: 13px;
 }
 .resultList .result-item{
     margin-bottom: 5vh;
 }
 .resultList .result-body p{
     margin-top: 10px;
+    font-size: 14px;
 }
 .resultList .result-body p span{
     margin-right: 10px;
@@ -63,3 +65,65 @@ a.showMore {
   h4 {
     margin: 0px 0px 4px 0px;
   }
+
+
+  /* ======================== MEDIA QUERY ======================= */
+
+   /* X-Small devices (portrait phones, less than 576px) */
+ /* No media query for `xs` since this is the default in Bootstrap */
+
+ /* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) { 
+    .allRecipeImg{
+        /* border: 2px dotted red */
+    }
+ }
+
+ /* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    .allRecipeImg{
+        /* border: 2px dotted  blue; */
+        height: 150px;
+    }
+    .resultList .card-body h5 {
+        font-size: 13px;
+    }
+    .resultList .result-body p span small{
+        font-size: 65%;
+    }
+ }
+
+ /* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+    .allRecipeImg{
+        height: 200px;
+        /* border: 2px dotted green */
+    }
+    .resultList .card-body h5 {
+        font-size: 16px;
+    }
+    .resultList .result-body p span small{
+        font-size: 85%;
+    }
+ }
+
+ /* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+    .allRecipeImg{
+        height: 250px;
+        /* border: 2px dotted brown */
+    }
+    .resultList .card-body h5 {
+        font-size: 20px;
+    }
+    .resultList .result-body p{
+        font-size: 15px;
+    }
+ }
+
+ /* XX-Large devices (larger desktops, 1400px and up) */
+/* @media (min-width: 1400px) { 
+    .allRecipeImg{
+        border: 2px dotted black
+    }
+ } */
