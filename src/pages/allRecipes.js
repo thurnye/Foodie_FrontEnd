@@ -13,6 +13,7 @@ export default function allRecipes() {
                             <Filter/>
                         </div>
                         <div className="col-md-9">
+                        
                             <div className="card-body">
                                 <ResultList/>
                             </div>

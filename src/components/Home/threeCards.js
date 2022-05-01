@@ -9,17 +9,9 @@ import Avatar from '../Avatar/avatar'
 import Img2 from '../../public/images/tier3/img2.jpeg'
 import Img3 from '../../public/images/tier3/img3.jpeg'
 import Img4 from '../../public/images/tier3/img4.jpeg'
+import '../../public/css/threeCards.css'
 
 export default function threeCards() {
-    // const truncateText = function(str) {
-    //       const length = 130;
-    //       const ending = ' . . .  '
-    //     if (str.length > length) {
-    //       return str.substring(0, length - ending.length) + ending;
-    //     } else {
-    //       return str;
-    //     }
-    //   };
     return (
         <>
              <section className="three-card-group">
@@ -76,22 +68,6 @@ export default function threeCards() {
                                         <p className="share">
                                             <span className="card-icon"><Share2 strokeWidth="1"/> </span>
                                         </p>
-                                        {/* <ul className="my-social-icon">
-                                            <li className="my-social-icon-list" style={{color: '#4267B2'}}>
-                                                <FontAwesomeIcon icon={['fab', 'facebook']} />                                   
-                                            </li>
-                                            
-                                            <li className="my-social-icon-list" style={{color: '#1DA1F2'}}>
-                                                <FontAwesomeIcon icon={['fab', 'twitter']} />                                    
-                                            </li>
-                                            <li className="my-social-icon-list" style={{color: '#E60023'}}>
-                                                <FontAwesomeIcon icon={['fab', 'pinterest']} />                                   
-                                            </li>
-                                            <li className="my-social-icon-list" style={{color: '#2867B2'}}>
-                                                <FontAwesomeIcon icon={['fab', 'linkedin']} />                                    
-                                            </li>
-
-                                        </ul> */}
                                         
                                         <p className="bookmark">
                                             <span className="card-icon"><Bookmark strokeWidth="1"/> </span>

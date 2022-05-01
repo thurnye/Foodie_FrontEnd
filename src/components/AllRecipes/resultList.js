@@ -37,7 +37,7 @@ export default function ResultList() {
     return (
         <>
            <section className="resultList">
-                <div className="row row-cols-1 row-cols-md-3 g-4">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                      {recipes && recipes && recipes.map(el => {
                             return (
                                 <div className="col result-item" key={el._id}>

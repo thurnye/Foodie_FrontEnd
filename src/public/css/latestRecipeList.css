@@ -1,0 +1,13 @@
+
+
+ /* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 992px) { 
+    
+    .latest-recipes .card-body .row {
+        align-items: initial;
+    }
+    .latest-recipes .card-body .latest-recipe-body{
+        font-size: 12px;
+    }
+ }
+
