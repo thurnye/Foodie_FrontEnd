@@ -23,12 +23,12 @@ export default function CoverImage() {
                         <div className="coverImg-card-container rgba-white-slight d-flex">
                             <p>
                                 <span className="card-icon"><FontAwesomeIcon icon={['far', 'clock']} /> </span>
-                                <span><small><b>{recipe.duration[0].value.toUpperCase()}</b></small></span>
+                                <span><small><b>{recipe.duration[0].value?.toUpperCase()}</b></small></span>
                                 
                             </p>
                             <p>
                                 <span className="card-icon"><FontAwesomeIcon icon={['far', 'thumbs-up']} /> </span>
-                                <span><small><b>{recipe.level[0].value.toUpperCase()}</b></small></span>
+                                <span><small><b>{recipe.level[0].value?.toUpperCase()}</b></small></span>
                                 
                             </p>
                             <p>
@@ -38,7 +38,7 @@ export default function CoverImage() {
                             </p>
                             <p>
                                 <span className="card-icon"><Tag /> </span>
-                                <span><small><b>{recipe.category[0].value.toUpperCase()}</b></small></span>
+                                <span><small><b>{recipe.category[0].value?.toUpperCase()}</b></small></span>
                                 
                             </p>
                         </div>

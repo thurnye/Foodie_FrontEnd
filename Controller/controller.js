@@ -102,6 +102,7 @@ const postNewRecipe = async (req, res, next) => {
             nutritionFacts: req.body.nutritionFacts
 
         })
+        console.log(newRecipe);
         let savedRecipe = await newRecipe.save()
         const recipeId = {recipe: savedRecipe._id}
         const foundUser = await User.findById(authorId)

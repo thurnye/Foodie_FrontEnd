@@ -34,7 +34,7 @@ export default function NewRecipeForm() {
     const [dressing, setDressing] = useState({dressingList: "", dressingArray : []});
     const [note, setNote] = useState({noteList: "", noteArray : []});
     const [directions, setDirections] = useState(null)
-    const [thumbnail, setThumbnail] = useState(null)
+    const [thumbnail, setThumbnail] = useState()
     const [error, setError] = useState(false)
     const [dataError, setDataError] = useState(null)
 
@@ -141,15 +141,18 @@ export default function NewRecipeForm() {
         
     }
     const getDirections = (e) => {
+        console.log({directions: e});
         setDirections(e)
     }
     const getThumbnail = (e) => {
+        console.log({thumbnail: e});
         setThumbnail(e)
     }
     
     
     const onSubmit = async (data) => {
         try{
+            console.log({data})
             let errorMessage= false
             let dataError = []
 
@@ -163,7 +166,8 @@ export default function NewRecipeForm() {
                 {name: 'sugar', unit: 'g', value: data.sugar},
                 {name: 'fibers', unit: 'g', value: data.fibers}
             ]
-            
+            console.log({nutrients});
+
             for (let i=0; i < nutrients.length; i++){
                 let value = nutrients[i].value
                 if (!value || directions === null ){
@@ -195,14 +199,14 @@ export default function NewRecipeForm() {
                 errorMessage = true
                 dataError.push({name: 'directions', errorMessage: '*directions field is required'})
             }
-            let thumbnailPlaceholder;
+            // let thumbnailPlaceholder;
 
-            if(thumbnail){
-                thumbnailPlaceholder = thumbnail
-            }else{
-                thumbnailPlaceholder = "https://res.cloudinary.com/xperiacloud/image/upload/v1629663748/thePlaceholder_mvj9tj.png"
-            }
-            console.log(thumbnailPlaceholder)
+            // if(thumbnail){
+            //     thumbnailPlaceholder = thumbnail
+            // }else{
+            //     thumbnailPlaceholder = "https://res.cloudinary.com/xperiacloud/image/upload/v1629663748/thePlaceholder_mvj9tj.png"
+            // }
+            // console.log(thumbnailPlaceholder)
 
             setDataError(dataError)
             
@@ -222,12 +226,12 @@ export default function NewRecipeForm() {
                     directions: directions,
                     notes: note.noteArray,
                     author: user._id,
-                    thumbnail: thumbnailPlaceholder,
+                    thumbnail: thumbnail,
                     nutritionFacts: nutrients
     
                 }
     
-                // console.log("AllDATA:",allData)
+                console.log("AllDATA:",allData);
                 const result = await services.postRecipe(allData)
                 // console.log(result)
                   let token = result.data
@@ -254,10 +258,13 @@ export default function NewRecipeForm() {
         console.log(err)
         }
     };
+
     let errorIngredient; 
     let errorDirection;
     let errorNutrients;
     let errorOptions;
+
+    console.log(dataError);
 
     dataError && dataError.map(el => {
         
@@ -276,6 +283,8 @@ export default function NewRecipeForm() {
         
         return (errorIngredient,errorDirection, errorNutrients)
     })
+
+
     return (
         <div className="recipeForm">
             <div className="container">

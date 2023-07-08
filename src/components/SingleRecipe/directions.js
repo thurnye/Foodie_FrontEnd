@@ -11,6 +11,7 @@ import Tick from '../UI/tick'
 
 export default function Directions() {
     const recipe = useSelector(state => state.recipesData.singleRecipe)
+    console.log(recipe);
 
     
     return (
@@ -18,16 +19,17 @@ export default function Directions() {
             <Headings title="Directions"/>
         <section className="directions">
             {recipe && recipe.directions.map((el, index) =>{
+                const {title, steps, imageUrl} = el
                 return(
                     <div className="order-directions" key={index}>
                     <span className="order-number">{index + 1}.</span>
                     <div className="direction-steps">
-                        <h5 className="step-title">{el.title}:</h5>
+                        <h5 className="step-title">{title}:</h5>
                         <div className="steps">
-                            <p>{el.steps}</p>
+                            <p>{steps}</p>
                             <div className="step-1-img">
                                 <div className="row row-cols-1 row-cols-md-3 g-4">
-                                    { el.imgUrl &&  el.imgUrl.map((img, idx) =>{
+                                    {imageUrl.map((img, idx) =>{
                                         return(
                                             <div className="col-md-3" key={idx}>
                                                 <div className="card">
@@ -37,7 +39,7 @@ export default function Directions() {
                                         )
                                     })}
                                     {/* Remove later */}
-                                    <div className="col-md-3">
+                                    {/* <div className="col-md-3">
                                         <div className="card">
                                             <img src={Img1} className="card-img-top" alt="step1Image"/>
                                         </div>
@@ -46,7 +48,7 @@ export default function Directions() {
                                         <div className="card">
                                             <img src={Img2} className="card-img-top" alt="step1Image"/>
                                         </div>
-                                    </div>
+                                    </div> */}
                                     
                                 </div>
                             </div>
