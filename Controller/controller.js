@@ -125,14 +125,76 @@ const postNewRecipe = async (req, res, next) => {
 //RETRIEVE ALL RECIPES
 const getAllRecipes = async(req, res, next) => {
     try{
-        const recipes =  await Recipe.find().populate('author').exec()
-        res.status(200).json(recipes)
+        const count = await Recipe.find().count()
+        console.log(count);
+        const perPage = 9;
+        const page = req.body.currentPage
+        const recipes =  await Recipe.find({})
+        .skip((perPage * page) - perPage)
+        .limit(perPage).populate('author').exec()
+        const data = {
+            recipes, 
+            count: Math.ceil(count / perPage)
+        }
+        res.status(200).json(data)
 
     }catch(err){
         res.status(400).json(err)
     }   
 }
-//RETRIEVE ALL RECIPES For A User
+
+
+//RETRIEVE ALL  QUERY RECIPES
+const getQueryRecipes = async(req, res, next) => {
+    try{
+        console.log(req.body);
+        const filter = req.body.filter;
+        const category = filter.category
+        const page = req.body.currentPage;
+        const keyword = filter.keywordSearch
+        const options = filter.options;
+        const tags = filter.tags;
+        const perPage = 9;
+        const query = {
+        };
+        const categories = [category, ...options]
+
+        // Save Category, Tags as strings[] not as an array of objects
+        console.log(categories);
+
+        if(keyword){
+            query.recipeName =  new RegExp(keyword, 'g')
+        }
+        if(tags){
+            tags.forEach((el) => {
+                query.tags =  { $in: tags }
+            })
+        }
+        if(category){
+            query.category =  { $in: categories }
+        }
+        console.log(query);
+
+        const count = await Recipe.find(query).count();
+        const recipes = await Recipe.find(query)
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .limit(perPage).populate('author').exec()
+        const data = {
+            recipes, 
+            count: Math.ceil(count / perPage)
+        };
+        res.status(200).json(data);
+    }catch(err){
+        console.log(err)
+        res.status(400).json(err)
+    }   
+}
+
+
+
+
+//RETRIEVE ALL RECIPES For the author
 const getAUserRecipes = async(req, res, next) => {
     try{
         const authorId = req.params.id
@@ -377,6 +439,7 @@ module.exports = {
     postNewRecipe,
     postReview,
     getAllRecipes,
+    getQueryRecipes,
     getAUserRecipes,
     getOneRecipe,
     getRecipeUpdate,

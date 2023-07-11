@@ -1,12 +1,10 @@
 
 .uploadContainer{
-    border: 2px dotted blue;
     display: flex;
     flex-direction: column;
 }
 
 .previewContainer{
     flex-grow: 1;
-    border: 2px dotted red;
 
 }

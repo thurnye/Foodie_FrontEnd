@@ -15,18 +15,18 @@ export default function UserRecipeList() {
     const dispatch = useDispatch()
     const user = useSelector(state => state.userLog.user.user)
     const myRecipes = user.myRecipes
-    console.log(myRecipes)
+    // console.log(myRecipes)
     myRecipes.map(el => {
         // console.log(el.recipe._id)
     })
-    console.log("user", user)
+    // console.log("user", user)
 
       //DELETE A Recipe
     const deleteRecipe = async (id) => {
        try{ 
-            console.log(id)
+            // console.log(id)
             const result = await services.removeRecipe(id)
-            console.log(result)
+            // console.log(result)
             let token = result.data
                   localStorage.setItem('token', token);  
                   const userDoc = jwt_decode(token); 

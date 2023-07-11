@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 import Cat1 from '../../../public/images/category/cat1.png'
 import Cat2 from '../../../public/images/category/cat2.png'
 import Cat3 from '../../../public/images/category/cat3.png'
@@ -7,6 +8,33 @@ import Cat5 from '../../../public/images/category/cat5.png'
 import Cat6 from '../../../public/images/category/cat6.png'
 
 export default function category() {
+
+    const categories = [
+        {
+            name: 'Popular',
+            img: Cat1
+        },
+        {
+            name: 'Pizza',
+            img: Cat2
+        },
+        {
+            name: 'Meat',
+            img: Cat3
+        },
+        {
+            name: 'Lunch',
+            img: Cat4
+        },
+        {
+            name: 'Greens',
+            img: Cat5
+        },
+        {
+            name: 'Deserts',
+            img: Cat6
+        },
+    ];
     return (
         <>
             <div className="category-container mb-3 ">
@@ -14,30 +42,21 @@ export default function category() {
                                         <h5 className="card-title category">Category</h5>
                                         <div className="category-items container">
                                             <div className="row">
-                                                <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat1} alt="Popular"/> </a>
-                                                    <p>Popular</p>
-                                                </div>
-                                                <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat2} alt="Pizza"/> </a>
-                                                    <p>Pizza</p>
-                                                </div>
-                                                <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat3} alt="Meat"/> </a>
-                                                    <p>Meat</p>
-                                                </div>
-                                                <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat4} alt="Lunch"/> </a>
-                                                    <p>Lunch</p>
-                                                </div>
-                                                <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat5} alt="Greens"/> </a>
-                                                    <p>Greens</p>
-                                                </div>
-                                                <div className="view overlay category-img-container col-md-4 col-12">
-                                                    <a href="#"><img className="card-img-top hvr-bob" src={Cat6} alt="Desserts"/> </a>
-                                                    <p>Desserts</p>
-                                                </div>
+                                                {categories.map((el) =>  
+                                                    <div className="view overlay category-img-container col-md-4 col-12" key={el.name}>
+                                                        {/* <a href="#"> */}
+                                                        <Link to={{
+                                                            pathname: `/all-recipes` ,
+                                                            search: `?q=${(el.name).toLocaleLowerCase().replaceAll(" ", "-")}`,
+                                                            state: {category: el.name},
+                                                        }}
+                                                        > 
+                                                            <img className="card-img-top hvr-bob" src={el.img} alt="Popular"/> 
+                                                            </Link>
+                                                        {/* </a> */}
+                                                        <p>{el.name}</p>
+                                                    </div>
+                                                )}
                                             </div>
                                         </div>
                                     </div>

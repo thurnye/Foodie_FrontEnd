@@ -6,7 +6,7 @@ export default function Tags() {
     return (
         <div className="tags">
             <p>Tags: 
-                {recipe && recipe.tags.map((el, index) => <span key={index} className="text-muted recipe-tag" >{el.value}</span>)}
+                {recipe && recipe.tags.map((el, index) => <span key={index} className="text-muted recipe-tag" >{el}</span>)}
             </p>
         </div>
     )

@@ -2,7 +2,7 @@ import React from 'react'
 import { useForm } from "react-hook-form";
 import $ from 'jquery'
 
-export default function Filter() {
+export default function Filter(props) {
 
     const cats = ['Popular', 'Pizza', 'Meat', 'Lunch', 'Greens', 'Desserts', 'Snacks', 'Waffles', 'Breakfast', 'Cakes',
                         'Fast To Make', 'Grains', 'Pies', 'Sweets', 'Dinner']
@@ -21,17 +21,9 @@ export default function Filter() {
         formState: { errors },
       } = useForm();
   
-      const onSubmit = async (data) => {
-          try{
-            console.log(data)
-          }catch(err){
-            console.log(err)
-          }
-        };
+      const onSubmit =  (data) => props.getFilters(data);
 
 
-
-    
     return (
         <section className="filter">
             <div>
@@ -74,7 +66,7 @@ export default function Filter() {
                                                 className="form-check-input " 
                                                 type="checkbox" 
                                                 name={el}
-                                                {...register('category')}
+                                                {...register('options')}
                                                 defaultValue= {el} 
                                             />
                                             <label className="form-check-label text-muted" htmlFor="flexCheckChecked">

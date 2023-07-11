@@ -141,18 +141,18 @@ export default function NewRecipeForm() {
         
     }
     const getDirections = (e) => {
-        console.log({directions: e});
+        // console.log({directions: e});
         setDirections(e)
     }
     const getThumbnail = (e) => {
-        console.log({thumbnail: e});
+        // console.log({thumbnail: e});
         setThumbnail(e)
     }
     
     
     const onSubmit = async (data) => {
         try{
-            console.log({data})
+            // console.log({data})
             let errorMessage= false
             let dataError = []
 
@@ -166,7 +166,7 @@ export default function NewRecipeForm() {
                 {name: 'sugar', unit: 'g', value: data.sugar},
                 {name: 'fibers', unit: 'g', value: data.fibers}
             ]
-            console.log({nutrients});
+            // console.log({nutrients});
 
             for (let i=0; i < nutrients.length; i++){
                 let value = nutrients[i].value
@@ -212,15 +212,25 @@ export default function NewRecipeForm() {
             
 
             if((errorMessage === false) || (dataError.length === 0)){
+            
+                const uTags = [];
+                const uCategory = [];
+                const tags = selectedTag;
+                const category = selectedCat;
+
+                // console.log({tags,category})
+
+                tags.forEach((item) => uTags.push(item.value))
+                category.forEach((item) => uCategory.push(item.value))
 
                 const allData = {
                     recipeName: data.recipe_name,
                     description: data.description,
-                    serving: [selectedServing],
-                    category: [selectedCat],
-                    duration: [selectedDuration],
-                    level: [selectedLevel],
-                    tags: selectedTag,
+                    serving: selectedServing.value,
+                    category: uCategory,
+                    duration: selectedDuration.value,
+                    level: selectedLevel.value,
+                    tags: uTags,
                     mainIngredients: main.mainArray,
                     dressingIngredients: dressing.dressingArray,
                     directions: directions,
@@ -231,7 +241,7 @@ export default function NewRecipeForm() {
     
                 }
     
-                console.log("AllDATA:",allData);
+                // console.log("AllDATA:",allData);
                 const result = await services.postRecipe(allData)
                 // console.log(result)
                   let token = result.data
@@ -245,6 +255,7 @@ export default function NewRecipeForm() {
                   history.push("/"); 
             }
 
+
             
            
 
@@ -255,7 +266,7 @@ export default function NewRecipeForm() {
         
         
         }catch(err){
-        console.log(err)
+        // console.log(err)
         }
     };
 
@@ -264,7 +275,7 @@ export default function NewRecipeForm() {
     let errorNutrients;
     let errorOptions;
 
-    console.log(dataError);
+    // console.log(dataError);
 
     dataError && dataError.map(el => {
         
@@ -338,7 +349,7 @@ export default function NewRecipeForm() {
                         </div>
                                 {/* serving, category, level, duration */}
                                 <div><span role="alert" className="requiredField">{errorOptions}</span></div>
-                            <div className="row row-cols-1 row-cols-md-4 g-4">
+                            <div className="row row-cols-1 row-cols-md-3 g-4">
                                 {/* No of Servings */}
                                 <div className="col form-fields">
                                     <label htmlFor="exampleInputServing" className="form-label">Serving</label>
@@ -352,7 +363,7 @@ export default function NewRecipeForm() {
                                 </div>
                               
                                 {/* Category */}
-                                <div className="col form-fields">
+                                {/* <div className="col form-fields">
                                     <label htmlFor="exampleInputCategory" className="form-label">Category</label>
                                     <Select
                                         closeMenuOnSelect={false}
@@ -361,7 +372,7 @@ export default function NewRecipeForm() {
                                         onChange={setSelectedCat}
                                         options={catOptions}
                                     />
-                                </div>
+                                </div> */}
                                 
                                 {/* Duration/Time */}
                                 <div className="col form-fields">
@@ -402,6 +413,17 @@ export default function NewRecipeForm() {
                                         defaultValue={selectedTag}
                                         onChange={setSelectedTag}
                                         options={tagsOptions}
+                                    />
+                                </div>
+                                <div className="col form-fields">
+                                    <label htmlFor="exampleInputRecipeTag" className="form-label">Categories</label>
+                                    <Select
+                                        closeMenuOnSelect={false}
+                                        components={animatedComponents}
+                                        isMulti
+                                        defaultValue={selectedTag}
+                                        onChange={setSelectedCat}
+                                        options={catOptions}
                                     />
                                 </div>
                                 

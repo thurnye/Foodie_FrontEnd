@@ -30,8 +30,13 @@ class StuffDataService {
   }
 
   // get all recipes
-  find() {
-    return http.get("/");
+  find(data) {
+    return http.post("/", data);
+  }
+
+  // get all recipes
+  findQuery(data) {
+    return http.post("/query", data);
   }
 
   // get one recipe

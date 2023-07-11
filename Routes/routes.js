@@ -17,7 +17,11 @@ router.post('/edit/:id', Controller.postUpdatedUser);
 router.post('/api/recipe', Controller.postNewRecipe);
 
 //get all recipes
-router.get('/', Controller.getAllRecipes)
+router.post('/', Controller.getAllRecipes)
+
+
+//get all recipes
+router.post('/query', Controller.getQueryRecipes)
 
 
 

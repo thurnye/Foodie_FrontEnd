@@ -1,12 +1,6 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
 import Headings from '../UI/heading'
-import Img1 from '../../public/images/directions/img1.jpeg'
-import Img2 from '../../public/images/directions/img2.jpeg'
-import Img3 from '../../public/images/directions/img3.jpeg'
-import Img4 from '../../public/images/directions/img4.jpeg'
-import Img5 from '../../public/images/directions/img5.jpeg'
-import Img6 from '../../public/images/directions/img6.png'
 import Tick from '../UI/tick'
 
 export default function Directions() {
@@ -29,7 +23,7 @@ export default function Directions() {
                             <p>{steps}</p>
                             <div className="step-1-img">
                                 <div className="row row-cols-1 row-cols-md-3 g-4">
-                                    {imageUrl.map((img, idx) =>{
+                                    {imageUrl?.map((img, idx) =>{
                                         return(
                                             <div className="col-md-3" key={idx}>
                                                 <div className="card">
@@ -38,17 +32,6 @@ export default function Directions() {
                                             </div>
                                         )
                                     })}
-                                    {/* Remove later */}
-                                    {/* <div className="col-md-3">
-                                        <div className="card">
-                                            <img src={Img1} className="card-img-top" alt="step1Image"/>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-3">
-                                        <div className="card">
-                                            <img src={Img2} className="card-img-top" alt="step1Image"/>
-                                        </div>
-                                    </div> */}
                                     
                                 </div>
                             </div>

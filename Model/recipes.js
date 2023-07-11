@@ -11,27 +11,23 @@ const recipesSchema = new Schema({
         type: String,
         require: true
     },
-    duration: [{
-        type: Object, required: true
-    }],
-    level: [{
-        type: Object, required: true
-    }],
-    serving: [{
-        type: Object, required: true
-    }],
-    
+    duration: {type: String, required: true},
+    level: {
+        type: String, required: true
+    },
+    serving: {
+        type: String, required: true
+    },
     thumbnail: {
         type: String,
         require: true
     },
     tags: [{
-        type: Object, 
+        type: String, 
         required: true
     }],
-    category: [{
-        type: Object, required: true
-    }],
+    category: [
+        {type: String, required: true}],
 
     rating: {
         type: Number,
