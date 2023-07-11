@@ -1,0 +1,10 @@
+
+.uploadContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.previewContainer{
+    flex-grow: 1;
+
+}

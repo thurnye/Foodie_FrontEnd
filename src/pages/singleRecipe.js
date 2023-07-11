@@ -27,6 +27,7 @@ import Reviews from '../components/SingleRecipe/reviewList';
 
 export default function SingleMeal(props) {
     const recipeId = props.location.state.recipeId
+    console.log(recipeId)
     const dispatch = useDispatch()
     const [recipe, setRecipe] = useState(null)
     

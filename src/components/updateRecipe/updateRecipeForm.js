@@ -20,12 +20,12 @@ import Thumbnail from './thumbnail'
 
 export default function NewRecipeForm() {
     const dispatch = useDispatch()
-    // const history = useHistory();
+    const history = useHistory();
     const animatedComponents = makeAnimated();
 
     const user = useSelector(state => state.userLog.user.user)
     const recipe = useSelector(state => state.recipesData.singleRecipe)
-  
+    const [id, setId] = useState()
     // Updated Values
     const [selectedTag, setSelectedTag] = useState(null);
     const [selectedCat, setSelectedCat] = useState(null);
@@ -39,11 +39,13 @@ export default function NewRecipeForm() {
     const [thumbnail, setThumbnail] = useState(null)
     const [error, setError] = useState(false)
     const [dataError, setDataError] = useState(null)
+    
 
 
     // Add the mainingredient inside the mainArray
     useEffect(() => {
         // imported Values
+        // console.log(recipe)
         if(recipe){
             // put dressing inside the dressing Array
             const dressingVal = []
@@ -70,9 +72,13 @@ export default function NewRecipeForm() {
                 }
                 noteVal.push(item)  
             })
-            console.log(dressingVal)
-            console.log(mainVal)
-            console.log(noteVal)
+            setId(recipe._id)
+            setSelectedCat(recipe.category.map(el => ({value: el, label: el})))
+            setSelectedDuration({value:recipe.duration, label: recipe.duration})
+            setSelectedLevel({value:recipe.level, label: recipe.level})
+            setSelectedServing({value:recipe.serving, label: recipe.serving})
+            setSelectedTag(recipe.tags.map(el => ({value: el, label: el})))
+            setThumbnail(recipe.thumbnail)
             setMain({
                     mainArray: main.mainArray.concat(mainVal),
                 })
@@ -84,18 +90,6 @@ export default function NewRecipeForm() {
                 })
         }
       },[recipe])
-    // if(recipe){
-    //     // put dressing inside the dressing Array
-    //     recipe.mainIngredients.forEach(el => { 
-    //         setMain({
-    //             mainArray: main.mainArray.concat({el}),
-    //         })
-    //     })
-    //     console.log('mainingredients:',recipe.mainIngredients)
-    //     console.log('dressingIngredients:',recipe.dressingIngredients)
-    //     console.log('directions',recipe.directions)
-    //     console.log('notes: ',recipe.notes)
-    // }
 
     const {
         register, 
@@ -110,6 +104,7 @@ export default function NewRecipeForm() {
     const levelOptions = []
     
 
+    
     MetaData[0].tags.forEach(el => {
         tagsOptions.push(
             { value: el, label: el }
@@ -212,7 +207,6 @@ export default function NewRecipeForm() {
         try{
             let errorMessage= false
             let dataError = []
-
             const nutrients = [
                 {name: 'calories' ,unit: 'g', value:data.calories},
                 {name: 'satFat', unit: 'g', value: data.satFat},
@@ -239,66 +233,72 @@ export default function NewRecipeForm() {
                 selectedServing === null ||
                 selectedDuration === null ||
                 selectedLevel === null 
-            ){  
-                errorMessage = true
-                dataError.push({ name: 'options', errorMessage: '*missing tag, category, serving, duration or level is required'})
-            }
-
-            // Check for Ingredients
-            if( main.mainArray.length === 0 || dressing.dressingArray.length === 0){
-                errorMessage = true
-                dataError.push({name: 'ingredients', errorMessage: '*ingredient field is required'})
-            }
-
-            // Check for directions
-            if( directions === null  || dressing.dressingArray.length === 0){
-                errorMessage = true
-                dataError.push({name: 'directions', errorMessage: '*directions field is required'})
-            }
-            let thumbnailPlaceholder;
-
-            if(thumbnail){
-                thumbnailPlaceholder = thumbnail
-            }else{
-                thumbnailPlaceholder = "https://res.cloudinary.com/xperiacloud/image/upload/v1629663748/thePlaceholder_mvj9tj.png"
-            }
-            console.log(thumbnailPlaceholder)
-
-            setDataError(dataError)
-            
+                ){  
+                    errorMessage = true
+                    dataError.push({ name: 'options', errorMessage: '*missing tag, category, serving, duration or level is required'})
+                }
+                
+                // Check for Ingredients
+                if( main.mainArray.length === 0 || dressing.dressingArray.length === 0){
+                    errorMessage = true
+                    dataError.push({name: 'ingredients', errorMessage: '*ingredient field is required'})
+                }
+                
+                // Check for directions
+                if( directions === null  || dressing.dressingArray.length === 0){
+                    errorMessage = true
+                    dataError.push({name: 'directions', errorMessage: '*directions field is required'})
+                }
+                
+                
+                setDataError(dataError)
+                
 
             if((errorMessage === false) || (dataError.length === 0)){
+                const uTags = [];
+                const uCategory = [];
+                // console.log(el)
+                const tags = selectedTag;
+                const category = selectedCat;
+
+                // console.log({tags, category})
+                // console.log({selectedLevel, selectedDuration, selectedServing})
+
+                tags.forEach((item) => uTags.push(item.value))
+                category.forEach((item) => uCategory.push(item.value))
 
                 const allData = {
+                    loggedUser: user._id,
                     recipeName: data.recipe_name,
                     description: data.description,
-                    serving: [selectedServing],
-                    category: [selectedCat],
-                    duration: [selectedDuration],
-                    level: [selectedLevel],
-                    tags: selectedTag,
+                    serving: selectedServing.value,
+                    category: uCategory,
+                    duration: selectedDuration.value,
+                    level: selectedLevel.value,
+                    tags: uTags,
                     mainIngredients: main.mainArray,
                     dressingIngredients: dressing.dressingArray,
                     directions: directions,
                     notes: note.noteArray,
                     author: user._id,
-                    thumbnail: thumbnailPlaceholder,
+                    thumbnail: thumbnail,
                     nutritionFacts: nutrients
     
                 }
     
-                console.log("AllDATA:",allData)
-                // const result = await services.postRecipe(allData)
-                // // console.log(result)
-                //   let token = result.data
-                //   localStorage.setItem('token', token);  
-                //   const userDoc = jwt_decode(token); 
+                // console.log("AllDATA:",allData)
+                const result = await services.postUpdatedRecipe(id, allData)
+                console.log(result)
+                let token = result.data
+                localStorage.setItem('token', token);  
+                const userDoc = jwt_decode(token); 
 
-                //   // store the user in redux state
-                //   dispatch(userActions.login({
-                //     user: userDoc
-                //   }))
-                //   history.push("/"); 
+                // store the user in redux state
+                dispatch(userActions.login({
+                    user: userDoc
+                }))
+                  
+                  history.push("/new-account"); 
             }
 
             
@@ -315,6 +315,7 @@ export default function NewRecipeForm() {
         }
     };
 
+    
     let errorIngredient; 
     let errorDirection;
     let errorNutrients;
@@ -389,27 +390,27 @@ export default function NewRecipeForm() {
                                             </div>
                                         </div>
                                     <div className="col-md-4">
-                                        <Thumbnail getThumbnail={getThumbnail}/>
+                                        <Thumbnail getThumbnail={getThumbnail} thumbnail={thumbnail}/>
                                     </div>
                                 </div>
                             </div>
                                     {/* serving, category, level, duration */}
                                     <div><span role="alert" className="requiredField">{errorOptions}</span></div>
-                                <div className="row row-cols-1 row-cols-md-4 g-4">
+                                <div className="row row-cols-1 row-cols-md-3 g-4">
                                     {/* No of Servings */}
                                     <div className="col form-fields">
                                         <label htmlFor="exampleInputServing" className="form-label">Serving</label>
                                         <Select
                                             closeMenuOnSelect={false}
                                             components={animatedComponents}
-                                            defaultValue={recipe.serving}
+                                            defaultValue={{value:recipe.serving, label: recipe.serving}}
                                             onChange={setSelectedServing}
                                             options={servingOptions}
                                         />
                                     </div>
                                 
                                     {/* Category */}
-                                    <div className="col form-fields">
+                                    {/* <div className="col form-fields">
                                         <label htmlFor="exampleInputCategory" className="form-label">Category</label>
                                         <Select
                                             closeMenuOnSelect={false}
@@ -418,7 +419,7 @@ export default function NewRecipeForm() {
                                             onChange={setSelectedCat}
                                             options={catOptions}
                                         />
-                                    </div>
+                                    </div> */}
                                     
                                     {/* Duration/Time */}
                                     <div className="col form-fields">
@@ -426,7 +427,7 @@ export default function NewRecipeForm() {
                                         <Select
                                             closeMenuOnSelect={false}
                                             components={animatedComponents}
-                                            defaultValue={recipe.duration}
+                                            defaultValue={{value:recipe.duration, label: recipe.duration}}
                                             onChange={setSelectedDuration}
                                             options={durationOptions}
                                         />
@@ -438,7 +439,7 @@ export default function NewRecipeForm() {
                                         <Select
                                             closeMenuOnSelect={false}
                                             components={animatedComponents}
-                                            defaultValue={recipe.level}
+                                            defaultValue={{value:recipe.level, label: recipe.level}}
                                             onChange={setSelectedLevel}
                                             options={levelOptions}
                                         />
@@ -456,9 +457,27 @@ export default function NewRecipeForm() {
                                             closeMenuOnSelect={false}
                                             components={animatedComponents}
                                             isMulti
-                                            defaultValue={recipe.tags}
+                                            defaultValue={recipe.tags.map(el => ({
+                                                value: el,
+                                                label: el
+                                            }))}
                                             onChange={setSelectedTag}
                                             options={tagsOptions}
+                                        />
+                                    </div>
+                                    {/* Categories */}
+                                    <div className="col form-fields">
+                                        <label htmlFor="exampleInputRecipeTag" className="form-label">Category</label>
+                                        <Select
+                                            closeMenuOnSelect={false}
+                                            components={animatedComponents}
+                                            isMulti
+                                            defaultValue={recipe.category.map(el => ({
+                                                value: el,
+                                                label: el
+                                            }))}
+                                            onChange={setSelectedCat}
+                                            options={catOptions}
                                         />
                                     </div>
                                     

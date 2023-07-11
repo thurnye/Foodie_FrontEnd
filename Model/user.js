@@ -44,6 +44,13 @@ const userSchema = new Schema({
       }
     }
   ],
+  images: [{
+      recipe: {
+        type: Schema.Types.ObjectId,
+        ref: 'FoodBlogImgs',
+      }
+    }
+  ],
   bookmarks: [{
       recipe: {
         type: Schema.Types.ObjectId,

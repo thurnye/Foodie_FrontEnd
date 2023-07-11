@@ -102,6 +102,7 @@ const postNewRecipe = async (req, res, next) => {
             nutritionFacts: req.body.nutritionFacts
 
         })
+        console.log(newRecipe);
         let savedRecipe = await newRecipe.save()
         const recipeId = {recipe: savedRecipe._id}
         const foundUser = await User.findById(authorId)
@@ -124,13 +125,89 @@ const postNewRecipe = async (req, res, next) => {
 //RETRIEVE ALL RECIPES
 const getAllRecipes = async(req, res, next) => {
     try{
+        const count = await Recipe.find().count()
+        console.log(count);
+        const perPage = 9;
+        const page = req.body.currentPage
+        const recipes =  await Recipe.find({})
+        .skip((perPage * page) - perPage)
+        .limit(perPage).populate('author').exec()
+        const data = {
+            recipes, 
+            count: Math.ceil(count / perPage)
+        }
+        res.status(200).json(data)
+
+    }catch(err){
+        res.status(400).json(err)
+    }   
+}
+
+
+//RETRIEVE ALL  QUERY RECIPES
+const getQueryRecipes = async(req, res, next) => {
+    try{
+        console.log(req.body);
+        const filter = req.body.filter;
+        const category = filter.category
+        const page = req.body.currentPage;
+        const keyword = filter.keywordSearch
+        const options = filter.options;
+        const tags = filter.tags;
+        const perPage = 9;
+        const query = {
+        };
+        const categories = [category, ...options]
+
+        // Save Category, Tags as strings[] not as an array of objects
+        console.log(categories);
+
+        if(keyword){
+            query.recipeName =  new RegExp(keyword, 'g')
+        }
+        if(tags){
+            tags.forEach((el) => {
+                query.tags =  { $in: tags }
+            })
+        }
+        if(category){
+            query.category =  { $in: categories }
+        }
+        console.log(query);
+
+        const count = await Recipe.find(query).count();
+        const recipes = await Recipe.find(query)
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .limit(perPage).populate('author').exec()
+        const data = {
+            recipes, 
+            count: Math.ceil(count / perPage)
+        };
+        res.status(200).json(data);
+    }catch(err){
+        console.log(err)
+        res.status(400).json(err)
+    }   
+}
+
+
+
+
+//RETRIEVE ALL RECIPES For the author
+const getAUserRecipes = async(req, res, next) => {
+    try{
+        const authorId = req.params.id
         const recipes =  await Recipe.find().populate('author').exec()
+        console.log(recipes)
         res.status(200).json(recipes)
 
     }catch(err){
         res.status(400).json(err)
     }   
 }
+
+
 //RETRIVE A Recipe BY ID
 const getOneRecipe = async (req, res, next) => {
     try{
@@ -191,6 +268,54 @@ const postReview = async (req, res, next) => {
     }catch(err){
         res.status(400).json(err)
     } 
+}
+
+//UPDATING A RECIPE
+const getRecipeUpdate = async(req, res, next) => {
+    try{
+        
+        const loggedUser = req.body.loggedUser
+        
+        //find the receipe 
+        const recipe = await Recipe.findById(req.params.id)
+        // console.log("recipe", recipe)
+        if(recipe.author.toString() === loggedUser.toString()){
+            recipe.recipeName= req.body.recipeName
+            recipe.description= req.body.description
+            recipe.serving= req.body.serving
+            recipe.category= req.body.category
+            recipe.duration= req.body.duration
+            recipe.level= req.body.level
+            recipe.tags= req.body.tags
+            recipe.mainIngredients= req.body.mainIngredients
+            recipe.dressingIngredients= req.body.dressingIngredients
+            recipe.directions= req.body.directions
+            recipe.notes= req.body.notes
+            recipe.thumbnail= req.body.thumbnail
+            recipe.nutritionFacts= req.body.nutritionFacts
+
+            recipe.save()
+            
+            const user =  await User.findById(recipe.author).populate({
+                path: 'myRecipes.recipe'
+            }).exec()
+            const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+            res.status(200).json(token)
+            // res.status(200).json()
+        }
+
+        
+        // let savedRecipe = await newRecipe.save()
+        // const recipeId = {recipe: savedRecipe._id}
+        // const foundUser = await User.findById(authorId)
+
+        // foundUser.myRecipes.push(recipeId)
+        
+        // await foundUser.save()
+
+    }catch(err){
+
+    }
 }
 
 //DELETING A RECIPE
@@ -314,7 +439,10 @@ module.exports = {
     postNewRecipe,
     postReview,
     getAllRecipes,
+    getQueryRecipes,
+    getAUserRecipes,
     getOneRecipe,
+    getRecipeUpdate,
     postDeleteARecipe,
     
     

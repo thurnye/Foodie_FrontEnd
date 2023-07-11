@@ -50,6 +50,16 @@
     align-items: center;
     /* border: 1px solid #dadada; */
 }
+
+.removeImg{
+    position: absolute;
+    right: 0;
+    background-color: salmon;
+    border-radius: 1px;
+    width: 15px;
+    text-align: center;
+
+}
 /* disable the submit button in the drag and drop */
 .dzu-submitButtonContainer {
    

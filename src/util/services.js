@@ -30,13 +30,23 @@ class StuffDataService {
   }
 
   // get all recipes
-  find() {
-    return http.get("/");
+  find(data) {
+    return http.post("/", data);
+  }
+
+  // get all recipes
+  findQuery(data) {
+    return http.post("/query", data);
   }
 
   // get one recipe
   findById(id) {
     return http.get(`/api/${id}`);
+  }
+
+  //updateRecipe
+  postUpdatedRecipe(id, data) {
+    return http.post(`/api/recipe/update/${id}`, data);
   }
 
   // remove Recipe
@@ -54,9 +64,9 @@ class StuffDataService {
     return http.get(`/edit/${id}`);
   }
 
-  postEdit(id, data) {
-    return http.post(`/edit/${id}`, data);
-  }
+  // postEdit(id, data) {
+  //   return http.post(`/edit/${id}`, data);
+  // }
 
   remove(id) {
     return http.post(`/api/${id}`);

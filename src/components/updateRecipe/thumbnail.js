@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
-import thumbnail from '../../public/images/placeholders/thumbnail.jpeg'
-export default function MultiFileUploadComponent (props) {
 
+
+
+
+export default function MultiFileUploadComponent (props) {
+    const {getThumbnail, thumbnail} = props
     const filesArray = [];
     const filesCollection = [];
 
@@ -17,29 +20,28 @@ export default function MultiFileUploadComponent (props) {
         setFiles(filesCollection)
         const acceptedFiles = []
         // send the thumbnail to the
+        if(file){
 
-        // if(file){
+            for(let i=0; i< file.length; i++){
+                acceptedFiles.push(file[i])
+            }
+            const url = `https://api.cloudinary.com/v1_1/xperiacloud/upload`
 
-        //     for(let i=0; i< file.length; i++){
-        //         acceptedFiles.push(file[i])
-        //     }
-        //     const url = `https://api.cloudinary.com/v1_1/xperiacloud/upload`
-
-        //     acceptedFiles.forEach( async(acceptedFiles)=>{
-        //         const formData = new FormData();
-        //         formData.append('file', acceptedFiles)
-        //         formData.append('upload_preset', 'Xperia')
+            acceptedFiles.forEach( async(acceptedFiles)=>{
+                const formData = new FormData();
+                formData.append('file', acceptedFiles)
+                formData.append('upload_preset', 'Xperia')
                 
-        //         const response = await fetch(url, {
-        //             method : 'post',
-        //             body: formData
-        //         })
-        //         const data = await response.json()
-        //         props.getThumbnail(data.url)
-        //     })
+                const response = await fetch(url, {
+                    method : 'post',
+                    body: formData
+                })
+                const data = await response.json()
+                getThumbnail(data.url)
+            })
 
             
-        // }
+        }
         
     }
 

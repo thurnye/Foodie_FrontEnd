@@ -17,13 +17,22 @@ router.post('/edit/:id', Controller.postUpdatedUser);
 router.post('/api/recipe', Controller.postNewRecipe);
 
 //get all recipes
-router.get('/', Controller.getAllRecipes)
+router.post('/', Controller.getAllRecipes)
+
+
+//get all recipes
+router.post('/query', Controller.getQueryRecipes)
+
+
 
 //post new user review 
 router.post('/api/recipe/review', Controller.postReview);
 
 //getting a recipe by id
 router.get('/api/:id', Controller.getOneRecipe);
+
+//update a recipe by id
+router.post('/api/recipe/update/:id', Controller.getRecipeUpdate);
 
 //delete a recipe
 router.post('/api/removeRecipe/:id', Controller.postDeleteARecipe);
