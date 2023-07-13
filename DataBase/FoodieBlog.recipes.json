@@ -3,20 +3,15 @@
   "_id": {
     "$oid": "64a9e754bec4744f13b9346a"
   },
-  "duration": 
-    "30 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    5
-  ,
+  "duration": "30 Minutes",
+  "level": "Medium",
+  "serving": "10+",
   "tags": [
     "15 minutes or less"
   ],
   "category": [
-    "Dinner"
+    "Dinner",
+    "Desserts"
   ],
   "notes": [],
   "mainIngredients": [
@@ -25,9 +20,21 @@
       "id": {
         "$numberLong": "1688855809669"
       }
+    },
+    {
+      "mainList": "2fgrgr",
+      "id": {
+        "$numberLong": "1688855809669"
+      }
     }
   ],
   "dressingIngredients": [
+    {
+      "dressingList": "2fgrgr",
+      "id": {
+        "$numberLong": "1688855811365"
+      }
+    },
     {
       "dressingList": "2fgrgr",
       "id": {
@@ -97,23 +104,17 @@
     "$date": "2023-07-08T22:46:44.377Z"
   },
   "updatedAt": {
-    "$date": "2023-07-09T19:52:13.762Z"
+    "$date": "2023-07-11T01:40:57.337Z"
   },
-  "__v": 2
+  "__v": 3
 },
 {
   "_id": {
     "$oid": "64a9eeb95778fe5ea0936c27"
   },
-  "duration": 
-    "10 Minutes"
-  ,
-  "level": 
-    "Easy"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "10 Minutes",
+  "level": "Easy",
+  "serving": 1,
   "tags": [
     "10 ingredients or less",
     "Recipes"
@@ -222,15 +223,9 @@
   "_id": {
     "$oid": "64aafce36990a179473ccc89"
   },
-  "duration": 
-    "10 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "10 Minutes",
+  "level": "Medium",
+  "serving": 1,
   "tags": [
     "10 ingredients or less",
     "appetizer",
@@ -326,15 +321,9 @@
   "_id": {
     "$oid": "64aafe0c6990a179473ccc8b"
   },
-  "duration": 
-    "10 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    5
-  ,
+  "duration": "10 Minutes",
+  "level": "Medium",
+  "serving": 5,
   "tags": [
     "10 ingredients or less",
     "15 minutes or less",
@@ -430,15 +419,9 @@
   "_id": {
     "$oid": "64aaff8c45085c7befdc96c5"
   },
-  "duration": 
-    "5 Minutes"
-  ,
-  "level": 
-    "Easy"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "5 Minutes",
+  "level": "Easy",
+  "serving": 1,
   "tags": [
     "10 ingredients or less"
   ],
@@ -542,15 +525,9 @@
   "_id": {
     "$oid": "64ab0456548be590c89c02ea"
   },
-  "duration": 
-    "60 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "60 Minutes",
+  "level": "Medium",
+  "serving": 1,
   "tags": [
     "10 ingredients or less"
   ],
@@ -649,15 +626,9 @@
   "_id": {
     "$oid": "64ab0456548be590c89c02eb"
   },
-  "duration": 
-    "30 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "30 Minutes",
+  "level": "Medium",
+  "serving": 1,
   "tags": [
     "10 ingredients or less"
   ],
@@ -793,14 +764,14 @@
   "author": {
     "$oid": "612296fc86231100a0631b22"
   },
-  "recipeName": "Fudge waffles with ice cream and chocolate sauce",
+  "recipeName": "Apple tart recipe: extra buttery & flaky crust",
   "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
   "reviews": [],
   "createdAt": {
     "$date": "2023-07-09T19:02:46.078Z"
   },
   "updatedAt": {
-    "$date": "2023-07-10T03:07:58.856Z"
+    "$date": "2023-07-11T21:40:44.494Z"
   },
   "__v": 2,
   "thumbnail": "http://res.cloudinary.com/xperiacloud/image/upload/v1688929881/mm78ypk1qmnlhpqfjhmq.jpg"
@@ -809,15 +780,9 @@
   "_id": {
     "$oid": "64ab0456548be590c89c02ec"
   },
-  "duration": 
-    "60 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "60 Minutes",
+  "level": "Medium",
+  "serving": 1,
   "tags": [
     "10 ingredients or less"
   ],
@@ -926,15 +891,9 @@
   "_id": {
     "$oid": "64ab0456548be590c89c02ed"
   },
-  "duration": 
-    "60 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "60 Minutes",
+  "level": "Medium",
+  "serving": 1,
   "tags": [
     "10 ingredients or less"
   ],
@@ -1026,15 +985,9 @@
   "_id": {
     "$oid": "64ab0456548be590c89c02ee"
   },
-  "duration": 
-    "5 Minutes"
-  ,
-  "level": 
-    "Easy"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "5 Minutes",
+  "level": "Easy",
+  "serving": 1,
   "tags": [
     "10 ingredients or less"
   ],
@@ -1150,15 +1103,9 @@
   "_id": {
     "$oid": "64ab7469f86e56f5d7278682"
   },
-  "duration": 
-    "30 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "30 Minutes",
+  "level": "Medium",
+  "serving": 1,
   "tags": [
     "10 ingredients or less"
   ],
@@ -1296,15 +1243,9 @@
   "_id": {
     "$oid": "64ab7469f86e56f5d7278683"
   },
-  "duration": 
-    "30 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    5
-  ,
+  "duration": "30 Minutes",
+  "level": "Medium",
+  "serving": 5,
   "tags": [
     "10 ingredients or less"
   ],
@@ -1442,15 +1383,9 @@
   "_id": {
     "$oid": "64ab7469f86e56f5d7278684"
   },
-  "duration": 
-    "30 Minutes"
-  ,
-  "level": 
-    "Medium"
-  ,
-  "serving": 
-    1
-  ,
+  "duration": "30 Minutes",
+  "level": "Medium",
+  "serving": 1,
   "tags": [
     "10 ingredients or less"
   ],

@@ -12,6 +12,8 @@ router.post('/api/user/login', Controller.getLogIn);
 //post the updated user
 router.post('/edit/:id', Controller.postUpdatedUser);
 
+//get the updated user
+router.post('/user/:id', Controller.getAUserRecipes);
 
 //post new recipe ---> this will be the post recipe
 router.post('/api/recipe', Controller.postNewRecipe);

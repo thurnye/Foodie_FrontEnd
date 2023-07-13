@@ -12,6 +12,11 @@ class StuffDataService {
     return http.post(`/edit/${id}`, data);
   }
 
+  // get user recipes
+  getUserRecipes(id, data) {
+    return http.post(`/user/${id}`, data);
+  }
+
   // login
   postLogin(data) {
     return http.post(`/api/user/login`, data);

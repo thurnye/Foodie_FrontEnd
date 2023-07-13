@@ -5,8 +5,9 @@ import { ThumbsUp, Clock } from 'react-feather';
 import services from '../../util/services'
 import {recipesActions} from '../../store/allRecipesSlice'
 import '../../public/css/allRecipe.css'
+import './resultList.css';
 import CustomPagination from '../CustomPagination/CustomPagination';
-import {dummyRecipes} from '../updateRecipe/doc'
+
 
 export default function ResultList(props) {
     let location = useLocation()
@@ -16,17 +17,22 @@ export default function ResultList(props) {
     const [recipes, setRecipes] = useState(null)
     const [currentPage, setCurrentPage] = useState(1)
     const [counts, setCounts] = useState(0);
+    const [loading, setLoading] = useState(true);
     const [allRecipes, setAllRecipes] = useState();
     
     // Get All Recipes
     const fetchRecipes = async () => {
+        setLoading(true)
         const all = await services.find({currentPage});
         setAllRecipes(all)
+        setLoading(false);
     }
     // Get Query Recipes
     const fetchFilteredRecipes = async (query) => {
+        setLoading(true)
         const all = await services.findQuery(query);
         setAllRecipes(all)
+        setLoading(false);
     }
 
     useEffect(() => {
@@ -36,15 +42,6 @@ export default function ResultList(props) {
             fetchRecipes()
         }
         if(category || selections){
-            // const cat = category;
-            // const fil = selections.category;
-            // const union = [
-            //     ...(selections ? selections : ''),
-            //     ...(category ? category : '')
-            // ]
-
-            // const categories = [...category,selections.category]
-            // console.log(cat, fil)
             const filter = {...selections, category}
             fetchFilteredRecipes({filter, currentPage});
         }
@@ -63,19 +60,15 @@ export default function ResultList(props) {
         }
     },[allRecipes, dispatch]);
 
-    const onPageChange = (e) => {
-        // console.log(e);
-        setCurrentPage(e)
-    }
-    const handleClickMe = () => {
-        // dummyRecipes.forEach(async (el) => {
-        //     await services.postRecipe(el)
-        // })
-    }
     return (
         <>
-        {/* <button onClick={handleClickMe}> Click me</button> */}
            <section className="resultList">
+            {loading ? 
+                    <div className="text-center resultSpinnerContainer">
+                        <div className="spinner-border text-secondary" role="status">
+                        </div>
+                    </div> 
+                  :
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
                      {recipes && recipes && recipes.map(el => {
                             return (
@@ -100,10 +93,10 @@ export default function ResultList(props) {
                     </div>
                             )
                     })} 
-                </div> 
-        
+                </div>
+            } 
             </section>
-            {counts > 1 && <CustomPagination totalPages={counts} currentPage={currentPage} onPageChange={onPageChange}/>}
+            {counts > 1 && <CustomPagination totalPages={counts} currentPage={currentPage} onPageChange={setCurrentPage}/>}
         </>
     )
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {convertToBase64} from '../../util/commons'
 
 
-const AddImg = ()  => {
+const AddImg = (props)  => {
     const [postImage, setPostImage] = useState()
 
     const multiImagePreview = async (event) => {
@@ -10,7 +10,7 @@ const AddImg = ()  => {
         const base64 = await convertToBase64(file);
         setPostImage(base64)
         console.log(base64);
-        
+        props.getValue(base64)
     }
   return (
     <div className="container">

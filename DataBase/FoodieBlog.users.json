@@ -1,0 +1,306 @@
+[{
+  "_id": {
+    "$oid": "612296fc86231100a0631b22"
+  },
+  "resourceList": [],
+  "socialMedia": [
+    {
+      "facebook": "www.facebook.com",
+      "twitter": "www.twitter.com",
+      "linkedIn": "www.linkedin.com",
+      "pinterest": "www.pinterest.com"
+    }
+  ],
+  "firstName": "Test",
+  "lastName": "Tester",
+  "email": "testprogram404@gmail.com",
+  "password": "$2b$06$acCklapUuwNH5N29fGvkcuJSXbkL0IeyTLhEcoLv9HNcBL/heauM6",
+  "createdAt": {
+    "$date": "2021-08-22T18:27:08.325Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-12T02:22:47.804Z"
+  },
+  "__v": 108,
+  "aboutMe": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+  "avatar": "https://res.cloudinary.com/xperiacloud/image/upload/v1629673217/imgPlaceholder_vwmmo9.jpg",
+  "location": "Toronto",
+  "slogan": "I create simple, delicious recipes that require 10 ingredients or less, one bowl, or 30 minutes or less to prepare.",
+  "bookmarks": [],
+  "favorites": [],
+  "myRecipes": [
+    {
+      "_id": {
+        "$oid": "64a9e754bec4744f13b9346b"
+      },
+      "recipe": {
+        "$oid": "64a9e754bec4744f13b9346a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64a9eeba5778fe5ea0936c28"
+      },
+      "recipe": {
+        "$oid": "64a9eeb95778fe5ea0936c27"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64aafce36990a179473ccc8a"
+      },
+      "recipe": {
+        "$oid": "64aafce36990a179473ccc89"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64aafe0c6990a179473ccc8c"
+      },
+      "recipe": {
+        "$oid": "64aafe0c6990a179473ccc8b"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64aaff8c45085c7befdc96c6"
+      },
+      "recipe": {
+        "$oid": "64aaff8c45085c7befdc96c5"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ab0456548be590c89c02ef"
+      },
+      "recipe": {
+        "$oid": "64ab0456548be590c89c02ea"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ab0456548be590c89c02f1"
+      },
+      "recipe": {
+        "$oid": "64ab0456548be590c89c02ec"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ab0456548be590c89c02f0"
+      },
+      "recipe": {
+        "$oid": "64ab0456548be590c89c02eb"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ab0456548be590c89c02f3"
+      },
+      "recipe": {
+        "$oid": "64ab0456548be590c89c02ee"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ab0456548be590c89c02f2"
+      },
+      "recipe": {
+        "$oid": "64ab0456548be590c89c02ed"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ab746af86e56f5d7278685"
+      },
+      "recipe": {
+        "$oid": "64ab7469f86e56f5d7278682"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ab746af86e56f5d7278686"
+      },
+      "recipe": {
+        "$oid": "64ab7469f86e56f5d7278683"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ab746af86e56f5d7278687"
+      },
+      "recipe": {
+        "$oid": "64ab7469f86e56f5d7278684"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf115e6c5c061a7c8970d"
+      },
+      "recipe": {
+        "$oid": "64adf115e6c5c061a7c89708"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf115e6c5c061a7c89710"
+      },
+      "recipe": {
+        "$oid": "64adf115e6c5c061a7c8970a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf115e6c5c061a7c8970e"
+      },
+      "recipe": {
+        "$oid": "64adf115e6c5c061a7c89709"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf115e6c5c061a7c8970f"
+      },
+      "recipe": {
+        "$oid": "64adf115e6c5c061a7c89707"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf115e6c5c061a7c89711"
+      },
+      "recipe": {
+        "$oid": "64adf115e6c5c061a7c8970b"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf115e6c5c061a7c89712"
+      },
+      "recipe": {
+        "$oid": "64adf115e6c5c061a7c8970c"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf117e6c5c061a7c89715"
+      },
+      "recipe": {
+        "$oid": "64adf116e6c5c061a7c89714"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf117e6c5c061a7c89716"
+      },
+      "recipe": {
+        "$oid": "64adf116e6c5c061a7c89713"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89d440fba752e5e1b8c"
+      },
+      "recipe": {
+        "$oid": "64adf89c440fba752e5e1b87"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89d440fba752e5e1b8d"
+      },
+      "recipe": {
+        "$oid": "64adf89c440fba752e5e1b86"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89d440fba752e5e1b8e"
+      },
+      "recipe": {
+        "$oid": "64adf89c440fba752e5e1b88"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89d440fba752e5e1b8f"
+      },
+      "recipe": {
+        "$oid": "64adf89c440fba752e5e1b89"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89d440fba752e5e1b90"
+      },
+      "recipe": {
+        "$oid": "64adf89d440fba752e5e1b8b"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89d440fba752e5e1b91"
+      },
+      "recipe": {
+        "$oid": "64adf89c440fba752e5e1b8a"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89f440fba752e5e1b96"
+      },
+      "recipe": {
+        "$oid": "64adf89e440fba752e5e1b92"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89f440fba752e5e1b98"
+      },
+      "recipe": {
+        "$oid": "64adf89f440fba752e5e1b95"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89f440fba752e5e1b9a"
+      },
+      "recipe": {
+        "$oid": "64adf89e440fba752e5e1b93"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf89f440fba752e5e1b9b"
+      },
+      "recipe": {
+        "$oid": "64adf89e440fba752e5e1b94"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf8a0440fba752e5e1b9c"
+      },
+      "recipe": {
+        "$oid": "64adf89f440fba752e5e1b97"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64adf8a0440fba752e5e1b9d"
+      },
+      "recipe": {
+        "$oid": "64adf89f440fba752e5e1b99"
+      }
+    },
+    {
+      "_id": {
+        "$oid": "64ae0e77468806241e8e48c0"
+      },
+      "recipe": {
+        "$oid": "64ae0e77468806241e8e48bf"
+      }
+    }
+  ],
+  "images": []
+}]
