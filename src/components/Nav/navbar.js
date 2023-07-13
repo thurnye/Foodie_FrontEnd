@@ -25,6 +25,7 @@ function Header(){
     }
     
   }
+
     return (
         <React.Fragment>
 
@@ -32,7 +33,7 @@ function Header(){
             <header className="header">
                 <Navbar  expand="lg" >
                     <Navbar.Brand href="/">
-                        TEST
+                        FOODIE
                     </Navbar.Brand>
 
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -43,7 +44,11 @@ function Header(){
                         <Nav.Link href="/forum">Forum</Nav.Link>
                         {!user && <Nav.Link href="/login">Login</Nav.Link>}
                         {user && <Nav.Link href="/new-recipe">Add Recipe</Nav.Link>}
-                        {user && <Nav.Link href="/new-account">Account</Nav.Link>}
+                        {user && <Link to={{
+                                        pathname: `/new-account` ,
+                                        state: {userId: user.user._id},
+                                    }}
+                                    > Account</Link>}
                         {user &&  <button className="nav-link btn" onClick={logoutHandler}>Logout</button>}
                         </Nav>
                     </Navbar.Collapse>

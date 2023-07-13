@@ -47,7 +47,7 @@
 }
 .user-recipe-list-items{
     /* border: 2px dotted red; */
-    max-height: 630px;
+    max-height: 550px;
     overflow: auto;
 }
 

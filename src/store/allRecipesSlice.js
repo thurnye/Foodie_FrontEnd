@@ -3,6 +3,7 @@ import  {createSlice} from '@reduxjs/toolkit'
 
 const allRecipes = {
     recipes: null,
+    usersRecipes: null,
     singleRecipe: null,
 }
 
@@ -13,6 +14,9 @@ const allRecipesSlice = createSlice({
         // all all recipes from the database
        getAllRecipes(state, action){
            state.recipes = action.payload.data;
+       },
+       getAllUsersRecipes(state, action){
+           state.usersRecipes = action.payload.data;
        },
 
        getSingleRecipes(state, action){

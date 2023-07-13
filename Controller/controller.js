@@ -33,12 +33,11 @@ const postCreateUser = async (req, res, next) => {
 
 // Login a User
 const getLogIn = async (req, res) => {
-    
     try {
         const user = await User.findOne({ email: req.body.email }).populate({
             path: 'myRecipes.recipe'
         }).exec()
-        console.log(user)
+        // console.log(user)
           // check password. if it's bad throw an error.
         if (!(await bcrypt.compare(req.body.password, user.password))) throw new Error();
   
@@ -49,6 +48,43 @@ const getLogIn = async (req, res) => {
         res.status(400).json('Bad Credentials');
     }
 }
+
+//RETRIEVE AN AUTHOR Recipes
+
+const getAUserRecipes = async(req, res, next) => {
+    try{
+        // console.log(req.body)
+        const author = req.params.id;
+        const count = await Recipe.find({author: author}).countDocuments()
+        // console.log(count);
+        const perPage = 9;
+        const page = req.body.currentPage
+
+        const recipes =  await Recipe.find({author: author})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .populate({
+            path: 'reviews.review',
+            populate: ({ 
+                path: 'userId',
+                populate: {path: 'myRecipes.recipe'}
+            }) 
+        })
+        .populate({
+            path: 'author'
+        })
+        .exec()
+        const data = {
+            recipes, 
+            count: Math.ceil(count / perPage)
+        }
+        res.status(200).json(data)
+
+    }catch(err){
+        res.status(400).json(err)
+    }   
+}
+
 
 // POSTING Updated User
 const postUpdatedUser = (req, res, next) => {
@@ -102,7 +138,6 @@ const postNewRecipe = async (req, res, next) => {
             nutritionFacts: req.body.nutritionFacts
 
         })
-        console.log(newRecipe);
         let savedRecipe = await newRecipe.save()
         const recipeId = {recipe: savedRecipe._id}
         const foundUser = await User.findById(authorId)
@@ -122,16 +157,16 @@ const postNewRecipe = async (req, res, next) => {
     }    
 }
 
-//RETRIEVE ALL RECIPES
+//RETRIEVE ALL RECIPES BY PAGINATION
 const getAllRecipes = async(req, res, next) => {
     try{
-        const count = await Recipe.find().count()
-        console.log(count);
+        const count = await Recipe.find().countDocuments()
         const perPage = 9;
         const page = req.body.currentPage
         const recipes =  await Recipe.find({})
         .skip((perPage * page) - perPage)
-        .limit(perPage).populate('author').exec()
+        .limit(perPage)
+        .populate('author').exec()
         const data = {
             recipes, 
             count: Math.ceil(count / perPage)
@@ -147,35 +182,45 @@ const getAllRecipes = async(req, res, next) => {
 //RETRIEVE ALL  QUERY RECIPES
 const getQueryRecipes = async(req, res, next) => {
     try{
-        console.log(req.body);
+        // console.log(req.body);
         const filter = req.body.filter;
-        const category = filter.category
+        const category = filter?.category
         const page = req.body.currentPage;
-        const keyword = filter.keywordSearch
-        const options = filter.options;
-        const tags = filter.tags;
+        const keyword = filter?.keywordSearch
+        const options = filter?.options;
+        const tags = filter?.tags;
         const perPage = 9;
         const query = {
         };
-        const categories = [category, ...options]
+        let categories = [
+            (category && category)
+        ]
+        if(options){
+            categories = [
+                (category && category) , 
+            ...(options ? options : {} )
+            ]
+        }
 
         // Save Category, Tags as strings[] not as an array of objects
-        console.log(categories);
+        const filteredCategories = categories.filter((element) => typeof element !== 'undefined');
+        // console.log(filteredCategories);
+
 
         if(keyword){
-            query.recipeName =  new RegExp(keyword, 'g')
+            query.recipeName =  new RegExp(keyword, 'i')
         }
         if(tags){
             tags.forEach((el) => {
                 query.tags =  { $in: tags }
             })
         }
-        if(category){
-            query.category =  { $in: categories }
+        if(filteredCategories.length > 0){
+            query.category =  { $in: filteredCategories }
         }
-        console.log(query);
+        // console.log(query);
 
-        const count = await Recipe.find(query).count();
+        const count = await Recipe.find(query).countDocuments();
         const recipes = await Recipe.find(query)
         .skip((perPage * page) - perPage)
         .limit(perPage)
@@ -186,27 +231,10 @@ const getQueryRecipes = async(req, res, next) => {
         };
         res.status(200).json(data);
     }catch(err){
-        console.log(err)
+        // console.log(err)
         res.status(400).json(err)
     }   
 }
-
-
-
-
-//RETRIEVE ALL RECIPES For the author
-const getAUserRecipes = async(req, res, next) => {
-    try{
-        const authorId = req.params.id
-        const recipes =  await Recipe.find().populate('author').exec()
-        console.log(recipes)
-        res.status(200).json(recipes)
-
-    }catch(err){
-        res.status(400).json(err)
-    }   
-}
-
 
 //RETRIVE A Recipe BY ID
 const getOneRecipe = async (req, res, next) => {
@@ -242,7 +270,6 @@ const getOneRecipe = async (req, res, next) => {
     }   
 }
 
-
 //Post a Review
 const postReview = async (req, res, next) => {
     try{
@@ -263,7 +290,7 @@ const postReview = async (req, res, next) => {
 
 
 
-        console.log(recipe)
+        // console.log(recipe)
         res.status(200).json()
     }catch(err){
         res.status(400).json(err)
