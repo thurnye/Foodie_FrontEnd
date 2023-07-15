@@ -1,7 +1,6 @@
 import React, {useState} from 'react'
-import Nav from 'react-bootstrap/Nav';
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { redirect, Link } from "react-router-dom";
 import {useSelector, useDispatch} from 'react-redux'
 import Heading from '../UI/heading';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,7 +10,7 @@ export default function ReviewForm()  {
   const user = useSelector(state => state.userLog.user)
   const recipe = useSelector(state => state.recipesData.singleRecipe)
   
-  const history = useHistory();
+  // const history = useHistory();
 
   const [ratingErr, setRatingErr] =  useState(null)
 
@@ -95,7 +94,7 @@ export default function ReviewForm()  {
                 rows="10"></textarea>
                 {errors.review && <span role="alert" style={{color: 'salmon'}}>{errors.review.message}</span>}
                 <div className="getReview"> 
-          {!user && <Nav.Link href="/login" className="btn btn-dark btn-block">Post Review</Nav.Link>}
+          {!user && <Link to="/login" className="btn btn-dark btn-block">Post Review</Link>}
           {user && <button className="btn btn-dark btn-block" type="submit">Post Review</button>}
           {/* <button className="btn btn-dark btn-block" type="submit">Post Review</button> */}
           </div>

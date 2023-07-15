@@ -4,7 +4,7 @@ import {Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'react-feather';
 import {useSelector, useDispatch} from 'react-redux'
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { redirect } from "react-router-dom";
 import services from '../../util/services'
 import Modal from './confirmDeleteModal';
 import UserRecipeList from './userRecipeList';
@@ -13,7 +13,6 @@ import {userActions} from '../../store/userSlice'
 
 export default function CompleteForm() {
     const dispatch = useDispatch()
-    const history = useHistory();
 
     const user = useSelector(state => state.userLog.user.user)
 
@@ -40,7 +39,7 @@ export default function CompleteForm() {
       dispatch(userActions.login({
         user: userDoc
       }))
-      history.push("/");
+      redirect("/");
       
     }catch(err){
       console.log(err)

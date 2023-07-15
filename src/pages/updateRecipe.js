@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import services from '../util/services'
+import {useLocation} from 'react-router-dom'
 import {useDispatch} from 'react-redux'
 import {recipesActions} from '../store/allRecipesSlice'
 import UpdateRecipeForm from '../components/updateRecipe/updateRecipeForm'
 
-export default function UpdateRecipe(props) {
-    const recipeId = props.location.state.recipeId
-    const edit = props.location.state.edit
+export default function UpdateRecipe() {
+    const location = useLocation();
+    const recipeId = location.state?.recipeId
+    const edit = location.state?.edit
     
     const dispatch = useDispatch()
     const [recipe, setRecipe] = useState(null)

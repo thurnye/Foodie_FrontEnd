@@ -1,7 +1,7 @@
 import React from 'react';
 import jwt_decode from "jwt-decode";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { redirect } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import services from '../util/services'
 import {userActions } from '../store/userSlice'
@@ -10,7 +10,7 @@ import '../public/css/signup.css'
 
 export default function Signup() {
    const dispatch = useDispatch()
-   const history = useHistory();
+  //  const history = useHistory();
   const {
     register, 
     handleSubmit,
@@ -31,7 +31,7 @@ export default function Signup() {
       dispatch(userActions.login({
         user: userDoc
       }))
-      history.push("/new-account");
+      redirect("/new-account");
     }catch(err){
       console.log(err)
     }

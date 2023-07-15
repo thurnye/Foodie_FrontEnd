@@ -1,9 +1,11 @@
 import React from 'react'
 import Nav from 'react-bootstrap/Nav';
+import {Link} from 'react-router-dom'
 import Bg3 from '../../public/images/jumbotron/bg3.jpeg'
 import Book1 from '../../public/images/books/book1.png'
 import Book2 from '../../public/images/books/book2.png'
 import Book3 from '../../public/images/books/book3.png'
+
 
 
 
@@ -24,25 +26,25 @@ export default function veganBooks() {
                                     <div className="card-deck vegan-book-covers">
                                         <div className="card mb-4">
                                             <div className="view overlay">
-                                                <Nav.Link href="/" className="book-img">
+                                                <Link to="/" className="book-img">
                                                     <img className="card-img-top" src={Book1} alt="CardImageCap"/>
-                                                </Nav.Link>
+                                                </Link>
                                             </div>
                                         </div>
                         
                                         <div className="card mb-4">
                                             <div className="view overlay">
-                                                <Nav.Link href="/" className="book-img">
+                                                <Link to="/" className="book-img">
                                                     <img className="card-img-top" src={Book2} alt="CardimageCap"/>
-                                                </Nav.Link>
+                                                </Link>
                                             </div>
                                         </div>
                                         
                                         <div className="card mb-4">
                                             <div className="view overlay">
-                                                <Nav.Link href="/" className="book-img">
+                                                <Link to="/" className="book-img">
                                                     <img className="card-img-top" src={Book3} alt="CardImageCap"/>
-                                                </Nav.Link>
+                                                </Link>
                                             </div>
                                         </div>
                                         

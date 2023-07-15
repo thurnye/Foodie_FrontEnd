@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import { useHistory, Link } from "react-router-dom";
+import { redirect, Link } from "react-router-dom";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import {userActions} from '../../store/userSlice'
@@ -11,7 +11,6 @@ import './navbar.css';
 function Header(){
     const user = useSelector(state => state.userLog.user)
     const dispatch = useDispatch()
-    const history = useHistory();
 
 
     
@@ -21,7 +20,7 @@ function Header(){
     let token = localStorage.getItem('token')
     if (token){
         localStorage.removeItem('token')
-        history.push("/login");
+        redirect("/login");
     }
     
   }

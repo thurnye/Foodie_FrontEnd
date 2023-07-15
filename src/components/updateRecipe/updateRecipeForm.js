@@ -10,7 +10,7 @@ import makeAnimated from 'react-select/animated';
 
 import {useSelector, useDispatch} from 'react-redux'
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { redirect } from "react-router-dom";
 import services from '../../util/services'
 import '../../public/css/newRecipe.css'
 import {userActions} from '../../store/userSlice'
@@ -20,7 +20,6 @@ import Thumbnail from './thumbnail'
 
 export default function NewRecipeForm() {
     const dispatch = useDispatch()
-    const history = useHistory();
     const animatedComponents = makeAnimated();
 
     const user = useSelector(state => state.userLog.user.user)
@@ -298,7 +297,7 @@ export default function NewRecipeForm() {
                     user: userDoc
                 }))
                   
-                  history.push("/new-account"); 
+                redirect("/new-account"); 
             }
 
             

@@ -24,10 +24,12 @@ import Recommendations from '../components/SingleRecipe/recommendations';
 import ReviewForm from '../components/SingleRecipe/reviewForm';
 import Reviews from '../components/SingleRecipe/reviewList';
 
+import { useLocation } from 'react-router-dom';
 
-export default function SingleMeal(props) {
-    const recipeId = props.location.state.recipeId
-    console.log(recipeId)
+
+export default function SingleMeal() {
+    const location = useLocation();
+    const recipeId = location.state?.recipeId
     const dispatch = useDispatch()
     const [recipe, setRecipe] = useState(null)
     
@@ -42,12 +44,13 @@ export default function SingleMeal(props) {
         })
         )
         }
+        
+
         fetchRecipe()
       }, 
     [recipeId, dispatch])
-    
-    
-    
+
+
     return (
         
         <section className="">

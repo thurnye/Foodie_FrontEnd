@@ -25,7 +25,6 @@ export default function UserRecipeList() {
         try {
             setLoading(true)
             const result = await services.getUserRecipes(id, {currentPage});
-            console.log(result);
             setAllRecipes(result);
           setLoading(false)
         } catch (error) {
@@ -96,8 +95,8 @@ export default function UserRecipeList() {
                                             <Link to={{
                                                 pathname: `/my-recipe/edit` ,
                                                 search: `?t=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
-                                                state: {recipeId: el._id, edit: true},
                                             }}
+                                            state={{recipeId: el._id, edit: true}}
                                             className="content-title"><Edit strokeWidth="1"  width="27" height="19"/></Link>
 
                                             <button type="button" className="action-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -128,8 +127,8 @@ export default function UserRecipeList() {
                                                 <Link to={{
                                                     pathname: `/recipe` ,
                                                     search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
-                                                    state: {recipeId: el._id},
                                                 }}
+                                                state={{recipeId: el._id}}
                                                 className="result-title">{el.recipeName}</Link>
                                             </h6>
                                             

@@ -76,8 +76,8 @@ export default function ResultList(props) {
                                     <Link to={{
                                         pathname: `/recipe` ,
                                         search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
-                                        state: {recipeId: el._id},
                                     }}
+                                    state={{recipeId: el._id}}
                                     >   
                         <div className="card">
                             <img src={el.thumbnail} className="card-img-top allRecipeImg" alt="recipeResult" />
