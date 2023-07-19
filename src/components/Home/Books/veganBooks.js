@@ -43,8 +43,8 @@ export default function veganBooks() {
                                     <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
                                 
                                     <div className="card-deck vegan-book-covers row row-cols-1 row-cols-md-3 g-4">
-                                        {books.map((el) => 
-                                            <div className="card mb-4 col">
+                                        {books.map((el, i) => 
+                                            <div className="card mb-4 col" key={`book_${i}_${el.name}`}>
                                                 <div className="view overlay" key={el.name}>
                                                     <Link to={el.link} className="book-img">
                                                         <img className="card-img-top" src={el.image} alt="CardImageCap"/>

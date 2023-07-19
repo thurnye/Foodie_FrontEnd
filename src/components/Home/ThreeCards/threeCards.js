@@ -1,10 +1,7 @@
 import React from 'react'
-import Nav from 'react-bootstrap/Nav';
 import {Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Share2,Bookmark} from 'react-feather';
 import truncateText from '../../UI/truncate'
-import Avatar from '../../Avatar/avatar'
 import AuthorFooter from '../../AuthorFooter/AuthorFooter'
 import Img2 from '../../../public/images/tier3/img2.jpeg'
 import Img3 from '../../../public/images/tier3/img3.jpeg'
@@ -42,9 +39,9 @@ export default function threeCards() {
              <section className="three-card-group">
                 <div className="container">
                     <div className="card-deck"> 
-                    <div class="row row-cols-1 row-cols-md-3 g-4">
-                        {showCase.map((el, i) => <>
-                        <div class="col">
+                    <div className="row row-cols-1 row-cols-md-3 g-4">
+                        {showCase.map((el, i) => 
+                        <div className="col" key={`threeCards_${i}_${el.recipeName}`}>
                         <div className="card mb-4" key={el.recipeName}>
                             {/* <!--Card image--> */}
                             <div className="view overlay">
@@ -84,10 +81,6 @@ export default function threeCards() {
 
                         </div>
                         </div>
-                        
-                    
-                        
-                        </>
                         )} 
                         </div>      
                     </div>
