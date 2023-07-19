@@ -1,16 +1,16 @@
 import React from 'react';
 import jwt_decode from "jwt-decode";
 import { useForm } from "react-hook-form";
-import { useHistory } from "react-router-dom";
+import { redirect } from "react-router-dom";
 import {useDispatch} from 'react-redux';
 import services from '../util/services'
 import Nav from 'react-bootstrap/Nav';
+import {Link} from 'react-router-dom'
 import {userActions } from '../store/userSlice'
 
 
 export default function LogIn() {
    const dispatch = useDispatch()
-   const history = useHistory();
   const {
     register, 
     handleSubmit,
@@ -23,6 +23,7 @@ export default function LogIn() {
       const result = await services.postLogin(data)
       
       let token = result.data
+      console.log(token.length);
       localStorage.setItem('token', token);  
       const userDoc = jwt_decode(token); 
 
@@ -30,7 +31,7 @@ export default function LogIn() {
       dispatch(userActions.login({
         user: userDoc
       }))
-      history.push("/");
+      redirect("/");
     }catch(err){
       console.log(err)
     }
@@ -100,7 +101,7 @@ export default function LogIn() {
                   </form>
                   <p className="createAccount">
                     <span><small>Don't have an account?</small></span>
-                    <span><small><Nav.Link href="/signup" style={{color: '#0077c8'}}>Create An Account</Nav.Link></small></span>
+                    <span><small><Link to="/signup" style={{color: '#0077c8'}}>Create An Account</Link></small></span>
                   </p>
                 </div>
                 

@@ -1,0 +1,31 @@
+.AllRecipes{
+    .mobileNavigationContainer{
+        display: none;
+    }
+    .desktopContainer{
+        /* border : 1px solid #c4cac7; */
+    }
+    .dropdown-menu{
+        border: none
+    }
+    /* .DashboardContents{
+        margin-left: 10px;
+    } */
+}
+
+@media (max-width: 990px) {
+    .AllRecipes{
+        .desktopContainer{
+             display: none;
+         }
+         .mobileNavigationContainer{
+             display: block;
+         }
+     } 
+ }
+ .offcanvas-parent {
+     position: relative;
+   }
+.offcanvas-header{
+    justify-content: flex-end!important;
+}

@@ -34,9 +34,7 @@ const postCreateUser = async (req, res, next) => {
 // Login a User
 const getLogIn = async (req, res) => {
     try {
-        const user = await User.findOne({ email: req.body.email }).populate({
-            path: 'myRecipes.recipe'
-        }).exec()
+        const user = await User.findOne({ email: req.body.email }).exec()
         // console.log(user)
           // check password. if it's bad throw an error.
         if (!(await bcrypt.compare(req.body.password, user.password))) throw new Error();

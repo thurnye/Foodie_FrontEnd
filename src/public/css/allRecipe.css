@@ -30,7 +30,7 @@
 .filter{
     /* border: 2px dotted red; */
 }
-.filter-indicator{
+/* .filter-indicator{
     margin: 20px 0;
 }
 ::-webkit-input-placeholder {
@@ -55,16 +55,11 @@ a.showMore {
     color: #0077c8;
     text-decoration: none;
   }
-  a.showMore:after {
-    content: "+ VIEW MORE";
-  }
-  a.showMore.showLess:after {
-    content: "- VIEW LESS";
-  }
+
   
   h4 {
     margin: 0px 0px 4px 0px;
-  }
+  } */
 
 
   /* ======================== MEDIA QUERY ======================= */

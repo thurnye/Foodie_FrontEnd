@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react';
-import {Router, Switch, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import {useSelector, useDispatch} from 'react-redux'
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,24 +14,27 @@ import {userActions } from './store/userSlice'
 
 import NavBar from './components/Nav/navbar'
 import Home from './pages/home';
-import singleRecipe from './pages/singleRecipe'
-import AllRecipe from './pages/allRecipes'
+import SingleRecipe from './pages/singleRecipe'
+import AllRecipe from './pages/Recipes/AllRecipes/allRecipes'
 import Author from './pages/author';
 import Forum from './pages/forum';
 import Signup from './pages/signup';
 import Login from './pages/login';
-import completeRegistration from './pages/completeRegistrationForm';
+import CompleteRegistration from './pages/completeRegistrationForm';
 import NewRecipe from './pages/newRecipe'
 import UpdateRecipe from './pages/updateRecipe'
-// import Footer from './components/Footer/footer'
+// import Footer from './elements/<Footer/>/footer'
 
 
 import './public/css/hover.css'
 import './App.css';
+import Dashboard from './pages/Dashboard/Dashboard';
+import UserRecipeList from './components/CompleteRegistrationForm/userRecipeList';
+
 
 
 library.add(fab, fas, far)
-const history = require("history").createBrowserHistory()  
+// const history = require("history").createBrowserHistory()  
 
 function App() {
   const dispatch = useDispatch()
@@ -48,28 +51,35 @@ function App() {
   }, [token, dispatch])
     
   // get the loggedIn User
-  const user = useSelector(state => state.userLog.user)
+  const user = useSelector(state => state.userLog.user);
 
   return (
     <React.Fragment>
-      <Router history={history}>
+      <BrowserRouter>
       <NavBar/>
-        <Switch>
-          <Route path="/"  exact component={Home} />
-          {!user && <Route path="/signup" component={Signup} /> }
-          {!user && <Route path="/login" component={Login} />}
-          {user && <Route path="/new-account" component={completeRegistration} />}
-          {user && <Route path="/new-recipe" component={NewRecipe} />}
-          {user && <Route path="/my-recipe/edit" component={UpdateRecipe} />}
+        <Routes>
+          <Route path="/"  exact element={<Home/>} />
+          {!user && <Route path="/signup" element={<Signup/>} /> }
+          {!user && <Route path="/login" element={<Login/>} />}
+          {user && <Route path="/new-account" element={<CompleteRegistration/>} />}
+          {user && <Route path="/new-recipe" element={<NewRecipe/>} />}
           
-          <Route path="/recipe" component={singleRecipe} />
-          <Route path="/all-recipes" component={AllRecipe} />
-          <Route path="/forum" component={Forum} />
-          <Route path="/author" component={Author} />
+          <Route path="/recipe" element={<SingleRecipe/>} />
+          <Route path="/all-recipes" element={<AllRecipe/>} />
+          <Route path="/forum" element={<Forum/>} />
+          <Route path="/author" element={<Author/>} />
+          <Route path="user"  element={<Dashboard />}>
+            <Route path="dashboard" element={<>Dashboard Home</>}/>
+            <Route path="profile" element={<CompleteRegistration/>} />
+              {user && <Route path="manage-recipe/edit" element={<UpdateRecipe/>} />}
+            <Route path="manage-recipe" element={<UserRecipeList/>}/>
+            <Route path="add-recipe" element={<NewRecipe/>} />
+            <Route index element={<Navigate to="dashboard" />}></Route>
+          </Route>
 
-        </Switch>
+        </Routes>
         {/* <Footer /> */}
-      </Router>
+      </BrowserRouter>
     </React.Fragment>
     
   );

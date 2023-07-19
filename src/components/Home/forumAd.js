@@ -1,5 +1,5 @@
 import React from 'react'
-import Nav from 'react-bootstrap/Nav';
+import {Link} from 'react-router-dom'
 import Bg4 from '../../public/images/jumbotron/bg4.png'
 
 export default function forumAd() {
@@ -19,7 +19,7 @@ export default function forumAd() {
                                             <span className="forum-data">1.432.915 photos</span>
                                         </h5>
                                         <div className="join-forum">
-                                            <Nav.Link href="/" className="content-title btn  btn-warning">Join Now!</Nav.Link>
+                                            <Link to="/" className="content-title btn  btn-warning">Join Now!</Link>
                                         </div>
                                     </div>
                                 </div>

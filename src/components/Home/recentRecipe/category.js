@@ -41,9 +41,10 @@ export default function category() {
                                     <div className="card-body">
                                         <h5 className="card-title category">Category</h5>
                                         <div className="category-items container">
-                                            <div className="row">
+                                        
+                                            <div className="row row-cols-1 row-cols-md-3 g-4">
                                                 {categories.map((el) =>  
-                                                    <div className="view overlay category-img-container col-md-4 col-12" key={el.name}>
+                                                    <div className="view overlay category-img-container col" key={el.name}>
                                                         {/* <a href="#"> */}
                                                         <Link to={{
                                                             pathname: `/all-recipes` ,
