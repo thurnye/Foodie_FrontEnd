@@ -30,7 +30,7 @@ const Dashboard = () => {
                             <nav>
                               <ul>
                                 <li>
-                                  <Link to='settings'>Settings</Link>
+                                  <Link to='dashboard'>Dashboard</Link>
                                 </li>
                                 <li>
                                   <Link to='profile'>Profile</Link>
@@ -63,7 +63,7 @@ const Dashboard = () => {
                         <nav>
                           <ul>
                             <li>
-                              <Link to='settings'>Settings</Link>
+                              <Link to='dashboard'>Dashboard</Link>
                             </li>
                             <li>
                               <Link to='profile'>Profile</Link>

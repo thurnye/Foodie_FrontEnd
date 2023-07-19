@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react';
-import {BrowserRouter, Routes, Route} from "react-router-dom";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import {useSelector, useDispatch} from 'react-redux'
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -68,16 +68,14 @@ function App() {
           <Route path="/all-recipes" element={<AllRecipe/>} />
           <Route path="/forum" element={<Forum/>} />
           <Route path="/author" element={<Author/>} />
-          <Route path="dashboard" element={<Dashboard />}>
-        <Route
-          path="settings"
-          element={<>This is settings</>}
-          />
-        <Route path="profile" element={<CompleteRegistration/>} />
-          {user && <Route path="manage-recipe/edit" element={<UpdateRecipe/>} />}
-        <Route path="manage-recipe" element={<UserRecipeList/>}/>
-        <Route path="add-recipe" element={<NewRecipe/>} />
-      </Route>
+          <Route path="user"  element={<Dashboard />}>
+            <Route path="dashboard" element={<>Dashboard Home</>}/>
+            <Route path="profile" element={<CompleteRegistration/>} />
+              {user && <Route path="manage-recipe/edit" element={<UpdateRecipe/>} />}
+            <Route path="manage-recipe" element={<UserRecipeList/>}/>
+            <Route path="add-recipe" element={<NewRecipe/>} />
+            <Route index element={<Navigate to="dashboard" />}></Route>
+          </Route>
 
         </Routes>
         {/* <Footer /> */}

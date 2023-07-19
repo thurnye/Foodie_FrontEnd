@@ -44,7 +44,7 @@ function Header(){
                         <Nav.Link href="/forum">Forum</Nav.Link>
                         
                         {!user && <Nav.Link href="/login">Login</Nav.Link>}
-                        {user && <Nav.Link href="dashboard/settings">Dashboard</Nav.Link>}
+                        {user && <Nav.Link href="/user">Dashboard</Nav.Link>}
                         {/* {user && <Nav.Link href="/new-recipe">Add Recipe</Nav.Link>}
                         {user && <Nav.Link to={{
                                         pathname: `/new-account` ,
