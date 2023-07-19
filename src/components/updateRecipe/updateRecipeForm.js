@@ -297,7 +297,7 @@ export default function NewRecipeForm() {
                     user: userDoc
                 }))
                   
-                redirect("/new-account"); 
+                redirect("manage-recipe"); 
             }
 
             

@@ -2,9 +2,9 @@ import React from 'react';
 import {useSelector} from 'react-redux'
 
 
-import HomeJumbotron from '../components/Home/homeJumbotron';
-import ThreeCards from '../components/Home/threeCards'
-import VeganBooks from '../components/Home/veganBooks'
+import HomeJumbotron from '../components/Jumbotron/homeJumbotron';
+import ThreeCards from '../components/Home/ThreeCards/threeCards'
+import VeganBooks from '../components/Home/Books/veganBooks'
 import RecentRecipe from '../components/Home/recentRecipe/recentRecipe'
 import NewRelease from '../components/Home/newRelease';
 import MagazineBrands from '../components/Home/magazineBrands'

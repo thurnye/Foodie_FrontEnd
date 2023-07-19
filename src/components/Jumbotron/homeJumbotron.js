@@ -5,15 +5,17 @@ import {Link } from 'react-router-dom';
 import truncateText from '../UI/truncate'
 import { Share2,Bookmark, Video } from 'react-feather';
 import Avatar from '../Avatar/avatar'
+import AuthorFooter from '../AuthorFooter/AuthorFooter';
+import styles from './Jumbotron.module.css'
 
 export default function homeJumbotron() {
     return (
         <>
-             <section className="home">
-                <div className="jumbotron text-center" style={{backgroundImage: `url(${Bg2})`}}>
+             <section className={`${styles.Jumbotron}`}>
+                <div className= {`text-center ${styles.jumbotronContainer}`} style={{backgroundImage: `url(${Bg2})`}}>
                     <div className="view overlay my-4">
-                        <div className="container">
-                            <div className="card jumbotron-content" >
+                        <div className={`container ${styles.container}`}>
+                            <div className={`card ${styles.jumbotronContent}`}>
                                 <div className="card-body">
                                     <h5 className="card-title">
                                     <Link to={{
@@ -21,7 +23,7 @@ export default function homeJumbotron() {
                                         search: `?q=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
                                         // state: {postId: post._id},
                                     }}
-                                    className="content-title">Mixed berry pie with fresh fruits</Link>
+                                    className={styles.contentTitle}>Mixed berry pie with fresh fruits</Link>
                                     </h5>
                                     
                                     <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
@@ -32,29 +34,7 @@ export default function homeJumbotron() {
                                             }}
                                             style={{color: '#1e8aff'}}>Read More</Link>
                                     </p>
-
-                                    <div className="editor d-flex ">
-                                        <div className="content-author">
-                                                <Avatar/>
-                                            <p>
-                                                <span><small>LAURA DERN</small></span>
-                                                <span className="text-muted"><small>May 08, 2021</small></span>
-                                            </p>
-
-                                        </div>
-                                        <div className="content-share-icon">
-                                        <div className="share">
-                                            <p className="card-icon card-share-icon"><Share2 strokeWidth="1"/> </p>
-                                            
-                                        </div>
-                                        
-                                        
-                                        <p className="bookmark">
-                                            <span className="card-icon card-share-icon"><Bookmark strokeWidth="1"/> </span>
-                                        </p>
-
-                                    </div>
-                                    </div>
+                                    <AuthorFooter/>
                                 </div>
                             </div>
                             

@@ -13,7 +13,7 @@ export default function latestRecipesList() {
                                     <div className="card-body">
                                         <h5 className="card-title category">LATEST RECIPES</h5>
                                         <div className="card mb-3" >
-                                            <div className="row g-0">
+                                            <div className="row g-3">
                                                 <div className="col-md-5">
                                                     <img src={Rp1} className="img-fluid rounded-start" alt="latestRecipe"/>
                                                 </div>
@@ -33,7 +33,7 @@ export default function latestRecipesList() {
                                             </div>
                                         </div>
                                         <div className="card mb-3" >
-                                            <div className="row g-0">
+                                            <div className="row g-3">
                                                 <div className="col-md-5">
                                                     <img src={Rp2} className="img-fluid rounded-start" alt="latestRecipe"/>
                                                 </div>
@@ -53,7 +53,7 @@ export default function latestRecipesList() {
                                             </div>
                                         </div>
                                         <div className="card mb-3" >
-                                            <div className="row g-0">
+                                            <div className="row g-3">
                                                 <div className="col-md-5">
                                                     <img src={Rp3} className="img-fluid rounded-start" alt="latestRecipe"/>
                                                 </div>

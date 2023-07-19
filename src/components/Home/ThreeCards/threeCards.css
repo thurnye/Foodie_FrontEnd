@@ -1,9 +1,28 @@
 
+.three-card-group{
+    margin-top: 7vh;
+}
+
+.three-card-group .card-body{
+    padding: 0;
+    margin-bottom: 5vh;
+}
+.three-card-group .card-body .content-title{
+    padding: 0;
+}
+.three-card-group .card-body .content-author a{
+    padding-left: 0px;
+}
+
+.three-card-group .card-title{
+    font-size: 15px;
+    height: 2.5rem;
+}
  /* X-Small devices (portrait phones, less than 576px) */
  /* No media query for `xs` since this is the default in Bootstrap */
 
  /* Small devices (landscape phones, 576px and up) */
-@media (min-width: 576px) and (max-width: 767px) { 
+@media (min-width: 220px) and (max-width: 767px) { 
     .three-card-group .view{
 
     }
@@ -11,7 +30,7 @@
 
     }
     .three-card-group .card-title{
-        font-size: 15px;
+        height: inherit !important;
     }
     .three-card-group .card-text{
         font-size: 13px;
@@ -38,4 +57,5 @@
 
     }
  }
+
 

@@ -23,7 +23,7 @@ export default function NewRecipeForm() {
     const dispatch = useDispatch()
     const animatedComponents = makeAnimated();
 
-    const user = useSelector(state => state.userLog.user.user)
+    const user = useSelector(state => state.userLog?.user?.user)
     const [selectedTag, setSelectedTag] = useState(null);
     const [selectedCat, setSelectedCat] = useState(null);
     const [selectedServing, setSelectedServing] = useState(null);

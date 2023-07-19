@@ -56,7 +56,7 @@ export default function SingleMeal() {
         <section className="">
             <div className=" container">
                 <div className="card mb-3">
-                    <div className="row g-0">
+                    <div className="row ">
                         {recipe && 
                             <>
                                 <div className="col-md-8 " style={{marginBottom: '5vh'}}>

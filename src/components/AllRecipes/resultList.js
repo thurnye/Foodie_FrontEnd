@@ -70,15 +70,15 @@ export default function ResultList(props) {
                     </div> 
                   :
                 <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-                     {recipes && recipes && recipes.map(el => {
+                     {recipes?.map(el => {
                             return (
                                 <div className="col result-item" key={el._id}>
-                                    <Link to={{
+                                    {/* <Link to={{
                                         pathname: `/recipe` ,
                                         search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
                                     }}
                                     state={{recipeId: el._id}}
-                                    >   
+                                    >    */}
                         <div className="card">
                             <img src={el.thumbnail} className="card-img-top allRecipeImg" alt="recipeResult" />
                             <div className="card-body result-body">
@@ -86,10 +86,18 @@ export default function ResultList(props) {
                                     <span className="duration"><small><strong><Clock strokeWidth="1" size="15"/> {el.duration}</strong></small></span>
                                     <span className="level"><small><strong><ThumbsUp strokeWidth="1" size="15"/> {el.level}</strong></small></span>
                                 </p>
-                                <h5 className="card-title result-title">{el.recipeName}</h5>
+                                <h5 className="card-title result-title">
+                                <Link to={{
+                                        pathname: `/recipe` ,
+                                        search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
+                                    }}
+                                    state={{recipeId: el._id}}
+                                    >   
+                                    {el.recipeName}
+                                </Link>
+                                    </h5>
                             </div>
                         </div>
-                                </Link>
                     </div>
                             )
                     })} 

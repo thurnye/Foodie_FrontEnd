@@ -15,7 +15,7 @@ import {userActions } from './store/userSlice'
 import NavBar from './components/Nav/navbar'
 import Home from './pages/home';
 import SingleRecipe from './pages/singleRecipe'
-import AllRecipe from './pages/allRecipes'
+import AllRecipe from './pages/Recipes/AllRecipes/allRecipes'
 import Author from './pages/author';
 import Forum from './pages/forum';
 import Signup from './pages/signup';
@@ -28,6 +28,8 @@ import UpdateRecipe from './pages/updateRecipe'
 
 import './public/css/hover.css'
 import './App.css';
+import Dashboard from './pages/Dashboard/Dashboard';
+import UserRecipeList from './components/CompleteRegistrationForm/userRecipeList';
 
 
 
@@ -61,12 +63,21 @@ function App() {
           {!user && <Route path="/login" element={<Login/>} />}
           {user && <Route path="/new-account" element={<CompleteRegistration/>} />}
           {user && <Route path="/new-recipe" element={<NewRecipe/>} />}
-          {user && <Route path="/my-recipe/edit" element={<UpdateRecipe/>} />}
           
           <Route path="/recipe" element={<SingleRecipe/>} />
           <Route path="/all-recipes" element={<AllRecipe/>} />
           <Route path="/forum" element={<Forum/>} />
           <Route path="/author" element={<Author/>} />
+          <Route path="dashboard" element={<Dashboard />}>
+        <Route
+          path="settings"
+          element={<>This is settings</>}
+          />
+        <Route path="profile" element={<CompleteRegistration/>} />
+          {user && <Route path="manage-recipe/edit" element={<UpdateRecipe/>} />}
+        <Route path="manage-recipe" element={<UserRecipeList/>}/>
+        <Route path="add-recipe" element={<NewRecipe/>} />
+      </Route>
 
         </Routes>
         {/* <Footer /> */}

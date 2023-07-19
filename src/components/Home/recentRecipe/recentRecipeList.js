@@ -17,6 +17,7 @@ import services from '../../../util/services';
 
 export default function recentRecipeList() {
 
+ 
     const categories = ['Popular', 'Pizza', 'Meat', 'Lunch', 'Greens', 'Desserts', 'Snacks', 'Waffles', 'Breakfast', 'Cakes',
     'Fast To Make', 'Grains', 'Pies', 'Sweets', 'Dinner']
 
@@ -250,6 +251,89 @@ export default function recentRecipeList() {
         
     }
 
+    const recent = [
+        {
+            recipeName: 'The best fluffy buttermilk pancakes with triple berry sauce',
+            description: 'Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi',
+            duration: '30 Minutes',
+            thumbnail: Img6,
+            level:'Super Easy',
+            isVideo: true,
+            link: '/all-recipes',
+            length: '0:30'
+        },
+        {
+            recipeName: 'Chocolate banana pancakes',
+            description: 'Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi',
+            duration: '30 Minutes',
+            thumbnail: Img7,
+            level:'Super Easy',
+            isVideo: false,
+            link: '/all-recipes',
+            length: '0:30'
+        },
+        {
+            recipeName: 'Cinnamon french toast with cream cheese glaze and berry syrup',
+            description: 'Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi',
+            duration: '30 Minutes',
+            thumbnail: Img8,
+            level:'Super Easy',
+            isVideo: true,
+            link: '/all-recipes',
+            length: '0:30'
+        },
+        {
+            recipeName: 'Peanut butter pancakes',
+            description: 'Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi',
+            duration: '30 Minutes',
+            thumbnail: Img9,
+            level:'Super Easy',
+            isVideo: false,
+            link: '/all-recipes',
+            length: '0:30'
+        },
+        {
+            recipeName: 'Traditional French breakfast croissant and coffee',
+            description: 'Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi',
+            duration: '30 Minutes',
+            thumbnail: Img10,
+            level:'Super Easy',
+            isVideo: true,
+            link: '/all-recipes',
+            length: '0:30'
+        },
+        {
+            recipeName: 'One-pot pasta primavera',
+            description: 'Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi',
+            duration: '30 Minutes',
+            thumbnail: Img11,
+            level:'Super Easy',
+            isVideo: false,
+            link: '/all-recipes',
+            length: '0:30'
+        },
+        {
+            recipeName: 'Quick & easy chocolate cake with berries from scratch recipe',
+            description: 'Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi',
+            duration: '30 Minutes',
+            thumbnail: Img12,
+            level:'Super Easy',
+            isVideo: true,
+            link: '/all-recipes',
+            length: '0:30'
+        },
+        {
+            recipeName: 'Carrot and walnut cake',
+            description: 'Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi',
+            duration: '30 Minutes',
+            thumbnail: Img13,
+            level:'Super Easy',
+            isVideo: false,
+            link: '/all-recipes',
+            length: '0:30'
+        }
+    ]
+
     return (
         <>
             
@@ -289,255 +373,48 @@ export default function recentRecipeList() {
 
 
 
-
-
-          <div className="card mb-3 recipe-card">
-                                    <div className="row g-0">
+                            {recent?.map((el, i) =>
+                                <div className="card mb-3 recipe-card" key={`recent_${el.recipeName}_${i}`}>
+                                    <div className="row g-2">
                                         <div className="col-md-5 recipe-card-img ">
-                                            <img src={Img6} className="img-fluid rounded-start " alt="recipe"/>
+                                            <img src={el.thumbnail} className="img-fluid rounded-start " alt="recipe"/>
                                         </div>
                                         <div className="col-md-7">
                                             <div className="card-body recipe-card-content">
                                                 <div className="mask rgba-white-slight d-flex">
+                                                    {el.isVideo ? 
                                                     <p>
                                                         <span className="card-icon"><Video strokeWidth="2" size="15"/> </span>
-                                                        <span><small><b> 0 : 30</b></small></span>
+                                                        <span><small><b>{el.length}</b></small></span>
                                                     </p>
-                                                    
-                                                </div>
-                                                <h5 className="card-title content-title">
-                                                    <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("the best fluffy buttermilk pancakes with triple berry sauce").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    className="content-title">The best fluffy buttermilk pancakes with triple berry sauce</Link>
-                                                    
-                                                </h5>
-                                                <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
-                                <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("the best fluffy buttermilk pancakes with triple berry sauce").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    style={{color: '#1e8aff'}}>Read More</Link>
-                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div className="card mb-3 recipe-card">
-                                    <div className="row g-0">
-                                        <div className="col-md-5 recipe-card-img">
-                                            <img src={Img7} className="img-fluid rounded-start" alt="recipe"/>
-                                        </div>
-                                        <div className="col-md-7">
-                                            <div className="card-body recipe-card-content">
-                                                <div className="mask rgba-white-slight d-flex">
+                                                    : <>
                                                     <p>
                                                         <span className="card-icon"><FontAwesomeIcon icon={['far', 'clock']} /> </span>
-                                                        <span><small><b>30 MINUTES</b></small></span>
+                                                        <span><small><b>{el.duration}</b></small></span>
                                                     </p>
                                                     <p>
                                                         <span className="card-icon"><FontAwesomeIcon icon={['far', 'thumbs-up']} /> </span>
-                                                        <span><small><b>SUPER EASY</b></small></span>
+                                                        <span><small><b>{el.level}</b></small></span>
                                                     </p>
+                                                    </>
+                                                }
+                                                    
                                                 </div>
                                                 <h5 className="card-title content-title">
-                                                    <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("chocolate banana pancakes").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    className="content-title">Chocolate banana pancakes</Link>
+                                                    <Link to={el.link}
+                                    className="content-title">{el.recipeName}</Link>
                                                     
                                                 </h5>
-                                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div className="card mb-3 recipe-card">
-                                    <div className="row g-0">
-                                        <div className="col-md-5 recipe-card-img">
-                                            <img src={Img8} className="img-fluid rounded-start" alt="recipe"/>
-                                        </div>
-                                        <div className="col-md-7">
-                                            <div className="card-body recipe-card-content">
-                                                <div className="mask rgba-white-slight d-flex">
-                                                <p>
-                                                        <span className="card-icon"><Video strokeWidth="2" size="15"/> </span>
-                                                        <span><small><b> 0 : 30</b></small></span>
-                                                    </p>
-                                                </div>
-                                                <h5 className="card-title content-title">
-                                                    <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("cinnamon french toast with cream cheese glaze and berry syrup").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    className="content-title">Cinnamon french toast with cream cheese glaze and berry syrup</Link>
-                                                    
-                                                </h5>
-                                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div className="card mb-3 recipe-card">
-                                    <div className="row g-0">
-                                        <div className="col-md-5 recipe-card-img">
-                                            <img src={Img9} className="img-fluid rounded-start" alt="recipe"/>
-                                        </div>
-                                        <div className="col-md-7">
-                                            <div className="card-body recipe-card-content">
-                                                <div className="mask rgba-white-slight d-flex">
-                                                    <p>
-                                                        <span className="card-icon"><FontAwesomeIcon icon={['far', 'clock']} /> </span>
-                                                        <span><small><b>30 MINUTES</b></small></span>
-                                                    </p>
-                                                    <p>
-                                                        <span className="card-icon"><FontAwesomeIcon icon={['far', 'thumbs-up']} /> </span>
-                                                        <span><small><b>SUPER EASY</b></small></span>
-                                                    </p>
-                                                </div>
-                                                <h5 className="card-title content-title">
-                                                    <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("peanut butter pancakes").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    className="content-title">Peanut butter pancakes</Link>
-                                                    
-                                                </h5>
-                                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
+                                                <p className="card-text ">{truncateText(el.description)} 
+                                                <Link to={el.link}
+                                                    style={{color: '#1e8aff'}}> . . .read more</Link>
+                                                </p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             
-                                <div className="card mb-3 recipe-card">
-                                    <div className="row g-0">
-                                        <div className="col-md-5 recipe-card-img">
-                                            <img src={Img10} className="img-fluid rounded-start" alt="recipe"/>
-                                        </div>
-                                        <div className="col-md-7">
-                                            <div className="card-body recipe-card-content">
-                                                <div className="mask rgba-white-slight d-flex">
-                                                <p>
-                                                        <span className="card-icon"><Video strokeWidth="2" size="15"/> </span>
-                                                        <span><small><b> 0 : 30</b></small></span>
-                                                    </p>
-                                                </div>
-                                                <h5 className="card-title content-title">
-                                                    <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("traditional French breakfast croissant and coffee").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    className="content-title">Traditional French breakfast croissant and coffee</Link>
-                                                    
-                                                </h5>
-                                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div className="card mb-3 recipe-card">
-                                    <div className="row g-0">
-                                        <div className="col-md-5 recipe-card-img">
-                                            <img src={Img11} className="img-fluid rounded-start" alt="recipe"/>
-                                        </div>
-                                        <div className="col-md-7">
-                                            <div className="card-body recipe-card-content">
-                                                <div className="mask rgba-white-slight d-flex">
-                                                    <p>
-                                                        <span className="card-icon"><FontAwesomeIcon icon={['far', 'clock']} /> </span>
-                                                        <span><small><b>30 MINUTES</b></small></span>
-                                                    </p>
-                                                    <p>
-                                                        <span className="card-icon"><FontAwesomeIcon icon={['far', 'thumbs-up']} /> </span>
-                                                        <span><small><b>SUPER EASY</b></small></span>
-                                                    </p>
-                                                </div>
-                                                <h5 className="card-title content-title">
-                                                    <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("one-pot pasta primavera").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    className="content-title">One-pot pasta primavera</Link>
-                                                    
-                                                </h5>
-                                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div className="card mb-3 recipe-card">
-                                    <div className="row g-0">
-                                        <div className="col-md-5 recipe-card-img">
-                                            <img src={Img12} className="img-fluid rounded-start" alt="recipe"/>
-                                        </div>
-                                        <div className="col-md-7">
-                                            <div className="card-body recipe-card-content">
-                                                <div className="mask rgba-white-slight d-flex">
-                                                    <p>
-                                                        <span className="card-icon"><Video strokeWidth="2" size="15"/> </span>
-                                                        <span><small><b> 0 : 30</b></small></span>
-                                                    </p>
-                                                </div>
-                                                <h5 className="card-title content-title">
-                                                    <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("quick & easy chocolate cake with berries from scratch recipe").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    className="content-title">Quick & easy chocolate cake with berries from scratch recipe</Link>
-                                                    
-                                                </h5>
-                                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            
-                                <div className="card mb-3 recipe-card">
-                                    <div className="row g-0">
-                                        <div className="col-md-5 recipe-card-img">
-                                            <img src={Img13} className="img-fluid rounded-start" alt="recipe"/>
-                                        </div>
-                                        <div className="col-md-7">
-                                            <div className="card-body recipe-card-content">
-                                                <div className="mask rgba-white-slight d-flex">
-                                                    <p>
-                                                        <span className="card-icon"><FontAwesomeIcon icon={['far', 'clock']} /> </span>
-                                                        <span><small><b>30 MINUTES</b></small></span>
-                                                    </p>
-                                                    <p>
-                                                        <span className="card-icon"><FontAwesomeIcon icon={['far', 'thumbs-up']} /> </span>
-                                                        <span><small><b>SUPER EASY</b></small></span>
-                                                    </p>
-                                                </div>
-                                                <h5 className="card-title content-title">
-                                                    <Link to={{
-                                        pathname: `/recipe` ,
-                                        search: `?q=${("carrot and walnut cake").replaceAll(" ", "-")}`,
-                                        // state: {postId: post._id},
-                                    }}
-                                    className="content-title">Carrot and walnut cake</Link>
-                                                    
-                                                </h5>
-                                                <p className="card-text">Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            )}
   
         </>
     )

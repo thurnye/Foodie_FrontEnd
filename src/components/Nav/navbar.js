@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import {userActions} from '../../store/userSlice'
 import './navbar.css';
+import Dashboard from '../../pages/Dashboard/Dashboard'
 
 
 
@@ -41,13 +42,15 @@ function Header(){
                         <Nav.Link href="/">Home</Nav.Link>
                         <Nav.Link href="/all-recipes">Recipes</Nav.Link>
                         <Nav.Link href="/forum">Forum</Nav.Link>
+                        
                         {!user && <Nav.Link href="/login">Login</Nav.Link>}
-                        {user && <Nav.Link href="/new-recipe">Add Recipe</Nav.Link>}
-                        {user && <Link to={{
+                        {user && <Nav.Link href="dashboard/settings">Dashboard</Nav.Link>}
+                        {/* {user && <Nav.Link href="/new-recipe">Add Recipe</Nav.Link>}
+                        {user && <Nav.Link to={{
                                         pathname: `/new-account` ,
                                         state: {userId: user.user._id},
                                     }}
-                                    > Account</Link>}
+                                    > Account</Nav.Link>} */}
                         {user &&  <button className="nav-link btn" onClick={logoutHandler}>Logout</button>}
                         </Nav>
                     </Navbar.Collapse>

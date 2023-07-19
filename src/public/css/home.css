@@ -1,111 +1,7 @@
-.home .jumbotron {
-    /* border: 2px dotted red; */
-    background-attachment: fixed;
-    background-color: #cccccc;
-    /* height: 60vh; */
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
-.home .container{
-    /* border: 2px dotted blue; */
-}
-.jumbotron-content{
-    background-color: white;
-    color: black;
-    text-align: initial !important;
-    padding: 0.9rem 1rem;
-    max-width: 540px;
-}
-/* .home .jumbotron-content .card-body{
-    padding: 0;
-} */
-.jumbotron-content .nav-link{
-    padding:0;
-    margin-right: 5px;
-}
-.content-title a{
+
+a{
     color: black;
     text-decoration: none;
-    /* font-size: 25px; */
-    /* text-align: center !important; */
-}
-.card-title a{
-    text-decoration: none;
-}
-.editor{
-    justify-content: space-between;
-    align-items: center;
-}
-.content-author{
-    display: flex;
-    /* align-items: center; */
-}
-.content-author p{
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    /* margin-top: -7px; */
-    font-size: 12px;
-}
-.content-author p .text-muted{
-    margin-top: -6px;
-}
-.content-author  img {
-    width: 30px;
-    border-radius: 50%;
-    margin-right: 3px;
-}
-.content-share-icon p {
-    margin-bottom: 0
-}
-
-
-/* ====================================================================== */
-/* Three Card Group */
-
-.three-card-group{
-    margin-top: 7vh;
-}
-
-.three-card-group .card-body{
-    padding: 0;
-    margin-bottom: 5vh;
-}
-.three-card-group .card-body .content-title{
-    padding: 0;
-}
-.three-card-group .card-body .content-author a{
-    padding-left: 0px;
-}
-
-
-.three-card-group  .content-share-icon,
-.home .content-share-icon{
-    width: 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 18px;
-}
-.home .content-share-icon{
-    width: 75px;
-}
-.three-card-group .content-share-icon p{
-   margin:0;
-   border: 1px solid #f1eeee;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-}
-.three-card-group  .content-share-icon .bookmark{
-   margin:0;
-   background-color: #f7f7f7;
-    
 }
 
 /* ========================================================= */
@@ -162,7 +58,6 @@
 }
 
 .category-img-container{
-    width: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -363,7 +258,7 @@ ul li{
     letter-spacing: .1em;
     color: #2d2d28;
     position: relative;
-    top: -29px;
+    top: -22px;
     padding: 0px 16px;
     background-color: #fff;
     z-index: 5;

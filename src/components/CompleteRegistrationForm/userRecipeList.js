@@ -3,16 +3,17 @@ import React, { useEffect, useState } from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import jwt_decode from "jwt-decode";
 import {Link } from 'react-router-dom';
-import { Edit, Trash2 } from 'react-feather';
+import { MoreVertical } from 'react-feather';
 import services from '../../util/services'
 import {userActions} from '../../store/userSlice'
 import CustomPagination from '../CustomPagination/CustomPagination';
 import { recipesActions } from '../../store/allRecipesSlice';
-import './userRecipeList.css';
+import styles from './userRecipeList.module.css';
+import Loading from '../Loading/Loading';
 
 export default function UserRecipeList() {
     const dispatch = useDispatch()
-    const user = useSelector(state => state.userLog.user.user)
+    const user = useSelector(state => state.userLog?.user?.user)
     // const myRecipes = user.myRecipes
     // const location = useLocation();
     const [currentPage, setCurrentPage] = useState(1)
@@ -44,10 +45,10 @@ export default function UserRecipeList() {
     },[allRecipes, dispatch]);
 
     useEffect(() => {
-        if(user._id){
+        if(user){
            fetchUpdatedUser(user._id);  
         }
-    },[user._id, currentPage])
+    },[user, currentPage])
 
       //DELETE A Recipe
     const deleteRecipe = async (id) => {
@@ -78,30 +79,49 @@ export default function UserRecipeList() {
                 <h5 className="container">My RECIPE LIST</h5>
                 
             </div>
-            <div className="user-recipe-list-items scrollspy-example container" data-spy="scroll" data-target="#spy">
+            <div className=" scrollspy-example container" data-spy="scroll" data-target="#spy">
                     
                 {loading ? 
-                    <div class="text-center spinnerContainer">
-                        <div class="spinner-border text-secondary" role="status">
-                        </div>
-                    </div> 
+                    <Loading/>
                   :
-                    <div className="row row-cols-2 row-cols-md-3 g-4" >   
-                        {myRecipes?.map((el, idx) => {
-                            return( 
-                                <div className="col form-fields" key={idx}>
-                                    <div className="card my-recipe-card">
-                                        <div className="card-actions">
-                                            <Link to={{
-                                                pathname: `/my-recipe/edit` ,
-                                                search: `?t=${("mixed berry pie with fresh fruits").replaceAll(" ", "-")}`,
+                    <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                        {myRecipes?.map(el => {
+                            return (
+                                <div className="col result-item" key={el._id}>
+                                    <div className="card">
+                                        <div className={` ${styles.cardActionContainer}`}>
+                                            <div className={`nav-item dropdown ${styles.dropDownContents}`} >
+                                                <a className="nav-link " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <MoreVertical strokeWidth="2.5"  width="27" height="19" size={64}/>
+                                                </a>
+                                                <ul className="dropdown-menu">
+                                                    <li className={` ${styles.cardActions}`}>
+                                                        <Link to="edit" state={{recipeId: el._id, edit: true}} className={`content-title ${styles.cardActionDelete}`}>
+                                                            Edit
+                                                        </Link>
+                                                    </li>
+                                                    <li className={` ${styles.cardActions}`}>
+                                                        <a href="#" type="button" className={`action-btn ${styles.cardActionDelete}`} data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                                            Delete
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            {/* <Link to={{
+                                                pathname: `edit` ,
                                             }}
                                             state={{recipeId: el._id, edit: true}}
-                                            className="content-title"><Edit strokeWidth="1"  width="27" height="19"/></Link>
+                                            className="content-title">
+                                                <Edit strokeWidth="1"  width="27" height="19"/>
+                                                
+                                            </Link>
 
                                             <button type="button" className="action-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                                 <Trash2 strokeWidth="1" size="18"/>
-                                            </button>
+                                            </button> */}
+
+
+
                                             {/* Modal  */}
                                             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div className="modal-dialog modal-dialog-centered">
@@ -121,23 +141,23 @@ export default function UserRecipeList() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <img src={el.thumbnail} className="card-img-top" alt="recipeResult" style={{ height: '150px'}}/>
-                                        <div className="card-body my-recipes-body ">
-                                            <h6 className="card-title">
+                                        <img src={el.thumbnail} className="card-img-top allRecipeImg" alt="recipeResult" />
+                                        <div className="card-body result-body">
+                                            <h5 className="card-title result-title">
                                                 <Link to={{
                                                     pathname: `/recipe` ,
                                                     search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
                                                 }}
                                                 state={{recipeId: el._id}}
-                                                className="result-title">{el.recipeName}</Link>
-                                            </h6>
-                                            
+                                                >
+                                                {el.recipeName}
+                                                </Link>
+                                            </h5>
                                         </div>
                                     </div>
                                 </div>
                             )
-                        })
-                        } 
+                        })} 
                     </div>
                 }
                    

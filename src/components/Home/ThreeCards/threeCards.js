@@ -3,12 +3,13 @@ import Nav from 'react-bootstrap/Nav';
 import {Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Share2,Bookmark} from 'react-feather';
-import truncateText from '../UI/truncate'
-import Avatar from '../Avatar/avatar'
-import Img2 from '../../public/images/tier3/img2.jpeg'
-import Img3 from '../../public/images/tier3/img3.jpeg'
-import Img4 from '../../public/images/tier3/img4.jpeg'
-import '../../public/css/threeCards.css'
+import truncateText from '../../UI/truncate'
+import Avatar from '../../Avatar/avatar'
+import AuthorFooter from '../../AuthorFooter/AuthorFooter'
+import Img2 from '../../../public/images/tier3/img2.jpeg'
+import Img3 from '../../../public/images/tier3/img3.jpeg'
+import Img4 from '../../../public/images/tier3/img4.jpeg'
+import './threeCards.css'
 
 
 export default function threeCards() {
@@ -41,7 +42,9 @@ export default function threeCards() {
              <section className="three-card-group">
                 <div className="container">
                     <div className="card-deck"> 
-                        {showCase.map((el, i) => 
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        {showCase.map((el, i) => <>
+                        <div class="col">
                         <div className="card mb-4" key={el.recipeName}>
                             {/* <!--Card image--> */}
                             <div className="view overlay">
@@ -62,48 +65,31 @@ export default function threeCards() {
                                 <h5 className="card-title">
                                 <Link to={{
                                         pathname: `/recipe` ,
-                                        search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
-                                        state: {recipeId: el._id},
+                                        // search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
                                     }}
+                                    state={{recipeId: el._id}}
                                     className="content-title">{el.recipeName}</Link>
                                 </h5>
 
                                 <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
                                 <Link to={{
                                         pathname: `/recipe` ,
-                                        search: `?q=${("40 mother’s day breakfast and brunch recipes").replaceAll(" ", "-")}`,
-                                        state: {recipeId: '64ab7469f86e56f5d7278684'},
+                                        // search: `?q=${("40 mother’s day breakfast and brunch recipes").replaceAll(" ", "-")}`,
                                     }}
+                                    state={{recipeId: el._id}}
                                     style={{color: '#1e8aff'}}>Read More</Link>
                                 </p>
-
-                                
-                                
-
-                                <div className="editor d-flex ">
-                                    <div className="content-author">
-                                        <Avatar/>
-                                        <p>
-                                            <span><small>LAURA DERN</small></span>
-                                            <span className="text-muted"><small>May 08, 2021</small></span>
-                                        </p>
-
-                                    </div>
-                                    <div className="content-share-icon">
-                                        <p className="share">
-                                            <span className="card-icon"><Share2 strokeWidth="1"/> </span>
-                                        </p>
-                                        
-                                        <p className="bookmark">
-                                            <span className="card-icon"><Bookmark strokeWidth="1"/> </span>
-                                        </p>
-
-                                    </div>
-                                </div>
+                                <AuthorFooter/>
                             </div>
 
                         </div>
-                        )}       
+                        </div>
+                        
+                    
+                        
+                        </>
+                        )} 
+                        </div>      
                     </div>
 
                 </div>
