@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import ForumAd from '../../../components/Home/forumAd'
 import { Link } from 'react-router-dom';
 import ResultList from '../../../components/AllRecipes/resultList'
-import Filter from '../../../components/AllRecipes/Filter/filter'
+import FilterRecipes from '../../../components/AllRecipes/FilterRecipes/FilterRecipes'
 import Offcanvas from 'react-bootstrap/Offcanvas';
-import { Menu } from 'react-feather';
+import { Filter } from 'react-feather';
 import styles from './allRecipes.module.css'
 
 export default function AllRecipes() {
@@ -24,20 +24,21 @@ export default function AllRecipes() {
                     <div className={styles.mobileNavigationContainer}> 
                       <div className={` container ${styles.offCanvasContainer}`}> 
                         <div variant="primary" className="d-lg-none" >
-                          <Menu strokeWidth="2.5"  width="27" height="19" size={64} onClick={handleShow}/>
+                          <Filter strokeWidth="2.5"  width="27" height="19" size={64} onClick={handleShow}/>
+                          <span>Filter Recipes</span>
                         </div>
                         <Offcanvas show={show} onHide={handleClose} responsive="lg" scroll={true} backdrop={false}>
                           <Offcanvas.Header closeButton style={{justifyContent:'flex-end'}}>
                           </Offcanvas.Header>
                           <Offcanvas.Body>
-                            <Filter getFilters={setFilters}/>
+                            <FilterRecipes getFilters={setFilters}/>
                           </Offcanvas.Body>
                         </Offcanvas>
                       </div>
                     </div>
                     <div className="row g-0">
                       <div className={`col-md-3 ${styles.desktopContainer}`}>
-                      <Filter getFilters={setFilters}/>
+                      <FilterRecipes getFilters={setFilters}/>
                       </div>
                       <div className="col">
                       <div className="card-body">

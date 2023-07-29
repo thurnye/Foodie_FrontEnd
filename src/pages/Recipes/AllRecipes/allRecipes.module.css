@@ -1,4 +1,7 @@
 .AllRecipes{
+    margin-top: 2rem;
+    border: 2px dotted red;
+    
     .mobileNavigationContainer{
         display: none;
     }

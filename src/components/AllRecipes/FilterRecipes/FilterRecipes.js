@@ -13,7 +13,7 @@ const tags = [
   'Appetizers', 'Bacon', 'Bake', 'Basil', 'BBQ'
 ];
 
-const Filter = (props) => {
+const FilterRecipes = (props) => {
   const [showMoreCategories, setShowMoreCategories] = useState(false);
   const [showMoreTags, setShowMoreTags] = useState(false);
 
@@ -130,4 +130,4 @@ const Filter = (props) => {
   );
 };
 
-export default Filter;
+export default FilterRecipes;

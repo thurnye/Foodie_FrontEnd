@@ -77,9 +77,9 @@ export default function UserRecipeList() {
         <>
             <div className="container">
                 <h5 className="container">My RECIPE LIST</h5>
-                
+               note: Integrate Recipe Adaptations: Encourage users to submit their adapted versions of existing recipes, incorporating regional variations or unique twists.
             </div>
-            <div className=" scrollspy-example container" data-spy="scroll" data-target="#spy">
+            <div className=" container">
                     
                 {loading ? 
                     <Loading/>
@@ -163,7 +163,9 @@ export default function UserRecipeList() {
                    
                 
             </div>
+            <div>
             {counts > 1 && <CustomPagination totalPages={counts} currentPage={currentPage} onPageChange={setCurrentPage}/>}
+            </div>
         </>
     )
 }
