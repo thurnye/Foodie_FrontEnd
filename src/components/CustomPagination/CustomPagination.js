@@ -16,7 +16,7 @@ const CustomPagination = ({ currentPage, totalPages, onPageChange }) => {
 
   return (
     <nav className={`${styles.CustomPagination}`} >
-      <ul className="pagination justify-content-center">
+      <ul className="pagination justify-content-center flex-sm-wrap pagination-sm">
         <li className={`page-item ${isFirstPage ? 'disabled' : ''} ${styles.previousPage}`}>
           <span
             className="page-link"

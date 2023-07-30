@@ -1,16 +1,11 @@
-.AllRecipes{
+.AllRecipesContainer{
+    margin-top: 2rem;
     .mobileNavigationContainer{
         display: none;
-    }
-    .desktopContainer{
-        /* border : 1px solid #c4cac7; */
     }
     .dropdown-menu{
         border: none
     }
-    /* .DashboardContents{
-        margin-left: 10px;
-    } */
 }
 
 @media (max-width: 990px) {

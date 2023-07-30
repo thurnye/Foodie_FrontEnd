@@ -42,7 +42,7 @@ export default function category() {
                                         <h5 className="card-title category">Category</h5>
                                         <div className="category-items container">
                                         
-                                            <div className="row row-cols-1 row-cols-md-3 g-4">
+                                            <div className="row row-cols-2 row-cols-md-3 g-4">
                                                 {categories.map((el) =>  
                                                     <div className="view overlay category-img-container col" key={el.name}>
                                                         {/* <a href="#"> */}

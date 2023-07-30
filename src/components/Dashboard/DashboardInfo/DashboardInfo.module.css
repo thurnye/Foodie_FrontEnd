@@ -1,0 +1,46 @@
+.DashboardInfo {
+    .searchContanier{
+        /* position: fixed;
+    z-index: 999; */
+        .searchInput{
+            border-right: none;
+            height: 46px;
+            border-radius: 25px;
+            background: #f0f3f4;
+        }
+        .searchGlass{
+            border-radius: 25px;
+            border-left: none;
+            background: #f0f3f4;
+        }
+        .dashboardDate{
+            
+        }
+    }
+
+    .feedContents{
+        border: 1px solid #ededed
+    }
+
+    .mainContent{
+        margin-top: 6px;
+        .mainContent_Container{
+
+            .dashboardInfo_Card{
+                /* border: 2px dotted red; */
+                margin-top: 3rem;
+            }
+            .most_recent_task{
+                margin-top: 0;
+            }
+        }
+    }
+}
+
+@media (max-width: 990px) {
+    .DashboardInfo{
+        .dashboardDate{
+            display: none;
+        } 
+ }
+}

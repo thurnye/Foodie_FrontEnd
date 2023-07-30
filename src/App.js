@@ -23,6 +23,9 @@ import Login from './pages/login';
 import CompleteRegistration from './pages/completeRegistrationForm';
 import NewRecipe from './pages/newRecipe'
 import UpdateRecipe from './pages/updateRecipe'
+import DashboardInfo from './components/Dashboard/DashboardInfo/DashboardInfo'
+import BlogManager from './components/Dashboard/BlogManager/BlogManager'
+import Notification from './components/Dashboard/Notification/Notification'
 // import Footer from './elements/<Footer/>/footer'
 
 
@@ -30,6 +33,8 @@ import './public/css/hover.css'
 import './App.css';
 import Dashboard from './pages/Dashboard/Dashboard';
 import UserRecipeList from './components/CompleteRegistrationForm/userRecipeList';
+import Events from './components/Dashboard/Events/Events'
+import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks'
 
 
 
@@ -62,18 +67,22 @@ function App() {
           {!user && <Route path="/signup" element={<Signup/>} /> }
           {!user && <Route path="/login" element={<Login/>} />}
           {user && <Route path="/new-account" element={<CompleteRegistration/>} />}
-          {user && <Route path="/new-recipe" element={<NewRecipe/>} />}
+          {/* {user && <Route path="/new-recipe" element={<NewRecipe/>} />} */}
           
           <Route path="/recipe" element={<SingleRecipe/>} />
           <Route path="/all-recipes" element={<AllRecipe/>} />
           <Route path="/forum" element={<Forum/>} />
           <Route path="/author" element={<Author/>} />
           <Route path="user"  element={<Dashboard />}>
-            <Route path="dashboard" element={<>Dashboard Home</>}/>
+            <Route path="dashboard" element={<DashboardInfo/>}/>
             <Route path="profile" element={<CompleteRegistration/>} />
-              {user && <Route path="manage-recipe/edit" element={<UpdateRecipe/>} />}
+            <Route path="manage-recipe/edit" element={<UpdateRecipe/>} />
             <Route path="manage-recipe" element={<UserRecipeList/>}/>
             <Route path="add-recipe" element={<NewRecipe/>} />
+            <Route path="blog-manager" element={<BlogManager/>} />
+            <Route path="notification" element={<Notification/>} />
+            <Route path="events" element={<Events/>} />
+            <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} />
             <Route index element={<Navigate to="dashboard" />}></Route>
           </Route>
 

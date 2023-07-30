@@ -1,0 +1,82 @@
+.DashboardNav {
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    flex-grow: 1;
+    .logoContainer{
+        padding: 29px;
+        /* width: 85%;
+        margin: auto; */
+        margin: 0 15px;
+        border-bottom: 1px solid #c4cac7;
+        .brandLink{
+            margin-left: -13px
+        }
+    }
+    .dashboardNavContainer{
+        /* border: 2px dotted green; */
+        margin: auto;
+        width: 85%;
+        margin-top: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .navItems{
+            padding: 10px;
+            margin-bottom: 15px;
+            /* border: 2px dotted red; */
+            border-radius: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            .item{
+                margin-left: 10px;
+            }
+        }
+        .badge{
+            background: salmon; 
+        }
+        .DropNavItems{
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 25px;
+            /* border: 2px dotted red; */
+            .DropNavItem{
+                margin-left: 10px;
+            }
+        }
+        .subNavItems{
+            padding: 6px 20px;
+            
+        }
+        .dashboardUserContainer{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            .imageContent img{
+                width: 60px;
+                border-radius: 50%;
+                text-align: center;
+                margin-bottom: 1vh;
+            }
+            .dashboardUserName{
+                font-size: 12px;
+            }
+        }
+        
+    }
+}
+
+
+@media (min-width: 990px) {
+    .DashboardNav{
+        border: 1px solid #c4cac7;
+        position: fixed;
+        width: 16rem;
+        /* display: none !important;
+        border: 2px */
+    }
+ }

@@ -13,7 +13,7 @@ const tags = [
   'Appetizers', 'Bacon', 'Bake', 'Basil', 'BBQ'
 ];
 
-const Filter = (props) => {
+const FilterRecipes = (props) => {
   const [showMoreCategories, setShowMoreCategories] = useState(false);
   const [showMoreTags, setShowMoreTags] = useState(false);
 
@@ -42,7 +42,7 @@ const Filter = (props) => {
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className="form">
             {/* KeyWord Search */}
-            <div className="form-group row">
+            <div className="form-group row mb-4">
               <div className="col">
                 <input
                   id="keywordSearch"
@@ -130,4 +130,4 @@ const Filter = (props) => {
   );
 };
 
-export default Filter;
+export default FilterRecipes;

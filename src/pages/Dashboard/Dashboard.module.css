@@ -1,11 +1,14 @@
 .Dashboard {
-    .DashboardSection{
+    height: 81vh;
+    overflow: auto;
+    .cardContainer{
+        overflow: auto;
     }
     .mobileNavigationContainer{
         display: none;
     }
     .desktopContainer{
-        border : 1px solid #c4cac7;
+        height: 80.5vh;
     }
     .dropdown-menu{
         border: none
@@ -15,16 +18,25 @@
     }
 }
 
+
+.canvasBodyContainer{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
 @media (max-width: 990px) {
    .Dashboard{
+    height: initial;
        .desktopContainer{
             display: none;
         }
         .mobileNavigationContainer{
             display: block;
         }
+    }
+    .canvasContainer{
+        top: 0px !important;
     } 
 }
-.offcanvas-parent {
-    position: relative;
-  }
