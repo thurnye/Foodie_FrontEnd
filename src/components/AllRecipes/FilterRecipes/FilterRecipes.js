@@ -42,7 +42,7 @@ const FilterRecipes = (props) => {
         <form noValidate onSubmit={handleSubmit(onSubmit)}>
           <div className="form">
             {/* KeyWord Search */}
-            <div className="form-group row">
+            <div className="form-group row mb-4">
               <div className="col">
                 <input
                   id="keywordSearch"

@@ -1,18 +1,13 @@
 .Dashboard {
     height: 81vh;
     overflow: auto;
-    .DashboardSection{
-    }
     .cardContainer{
-        /* height: 90vh; */
         overflow: auto;
     }
     .mobileNavigationContainer{
         display: none;
-        /* height: 89.5vh; */
     }
     .desktopContainer{
-        /* border : 1px solid #c4cac7; */
         height: 80.5vh;
     }
     .dropdown-menu{
@@ -22,28 +17,13 @@
         margin-left: 10px;
     }
 }
-/* .dashboardUserContainer{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.imageContent img{
-    width: 60px;
-    border-radius: 50%;
-    text-align: center;
-    margin-bottom: 1vh;
-}
-.dashboardUserName{
-    font-size: 12px;
-} */
+
 
 .canvasBodyContainer{
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    /* align-items: center; */
 }
 
 @media (max-width: 990px) {
@@ -57,10 +37,6 @@
         }
     }
     .canvasContainer{
-        /* position: relative !important; */
-        /* border: 2px dotted red; */
         top: 0px !important;
     } 
 }
-.offcanvas-lg {
-  }

@@ -2,10 +2,6 @@
     
 }
 
-
-.filter{
-    /* border: 2px dotted red; */
-}
 .filter-indicator{
     margin: 20px 0;
 }
@@ -37,4 +33,4 @@
   h4 {
     margin: 0px 0px 4px 0px;
   }
-  /* ,formState: { errors } */
+ 

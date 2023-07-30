@@ -1,14 +1,11 @@
 import React, {useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import { redirect, Link } from "react-router-dom";
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import { redirect } from "react-router-dom";
 import {userActions} from '../../store/userSlice'
 import './navbar.css';
 import Logo from '../../public/images/logo.png'
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Menu } from 'react-feather';
-import Dashboard from '../../pages/Dashboard/Dashboard'
 
 
 
