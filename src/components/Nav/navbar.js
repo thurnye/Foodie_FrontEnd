@@ -45,7 +45,7 @@ function Header(){
     {
         name: 'Forum',
         path: '/forum',
-        active: false
+        active: false,
     }
   ]
 
@@ -74,7 +74,9 @@ function Header(){
                                 )}
                                 {!user && <a className="nav-link" aria-current="page" href="/login">Login</a>}
                                 {user && <a className="nav-link " aria-current="page" href="/user">Dashboard</a>}
+                                {user && <a className="nav-link " aria-current="page" href="http://localhost:3001/" target="_blank">News Feeds</a>}
                                 {user &&  <button className="nav-link btn" onClick={logoutHandler}>Logout</button>}
+                                
                             </div>
                         </div>
                         <div className="mobileViewNav">
@@ -104,9 +106,23 @@ function Header(){
                                 }
                                 {user && 
                                     <li className="list-group-item">
+                                        <a className="nav-link " aria-current="page" href="/newsFeeds">News Feeds</a>
+                                    </li>
+                                }
+                                {user && 
+                                    <li className="list-group-item">
                                         <button className="nav-link btn" onClick={logoutHandler}>Logout</button>
                                     </li>
                                 }
+                                <li className="list-group-item">
+                                    <a className="nav-link " aria-current="page" href="test">FeatureTest</a>
+                                </li>
+                                <li className="list-group-item">
+                                    <a className="nav-link " aria-current="page" href="/user">Dashboard</a>
+                                </li>
+                                <li className="list-group-item">
+                                    <a className="nav-link " aria-current="page" href="/newsFeeds">News Feeds</a>
+                                </li>
                                 </ul>
                             </div>
                           </Offcanvas.Body>

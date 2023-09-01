@@ -19,10 +19,13 @@ import AllRecipe from './pages/Recipes/AllRecipes/allRecipes'
 import Author from './pages/author';
 import Forum from './pages/forum';
 import Signup from './pages/signup';
-import Login from './pages/login';
+import LoginUser from './pages/login';
+import NewsFeeds from './pages/NewsFeeds/NewsFeeds';
 import CompleteRegistration from './pages/completeRegistrationForm';
-import NewRecipe from './pages/newRecipe'
 import UpdateRecipe from './pages/updateRecipe'
+import NewRecipe from './pages/newRecipe'
+
+
 import DashboardInfo from './components/Dashboard/DashboardInfo/DashboardInfo'
 import BlogManager from './components/Dashboard/BlogManager/BlogManager'
 import Notification from './components/Dashboard/Notification/Notification'
@@ -35,6 +38,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import UserRecipeList from './components/CompleteRegistrationForm/userRecipeList';
 import Events from './components/Dashboard/Events/Events'
 import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks'
+import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 
 
 
@@ -58,6 +62,7 @@ function App() {
   // get the loggedIn User
   const user = useSelector(state => state.userLog.user);
 
+  
   return (
     <React.Fragment>
       <BrowserRouter>
@@ -65,14 +70,14 @@ function App() {
         <Routes>
           <Route path="/"  exact element={<Home/>} />
           {!user && <Route path="/signup" element={<Signup/>} /> }
-          {!user && <Route path="/login" element={<Login/>} />}
+          {!user && <Route path="/login" element={<LoginUser/>} />}
           {user && <Route path="/new-account" element={<CompleteRegistration/>} />}
-          {/* {user && <Route path="/new-recipe" element={<NewRecipe/>} />} */}
           
           <Route path="/recipe" element={<SingleRecipe/>} />
           <Route path="/all-recipes" element={<AllRecipe/>} />
           <Route path="/forum" element={<Forum/>} />
           <Route path="/author" element={<Author/>} />
+            <Route path="/test" element={<FeatureTesting/>}/>
           <Route path="user"  element={<Dashboard />}>
             <Route path="dashboard" element={<DashboardInfo/>}/>
             <Route path="profile" element={<CompleteRegistration/>} />

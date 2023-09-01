@@ -31,25 +31,25 @@ const DashboardNav = () => {
         }
       ]
     },
-    {
-      name: 'Posts',
-      path: 'blog-manager',
-      icon: <FileMinus strokeWidth={1} size={18} />,
-      subMenu: [
-        {
-        name: 'Manage Post',
-        path: '/',
-        badge: 2,
-        icon: <Bell strokeWidth={1} size={18}/>
+    // {
+    //   name: 'Posts',
+    //   path: 'blog-manager',
+    //   icon: <FileMinus strokeWidth={1} size={18} />,
+    //   subMenu: [
+    //     {
+    //     name: 'Manage Post',
+    //     path: '/',
+    //     badge: 2,
+    //     icon: <Bell strokeWidth={1} size={18}/>
         
-      },
-      {
-        name: 'Add Post',
-        path: '/',
-        icon: <Trash2  strokeWidth={1} size={18}/>
+    //   },
+    //   {
+    //     name: 'Add Post',
+    //     path: '/',
+    //     icon: <Trash2  strokeWidth={1} size={18}/>
   
-      }]
-    },
+    //   }]
+    // },
     {
       name: 'Events',
       path: 'events',

@@ -6,6 +6,10 @@ const Events = () => (
     Events Component
 
     <ul class="list-group">
+  <li class="list-group-item">
+    toggle options:
+    All, For You, This week, This month, Online, Free
+  </li>
   <li class="list-group-item">Weekly/Monthly Challenges: Organize cooking challenges or themes for users to participate in, encouraging them to try new recipes and share their creations.
 
 </li>

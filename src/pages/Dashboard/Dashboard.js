@@ -35,8 +35,8 @@ const Dashboard = () => {
                       <div className={`col-lg-3 ${styles.desktopContainer}`}>
                         <DashboardNav/>
                       </div>
-                      <div className="col">
-                        <div className={`card-body pt-0 ${styles.DashboardContents}`}>
+                      <div className={`col ${styles.DashboardContents}`}>
+                        <div className={`card-body pt-0 p-0`}>
                           <div id="detail">
                             <Outlet/>
                           </div>
