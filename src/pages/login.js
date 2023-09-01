@@ -9,7 +9,7 @@ import {Link} from 'react-router-dom'
 import {userActions } from '../store/userSlice'
 
 
-export default function LogIn() {
+export default function LogInUser() {
    const dispatch = useDispatch()
   const {
     register, 

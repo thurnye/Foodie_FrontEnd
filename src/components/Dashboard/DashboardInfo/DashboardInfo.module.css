@@ -44,3 +44,10 @@
         } 
  }
 }
+@media (max-width: 767px) {
+    .DashboardInfo{
+        .feedContents{
+            border: none;
+        }
+    }
+}

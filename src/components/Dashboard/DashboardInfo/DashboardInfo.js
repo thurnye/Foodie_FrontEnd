@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './DashboardInfo.module.css';
 import { Search } from 'react-feather';
+import DashboardFeeds from '../DashboardFeeds/DashboardFeeds'
 
 const DashboardInfo = () => {
   const today = new Date();
@@ -12,7 +13,7 @@ const DashboardInfo = () => {
 
   return(
   <div className={styles.DashboardInfo}>
-    <div className={styles.searchContanier}>
+    <div className={styles.searchContainer}>
       <div className="container">
         <div className="row">
           <div className={`col-12 col-lg-9`}>
@@ -33,12 +34,12 @@ const DashboardInfo = () => {
     </div>
 
     <div className={styles.mainContent}>
-      <div className="container text-center">
+      <div className="container">
         <div className="row">
-          <div className={`col-md-6 ${styles.feedContents}`}>
+          <div className={`col-md-6 m-0 p-0 ${styles.feedContents}`}>
             <div className={`card`}>
               <div className="card-body">
-                <h5 className="card-title">News Feed</h5>
+                <DashboardFeeds/>
               </div>
             </div>
           </div>

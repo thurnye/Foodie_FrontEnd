@@ -1,0 +1,87 @@
+.DashboardFeeds {
+    padding: 0;
+    .DashboardFeedsContainer{
+        .feedsContainer{
+            border-top: 1px solid #ededed;
+            padding: 8px 0px;
+            &:first-child{
+                border-top: none;
+            }
+            .contentContainer{
+                padding: 0 2px;
+                margin-left: -2.8rem;
+            }
+            .feedActions{
+                margin-top: 10px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            } 
+        }
+    }
+    .DashboardDesktopPost{
+        border-bottom: 2px solid #ededed;
+        margin-bottom: 1rem;
+
+        .postActions{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 5px;
+            .media{
+                display: inherit;
+                .postMedia{
+                    margin: 0px 10px 5px 0px;
+                }
+            }
+            .postContent{
+                padding: 2px 15px;
+                margin: 0px 10px 5px 0px;
+                background: #ffedb7;
+            }
+        }
+
+    }
+}
+.imageContainer img{
+        width: 35px;
+        border-radius: 50%;
+        /* margin-right: 5px; */
+}
+
+@media (max-width: 767px) {
+    .DashboardFeeds{
+        .contentContainer{
+            margin-left: -2.8rem !important;
+        }
+    }
+}
+@media (max-width: 575.98px) {
+    .DashboardFeeds{
+        .contentContainer{
+            margin-left: -1rem !important;
+        }
+ }
+}
+@media (max-width: 320.98px) {
+    .DashboardFeeds{
+        .contentContainer{
+            margin-left: 0px !important;
+        }
+ }
+}
+
+@media (min-width: 1200.5px) and (max-width: 1400px) {
+    .DashboardFeeds{
+        .contentContainer{
+            margin-left: -2rem !important;
+        }
+ }
+}
+ @media (min-width: 767.5px) and (max-width: 1200px) {
+    .DashboardFeeds{
+        .contentContainer{
+            margin-left: -1rem !important;
+        }
+ }
+}
