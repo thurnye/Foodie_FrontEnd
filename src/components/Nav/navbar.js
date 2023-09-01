@@ -74,9 +74,8 @@ function Header(){
                                 )}
                                 {!user && <a className="nav-link" aria-current="page" href="/login">Login</a>}
                                 {user && <a className="nav-link " aria-current="page" href="/user">Dashboard</a>}
-                                {user && <a className="nav-link " aria-current="page" href="/newsFeeds">News Feeds</a>}
+                                {user && <a className="nav-link " aria-current="page" href="http://localhost:3001/" target="_blank">News Feeds</a>}
                                 {user &&  <button className="nav-link btn" onClick={logoutHandler}>Logout</button>}
-                                <a className="nav-link " aria-current="page" href="/webcon">FeatureTest</a>
                                 
                             </div>
                         </div>

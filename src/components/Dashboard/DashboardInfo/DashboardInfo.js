@@ -36,14 +36,14 @@ const DashboardInfo = () => {
     <div className={styles.mainContent}>
       <div className="container">
         <div className="row">
-          <div className={`col-md-6 m-0 p-0 ${styles.feedContents}`}>
+          {/* <div className={`col-md-6 m-0 p-0 ${styles.feedContents}`}>
             <div className={`card`}>
               <div className="card-body">
                 <DashboardFeeds/>
               </div>
             </div>
-          </div>
-          <div className="col-md-6">
+          </div> */}
+          <div className="col">
             <div className={`container text-center ${styles.mainContent_Container}`}>
               <div className="row">
                 <div className="col">

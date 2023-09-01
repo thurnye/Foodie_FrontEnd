@@ -76,11 +76,6 @@ function App() {
           <Route path="/recipe" element={<SingleRecipe/>} />
           <Route path="/all-recipes" element={<AllRecipe/>} />
           <Route path="/forum" element={<Forum/>} />
-          <Route path="/webcon" element={<Forum/>} />
-
-          {/* {user && <Route path="/newsFeeds" element={<NewsFeeds/>} />} */}
-
-          <Route path="/newsFeeds" element={<NewsFeeds/>} />
           <Route path="/author" element={<Author/>} />
             <Route path="/test" element={<FeatureTesting/>}/>
           <Route path="user"  element={<Dashboard />}>
