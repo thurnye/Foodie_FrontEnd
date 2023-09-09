@@ -36,7 +36,7 @@ import './public/css/hover.css'
 import './App.css';
 import Dashboard from './pages/Dashboard/Dashboard';
 import UserRecipeList from './components/CompleteRegistrationForm/userRecipeList';
-import Events from './components/Dashboard/Events/Events'
+import Events from './components/Dashboard/Events/EventsContainer/EventsContainer'
 import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks'
 import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 

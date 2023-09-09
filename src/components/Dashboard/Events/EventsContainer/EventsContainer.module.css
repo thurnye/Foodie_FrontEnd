@@ -1,0 +1,26 @@
+.EventsContainer {
+    .EventNav{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        li:last-of-type{
+            margin-left: auto
+        }
+    }
+    .activeCompNav{
+        border-bottom: 1px solid #ccee;
+        border: 2px solid red;
+    }
+    .calendarContent{
+        margin: auto
+    }
+    .ModalHeader{
+        border: none;
+    }
+    .ModalFooter{
+        display: flex;
+        justify-content: space-between;
+        align-items: center
+    }
+}
