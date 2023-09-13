@@ -7,7 +7,7 @@ import AddEvent from '../AddEvent/AddEvent';
 import { getRandomInt, getDateShort } from '../../../../util/commons';
 
 const EventsContainer = () => {
-  const [activeComponent, setActiveComponent] = useState('All'); 
+  const [activeComponent, setActiveComponent] = useState('Add Event'); 
   const [calendarValue, setCalendarValue] = useState(new Date());
   const componentsNavs = [
     'All',
@@ -26,12 +26,12 @@ const EventsContainer = () => {
   ];
 
   // Function to handle component button click
-  const handleComponentClick = (component) => {
-    setActiveComponent(component);
-  };
-  const onCalendarChange = (value) => {
-    setCalendarValue(value);
-  }
+  // const handleComponentClick = (component) => {
+  //   setActiveComponent(component);
+  // };
+  // const onCalendarChange = (value) => {
+  //   setCalendarValue(value);
+  // }
 
   return (
     <div className={styles.EventsContainer}>
@@ -45,7 +45,7 @@ const EventsContainer = () => {
               role="tab"
               aria-controls={el}
               aria-selected={activeComponent === el ? 'true' : 'false'}
-              onClick={() => handleComponentClick(el)} // Handle click event
+              onClick={() => setActiveComponent(el)} // Handle click event
             >
               {el}
             </button>
@@ -61,7 +61,7 @@ const EventsContainer = () => {
             role="tab"
             aria-controls="addEvent"
             aria-selected={activeComponent === 'Add Event' ? 'true' : 'false'}
-            onClick={() => handleComponentClick('Add Event')} // Handle click event
+            onClick={() => setActiveComponent('Add Event')} // Handle click event
           >
             Add Event
           </button>
@@ -80,7 +80,7 @@ const EventsContainer = () => {
           <li key={`${el}_${getRandomInt()}`}>
             <button 
             className="dropdown-item" 
-            onClick={() => handleComponentClick(el)}
+            onClick={() => setActiveComponent(el)}
             >
               {el}
             </button>
@@ -113,7 +113,7 @@ const EventsContainer = () => {
       </div>
 
       {/* <!-- Modal --> */}
-      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered modal-dialog-sm">
           <div className="modal-content">
             <div className={`modal-header ${styles.ModalHeader}`}>
@@ -121,7 +121,7 @@ const EventsContainer = () => {
             </div>
             <div className={`modal-body ${styles.calendarContent}`}>
             <Calendar 
-            onChange={onCalendarChange} 
+            onChange={(value) => setCalendarValue(value)} 
             value={calendarValue} 
             defaultValue={new Date()}            
             minDate={new Date()}

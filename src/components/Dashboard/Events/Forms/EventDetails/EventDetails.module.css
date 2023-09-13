@@ -1,15 +1,4 @@
-.AddEvent {
-    .EventAction{
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        li:last-of-type{
-            margin-left: auto;
-            button{
-                margin-right: 0.8rem
-            }
-        }
-    }
+.EventDetails {
     .sectionHeader{
         border-bottom: 1px solid #ccee;
         display: flex;
