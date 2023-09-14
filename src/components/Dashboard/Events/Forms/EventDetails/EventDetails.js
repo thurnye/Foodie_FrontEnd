@@ -1,90 +1,84 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import styles from './EventDetails.module.css';
-import { useForm, useFormContext, Controller } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import CompTextEditor from '../../../../CompTextEditor/CompTextEditor';
 import Dropzone from 'react-dropzone'
 import {LiaCameraRetroSolid} from 'react-icons/lia';
 import {MdOutlineCancel} from 'react-icons/md';
-import { getRandomInt, convertToBase64 } from '../../../../../util/commons';
+import { convertToBase64 } from '../../../../../util/commons';
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
 import FormDirection from '../FormDirection/FormDirection'
 
 const EventDetails = () => {
-  const { eventForm, setEventForm, formSteps, setCurrentFormStep, currentFormStep} = useAddEventFormContext()
-  // const {
-  //   control,
-  //   register,
-  //   formState: { errors },
-  //   setValue
-  // } = useFormContext({
-  //   mode: "onBlur",
-  //   reValidateMode: "onChange"
-  // });
+  const { eventForm, setEventForm } = useAddEventFormContext()
   const {
     control,
     register, 
     handleSubmit,
     formState: { errors },
     setValue,
-  } = useForm();
-
-  const [directions, setDirections] = useState({
-    fAQs: [{
-        ques: "", 
-        ans: ""}]
+    reset
+  } = useForm({
+    defaultValues: useMemo(() => {
+      return eventForm.eventDetails;
+    }, [eventForm.eventDetails])
   });
 
-  const [nextStep, setNextStep] = useState(true);
+  useEffect(() => {
+    reset(eventForm.eventDetails);
+  }, [eventForm.eventDetails]);
 
-  console.log({eventForm}, currentFormStep, formSteps)
+  const [quesAndAns, setQuesAndAns] = useState({
+    fAQs: [{
+      ques: "", 
+      ans: ""}]
+  });
 
 
+  const [proceed, setProceed] = useState(false);
 
   const onSubmit = async (data) => {
     try{
-      
-      console.log(data); // set the date in context
-      setEventForm(eventForm.eventDetails = data)
-      setNextStep(false);
+      setEventForm((eventForm) => ({ ...eventForm, eventDetails: data }));
+      setProceed(true)
     }catch(err){
       console.log(err)
-      setNextStep(true);
     }
   };
 
   const handleChange = (e, index) => {
-    const items = directions.fAQs;
+    const items = quesAndAns.fAQs;
     items[index][e.target.name]= e.target.value
-    setDirections({
+    setQuesAndAns({
       fAQs: items
     });
-};
+  };
 
-useEffect(() => {
-      const { fAQs } = directions; 
-      setValue('fAQs', fAQs);
-},[directions, setValue]);
+  useEffect(() => {
+    const { fAQs } = quesAndAns; 
+    setValue('fAQs', fAQs);
+  },[quesAndAns, setValue]);
 
 
 
-const handleDelete = (index) => {
-  const items = directions.fAQs;
-  if (items.length > 1) {
+  const handleDelete = (index) => {
+    const items = quesAndAns.fAQs;
+    if (items.length > 1) {
       items.splice(index, 1);
-      setDirections({
+      setQuesAndAns({
         fAQs: items
       });
-  } 
-};
+    } 
+  };
 
 
-const addNewRow = () => {
-  const items = directions.fAQs;
-  const blankRow = { ques: "", ans: ""};
-  setDirections({
-    fAQs: [...items, blankRow]
-  });
-};
+  const addNewRow = () => {
+    const items = quesAndAns.fAQs;
+    const blankRow = { ques: "", ans: ""};
+    setQuesAndAns({
+      fAQs: [...items, blankRow]
+    });
+  };
 
 
 
@@ -98,22 +92,21 @@ const addNewRow = () => {
       </div>
 
       <div className={styles.sectionForm}>
-        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <div className="form">
+            {/* Event Title */}
             <div className="mb-3">
               <label htmlFor="exampleFormControlInput_4" className="form-label">Event Title</label>
               <Controller
                 name="eventTitle"
                 control={control}
+                autoFocus
                 rules={{
-                  required: "required",
-                  pattern: {
-                    value: /^[A-Za-z]+$/i,
-                    message: "Event Title is required",
-                  },
+                  required: "required"
                 }}
                 render={({ field }) => (
                   <input
+                    autoFocus
                     type="text"
                     className="form-control"
                     placeholder="Give it a short distinct name"
@@ -123,6 +116,7 @@ const addNewRow = () => {
               />
             </div>
 
+            {/* Event Location */}
             <div className="mb-3">
               <label htmlFor="exampleFormControlInput_7861" className="form-label">Location</label>
               <Controller
@@ -148,7 +142,7 @@ const addNewRow = () => {
                 <Controller
                   name="isOnline"
                   control={control}
-                  defaultValue={false} // Set the default value if needed
+                  defaultValue={false} 
                   render={({ field }) => (
                     <>
                       <input
@@ -169,84 +163,89 @@ const addNewRow = () => {
               </div>
             </div>
 
+            {/* Event Time  */}
             <div className={`mb-3 row ${styles.eventTime}`}>
               <div className="col-md-6">
                 <label htmlFor="inputEmail_6764" className="form-label"
                 >STARTS</label>
-                <div className="row gap-3">
-                  <Controller
-                    name="start.date"
-                    control={control}
-                    rules={{
-                      required: "Event Start date is required"
-                    }}
-                    render={({ field }) => (
-                      <input
-                        type="date" // Change input type to text
-                        className="form-control"
-                        id="eventStartDate"
-                        {...field}
-                        placeholder="dd/mm/yyyy"
-                      />
-                    )}
-                  />
+                <div className="container">
+                  <div className="row gap-3">
+                    <Controller
+                      name="start.date"
+                      control={control}
+                      rules={{
+                        required: "Event Start date is required"
+                      }}
+                      render={({ field }) => (
+                        <input
+                          type="date" 
+                          className="form-control"
+                          id="eventStartDate"
+                          {...field}
+                          placeholder="dd/mm/yyyy"
+                        />
+                      )}
+                    />
 
-                  <Controller
-                    name="start.time"
-                    control={control}
-                    rules={{
-                      required: "Event Start time is required"
-                    }}
-                    render={({ field }) => (
-                      <input
-                        type="time" 
-                        className="form-control"
-                        id="eventStartTime"
-                        {...field}
-                        placeholder="hh:mm"
-                      />
-                    )}
-                  />
+                    <Controller
+                      name="start.time"
+                      control={control}
+                      rules={{
+                        required: "Event Start time is required"
+                      }}
+                      render={({ field }) => (
+                        <input
+                          type="time" 
+                          className="form-control"
+                          id="eventStartTime"
+                          {...field}
+                          placeholder="hh:mm"
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
 
               <div className="col-md-6">
                 <label htmlFor="inputEmail_6764" className="form-label"
                 >ENDS</label>
-                <div className="row gap-3">
-                  <Controller
-                    name="ends.date"
-                    control={control}
-                    rules={{
-                      required: "Event End date is required"
-                    }}
-                    render={({ field }) => (
-                      <input
-                        type="date" 
-                        className="form-control"
-                        id="eventEndDate"
-                        {...field}
-                        placeholder="dd/mm/yyyy"
-                      />
-                    )}
-                  />
+                <div className="container">
+                  <div className="row gap-3">
+                    <Controller
+                      name="ends.date"
+                      control={control}
+                      rules={{
+                        required: "Event End date is required"
+                      }}
+                      render={({ field }) => (
+                        <input
+                          type="date" 
+                          className="form-control"
+                          id="eventEndDate"
+                          {...field}
+                          placeholder="dd/mm/yyyy"
+                        />
+                      )}
+                    />
 
-                  <Controller
-                    name="ends.time"
-                    control={control}
-                    rules={{
-                      required: "Event End time is required"
-                    }}
-                    render={({ field }) => (
-                      <input
-                        type="time" // Change input type to text
-                        className="form-control"
-                        id="eventEndTime"
-                        {...field}
-                        placeholder="hh:mm"
-                      />
-                    )}
-                  />
+                    <Controller
+                      name="ends.time"
+                      control={control}
+                      rules={{
+                        required: "Event End time is required"
+                      }}
+                      render={({ field }) => (
+                        <input
+                          type="time" 
+                          className="form-control"
+                          id="eventEndTime"
+                          {...field}
+                          placeholder="hh:mm"
+                        />
+                      )}
+                    />
+                  </div>
                 </div>
               </div>
               
@@ -283,12 +282,12 @@ const addNewRow = () => {
               />
             </div>
             
+            {/* Event Image */}
             <div className={`mb-3`}>
               <label htmlFor="eventImage_6764" className="form-label">Event Image</label>
               <Controller
                 name="thumbnail"
                 control={control}
-                defaultValue={null} // Set the default value if needed
                 render={({ field }) => (
                   <>
                     <Dropzone
@@ -327,7 +326,8 @@ const addNewRow = () => {
                 )}
               />
             </div>
-
+            
+            {/* Event description */}
             <div className="mb-3">
               <label htmlFor="exampleFormControlTextarea_456" className="form-label">Event Description</label>
               <Controller
@@ -363,11 +363,11 @@ const addNewRow = () => {
                     {field.value ? <div>
                       <>
                         <p className="h3">FAQs</p>
-                        {directions.fAQs.map((item, index) => (
+                        {quesAndAns.fAQs.map((item, index) => (
                           <div key={index}>
                               <div className="step-del mb-0">
                                 <h6>No. {index + 1}</h6>           
-                                {directions.fAQs.length > 1 &&
+                                {quesAndAns.fAQs.length > 1 &&
                                   <MdOutlineCancel 
                                     strokeWidth="1" 
                                     size="25"
@@ -420,7 +420,8 @@ const addNewRow = () => {
                 )}
               />
             </div>
-
+            
+            {/* Event Organiser */}
             <div className="mb-3">
               <label htmlFor="exampleFormControlInput_4" className="form-label">Organiser Name</label>
               <Controller
@@ -428,10 +429,6 @@ const addNewRow = () => {
                 control={control}
                 rules={{
                   required: "Name of organiser is required",
-                  pattern: {
-                    value: /^[A-Za-z]+$/i,
-                    message: "Name should contain only letters",
-                  },
                 }}
                 render={({ field }) => (
                   <input
@@ -445,6 +442,7 @@ const addNewRow = () => {
               />
             </div>
 
+            {/* Event Organiser Description */}
             <div className="mb-3">
               <label htmlFor="exampleFormControlTextarea_426" className="form-label">ORGANISER DESCRIPTION</label>
               <Controller
@@ -461,6 +459,7 @@ const addNewRow = () => {
               />
             </div>
 
+            {/* Event External Links */}
             <div className="mb-3 form-check">
               <Controller
                 name="includeLinks"
@@ -487,8 +486,7 @@ const addNewRow = () => {
 
           </div> 
           <div>
-              {/* <button >Next: Create Ticket</button> */}
-              <FormDirection disabledNext={nextStep}/>
+              <FormDirection onSubmit={handleSubmit(onSubmit)} proceed={proceed}/>
           </div>    
         </form>
       </div>

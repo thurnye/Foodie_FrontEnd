@@ -1,23 +1,25 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
 
 
 
-const FormDirection = ({disabledNext="false"}) => {
+const FormDirection = ({onSubmit, proceed}) => {
     const { formSteps, setCurrentFormStep, currentFormStep} = useAddEventFormContext()
-  
-    const completeFormStep = () => {
-        if(currentFormStep < formSteps.length - 1){
-          setCurrentFormStep(currentFormStep + 1);
+
+      useEffect(() => {
+        if(proceed){
+          if(currentFormStep < formSteps.length - 1){
+            setCurrentFormStep(currentFormStep + 1);
+          }
         }
-      };
+      },[proceed, currentFormStep, formSteps, setCurrentFormStep]);
+
       const PrevFormStep = () => {
         if(currentFormStep > 0){
           setCurrentFormStep(currentFormStep - 1);
         }
       };
 
-      console.log(disabledNext)
 
   return (
     <div>
@@ -25,7 +27,7 @@ const FormDirection = ({disabledNext="false"}) => {
     <button type="button"  className="btn btn-primary" onClick={PrevFormStep}>Previous: {formSteps[currentFormStep - 1 ]}</button>
     }
     {currentFormStep < formSteps.length - 1 &&
-      <button type="button" className="btn btn-primary" onClick={()=> completeFormStep()} disabled={disabledNext}> Next Step: {formSteps[currentFormStep + 1]}</button>
+      <button type="button" className="btn btn-primary" onClick={()=> onSubmit()} > Next Step: {formSteps[currentFormStep + 1]}</button>
     }
     </div>
   )

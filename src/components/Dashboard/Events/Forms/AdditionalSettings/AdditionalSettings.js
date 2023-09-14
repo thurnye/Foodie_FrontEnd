@@ -4,15 +4,14 @@ import styles from './AdditionalSettings.module.css';
 import FormDirection from '../FormDirection/FormDirection'
 
 const AdditionalSettings = () => {
-  const [nextStep, setNextStep] = useState(false);
+  const [proceed, setProceed] = useState(false);
   return (
   <div className={styles.AdditionalSettings}>
     AdditionalSettings Component
 
     <div>
-              {/* <button >Next: Create Ticket</button> */}
-              <FormDirection disabledNext={nextStep}/>
-          </div>
+      <FormDirection proceed={proceed}/>
+    </div>
   </div>
 )};
 
