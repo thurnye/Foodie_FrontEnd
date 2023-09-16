@@ -9,13 +9,18 @@ export const eventForm = {
       starts: '',
       ends: '',
       repeat: false,
-      frequency: '',
+      frequency: 'weekly',
       thumbnail: '',
       eventDescription: '',
-      fAQs:[], //{question:'', answer: ''}
+      addFAQs: false,
+      fAQs:[{
+        ques: "",
+        ans: "",
+      }], //{question:'', answer: ''}
       organiserName: '',
       organiserDescription: '',
-      includeLinks: false //links to the event
+      includeLinks: false, //links to the event
+      test: false
     },
     tickets : {
       prices: [

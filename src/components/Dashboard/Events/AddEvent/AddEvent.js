@@ -89,7 +89,7 @@ const AddEvent = () => {
   });
 
 const formSteps = ['Event Details', 'Create Ticket', 'Additional Settings'];
-const [currentFormStep, setCurrentFormStep] = useState(0);
+const [currentFormStep, setCurrentFormStep] = useState(1);
 
 const onSubmit = async (data) => {
     try{

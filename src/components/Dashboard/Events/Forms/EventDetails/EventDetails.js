@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import styles from './EventDetails.module.css';
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useFieldArray } from "react-hook-form";
+import { ErrorMessage } from '@hookform/error-message';
 import CompTextEditor from '../../../../CompTextEditor/CompTextEditor';
 import Dropzone from 'react-dropzone'
 import {LiaCameraRetroSolid} from 'react-icons/lia';
@@ -16,22 +17,15 @@ const EventDetails = () => {
     register, 
     handleSubmit,
     formState: { errors },
-    setValue,
-    reset
+    reset,
+    watch
   } = useForm({
-    defaultValues: useMemo(() => {
-      return eventForm.eventDetails;
-    }, [eventForm.eventDetails])
+    defaultValues: eventForm.eventDetails, // Use eventForm directly
   });
 
-  useEffect(() => {
-    reset(eventForm.eventDetails);
-  }, [eventForm.eventDetails]);
-
-  const [quesAndAns, setQuesAndAns] = useState({
-    fAQs: [{
-      ques: "", 
-      ans: ""}]
+  const { append, remove } = useFieldArray({
+    control,
+    name: "fAQs",
   });
 
 
@@ -39,48 +33,17 @@ const EventDetails = () => {
 
   const onSubmit = async (data) => {
     try{
+
       setEventForm((eventForm) => ({ ...eventForm, eventDetails: data }));
       setProceed(true)
+      reset(data); 
+      console.log(data)
     }catch(err){
       console.log(err)
     }
   };
 
-  const handleChange = (e, index) => {
-    const items = quesAndAns.fAQs;
-    items[index][e.target.name]= e.target.value
-    setQuesAndAns({
-      fAQs: items
-    });
-  };
-
-  useEffect(() => {
-    const { fAQs } = quesAndAns; 
-    setValue('fAQs', fAQs);
-  },[quesAndAns, setValue]);
-
-
-
-  const handleDelete = (index) => {
-    const items = quesAndAns.fAQs;
-    if (items.length > 1) {
-      items.splice(index, 1);
-      setQuesAndAns({
-        fAQs: items
-      });
-    } 
-  };
-
-
-  const addNewRow = () => {
-    const items = quesAndAns.fAQs;
-    const blankRow = { ques: "", ans: ""};
-    setQuesAndAns({
-      fAQs: [...items, blankRow]
-    });
-  };
-
-
+  console.log(errors)
 
   return(
   <div className={styles.EventDetails}>
@@ -102,18 +65,23 @@ const EventDetails = () => {
                 control={control}
                 autoFocus
                 rules={{
-                  required: "required"
+                  required: "Event title is required",
                 }}
                 render={({ field }) => (
                   <input
                     autoFocus
                     type="text"
-                    className="form-control"
+                    className={`form-control ${ errors.eventTitle ? styles.isError : ''}`}
                     placeholder="Give it a short distinct name"
                     {...field}
                   />
                 )}
               />
+              {errors.eventTitle && 
+                <span className={styles.errorMessage}>
+                  <ErrorMessage errors={errors} name="eventTitle" />
+                </span>
+              }
             </div>
 
             {/* Event Location */}
@@ -123,32 +91,35 @@ const EventDetails = () => {
                 name="location"
                 control={control}
                 rules={{
-                  pattern: {
-                    value: /^[A-Za-z]+$/i,
-                    message: "Location should contain only letters",
-                  },
+                  required: "Event location title is required",
                 }}
                 render={({ field }) => (
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${ errors.location ? styles.isError : ''}`}
                     id="exampleFormControlInput1"
                     placeholder="Specify where it's held"
                     {...field}
                   />
                 )}
               />
+              {errors.location && 
+                <span className={styles.errorMessage}>
+                  <ErrorMessage errors={errors} name="location" />
+                </span>
+              }
+              {/* IsOnline */}
               <div className="form-check">
                 <Controller
                   name="isOnline"
                   control={control}
-                  defaultValue={false} 
                   render={({ field }) => (
                     <>
                       <input
                         className="form-check-input"
                         type="checkbox"
                         id="flexCheckIndeterminate"
+                        checked={field.value}
                         {...field}
                       />
                       <label className="form-check-label" htmlFor="flexCheckIndeterminate">
@@ -165,11 +136,13 @@ const EventDetails = () => {
 
             {/* Event Time  */}
             <div className={`mb-3 row ${styles.eventTime}`}>
+              {/* Starts */}
               <div className="col-md-6">
                 <label htmlFor="inputEmail_6764" className="form-label"
                 >STARTS</label>
                 <div className="container">
-                  <div className="row gap-3">
+                  <div className="row ">
+                    <div className='col'>
                     <Controller
                       name="start.date"
                       control={control}
@@ -179,35 +152,106 @@ const EventDetails = () => {
                       render={({ field }) => (
                         <input
                           type="date" 
-                          className="form-control"
+                          className={`form-control ${ errors?.start?.date ? styles.isError : ''}`}
                           id="eventStartDate"
+                          min={new Date()}
                           {...field}
                           placeholder="dd/mm/yyyy"
                         />
                       )}
                     />
+                    {errors?.start?.date && 
+                      <span className={styles.errorMessage}>
+                        <ErrorMessage errors={errors} name="start.date" />
+                      </span>
+                    }
+                    </div>
 
-                    <Controller
-                      name="start.time"
-                      control={control}
-                      rules={{
-                        required: "Event Start time is required"
-                      }}
-                      render={({ field }) => (
-                        <input
-                          type="time" 
-                          className="form-control"
-                          id="eventStartTime"
-                          {...field}
-                          placeholder="hh:mm"
-                        />
-                      )}
-                    />
+                    <div className='col'>
+                      <Controller
+                        name="start.time"
+                        control={control}
+                        rules={{
+                          required: "Event Start time is required"
+                        }}
+                        render={({ field }) => (
+                          <input
+                            type="time" 
+                            className={`form-control ${ errors?.start?.time ? styles.isError : ''}`}
+                            id="eventStartTime"
+                            {...field}
+                            placeholder="hh:mm"
+                          />
+                        )}
+                      />
+                      {errors?.start?.time && 
+                      <span className={styles.errorMessage}>
+                        <ErrorMessage errors={errors} name="start.time" />
+                      </span>
+                    }
+                    </div>
                   </div>
                 </div>
               </div>
 
+              {/* Ends */}
               <div className="col-md-6">
+                <label htmlFor="inputEmail_6754" className="form-label"
+                >ENDS</label>
+                <div className="container">
+                  <div className="row ">
+                    <div className='col'>
+                    <Controller
+                      name="end.date"
+                      control={control}
+                      rules={{
+                        required: "Event End date is required"
+                      }}
+                      render={({ field }) => (
+                        <input
+                          type="date" 
+                          className={`form-control ${ errors?.end?.date ? styles.isError : ''}`}
+                          id="eventEndDate"
+                          {...field}
+                          placeholder="dd/mm/yyyy"
+                        />
+                      )}
+                    />
+                    {errors?.end?.date && 
+                      <span className={styles.errorMessage}>
+                        <ErrorMessage errors={errors} name="end.date" />
+                      </span>
+                    }
+                    </div>
+
+                    <div className='col'>
+                      <Controller
+                        name="end.time"
+                        control={control}
+                        rules={{
+                          required: "Event End time is required"
+                        }}
+                        render={({ field }) => (
+                          <input
+                            type="time" 
+                            className={`form-control ${ errors?.end?.time ? styles.isError : ''}`}
+                            id="eventEndTime"
+                            {...field}
+                            placeholder="hh:mm"
+                          />
+                        )}
+                      />
+                      {errors?.end?.time && 
+                      <span className={styles.errorMessage}>
+                        <ErrorMessage errors={errors} name="end.time" />
+                      </span>
+                    }
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* <div className="col-md-6">
                 <label htmlFor="inputEmail_6764" className="form-label"
                 >ENDS</label>
                 <div className="container">
@@ -247,21 +291,19 @@ const EventDetails = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
               
               <Controller
                 name="repeat"
                 control={control}
-                defaultValue={false}
                 render={({ field }) => (
                   <div>
                     <div className={` mb-3 ${styles.repeatEvent}`}>
                       <input 
                       className="form-check-input" 
                       type="checkbox" 
-                      value="" 
                       id="flexCheckIndeterminate"
-                      {...register("repeat")}
+                      checked={field.value}
                       {...field}
                       />
                       <label className="form-check-label" htmlFor="flexCheckIndeterminate_8979">
@@ -270,7 +312,12 @@ const EventDetails = () => {
                     </div>
                   {field.value ? <div>
                     <label htmlFor="inputEmail_6764" className="form-label">Frequency</label>
-                    <select className="form-select" aria-label="Default select example" {...register("frequency")}>
+                    <select 
+                    className="form-select" 
+                    aria-label="Default select example" 
+                    {...register("frequency",{
+                      required: field.value ? 'Frequency period is needed' : false
+                    })}>
                       <option value="weekly" selected>Weekly</option>
                       <option value="monthly">Monthly</option>
                       <option value="quarterly">Quarterly</option>
@@ -288,6 +335,9 @@ const EventDetails = () => {
               <Controller
                 name="thumbnail"
                 control={control}
+                rules={{
+                  required: "Event image/banner is required",
+                }}
                 render={({ field }) => (
                   <>
                     <Dropzone
@@ -298,11 +348,14 @@ const EventDetails = () => {
                       }}
                     >
                       {({ getRootProps, getInputProps }) => (
-                        <div {...getRootProps()} className={styles.dropZoneContainer}>
+                        <div 
+                        {...getRootProps()} 
+                        className={`${styles.dropZoneContainer} ${ errors.thumbnail ? styles.isError : ''}`}
+                        >
                           <input {...getInputProps()} />
                           {!field.value ? (
                             <div className="card">
-                              <div className={`card-body ${styles.DropZoneCard}`}>
+                              <div className={`card-body ${styles.DropZoneCard} `}>
                                 <p className={`h1 ${styles.dropZoneIcon}`}>
                                   <LiaCameraRetroSolid />
                                 </p>
@@ -325,97 +378,146 @@ const EventDetails = () => {
                   </>
                 )}
               />
+              {errors.thumbnail && 
+                <span className={styles.errorMessage}>
+                  <ErrorMessage errors={errors} name="thumbnail" />
+                </span>
+              }
             </div>
             
-            {/* Event description */}
+            {/* Event description  and FAQs*/}
             <div className="mb-3">
               <label htmlFor="exampleFormControlTextarea_456" className="form-label">Event Description</label>
               <Controller
                 name="eventDescription"
                 control={control}
+                rules={{
+                  required: "Event Description is required",
+                }}
                 render={({ field }) => (
                   <CompTextEditor
                     setEditorData={(htmlValue) => field.onChange(htmlValue)}
                     show={false}
                     placeholder="Tell people what's special about this event"
-                    value={field.value}
+                    content={field.value}
+                    className={`form-control ${ errors.eventDescription ? styles.isError : ''}`}
                   />
                 )}
               />
+              {errors.eventDescription && 
+                <span className={styles.errorMessage}>
+                  <ErrorMessage errors={errors} name="eventDescription" />
+                </span>
+              }
+              {/* Add FAQs */} 
               <Controller
                 name="addFAQs"
                 control={control}
-                defaultValue={false}
                 render={({ field }) => (
                   <div>
                     <div className="form-check mb-2">
-                      <input 
-                        className="form-check-input " 
-                        type="checkbox" 
-                        value="true" 
+                      <input
+                        className="form-check-input "
+                        type="checkbox"
                         id="flexCheckDefault_989"
+                        checked={field.value}
                         {...field}
                       />
                       <label className="form-check-label" htmlFor="flexCheckDefault">
                         Add FAQs
                       </label>
                     </div>
-                    {field.value ? <div>
+                    {field.value ? (
                       <>
                         <p className="h3">FAQs</p>
-                        {quesAndAns.fAQs.map((item, index) => (
+                        {watch("fAQs").map((item, index) => (
                           <div key={index}>
-                              <div className="step-del mb-0">
-                                <h6>No. {index + 1}</h6>           
-                                {quesAndAns.fAQs.length > 1 &&
-                                  <MdOutlineCancel 
-                                    strokeWidth="1" 
-                                    size="25"
-                                    color="salmon"
-                                    onClick={() => handleDelete(index)}
-                                  />
-                                }
-                              </div>
-                              <div className='container'>
-                                <div className={`mb-3 row ${styles.eventTime}`}>
-                                  <div className="col-md-6">
-                                    <label htmlFor="inputEmail_6764" className="form-label">Question</label>
-                                    <textarea 
-                                      className="form-control method-steps" 
-                                      id="exampleFormControlFAQsQues" 
-                                      rows="2"
-                                      name="ques"
-                                      placeholder='Tell people what are your refund policies, dress code, key timings etc.'
-                                      value={item.ques}
-                                      onChange={(e) => handleChange(e, index)}
-                                    ></textarea>
-                                  </div>
+                            <div className="step-del mb-0">
+                              <h6>No. {index + 1}</h6>
+                              {watch("fAQs").length > 1 && (
+                                <MdOutlineCancel
+                                  strokeWidth="1"
+                                  size="25"
+                                  color="salmon"
+                                  onClick={() => remove(index)} 
+                                />
+                              )}
+                            </div>
+                            <div className="container">
+                              <div className={`mb-3 row ${styles.eventTime}`}>
+                                <div className="col-md-6">
+                                  <label
+                                    htmlFor={`fAQs[${index}].ques`}
+                                    className="form-label"
+                                  >
+                                    Question
+                                  </label>
+                                  <textarea
+                                    className={`form-control method-steps ${
+                                      errors.fAQs?.[index]?.ques ? styles.isError : ""
+                                    }`}
+                                    id={`fAQs[${index}].ques`}
+                                    rows="2"
+                                    {...register(`fAQs[${index}].ques`, {
+                                      required: field.value ? "FAQ is required" : false,
+                                    })}
+                                    placeholder="Tell people what are your refund policies, dress code, key timings etc."
+                                  ></textarea>
+                                  {watch("fAQs").length > 0 && errors.fAQs?.[index]?.ques && (
+                                    <span className={styles.errorMessage}>
+                                      <ErrorMessage
+                                        errors={errors}
+                                        name={`fAQs[${index}].ques`}
+                                        message={`fAQs[${index}].ques`}
+                                      />
+                                    </span>
+                                  )}
+                                </div>
 
-                                  <div className="col-md-6">
-                                    <label htmlFor="inputEmail_6764" className="form-label">Answer</label>
-                                    <textarea 
-                                      className="form-control method-steps" 
-                                      id="exampleFormControlFAQsAns" 
-                                      rows="2"
-                                      name="ans"
-                                      value={item.ans}
-                                      onChange={(e) => handleChange(e, index)}
-                                    ></textarea>
-                                  </div>
+                                <div className="col-md-6">
+                                  <label
+                                    htmlFor={`fAQs[${index}].ans`}
+                                    className="form-label"
+                                  >
+                                    Answer
+                                  </label>
+                                  <textarea
+                                    className={`form-control method-steps ${
+                                      errors.fAQs?.[index]?.ans ? styles.isError : ""
+                                    }`}
+                                    id={`fAQs[${index}].ans`}
+                                    rows="2"
+                                    {...register(`fAQs[${index}].ans`, {
+                                      required: field.value ? 'FAQ answer is required' : false
+                                    })} 
+                                  ></textarea>
+                                  {watch("fAQs").length > 0 && errors.fAQs?.[index]?.ans && (
+                                    <span className={styles.errorMessage}>
+                                      <ErrorMessage
+                                        errors={errors}
+                                        name={`fAQs[${index}].ans`}
+                                        message={`fAQs[${index}].ans`}
+                                      />
+                                    </span>
+                                  )}
                                 </div>
                               </div>
+                            </div>
                           </div>
                         ))}
                         <div className="row">
-                            <div className="col col-md-10 text-right">
-                                {/* <input type="button" value="+Add New" onClick={addNewRow} className="btn btn-secondary"/> */}
-                                <button type="button" className="btn btn-link" onClick={addNewRow}>Add New</button>
-                            </div>
+                          <div className="col col-md-10 text-right">
+                            <button
+                              type="button"
+                              className="btn btn-link"
+                              onClick={() => append({ ques: "", ans: "" })} // Use the append function from react-hook-form
+                            >
+                              Add New
+                            </button>
+                          </div>
                         </div>
                       </>
-                    </div> 
-                    
-                    : null}
+                    ) : null}
                   </div>
                 )}
               />
@@ -428,18 +530,23 @@ const EventDetails = () => {
                 name="organiserName"
                 control={control}
                 rules={{
-                  required: "Name of organiser is required",
+                  required: "Event organiser is required",
                 }}
                 render={({ field }) => (
                   <input
                     type="text"
-                    className="form-control"
                     id="exampleFormControlInput1"
                     placeholder="Who's organising this event?"
+                    className={`form-control ${ errors.organiserName ? styles.isError : ''}`}
                     {...field}
                   />
                 )}
               />
+              {errors.organiserName && 
+                <span className={styles.errorMessage}>
+                  <ErrorMessage errors={errors} name="organiserName" />
+                </span>
+              }
             </div>
 
             {/* Event Organiser Description */}
@@ -448,15 +555,24 @@ const EventDetails = () => {
               <Controller
                 name="organiserDescription"
                 control={control}
+                rules={{
+                  required: "organiser description is required",
+                }}
                 render={({ field }) => (
                   <CompTextEditor
                     setEditorData={(htmlValue) => field.onChange(htmlValue)}
                     show={false}
                     placeholder="Tell people what's special about this event"
-                    value={field.value}
+                    content={field.value}
+                    className={`form-control ${ errors.organiserDescription ? styles.isError : ''}`}
                   />
                 )}
               />
+              {errors.organiserDescription && 
+                <span className={styles.errorMessage}>
+                  <ErrorMessage errors={errors} name="organiserDescription" />
+                </span>
+              }
             </div>
 
             {/* Event External Links */}
@@ -464,14 +580,16 @@ const EventDetails = () => {
               <Controller
                 name="includeLinks"
                 control={control}
-                defaultValue={false} // Set the default value if needed
                 render={({ field }) => (
                   <>
+                  {field.value}
                     <input
                       className="form-check-input"
                       type="checkbox"
                       id="flexCheckIndeterminate"
+                      checked={field.value}
                       {...field}
+                      
                     />
                     <label className="form-check-label" htmlFor="flexCheckIndeterminate">
                       Include links to Social Media platforms
@@ -484,7 +602,7 @@ const EventDetails = () => {
               </label>
             </div>
 
-          </div> 
+          </div>
           <div>
               <FormDirection onSubmit={handleSubmit(onSubmit)} proceed={proceed}/>
           </div>    

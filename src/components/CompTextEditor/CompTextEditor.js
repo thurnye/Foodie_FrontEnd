@@ -132,7 +132,7 @@ const MenuBar = ({ editor }) => {
   )
 }
 
-const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Something...'}) => {
+const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Something...', content, className}) => {
   const editor = useEditor({
     extensions: [
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -153,7 +153,7 @@ const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Somethi
       }),
       Underline],
     // extensions: [StarterKit],
-    content: '',
+    content: content,
     onUpdate: ({editor}) => {
       const html = editor.getHTML();
       setEditorData(html);
@@ -161,7 +161,7 @@ const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Somethi
   })
 
   return (
-    <div className='text-editor'>
+    <div className={`text-editor ${className}`}>
       {show && <MenuBar editor={editor} />}
       <EditorContent editor={editor} />
     </div>
