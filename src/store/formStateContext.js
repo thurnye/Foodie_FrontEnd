@@ -1,5 +1,6 @@
 
 import { createContext, useContext} from 'react';
+import { getRandomInt } from '../util/commons';
 
 export const eventForm = {
     eventDetails : {
@@ -22,27 +23,27 @@ export const eventForm = {
       includeLinks: false, //links to the event
       test: false
     },
-    tickets : {
-      prices: [
+    tickets : [
         {
+          sortId: getRandomInt(),
           ticketName : 'Early Bird',
           quantity: '',
           price: '',
-          advanceOptions:{
-            ticketDescription: '',
-            showDescritptionOnEventPage: false,
-            onlineSales: true,
-            doorSales: true,
-            ticketSalesStartDate: '',
-            ticketSalesEndDate: '',
-            ticketVisibility: false,  //hide ticket when max is reached,
-            ticketsPerOrder: {
-              min: 0,
-              max: 10
-            }
+          ticketDescription: '',
+          showDescriptionOnEventPage: false,
+          onlineSales: true,
+          doorSales: true,
+          starts: '',
+          ends: '',
+          ticketVisibility: false,  //hide ticket when max is reached,
+          autoHideDate:'',
+          ticketsPerOrder: {
+            min: 1,
+            max: 10
           }
         },
         {
+          sortId: getRandomInt(),
           ticketName : 'General Admission',
           quantity: '',
           price: '',
@@ -61,6 +62,7 @@ export const eventForm = {
           }
         },
         {
+          sortId: getRandomInt(),
           ticketName : 'VIP',
           quantity: '',
           price: '',
@@ -78,8 +80,7 @@ export const eventForm = {
             }
           }
         }
-      ]
-    },
+      ],
     additionalSettings: {
       currency: '',
 

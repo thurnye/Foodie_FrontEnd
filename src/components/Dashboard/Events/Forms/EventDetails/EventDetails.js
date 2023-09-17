@@ -142,9 +142,9 @@ const EventDetails = () => {
                 >STARTS</label>
                 <div className="container">
                   <div className="row ">
-                    <div className='col'>
+                    <div className='col p-0'>
                     <Controller
-                      name="start.date"
+                      name="starts.date"
                       control={control}
                       rules={{
                         required: "Event Start date is required"
@@ -152,7 +152,7 @@ const EventDetails = () => {
                       render={({ field }) => (
                         <input
                           type="date" 
-                          className={`form-control ${ errors?.start?.date ? styles.isError : ''}`}
+                          className={`form-control ${ errors?.starts?.date ? styles.isError : ''}`}
                           id="eventStartDate"
                           min={new Date()}
                           {...field}
@@ -160,16 +160,16 @@ const EventDetails = () => {
                         />
                       )}
                     />
-                    {errors?.start?.date && 
+                    {errors?.starts?.date && 
                       <span className={styles.errorMessage}>
-                        <ErrorMessage errors={errors} name="start.date" />
+                        <ErrorMessage errors={errors} name="starts.date" />
                       </span>
                     }
                     </div>
 
-                    <div className='col'>
+                    <div className='col p-0'>
                       <Controller
-                        name="start.time"
+                        name="starts.time"
                         control={control}
                         rules={{
                           required: "Event Start time is required"
@@ -177,16 +177,16 @@ const EventDetails = () => {
                         render={({ field }) => (
                           <input
                             type="time" 
-                            className={`form-control ${ errors?.start?.time ? styles.isError : ''}`}
+                            className={`form-control ${ errors?.starts?.time ? styles.isError : ''}`}
                             id="eventStartTime"
                             {...field}
                             placeholder="hh:mm"
                           />
                         )}
                       />
-                      {errors?.start?.time && 
+                      {errors?.starts?.time && 
                       <span className={styles.errorMessage}>
-                        <ErrorMessage errors={errors} name="start.time" />
+                        <ErrorMessage errors={errors} name="starts.time" />
                       </span>
                     }
                     </div>
@@ -200,9 +200,9 @@ const EventDetails = () => {
                 >ENDS</label>
                 <div className="container">
                   <div className="row ">
-                    <div className='col'>
+                    <div className='col p-0'>
                     <Controller
-                      name="end.date"
+                      name="ends.date"
                       control={control}
                       rules={{
                         required: "Event End date is required"
@@ -210,23 +210,23 @@ const EventDetails = () => {
                       render={({ field }) => (
                         <input
                           type="date" 
-                          className={`form-control ${ errors?.end?.date ? styles.isError : ''}`}
+                          className={`form-control ${ errors?.ends?.date ? styles.isError : ''}`}
                           id="eventEndDate"
                           {...field}
                           placeholder="dd/mm/yyyy"
                         />
                       )}
                     />
-                    {errors?.end?.date && 
+                    {errors?.ends?.date && 
                       <span className={styles.errorMessage}>
-                        <ErrorMessage errors={errors} name="end.date" />
+                        <ErrorMessage errors={errors} name="ends.date" />
                       </span>
                     }
                     </div>
 
-                    <div className='col'>
+                    <div className='col p-0'>
                       <Controller
-                        name="end.time"
+                        name="ends.time"
                         control={control}
                         rules={{
                           required: "Event End time is required"
@@ -234,16 +234,16 @@ const EventDetails = () => {
                         render={({ field }) => (
                           <input
                             type="time" 
-                            className={`form-control ${ errors?.end?.time ? styles.isError : ''}`}
+                            className={`form-control ${ errors?.ends?.time ? styles.isError : ''}`}
                             id="eventEndTime"
                             {...field}
                             placeholder="hh:mm"
                           />
                         )}
                       />
-                      {errors?.end?.time && 
+                      {errors?.ends?.time && 
                       <span className={styles.errorMessage}>
-                        <ErrorMessage errors={errors} name="end.time" />
+                        <ErrorMessage errors={errors} name="ends.time" />
                       </span>
                     }
                     </div>

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styles from './AddEvent.module.css';
-import { AddEventFormContext } from '../../../../store/formStateContext';
+import { eventForm as FormData, AddEventFormContext } from '../../../../store/formStateContext';
 import EventDetails from '../Forms/EventDetails/EventDetails';
 import CreateTicket from '../Forms/CreateTicket/CreateTicket';
 import AdditionalSettings from '../Forms/AdditionalSettings/AdditionalSettings';
@@ -8,85 +8,7 @@ import AdditionalSettings from '../Forms/AdditionalSettings/AdditionalSettings';
 
 const AddEvent = () => {
   // https://www.eventbrite.co.uk/blog/how-to-set-up-online-registration-for-an-event-ds00/
-  const [eventForm, setEventForm] = useState({
-    eventDetails : {
-      eventTitle: '',
-      location: '',
-      isOnline: false,
-      starts: new Date(),
-      ends: new Date(),
-      repeat: false,
-      frequency: '',
-      thumbnail: '',
-      eventDescription: '',
-      fAQs:[], //{question:'', answer: ''}
-      organiser: '',
-      organiserDescription: '',
-      includeLinks: false //links to the event
-    },
-    tickets : {
-      prices: [
-        {
-          ticketName : 'Early Bird',
-          quantity: '',
-          price: '',
-          advanceOptions:{
-            ticketDescription: '',
-            showDescritptionOnEventPage: false,
-            onlineSales: true,
-            doorSales: true,
-            ticketSalesStartDate: new Date(),
-            ticketSalesEndDate: new Date(),
-            ticketVisibility: false,  //hide ticket when max is reached,
-            ticketsPerOrder: {
-              min: 0,
-              max: 10
-            }
-          }
-        },
-        {
-          ticketName : 'General Admission',
-          quantity: '',
-          price: '',
-          advanceOptions:{
-            ticketDescription: '',
-            showDescritptionOnEventPage: false,
-            onlineSales: true,
-            doorSales: true,
-            ticketSalesStartDate: new Date(),
-            ticketSalesEndDate: new Date(),
-            ticketVisibility: false,  //hide ticket when max is reached,
-            ticketsPerOrder: {
-              min: 0,
-              max: 10
-            }
-          }
-        },
-        {
-          ticketName : 'VIP',
-          quantity: '',
-          price: '',
-          advanceOptions:{
-            ticketDescription: '',
-            showDescritptionOnEventPage: false,
-            onlineSales: true,
-            doorSales: true,
-            ticketSalesStartDate: new Date(),
-            ticketSalesEndDate: new Date(),
-            ticketVisibility: false,  //hide ticket when max is reached,
-            ticketsPerOrder: {
-              min: 0,
-              max: 10
-            }
-          }
-        }
-      ]
-    },
-    additionalSettings: {
-      currency: '',
-
-    }
-  });
+  const [eventForm, setEventForm] = useState(FormData);
 
 const formSteps = ['Event Details', 'Create Ticket', 'Additional Settings'];
 const [currentFormStep, setCurrentFormStep] = useState(1);
