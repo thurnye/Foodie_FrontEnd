@@ -9,7 +9,6 @@ import { BsGear, BsTrash} from 'react-icons/bs';
 import CompTextEditor from '../../../../CompTextEditor/CompTextEditor';
 
 const CreateTicket = () => {
-  const [proceed, setProceed] = useState(false);
   const { eventForm, setEventForm } = useAddEventFormContext();
   const {
     control,
@@ -20,18 +19,26 @@ const CreateTicket = () => {
     setError,
     clearErrors,
   } = useForm({
-    defaultValues: eventForm.tickets, // Use eventForm directly
+    defaultValues: eventForm.tickets
   });
 
-  // const min = watch('ticketsPerOrder.min', 0);
 
+  const [proceed, setProceed] = useState(false);
   const [autoHideDate, setAutoHideDate] = useState(false)
+  const { tickets } = eventForm;
+  
 
   const onSubmit = async (data) => {
     try {
-      // setEventForm((eventForm) => ({ ...eventForm, tickets: data }));
-      // setProceed(true);
-      console.log({data});
+      const newData = data.tickets;
+      const updatedData = []
+
+      newData?.map((el, i) => {
+        const oldData = tickets[i];
+        updatedData.push({...oldData, ...el})
+      })
+      setEventForm((eventForm) => ({ ...eventForm, tickets: updatedData }));
+      setProceed(true);
       reset(data);
     } catch (err) {
       console.log(err);
@@ -48,17 +55,15 @@ const CreateTicket = () => {
           type: "minGreaterThanMax",
           message: "Minimum value must be less than or equal to Maximum value",
         });
-        console.log('error');
       } else {
         clearErrors(`tickets[${index}].ticketsPerOrder.min`);
-        console.log('No error');
       }
     });
   }, [watch, eventForm.tickets, setError, clearErrors]);
 
-  const { tickets } = eventForm;
+  
 
-  console.log(tickets)
+  console.log(eventForm)
 
   return (
     <div className={styles.CreateTicket}>
@@ -80,13 +85,12 @@ const CreateTicket = () => {
                 </tr>
               </thead>
               <tbody>
-                {tickets?.map((item, index) => {
+                {eventForm.tickets.map((item, index) => {
                   const name = item.ticketName;
                   const ticketNameFieldName = `tickets[${index}].ticketName`;
                   const quantityFieldName = `tickets[${index}].quantity`;
                   const priceFieldName = `tickets[${index}].price`;
                   const collapseId = `collapse${index}`;
-
                   return (
                     <React.Fragment key={getRandomInt()}>
                       <tr>
@@ -120,27 +124,26 @@ const CreateTicket = () => {
                           )}
                         </td>
 
-
                         {/* Quantity */}
                         <td>
                           <Controller
                             name={quantityFieldName}
                             control={control}
-                            defaultValue={1}
+                            defaultValue={tickets[index]['quantity']}
                             rules={{
                               required: "quantity is required",
                               min: 1,
                             }}
                             render={({ field }) => (
                               <input
-                                {...field}
-                                type="number"
-                                min={1}
-                                className={`form-control ${
-                                  errors[quantityFieldName]
-                                    ? styles.isError
-                                    : ""
-                                }`}
+                              type="number"
+                              min={field.value}
+                              className={`form-control ${
+                                errors[quantityFieldName]
+                                ? styles.isError
+                                : ""
+                              }`}
+                              {...field}
                               />
                             )}
                           />
@@ -159,7 +162,7 @@ const CreateTicket = () => {
                           <Controller
                             name={priceFieldName}
                             control={control}
-                            defaultValue={1}
+                            defaultValue={tickets[index]['price']}
                             rules={{
                               required: "Price is required",
                               min: 0,
@@ -201,6 +204,7 @@ const CreateTicket = () => {
                           </div>
                         </td>
                       </tr>
+                      {/* Hidden Component */}
                       <tr>
                         <td colSpan="4" className="p-0">
                           <div
@@ -209,7 +213,7 @@ const CreateTicket = () => {
                           >
                             <div id={`folder${index}`}>
                               <>
-                                <div className='mb-3'>
+                                <div className='m-3'>
                                   <p> Settings for {name}</p>
                                 <hr></hr>
                                 </div>
@@ -220,6 +224,7 @@ const CreateTicket = () => {
                                   <Controller
                                     name={`tickets[${index}].ticketDescription`}
                                     control={control}
+                                    defaultValue={tickets[index]['ticketDescription']}
                                     render={({ field }) => (
                                       <CompTextEditor
                                         setEditorData={(htmlValue) => field.onChange(htmlValue)}
@@ -231,20 +236,22 @@ const CreateTicket = () => {
                                     )}
                                   />
                                 </div>
-
+                                
+                                
                                 {/* Show Ticket description */}
-                                <div className="mb-3 form-check">
+                                <div className="mb-3 form-check" key={index}>
                                   <Controller
                                     name={`tickets[${index}].showDescriptionOnEventPage`}
                                     control={control}
+                                    defaultValue={tickets[index]['showDescriptionOnEventPage']}
                                     render={({ field }) => (
                                       <>
                                       {field.value}
                                         <input
                                           className="form-check-input"
                                           type="checkbox"
-                                          id="flexCheckIndeterminate"
-                                          checked={field.value}
+                                          id={`flexCheckIndeterminate_${index}`}
+                                          defaultChecked={field.value}
                                           {...field}
                                           
                                         />
@@ -263,6 +270,7 @@ const CreateTicket = () => {
                                     <Controller
                                       name={`tickets[${index}].onlineSales`}
                                       control={control}
+                                      defaultValue={tickets[index]['onlineSales']}
                                       render={({ field }) => (
                                         <>
                                         {field.value}
@@ -271,7 +279,6 @@ const CreateTicket = () => {
                                             type="checkbox"
                                             id="flexCheckIndeterminate2wf"
                                             checked={field.value}
-                                            defaultChecked={field.value}
                                             {...field}
                                             
                                           />
@@ -286,6 +293,7 @@ const CreateTicket = () => {
                                     <Controller
                                       name={`tickets[${index}].doorSales`}
                                       control={control}
+                                      defaultValue={tickets[index]['doorSales']}
                                       render={({ field }) => (
                                         <>
                                         {field.value}
@@ -319,6 +327,7 @@ const CreateTicket = () => {
                                         <Controller
                                           name={`tickets[${index}].starts.date`}
                                           control={control}
+                                          defaultValue={eventForm.eventDetails.starts.date}
                                           render={({ field }) => (
                                             <input
                                               type="date" 
@@ -336,7 +345,7 @@ const CreateTicket = () => {
                                           <Controller
                                             name={`tickets[${index}].starts.time`}
                                             control={control}
-                                            
+                                            defaultValue={eventForm.eventDetails.starts.time}
                                             render={({ field }) => (
                                               <input
                                                 type="time" 
@@ -362,6 +371,7 @@ const CreateTicket = () => {
                                         <Controller
                                           name={`tickets[${index}].ends.date`}
                                           control={control}
+                                          defaultValue={eventForm.eventDetails.ends.date}
                                           render={({ field }) => (
                                             <input
                                               type="date" 
@@ -378,6 +388,7 @@ const CreateTicket = () => {
                                           <Controller
                                            name={`tickets[${index}].ends.time`}
                                             control={control}
+                                            defaultValue={eventForm.eventDetails.ends.time}
                                             render={({ field }) => (
                                               <input
                                                 type="time" 
@@ -401,6 +412,7 @@ const CreateTicket = () => {
                                     <Controller
                                       name={`tickets[${index}].ticketVisibility`}
                                       control={control}
+                                      defaultValue={tickets[index]['ticketVisibility']}
                                       render={({ field }) => (
                                         <>
                                         {field.value}

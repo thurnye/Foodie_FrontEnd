@@ -7,13 +7,19 @@ export const eventForm = {
       eventTitle: '',
       location: '',
       isOnline: false,
-      starts: '',
-      ends: '',
       repeat: false,
       frequency: 'weekly',
       thumbnail: '',
       eventDescription: '',
       addFAQs: false,
+      starts:{
+        date: '',
+        time: ''
+      },
+      ends:{
+        date: '',
+        time: ''
+      },
       fAQs:[{
         ques: "",
         ans: "",
@@ -27,15 +33,15 @@ export const eventForm = {
         {
           sortId: getRandomInt(),
           ticketName : 'Early Bird',
-          quantity: '',
-          price: '',
+          quantity: 1,
+          price: 1,
           ticketDescription: '',
-          showDescriptionOnEventPage: false,
+          showDescriptionOnEventPage: true, //default false
           onlineSales: true,
           doorSales: true,
           starts: '',
           ends: '',
-          ticketVisibility: false,  //hide ticket when max is reached,
+          ticketVisibility: true,  // false, hide ticket when max is reached,
           autoHideDate:'',
           ticketsPerOrder: {
             min: 1,
@@ -44,42 +50,41 @@ export const eventForm = {
         },
         {
           sortId: getRandomInt(),
-          ticketName : 'General Admission',
-          quantity: '',
-          price: '',
-          advanceOptions:{
-            ticketDescription: '',
-            showDescritptionOnEventPage: false,
-            onlineSales: true,
-            doorSales: true,
-            ticketSalesStartDate: '',
-            ticketSalesEndDate: '',
-            ticketVisibility: false,  //hide ticket when max is reached,
-            ticketsPerOrder: {
-              min: 0,
-              max: 10
-            }
+          ticketName : 'General Assembly',
+          quantity: 1,
+          price: 1,
+          ticketDescription: '',
+          showDescriptionOnEventPage: true, //default false
+          onlineSales: true,
+          doorSales: true,
+          starts: '',
+          ends: '',
+          ticketVisibility: true,  // false, hide ticket when max is reached,
+          autoHideDate:'',
+          ticketsPerOrder: {
+            min: 1,
+            max: 10
           }
         },
         {
           sortId: getRandomInt(),
           ticketName : 'VIP',
-          quantity: '',
-          price: '',
-          advanceOptions:{
-            ticketDescription: '',
-            showDescritptionOnEventPage: false,
-            onlineSales: true,
-            doorSales: true,
-            ticketSalesStartDate: '',
-            ticketSalesEndDate: '',
-            ticketVisibility: false,  //hide ticket when max is reached,
-            ticketsPerOrder: {
-              min: 0,
-              max: 10
-            }
+          quantity: 1,
+          price: 1,
+          ticketDescription: '',
+          showDescriptionOnEventPage: true, //default false
+          onlineSales: true,
+          doorSales: true,
+          starts: '',
+          ends: '',
+          ticketVisibility: true,  // false, hide ticket when max is reached,
+          autoHideDate:'',
+          ticketsPerOrder: {
+            min: 1,
+            max: 10
           }
-        }
+        },
+        
       ],
     additionalSettings: {
       currency: '',

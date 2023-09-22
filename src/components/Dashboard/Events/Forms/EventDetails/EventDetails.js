@@ -34,7 +34,11 @@ const EventDetails = () => {
   const onSubmit = async (data) => {
     try{
 
-      setEventForm((eventForm) => ({ ...eventForm, eventDetails: data }));
+      setEventForm((eventForm) => ({ 
+        ...eventForm, 
+        eventDetails: data 
+      }
+      ));
       setProceed(true)
       reset(data); 
       console.log(data)
@@ -43,7 +47,6 @@ const EventDetails = () => {
     }
   };
 
-  console.log(errors)
 
   return(
   <div className={styles.EventDetails}>
