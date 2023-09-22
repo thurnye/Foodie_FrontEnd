@@ -59,6 +59,7 @@ const EventDetails = () => {
 
       <div className={styles.sectionForm}>
         <form>
+          
           <div className="form">
             {/* Event Title */}
             <div className="mb-3">
@@ -606,8 +607,9 @@ const EventDetails = () => {
             </div>
 
           </div>
+          
           <div>
-              <FormDirection onSubmit={handleSubmit(onSubmit)} proceed={proceed}/>
+            <FormDirection onSubmit={handleSubmit(onSubmit)} proceed={proceed}/>
           </div>    
         </form>
       </div>

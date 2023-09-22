@@ -1,4 +1,4 @@
-.AdditionalSettings {
+.PreviewTicket {
     .sectionHeader{
         border-bottom: 1px solid #ccee;
         display: flex;
@@ -15,12 +15,6 @@
         }
         .sectionName{
             margin-bottom: -5px;
-        }
-    }
-    .sectionForm{
-        margin-top: 2rem;
-        label{
-            font-weight: 600
         }
     }
 }
