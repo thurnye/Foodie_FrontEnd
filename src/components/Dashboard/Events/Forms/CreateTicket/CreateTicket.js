@@ -550,10 +550,13 @@ const CreateTicket = () => {
           </div>
 
           <div>
-      <FormDirection onSubmit={handleSubmit(onSubmit)} proceed={proceed}/>
     </div> 
         </form>
       </div>
+
+      <div className={styles.Directions}>
+        <FormDirection onSubmit={handleSubmit(onSubmit)} proceed={proceed}/>
+    </div>
     </div>
   );
 };

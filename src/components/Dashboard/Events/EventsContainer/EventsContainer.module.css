@@ -1,4 +1,7 @@
 .EventsContainer {
+    height: inherit;
+    display: flex;
+    flex-direction: column;
     .EventNav{
         display: flex;
         justify-content: space-between;
@@ -7,6 +10,11 @@
         li:last-of-type{
             margin-left: auto
         }
+    }
+    .panelContainer, .isActivePanel{
+        flex-grow: 1;
+        display: inherit;
+        flex-direction: column;
     }
     .activeCompNav{
         border-bottom: 1px solid #ccee;
@@ -25,3 +33,9 @@
     }
     
 }
+
+@media (max-width: 990px) {
+    .panelContainer{
+        height: 35.5rem;
+    }
+ }

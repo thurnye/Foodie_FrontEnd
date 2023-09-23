@@ -1,4 +1,8 @@
 .EventDetails {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     .sectionHeader{
         border-bottom: 1px solid #ccee;
         display: flex;
@@ -57,5 +61,8 @@
             color: salmon;
             font-size: smaller;
         }
+    }
+    .Directions{
+        margin-top: auto;
     }
 }

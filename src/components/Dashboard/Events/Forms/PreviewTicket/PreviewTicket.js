@@ -19,12 +19,12 @@ const PreviewTicket = () => {
     <div className={styles.sectionHeader}>
         <p className={`h1 ${styles.sectionNumber}`}>4</p>
         <p className={`h2 ${styles.sectionName}`}>Preview</p>
-      </div>
+    </div>
 
-      <div className={styles.sectionForm}>
-      </div>
+    <div className={styles.sectionForm}>
+    </div>
 
-      <div>
+    <div className={styles.Directions}>
       <FormDirection proceed={proceed} onSubmit={handleSubmit}/>
     </div>
   </div>

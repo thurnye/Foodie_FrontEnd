@@ -1,5 +1,7 @@
 import React, {useEffect} from 'react'
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
+import styles from './FormDirection.module.css';
+import {GrLinkNext, GrLinkPrevious} from 'react-icons/gr'
 
 
 
@@ -22,13 +24,23 @@ const FormDirection = ({onSubmit, proceed}) => {
 
 
   return (
-    <div>
-        {currentFormStep > 0 &&
-    <button type="button"  className="btn btn-primary" onClick={PrevFormStep}>Previous: {formSteps[currentFormStep - 1 ]}</button>
-    }
-    {currentFormStep < formSteps.length - 1 &&
-      <button type="button" className="btn btn-primary" onClick={()=> onSubmit()} > Next Step: {formSteps[currentFormStep + 1]}</button>
-    }
+    <div className={`${styles.FormDirection} `}>
+      {currentFormStep > 0 &&
+        <button type="button"  className={`btn ${styles.previous}`} onClick={PrevFormStep}>
+          <span className={styles.iconDirection}>
+            <GrLinkPrevious/>
+          </span>
+          {formSteps[currentFormStep - 1 ]}
+        </button>
+      }
+      {currentFormStep < formSteps.length - 1 &&
+        <button type="button" className={`btn ${styles.next}`} onClick={()=> onSubmit()} >  
+          {formSteps[currentFormStep + 1]} 
+          <span className={styles.iconDirection}>
+            <GrLinkNext/>
+          </span> 
+        </button>
+      }
     </div>
   )
 }

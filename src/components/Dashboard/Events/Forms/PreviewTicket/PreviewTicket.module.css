@@ -1,4 +1,8 @@
 .PreviewTicket {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
     .sectionHeader{
         border-bottom: 1px solid #ccee;
         display: flex;
@@ -16,5 +20,8 @@
         .sectionName{
             margin-bottom: -5px;
         }
+    }
+    .Directions{
+        margin-top: auto;
     }
 }

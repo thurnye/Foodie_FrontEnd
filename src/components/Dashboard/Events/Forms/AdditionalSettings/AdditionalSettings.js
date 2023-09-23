@@ -55,12 +55,14 @@ const AdditionalSettings = () => {
   return (
   <div className={styles.AdditionalSettings}>
     <div className={styles.sectionHeader}>
-        <p className={`h1 ${styles.sectionNumber}`}>3</p>
-        <p className={`h2 ${styles.sectionName}`}>Additional Settings</p>
-      </div>
+      <p className={`h1 ${styles.sectionNumber}`}>3</p>
+      <p className={`h2 ${styles.sectionName}`}>Additional Settings</p>
+    </div>
 
-      <div className={styles.sectionForm}>
-        <div>
+    <div className={styles.sectionForm}>
+      <div>
+        <label htmlFor="inputEmail_6764" className="form-label"
+        >Default Currency</label>
         <Typeahead
           id="autocomplete"
           labelKey="label" 
@@ -70,9 +72,9 @@ const AdditionalSettings = () => {
           selected={selectedOption}
         />
       </div>
-      </div>
+    </div>
 
-      <div>
+    <div className={styles.Directions}>
       <FormDirection proceed={proceed} onSubmit={handleSubmit}/>
     </div>
   </div>

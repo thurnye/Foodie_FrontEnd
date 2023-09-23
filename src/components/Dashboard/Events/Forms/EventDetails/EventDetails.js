@@ -49,9 +49,8 @@ const EventDetails = () => {
 
 
   return(
-  <div className={styles.EventDetails}>
-    {/* Section 1: Event Details */}
-    <div>
+    <div className={styles.EventDetails}>
+      {/* Section 1: Event Details */}
       <div className={styles.sectionHeader}>
         <p className={`h1 ${styles.sectionNumber}`}>1</p>
         <p className={`h2 ${styles.sectionName}`}>Event Details</p>
@@ -59,7 +58,6 @@ const EventDetails = () => {
 
       <div className={styles.sectionForm}>
         <form>
-          
           <div className="form">
             {/* Event Title */}
             <div className="mb-3">
@@ -607,16 +605,15 @@ const EventDetails = () => {
             </div>
 
           </div>
-          
-          <div>
-            <FormDirection onSubmit={handleSubmit(onSubmit)} proceed={proceed}/>
-          </div>    
         </form>
       </div>
 
+      <div className={styles.Directions}>
+        <FormDirection onSubmit={handleSubmit(onSubmit)} proceed={proceed}/>
+      </div> 
     </div>
-  </div>
-)};
+  )
+};
 
 
 export default EventDetails;
