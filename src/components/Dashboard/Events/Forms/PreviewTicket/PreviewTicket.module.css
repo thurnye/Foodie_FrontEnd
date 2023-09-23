@@ -24,4 +24,15 @@
     .Directions{
         margin-top: auto;
     }
+    .PreviewTab{
+        display: flex;
+        flex-direction: row;
+        flex-grow: 1;
+        gap: 2rem;
+        justify-content: end;
+        align-items: center;
+        .activePreviewTab{
+            border-bottom: 2px solid grey;
+        }
+    }
 }

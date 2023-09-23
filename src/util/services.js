@@ -59,6 +59,10 @@ class StuffDataService {
     return http.post(`/api/removeRecipe/${id}`);
   }
 
+  //create event
+  postEvent(data) {
+    return http.post("/api/event", data);
+  }
 
   // ------------------------------------
  

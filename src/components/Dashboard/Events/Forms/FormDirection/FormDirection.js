@@ -24,7 +24,7 @@ const FormDirection = ({onSubmit, proceed}) => {
 
 
   return (
-    <div className={`${styles.FormDirection} `}>
+    <div className={`${styles.FormDirection}`}>
       {currentFormStep > 0 &&
         <button type="button"  className={`btn ${styles.previous}`} onClick={PrevFormStep}>
           <span className={styles.iconDirection}>

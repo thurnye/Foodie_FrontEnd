@@ -384,6 +384,15 @@ const postDeleteARecipe = async (req, res, next) => {
     } 
 }
 
+const postNewEvent = async(req, res, next) => {
+    try {
+        const userId = req.body.userId
+        console.log(req.body);
+    } catch (err) {
+        res.status(400).json(err)
+    }
+}
+
 
 
 
@@ -469,7 +478,7 @@ module.exports = {
     getOneRecipe,
     getRecipeUpdate,
     postDeleteARecipe,
-    
+    postNewEvent,
     
     
     

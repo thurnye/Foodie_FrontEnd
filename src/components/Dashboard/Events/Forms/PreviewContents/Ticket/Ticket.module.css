@@ -1,0 +1,49 @@
+.Ticket {
+    margin-top: 24px;
+    .TicketCardContainer{
+        border: 1px solid #ededed;
+        box-shadow: 0.3rem 0.3rem 0.625rem 0.188rem rgba(0,0,0,0.10);
+        font-size: 12px;
+        margin-bottom: 3rem;
+        img{
+            padding: 1rem 2.5rem;
+        }
+    }
+    .qrBottom{
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        .TicketNumber {
+            width: 100%; 
+            text-align: center; 
+            border-bottom: 2px dotted #ededed; 
+            line-height: 0.1em;
+            margin: 20px 0 20px; 
+         } 
+         
+        .TicketNumber span { 
+            background:#fff; 
+            padding: 6px 10px;
+            border: 1px solid #ededed;
+            border-radius: 20px;
+        }
+        .circle{
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ededed;
+            margin-top: 10px;
+        }
+        .circle1{
+            margin-left: -12px;
+        }
+        .circle2{
+            margin-right: -12px;
+        }
+        dot{
+            content: '---'
+        }
+    }
+}
+

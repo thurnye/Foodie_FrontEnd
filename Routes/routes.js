@@ -21,11 +21,8 @@ router.post('/api/recipe', Controller.postNewRecipe);
 //get all recipes
 router.post('/', Controller.getAllRecipes)
 
-
 //get all recipes
 router.post('/query', Controller.getQueryRecipes)
-
-
 
 //post new user review 
 router.post('/api/recipe/review', Controller.postReview);
@@ -39,6 +36,8 @@ router.post('/api/recipe/update/:id', Controller.getRecipeUpdate);
 //delete a recipe
 router.post('/api/removeRecipe/:id', Controller.postDeleteARecipe);
 
+//post new event ---> this will be the post recipe
+router.post('/api/event', Controller.postNewEvent);
 // =============================================
 
 //get all users
