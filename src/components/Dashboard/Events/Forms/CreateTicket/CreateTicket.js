@@ -438,7 +438,7 @@ const CreateTicket = () => {
                                 {
                                   autoHideDate && 
                                   <div className={`mb-3 row ${styles.eventTime}`}>
-                                    {/* Starts */}
+                                    {/* Hide Ticket ON */}
                                     <div className="col-md-6">
                                       <label htmlFor="inputEmail_6764" className="form-label"
                                       >Auto-Hide Schedule</label>

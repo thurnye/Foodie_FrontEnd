@@ -27,11 +27,9 @@ export const eventForm = {
       organiserName: '',
       organiserDescription: '',
       includeLinks: false, //links to the event
-      test: false
     },
     tickets : [
         {
-          sortId: getRandomInt(),
           ticketName : 'Early Bird',
           quantity: 1,
           price: 1,
