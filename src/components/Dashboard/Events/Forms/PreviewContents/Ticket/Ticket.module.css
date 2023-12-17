@@ -8,6 +8,27 @@
         img{
             padding: 1rem 2.5rem;
         }
+        label{
+            font-size: 1.2rem;
+            color: grey;
+        }
+        .labelDesc{
+            font-size: 1.2rem;
+        }
+        .Date_Location{
+            display: flex;
+            flex-direction: column; 
+            .labelDescTime{
+                font-size: 1.2rem;
+                margin-top: -7px;
+            }
+            .AddToCalendar{
+                color: salmon;
+                font-size: 1rem;
+                margin-top: auto;
+            }
+
+        }
     }
     .qrBottom{
         overflow: hidden;

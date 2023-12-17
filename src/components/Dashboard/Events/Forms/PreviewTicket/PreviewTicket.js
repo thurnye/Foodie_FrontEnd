@@ -13,10 +13,10 @@ const PreviewTicket = () => {
   const user = useSelector(state => state.userLog?.user?.user)
   const { eventForm, setEventForm } = useAddEventFormContext();
   const [proceed, setProceed] = useState(false);
-  const tabs = ['Tickets', 'Event', 'Media'];
+  const tabs = [ 'Event', 'Tickets', 'Media'];
   const [currentTab, setCurrentTab] = useState(0);
 
-  const handleSubmit = async (selected) => {
+  const handleSubmit = async () => {
     try {
       const data = {
         userId: user._id,
@@ -36,9 +36,9 @@ const PreviewTicket = () => {
   const getCurrent = (step) => {
     switch (step) {
       case 0:
-        return(<Ticket/>)
-      case 1:
         return (<Event/>)
+      case 1:
+        return(<Ticket/>)
       case 2:
         return (<Media/>)
       default:

@@ -33,7 +33,7 @@ export default function LogInUser() {
       }))
       redirect("/");
     }catch(err){
-      console.log(err)
+      console.log({err})
     }
   };
   

@@ -52,6 +52,7 @@ function App() {
   useEffect(() => {
     if (token) {
       // YOU DO: check expiry!
+      console.log(token)
       const userDoc = jwt_decode(token);  // decode jwt token
       dispatch(userActions.login({
         user: userDoc

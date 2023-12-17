@@ -31,4 +31,8 @@
         font-family: inherit;
         margin-bottom: 1rem;
     }
+    img{
+        border-radius: 0;
+        height: 11.375rem;
+    }
 }

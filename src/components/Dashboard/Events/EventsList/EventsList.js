@@ -23,7 +23,7 @@ const EventsList = () => {
     <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
       {posters.map((el, index) => (
         <div className="col" key={`event_${getRandomInt()}`}>
-          <div className="card">
+          <div className="card" style={{width: "25rem"}}>
             <div className="card-body">
             <img src={el} className={`card-img ${styles.Banner}`} alt="eventBanner"/>
               <h4 className={` ${styles.Title}`}>The Baking Event</h4>
