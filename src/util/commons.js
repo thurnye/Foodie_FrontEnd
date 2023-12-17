@@ -1,4 +1,8 @@
 import { DateTime } from 'luxon';
+import {jwtDecode} from 'jwt-decode';
+
+
+
 
 //convert image to base64
 export const convertToBase64 = (file) => {
@@ -54,5 +58,10 @@ export const getDateShort = (dt) => {
 
 }
 
-  
+
+//JWT Token Decode
+export const decodeJWToken = async (token) => {
+    console.log(jwtDecode(token))
+    return  await jwtDecode(token)
+} 
   

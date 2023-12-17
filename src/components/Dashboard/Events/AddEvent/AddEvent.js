@@ -13,7 +13,7 @@ const AddEvent = () => {
   const [eventForm, setEventForm] = useState(FormData);
 
 const formSteps = ['Event Details', 'Create Ticket', 'Additional Settings', 'Preview', 'Save And Publish'];
-const [currentFormStep, setCurrentFormStep] = useState(3);
+const [currentFormStep, setCurrentFormStep] = useState(0);
 
 
 const getCurrentForm = (step) => {

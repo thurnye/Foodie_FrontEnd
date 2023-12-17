@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import jwt_decode from "jwt-decode";
+//import jwt_decode from "jwt-decode";
 import {Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'react-feather';
 import {useSelector, useDispatch} from 'react-redux'
@@ -11,6 +11,10 @@ import UserRecipeList from './userRecipeList';
 import '../../public/css/userCompleteForm.css'
 import {userActions} from '../../store/userSlice'
 import Loading from '../Loading/Loading';
+import {decodeJWToken} from '../../util/commons'
+
+
+
 
 export default function CompleteForm() {
     const dispatch = useDispatch()
@@ -40,8 +44,8 @@ export default function CompleteForm() {
       console.log(result)
       let token = result.data
       localStorage.setItem('token', token);  
-      const userDoc = jwt_decode(token); 
-
+      const userDoc = decodeJWToken(token); 
+        
       // store the user in redux state
       dispatch(userActions.login({
         user: userDoc

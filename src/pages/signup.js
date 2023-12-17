@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 import services from '../util/services'
 import {userActions } from '../store/userSlice'
 import '../public/css/signup.css'
-
+import {decodeJWToken} from '../util/commons'
 
 export default function Signup() {
    const dispatch = useDispatch()
@@ -25,7 +25,7 @@ export default function Signup() {
       
       let token = result.data
       localStorage.setItem('token', token);  
-      const userDoc = jwt_decode(token); 
+      const userDoc = decodeJWToken(token); 
 
       // store the user in redux state
       dispatch(userActions.login({

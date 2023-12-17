@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import {Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'react-feather';
 import MetaData from '../metaData'
-
+import {decodeJWToken} from '../../util/commons'
 
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
@@ -245,7 +245,7 @@ export default function NewRecipeForm() {
                 // console.log(result)
                   let token = result.data
                   localStorage.setItem('token', token);  
-                  const userDoc = jwt_decode(token); 
+                  const userDoc = decodeJWToken(token); 
 
                   // store the user in redux state
                   dispatch(userActions.login({

@@ -1,6 +1,6 @@
 import React,{useEffect} from 'react';
 import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
-import jwt_decode from "jwt-decode";
+import {decodeJWToken} from './util/commons'
 import {useSelector, useDispatch} from 'react-redux'
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -52,8 +52,7 @@ function App() {
   useEffect(() => {
     if (token) {
       // YOU DO: check expiry!
-      console.log(token)
-      const userDoc = jwt_decode(token);  // decode jwt token
+      const userDoc = decodeJWToken(token);  // decode jwt token
       dispatch(userActions.login({
         user: userDoc
       }))    
