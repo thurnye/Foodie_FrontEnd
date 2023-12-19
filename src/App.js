@@ -78,7 +78,7 @@ function App() {
           <Route path="/forum" element={<Forum/>} />
           <Route path="/author" element={<Author/>} />
             <Route path="/test" element={<FeatureTesting/>}/>
-          <Route path="user"  element={<Dashboard />}>
+          <Route path="account"  element={<Dashboard />}>
             <Route path="dashboard" element={<DashboardInfo/>}/>
             <Route path="profile" element={<CompleteRegistration/>} />
             <Route path="manage-recipe/edit" element={<UpdateRecipe/>} />

@@ -12,14 +12,8 @@ export const eventForm = {
       thumbnail: '',
       eventDescription: '',
       addFAQs: false,
-      starts:{
-        date: '',
-        time: ''
-      },
-      ends:{
-        date: '',
-        time: ''
-      },
+      starts: new Date(),
+      ends:'',
       fAQs:[{
         ques: "",
         ans: "",

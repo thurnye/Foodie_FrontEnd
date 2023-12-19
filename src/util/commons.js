@@ -23,7 +23,7 @@ export const getRandomInt = () => {
     return Math.floor(Math.random() * 500000000000);
 };
 
-export const formatDateWithTimeZoneRegion = (date) => {
+export const formatDateWithTimeZoneRegion = (date, time) => {
     return DateTime.fromJSDate(date).toFormat('EEE, MMM dd, yyyy, hh:mma');
 }
 
@@ -58,10 +58,71 @@ export const getDateShort = (dt) => {
 
 }
 
+//Get Weekends date
+export const getWeekendDates = ()  => {
+    const today = DateTime.now();
+    
+    // Find the start of the current week (Monday)
+  const startOfWeek = today.startOf('week');
+
+  // Calculate the date for the next Saturday (start of the weekend)
+  const startOfWeekend = startOfWeek.plus({ days: 4 });
+
+  // Calculate the date for the next Sunday (end of the weekend)
+  const endOfWeekend = startOfWeekend.plus({ days: 2 });
+
+  return {
+    starts: startOfWeekend.toISODate(),
+    ends: endOfWeekend.toISODate()
+  };
+}
+//Get Week date
+export const getWeekDates = ()  => {
+    const today = DateTime.now();
+    
+    // Find the start of the current week (Monday)
+  const startOfWeek = today.startOf('week');
+
+  // Calculate the date for the next Sunday (end of the weekend)
+  const endOfWeekend = startOfWeek.plus({ days: 6 });
+
+  return {
+    starts: startOfWeek.toISODate(),
+    ends: endOfWeekend.toISODate()
+  };
+}
+
+// Get Month range
+export const getMonthDates = () => {
+    const today = DateTime.now();
+    
+    // Find the start of the current month
+    const startOfMonth = today.startOf('month');
+  
+    // Find the end of the current month
+    const endOfMonth = today.endOf('month');
+  
+    return {
+      starts: startOfMonth.toISODate(),
+      ends: endOfMonth.toISODate()
+    };
+  }
+
+  //Get Tomorrow
+  export const getTomorrowDate = () => {
+    const today = DateTime.now();
+    const tomorrow = today.plus({ days: 1 });
+  
+    return {
+        starts: tomorrow.toISODate(),
+        ends: ''
+    };
+  }
+  
+
 
 //JWT Token Decode
-export const decodeJWToken = async (token) => {
-    console.log(jwtDecode(token))
-    return  await jwtDecode(token)
+export const decodeJWToken =  (token) => {
+    return jwtDecode(token)
 } 
   

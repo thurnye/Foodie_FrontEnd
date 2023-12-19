@@ -1,5 +1,6 @@
 //this is the server controller where i do send data to the back end....
 const User = require('../Model/user')
+const Event = require('../Model/events')
 const Recipe = require('../Model/recipes')
 const Review = require('../Model/review')
 const bcrypt = require('bcrypt');
@@ -384,14 +385,89 @@ const postDeleteARecipe = async (req, res, next) => {
     } 
 }
 
+//POST NEW EVENT
 const postNewEvent = async(req, res, next) => {
     try {
         const userId = req.body.userId
-        console.log(req.body);
+        console.log(req.body)
+        const newEvent = new Event({
+            ...req.body.eventForm,
+            eventDetails:{ 
+                ...req.body.eventForm.eventDetails,
+                starts: new Date(req.body.eventForm.eventDetails.starts),
+                ends: new Date(req.body.eventForm.eventDetails.starts)
+            },
+            createdBy: userId, 
+            attendees:[]
+        })
+        console.log(newEvent)
+        let savedEvent = await newEvent.save()
+        const eventId = savedEvent._id
+        const foundUser = await User.findById(userId)
+
+        foundUser.events.myEvents.push(eventId)
+        
+        await foundUser.save()
+
+        const user =  await User.findById(userId).populate({
+            path: 'events.myEvents'
+        }).exec()
+        const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+        res.status(200).json(token)
     } catch (err) {
+        console.log(err);
         res.status(400).json(err)
     }
 }
+
+//GET ALL EVENTS BY PAGINATION AND FILTERS
+const getAllEvents = async(req, res, next) => {
+    try{
+        console.log(req.body);
+        const filter = req.body.filter;
+        const component = filter?.activeComp
+        const page = req.body.currentPage;
+        const keyword = filter?.keywordSearch
+        const timeFrameStarts = filter?.timeFrame?.starts;
+        const timeFrameEnds = filter?.timeFrame?.ends;
+        const perPage = 12;
+        const query = { };
+        
+       
+        if(keyword){
+            query.eventDetails.eventTitle = new RegExp(keyword, 'i')
+        }
+        //get date range
+        if (timeFrameStarts ) {
+            query.eventDetails.starts = {"$gte": new Date(timeFrameStarts)}
+        }
+        if (timeFrameEnds) {
+            query.eventDetails.ends = {"$lte": new Date(timeFrameEnds)}
+        }
+        
+    
+
+        const count = await Event.find(query).countDocuments();
+        const events = await Event.find(query)
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .limit(perPage)
+        .populate({
+            path: 'createdBy',
+            select: '_id avatar lastName firstName followers'
+            })
+        .exec()
+        const data = {
+            events, 
+            count: Math.ceil(count / perPage)
+        };
+        res.status(200).json(data);
+    }catch(err){
+        console.log(err)
+        res.status(400).json(err)
+    }   
+}
+
 
 
 
@@ -479,7 +555,7 @@ module.exports = {
     getRecipeUpdate,
     postDeleteARecipe,
     postNewEvent,
-    
+    getAllEvents,
     
     
     

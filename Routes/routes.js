@@ -38,6 +38,9 @@ router.post('/api/removeRecipe/:id', Controller.postDeleteARecipe);
 
 //post new event ---> this will be the post recipe
 router.post('/api/event', Controller.postNewEvent);
+
+//get all events
+router.post('/event/query', Controller.getAllEvents)
 // =============================================
 
 //get all users

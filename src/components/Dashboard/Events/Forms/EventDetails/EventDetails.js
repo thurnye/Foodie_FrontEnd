@@ -9,6 +9,12 @@ import {MdOutlineCancel} from 'react-icons/md';
 import { convertToBase64 } from '../../../../../util/commons';
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
 import FormDirection from '../FormDirection/FormDirection'
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+
 
 const EventDetails = () => {
   const { eventForm, setEventForm } = useAddEventFormContext()
@@ -47,6 +53,7 @@ const EventDetails = () => {
     }
   };
 
+  console.log(errors)
 
   return(
     <div className={styles.EventDetails}>
@@ -145,50 +152,36 @@ const EventDetails = () => {
                 <div className="container">
                   <div className="row ">
                     <div className='col p-0'>
-                    <Controller
-                      name="starts.date"
-                      control={control}
-                      rules={{
-                        required: "Event Start date is required"
-                      }}
-                      render={({ field }) => (
-                        <input
-                          type="date" 
-                          className={`form-control ${ errors?.starts?.date ? styles.isError : ''}`}
-                          id="eventStartDate"
-                          min={new Date()}
-                          {...field}
-                          placeholder="dd/mm/yyyy"
-                        />
-                      )}
-                    />
-                    {errors?.starts?.date && 
-                      <span className={styles.errorMessage}>
-                        <ErrorMessage errors={errors} name="starts.date" />
-                      </span>
-                    }
-                    </div>
-
-                    <div className='col p-0'>
-                      <Controller
-                        name="starts.time"
-                        control={control}
-                        rules={{
-                          required: "Event Start time is required"
-                        }}
-                        render={({ field }) => (
-                          <input
-                            type="time" 
-                            className={`form-control ${ errors?.starts?.time ? styles.isError : ''}`}
-                            id="eventStartTime"
-                            {...field}
-                            placeholder="hh:mm"
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
+                          <Controller
+                            name="starts"
+                            control={control}
+                            defaultValue={null}
+                            render={({ field }) => (
+                              <DateTimePicker
+                                {...field}
+                                fullWidth
+                                margin="small"
+                                id="date-picker"
+                                value={field.value}
+                                onChange={(date) => field.onChange(date)}
+                                viewRenderers={{
+                                  hours: renderTimeViewClock,
+                                  minutes: renderTimeViewClock,
+                                }}
+                                minDate={new Date()}
+                                error={!!errors.starts}
+                                helperText={errors.starts?.message}
+                              />
+                            )}
                           />
-                        )}
-                      />
-                      {errors?.starts?.time && 
+                        </DemoContainer>
+                      </LocalizationProvider>
+
+                    {errors?.starts && 
                       <span className={styles.errorMessage}>
-                        <ErrorMessage errors={errors} name="starts.time" />
+                        <ErrorMessage errors={errors} name="starts" />
                       </span>
                     }
                     </div>
@@ -203,97 +196,40 @@ const EventDetails = () => {
                 <div className="container">
                   <div className="row ">
                     <div className='col p-0'>
-                    <Controller
-                      name="ends.date"
-                      control={control}
-                      rules={{
-                        required: "Event End date is required"
-                      }}
-                      render={({ field }) => (
-                        <input
-                          type="date" 
-                          className={`form-control ${ errors?.ends?.date ? styles.isError : ''}`}
-                          id="eventEndDate"
-                          {...field}
-                          placeholder="dd/mm/yyyy"
-                        />
-                      )}
-                    />
-                    {errors?.ends?.date && 
-                      <span className={styles.errorMessage}>
-                        <ErrorMessage errors={errors} name="ends.date" />
-                      </span>
-                    }
-                    </div>
-
-                    <div className='col p-0'>
-                      <Controller
-                        name="ends.time"
-                        control={control}
-                        rules={{
-                          required: "Event End time is required"
-                        }}
-                        render={({ field }) => (
-                          <input
-                            type="time" 
-                            className={`form-control ${ errors?.ends?.time ? styles.isError : ''}`}
-                            id="eventEndTime"
-                            {...field}
-                            placeholder="hh:mm"
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
+                          <Controller
+                            name="ends"
+                            control={control}
+                            defaultValue={null}
+                            render={({ field }) => (
+                              <DateTimePicker
+                                {...field}
+                                fullWidth
+                                margin="small"
+                                id="date-picker"
+                                value={field.value}
+                                onChange={(date) => field.onChange(date)}
+                                viewRenderers={{
+                                  hours: renderTimeViewClock,
+                                  minutes: renderTimeViewClock,
+                                }}
+                                minDate={new Date()}
+                                // className={`form-control ${ errors?.ends ? styles.isError : ''}`}
+                              />
+                            )}
                           />
-                        )}
-                      />
-                      {errors?.ends?.time && 
+                        </DemoContainer>
+                      </LocalizationProvider>
+                    {errors?.ends && 
                       <span className={styles.errorMessage}>
-                        <ErrorMessage errors={errors} name="ends.time" />
+                        <ErrorMessage errors={errors} name="ends" />
                       </span>
                     }
                     </div>
                   </div>
                 </div>
               </div>
-
-              {/* <div className="col-md-6">
-                <label htmlFor="inputEmail_6764" className="form-label"
-                >ENDS</label>
-                <div className="container">
-                  <div className="row gap-3">
-                    <Controller
-                      name="ends.date"
-                      control={control}
-                      rules={{
-                        required: "Event End date is required"
-                      }}
-                      render={({ field }) => (
-                        <input
-                          type="date" 
-                          className="form-control"
-                          id="eventEndDate"
-                          {...field}
-                          placeholder="dd/mm/yyyy"
-                        />
-                      )}
-                    />
-
-                    <Controller
-                      name="ends.time"
-                      control={control}
-                      rules={{
-                        required: "Event End time is required"
-                      }}
-                      render={({ field }) => (
-                        <input
-                          type="time" 
-                          className="form-control"
-                          id="eventEndTime"
-                          {...field}
-                          placeholder="hh:mm"
-                        />
-                      )}
-                    />
-                  </div>
-                </div>
-              </div> */}
               
               <Controller
                 name="repeat"

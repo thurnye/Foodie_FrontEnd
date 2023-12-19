@@ -15,7 +15,7 @@ const Publish = () => {
   return (
   <div className={styles.Publish}>
     <div className={styles.sectionHeader}>
-      <p className={`h2 ${styles.sectionName}`}>Congratulations Event Saved!!</p>
+      <p className={`h2 ${styles.sectionName} text-success`}>Congratulations Event Saved!</p>
     </div>
 
     <div className={styles.sectionForm}>

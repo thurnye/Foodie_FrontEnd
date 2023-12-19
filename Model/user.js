@@ -71,8 +71,10 @@ const userSchema = new Schema({
         ref: 'Recipes',
       }
     }
-  ]
-    
+  ],
+  followers: {
+    type: Number
+  } 
 },
    
 {

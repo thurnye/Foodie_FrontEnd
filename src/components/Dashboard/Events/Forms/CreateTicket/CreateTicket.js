@@ -7,6 +7,11 @@ import { eventForm as formData, useAddEventFormContext } from '../../../../../st
 import { getRandomInt } from '../../../../../util/commons';
 import { BsGear, BsTrash} from 'react-icons/bs';
 import CompTextEditor from '../../../../CompTextEditor/CompTextEditor';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 
 const CreateTicket = () => {
   const { eventForm, setEventForm } = useAddEventFormContext();
@@ -324,39 +329,34 @@ const CreateTicket = () => {
                                     <div className="container">
                                       <div className="row">
                                         <div className='col p-0'>
-                                        <Controller
-                                          name={`tickets[${index}].starts.date`}
-                                          control={control}
-                                          defaultValue={eventForm.eventDetails.starts.date}
-                                          render={({ field }) => (
-                                            <input
-                                              type="date" 
-                                              className={`form-control ${ errors?.starts?.date ? styles.isError : ''}`}
-                                              id="eventStartDate"
-                                              min={new Date()}
-                                              {...field}
-                                              placeholder="dd/mm/yyyy"
+                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                          <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
+                                            <Controller
+                                              name={`tickets[${index}].starts`}
+                                              control={control}
+                                              defaultValue={null}
+                                              render={({ field }) => (
+                                                <DateTimePicker
+                                                  {...field}
+                                                  fullWidth
+                                                  margin="small"
+                                                  id="date-picker"
+                                                  value={field.value}
+                                                  onChange={(date) => field.onChange(date)}
+                                                  viewRenderers={{
+                                                    hours: renderTimeViewClock,
+                                                    minutes: renderTimeViewClock,
+                                                  }}
+                                                  minDate={new Date(eventForm.eventDetails.starts)}
+                                                  
+                                                />
+                                              )}
                                             />
-                                          )}
-                                        />
+                                          </DemoContainer>
+                                        </LocalizationProvider>
                                         </div>
 
-                                        <div className='col p-0'>
-                                          <Controller
-                                            name={`tickets[${index}].starts.time`}
-                                            control={control}
-                                            defaultValue={eventForm.eventDetails.starts.time}
-                                            render={({ field }) => (
-                                              <input
-                                                type="time" 
-                                                className={`form-control ${ errors?.starts?.time ? styles.isError : ''}`}
-                                                id="eventStartTime"
-                                                {...field}
-                                                placeholder="hh:mm"
-                                              />
-                                            )}
-                                          />
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                   </div>
@@ -368,38 +368,34 @@ const CreateTicket = () => {
                                     <div className="container">
                                       <div className="row ">
                                         <div className='col p-0'>
-                                        <Controller
-                                          name={`tickets[${index}].ends.date`}
-                                          control={control}
-                                          defaultValue={eventForm.eventDetails.ends.date}
-                                          render={({ field }) => (
-                                            <input
-                                              type="date" 
-                                              className={`form-control ${ errors?.ends?.date ? styles.isError : ''}`}
-                                              id="eventEndDate"
-                                              {...field}
-                                              placeholder="dd/mm/yyyy"
+                                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                          <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
+                                            <Controller
+                                              name={`tickets[${index}].ends`}
+                                              control={control}
+                                              defaultValue={null}
+                                              render={({ field }) => (
+                                                <DateTimePicker
+                                                  {...field}
+                                                  fullWidth
+                                                  margin="small"
+                                                  id="date-picker"
+                                                  value={field.value}
+                                                  onChange={(date) => field.onChange(date)}
+                                                  viewRenderers={{
+                                                    hours: renderTimeViewClock,
+                                                    minutes: renderTimeViewClock,
+                                                  }}
+                                                  minDate={new Date(eventForm.eventDetails.starts)}
+                                                  
+                                                />
+                                              )}
                                             />
-                                          )}
-                                        />
+                                          </DemoContainer>
+                                        </LocalizationProvider>
                                         </div>
 
-                                        <div className='col p-0'>
-                                          <Controller
-                                           name={`tickets[${index}].ends.time`}
-                                            control={control}
-                                            defaultValue={eventForm.eventDetails.ends.time}
-                                            render={({ field }) => (
-                                              <input
-                                                type="time" 
-                                                className={`form-control ${ errors?.ends?.time ? styles.isError : ''}`}
-                                                id="eventEndTime"
-                                                {...field}
-                                                placeholder="hh:mm"
-                                              />
-                                            )}
-                                          />
-                                        </div>
+                                        
                                       </div>
                                     </div>
                                   </div>

@@ -144,11 +144,11 @@ const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Somethi
       StarterKit.configure({
         bulletList: {
           keepMarks: true,
-          keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+          keepAttributes: false, // TODO : Making this as `false` because marks are not preserved when I try to preserve attrs, awaiting a bit of help
         },
         orderedList: {
           keepMarks: true,
-          keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+          keepAttributes: false, // TODO : Making this as `false` because marks are not preserved when I try to preserve attrs, awaiting a bit of help
         },
       }),
       Underline],
@@ -163,7 +163,7 @@ const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Somethi
   return (
     <div className={`text-editor ${className}`}>
       {show && <MenuBar editor={editor} />}
-      <EditorContent editor={editor} />
+      <EditorContent editor={editor}/>
     </div>
   )
 }

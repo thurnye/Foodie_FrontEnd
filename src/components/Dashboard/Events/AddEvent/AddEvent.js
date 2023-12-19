@@ -8,7 +8,7 @@ import Publish from '../Forms/Publish/Publish';
 import AdditionalSettings from '../Forms/AdditionalSettings/AdditionalSettings';
 
 
-const AddEvent = () => {
+const AddEvent = ({isEdit}) => {
   // https://www.eventbrite.co.uk/blog/how-to-set-up-online-registration-for-an-event-ds00/
   const [eventForm, setEventForm] = useState(FormData);
 
@@ -39,7 +39,6 @@ const getCurrentForm = (step) => {
       <div className={styles.EventActions}>
         <ul className={`nav ${styles.EventAction}`}>
           <li className="nav-item" role="presentation" >
-            <p className='h1'>Create An Event</p>
           </li>
         </ul>
       </div>

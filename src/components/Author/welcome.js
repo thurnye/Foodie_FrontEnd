@@ -7,6 +7,7 @@ import Img11 from '../../public/images/recentRecipes/img11.jpeg'
 import Img12 from '../../public/images/recentRecipes/img12.jpeg'
 import Img13 from '../../public/images/recentRecipes/img13.jpeg'
 import '../../public/css/author.css'
+import parser from 'html-react-parser';
 
 
 export default function Welcome() {
@@ -18,6 +19,7 @@ export default function Welcome() {
                     <img src={Img4} className="img-fluid" hvr-bob alt=""/>
                 </div>
             </div>
+            {/* {parser(aboutMe)} */}
             <div className="author-description">
                 <p>Et leo duis ut diam quam nulla porttitor massa id. Vitae auctor eu augue ut lectus arcu. Neque vitae tempus quam pellentesque nec. Volutpat consequat mauris nunc congue nisi.t Quam nulla porttitor massa id neque aliquam vestibulum morbi blandit. Amet consectetur adipiscing elit duis. Eget sit amet tellus cras adipiscing honcus mat voluptatem accusantium doloremque laudantium, totam rem aperiam, eaqueipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
             </div>

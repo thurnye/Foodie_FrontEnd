@@ -29,10 +29,14 @@ export default function ResultList(props) {
     }
     // Get Query Recipes
     const fetchFilteredRecipes = async (query) => {
-        setLoading(true)
-        const all = await services.findQuery(query);
-        setAllRecipes(all)
-        setLoading(false);
+        try{
+            setLoading(true)
+            const all = await services.findQuery(query);
+            setAllRecipes(all)
+            setLoading(false);
+        }catch(err){
+            console.log(err)
+        }
     }
 
     useEffect(() => {
