@@ -5,6 +5,7 @@ const events = {
     events: null,
     usersEvents: null,
     singleEvent: null,
+    eventEdit: null,
 }
 
 const eventsSlice = createSlice({
@@ -14,6 +15,10 @@ const eventsSlice = createSlice({
         // all all events from the database
        getEvents(state, action){
            state.events = action.payload.data;
+       },
+       getEventEdit(state, action){
+        console.log(action.payload);
+           state.eventEdit = action.payload;
        },
        getAllUsersEvents(state, action){
            state.usersEvents = action.payload.data;

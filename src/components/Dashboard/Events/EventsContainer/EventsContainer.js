@@ -13,9 +13,10 @@ import {eventsActions} from '../../../../store/eventSlice'
 const EventsContainer = () => {
   const dispatch = useDispatch()
   const { eventForm, setEventForm } = useAddEventFormContext();
-  const [activeComponent, setActiveComponent] = useState('addEvent'); 
+  const [activeComponent, setActiveComponent] = useState('all'); 
   const [calendarValue, setCalendarValue] = useState([]);
-  const [isEditEvent, setIsEditEvent] = useState(0);
+  const [eventId, setEventId] = useState(null);
+  const [isEditEvent, setIsEditEvent] = useState(false);
   const [currentPage, setCurrentPage] = useState(1)
   const [counts, setCounts] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -48,7 +49,6 @@ const EventsContainer = () => {
     let timeFrame = {starts: '', ends: ''}
     switch (period) {
       case 'all':
-        console.log(calendarValue);
         timeFrame = calendarValue ? {starts: calendarValue[0], ends: calendarValue[1]} : {starts: '', ends: ''}
         break;
       case 'today':
@@ -85,8 +85,9 @@ const EventsContainer = () => {
   }
 
   useEffect(() => {
-    if(activeComponent === 'addEvent'){
-      setIsEditEvent(0)
+    if(activeComponent === 'addEvent' && !isEditEvent){
+      setEventId(null);
+      dispatch(eventsActions.getEventEdit(null));  //change the editable event to null
     }
     const filter = {
       keywordSearch : '',
@@ -99,20 +100,41 @@ const EventsContainer = () => {
     fetchFilteredRecipes(filter);
 
 
-  },[activeComponent, calendarValue, currentPage]);
+  },[activeComponent, calendarValue, currentPage, isEditEvent]);
 
   useEffect(() => {
-    if(isEditEvent){
-
-
-
-      // setEventForm((eventForm) => ({ 
-      //   ...eventForm, 
-      //   eventDetails: data 
+    if(eventId){
+      setIsEditEvent(true);
+      console.log(eventId);
+      const allEvents = events.data.events;
+      let foundEvent = allEvents.find(el => parseInt(el._id) === parseInt(eventId));
+      // if(foundEvent){
+      //   //adjust the dates
+        
+      //   foundEvent = {
+      //     ...foundEvent,
+      //     eventDetails: {
+      //       ...foundEvent.eventDetails,
+      //       starts: new Date(foundEvent.eventDetails.starts),
+      //       ends : new Date(foundEvent.eventDetails.ends)
+      //     },
+      //   };
+        
+      //   foundEvent.tickets.forEach((ticket) => {
+      //     if(ticket.start){
+      //       ticket.starts = new Date(ticket.starts)
+      //     }
+      //     if(ticket.ends){
+      //       ticket.ends = new Date(ticket.ends)
+      //     }
+      //   })
       // }
-      // ));
+
+      console.log({foundEvent});
+      dispatch(eventsActions.getEventEdit(foundEvent));
+      setActiveComponent('addEvent');
     }
-  },[isEditEvent])
+  },[events, eventId, setEventForm])
 
 
   useEffect(() => {
@@ -140,7 +162,7 @@ const EventsContainer = () => {
       default:
         return <EventsList 
           filter={{period:activeComponent, calendarValue}} 
-          setIsEditEvent={setIsEditEvent}
+          setEventId={setEventId}
           counts={counts}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
@@ -184,7 +206,14 @@ const EventsContainer = () => {
                     role="tab"
                     aria-controls="addEvent"
                     aria-selected={activeComponent === el.type ? 'true' : 'false'}
-                    onClick={() => setActiveComponent(el.type)} // Handle click event
+                    onClick={() => {
+                      if(el.type === 'addEvent'){
+                        setIsEditEvent(false);
+                        // setEventId(null);
+                        // dispatch(eventsActions.getEventEdit(null)); 
+                      }
+                      setActiveComponent(el.type)
+                    }} 
                   >
                     {el.name}
                   </button>
@@ -196,7 +225,7 @@ const EventsContainer = () => {
         </ul>
       </div>
     
-    { activeComponent !== 'Add Event' && 
+    { activeComponent !== 'addEvent' && 
       <div className={`dropdown ${styles.EventNav}`} >
         <button className="btn nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           Filter Date

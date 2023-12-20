@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import styles from './EventDetails.module.css';
+import { useSelector } from 'react-redux';
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { ErrorMessage } from '@hookform/error-message';
 import CompTextEditor from '../../../../CompTextEditor/CompTextEditor';
@@ -7,7 +8,7 @@ import Dropzone from 'react-dropzone'
 import {LiaCameraRetroSolid} from 'react-icons/lia';
 import {MdOutlineCancel} from 'react-icons/md';
 import { convertToBase64 } from '../../../../../util/commons';
-import { useAddEventFormContext } from '../../../../../store/formStateContext';
+import { defaultEventForm, useAddEventFormContext } from '../../../../../store/formStateContext';
 import FormDirection from '../FormDirection/FormDirection'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -16,8 +17,12 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 
 
-const EventDetails = () => {
-  const { eventForm, setEventForm } = useAddEventFormContext()
+
+const EventDetails = ({edit}) => {
+  const { eventForm, setEventForm } = useAddEventFormContext();
+  // const editAble = useSelector(state => state.eventData);
+
+  
   const {
     control,
     register, 
@@ -29,12 +34,12 @@ const EventDetails = () => {
     defaultValues: eventForm.eventDetails, // Use eventForm directly
   });
 
+  // console.log(eventForm.eventDetails)
+
   const { append, remove } = useFieldArray({
     control,
     name: "fAQs",
   });
-
-
   const [proceed, setProceed] = useState(false);
 
   const onSubmit = async (data) => {
@@ -53,7 +58,7 @@ const EventDetails = () => {
     }
   };
 
-  console.log(errors)
+
 
   return(
     <div className={styles.EventDetails}>
@@ -164,7 +169,7 @@ const EventDetails = () => {
                                 fullWidth
                                 margin="small"
                                 id="date-picker"
-                                value={field.value}
+                                value={new Date(field.value)}
                                 onChange={(date) => field.onChange(date)}
                                 viewRenderers={{
                                   hours: renderTimeViewClock,
@@ -208,7 +213,7 @@ const EventDetails = () => {
                                 fullWidth
                                 margin="small"
                                 id="date-picker"
-                                value={field.value}
+                                value={new Date(field.value)}
                                 onChange={(date) => field.onChange(date)}
                                 viewRenderers={{
                                   hours: renderTimeViewClock,

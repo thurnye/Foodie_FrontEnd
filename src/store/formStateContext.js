@@ -2,7 +2,7 @@
 import { createContext, useContext} from 'react';
 import { getRandomInt } from '../util/commons';
 
-export const eventForm = {
+export const defaultEventForm = {
     eventDetails : {
       eventTitle: '',
       location: '',
@@ -89,11 +89,11 @@ export const eventForm = {
 const formSteps = ['Event Details', 'Create Ticket', 'Additional Settings'];
 
 export const AddEventFormContext = createContext({
-    eventForm,
-    setEventForm: (form) => form,
-    currentFormStep: 'Event Details',
-    formSteps,
-    setCurrentFormStep: (step) => step
+  eventForm: defaultEventForm,
+  setEventForm: (form) => form,
+  currentFormStep: 'Event Details',
+  formSteps,
+  setCurrentFormStep: (step) => step
     
 })
 

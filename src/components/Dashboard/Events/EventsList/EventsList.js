@@ -9,15 +9,12 @@ import {useSelector} from 'react-redux';
 
 
 
-const EventsList = ({filter, setIsEditEvent, counts, currentPage, setCurrentPage}) => {
+const EventsList = ({filter, setEventId, counts, currentPage, setCurrentPage}) => {
   const allEvents = useSelector(state => state.eventData?.events?.events)
   const [events, setEvents] = useState([]);
 
 
-  useEffect(() => {
-    console.log(allEvents);
-    
-  },[allEvents]);
+
 
 
 
@@ -42,7 +39,7 @@ const EventsList = ({filter, setIsEditEvent, counts, currentPage, setCurrentPage
                 </button>
                 <ul className="dropdown-menu">
                   <li>
-                    <button className="dropdown-item" onClick={() => setIsEditEvent(event._id)}>Modify Event</button>
+                    <button className="dropdown-item" onClick={() => setEventId(event._id)}>Modify Event</button>
                     <button className="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete Event</button>
                   </li>
                 </ul>
