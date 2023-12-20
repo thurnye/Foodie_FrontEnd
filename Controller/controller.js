@@ -217,7 +217,7 @@ const getQueryRecipes = async(req, res, next) => {
         if(filteredCategories.length > 0){
             query.category =  { $in: filteredCategories }
         }
-        // console.log(query);
+        console.log(query);
 
         const count = await Recipe.find(query).countDocuments();
         const recipes = await Recipe.find(query)
@@ -424,28 +424,38 @@ const postNewEvent = async(req, res, next) => {
 const getAllEvents = async(req, res, next) => {
     try{
         console.log(req.body);
-        const filter = req.body.filter;
-        const component = filter?.activeComp
-        const page = req.body.currentPage;
-        const keyword = filter?.keywordSearch
+        const filter = req.body;
+        const userId = filter.userId;
+        const type = filter.activeComp
+        const page = filter.currentPage;
+        const keyword = filter.keywordSearch
         const timeFrameStarts = filter?.timeFrame?.starts;
         const timeFrameEnds = filter?.timeFrame?.ends;
         const perPage = 12;
-        const query = { };
+        let query = { };
         
-       
+       console.log(keyword, timeFrameStarts, timeFrameEnds, page, type)
         if(keyword){
-            query.eventDetails.eventTitle = new RegExp(keyword, 'i')
+            query["eventDetails.eventTitle"] = new RegExp(keyword, 'i')
+        }
+        if(type === 'online'){
+            query["eventDetails.isOnline"] = true
+        }
+        // if(type === 'free'){
+        //     query.eventDetails.isFree = true
+        // }
+        if(userId){
+            query.createdBy = userId
         }
         //get date range
         if (timeFrameStarts ) {
-            query.eventDetails.starts = {"$gte": new Date(timeFrameStarts)}
+            query["eventDetails.starts"] = {"$gte": new Date(timeFrameStarts)}
         }
         if (timeFrameEnds) {
-            query.eventDetails.ends = {"$lte": new Date(timeFrameEnds)}
+            query["eventDetails.ends"] = {"$lte": new Date(timeFrameEnds)}
         }
         
-    
+        console.log('EventQuery =',query);
 
         const count = await Event.find(query).countDocuments();
         const events = await Event.find(query)

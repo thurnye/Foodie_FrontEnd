@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import EventsCard from './EventsCard'
 import CustomPagination from '../../../CustomPagination/CustomPagination';
 import { getTomorrowDate, getWeekDates, getWeekendDates, getMonthDates } from '../../../../util/commons';
 import services from '../../../../util/services';
 import { eventsActions } from '../../../../store/eventSlice';
 
-const EventListContainer = () => {
+const EventListContainer = ({userId}) => {
+    const user = useSelector(state => state.userLog.user);
     const dispatch = useDispatch()
     let location = useLocation();
     const [data, setData] = useState(null);
@@ -19,7 +20,6 @@ const EventListContainer = () => {
     const type = location.state?.type
     const calendarValue = location.state?.calendarValue;
     
-    console.log(type);
 
     const fetchFilteredRecipes = async (query) => {
     try{
@@ -39,7 +39,7 @@ const EventListContainer = () => {
         timeFrame = calendarValue ? {starts: calendarValue[0], ends: calendarValue[1]} : {starts: '', ends: ''}
         break;
       case 'today':
-        timeFrame = {starts: new Date(), ends: ''};
+        timeFrame = {starts: new Date(), ends: new Date()};
         break;
       case 'tomorrow':
         timeFrame = getTomorrowDate();
@@ -61,8 +61,9 @@ const EventListContainer = () => {
   }
 
   useEffect(() => {
+    console.log(type)
     const filter = {
-        userId : type === 'my-event' ? '' : null,
+        userId : type === 'myEvent' ? user?.user._id : null,
         keywordSearch : '',
         activeComp: type,
         timeFrame: getTimeFrame(type),
@@ -71,7 +72,7 @@ const EventListContainer = () => {
     
     fetchFilteredRecipes(filter);
     
-  },[calendarValue, currentPage, type]);
+  },[calendarValue, currentPage, type, user]);
 
 
     useEffect(() => {

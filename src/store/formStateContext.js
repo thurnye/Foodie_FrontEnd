@@ -7,6 +7,7 @@ export const defaultEventForm = {
       eventTitle: '',
       location: '',
       isOnline: false,
+      isFree: false,
       repeat: false,
       frequency: 'weekly',
       thumbnail: '',

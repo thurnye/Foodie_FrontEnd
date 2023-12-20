@@ -142,9 +142,27 @@ const EventDetails = ({edit}) => {
                     </>
                   )}
                 />
-                <label className="form-check-label" htmlFor="flexCheckIndeterminate_8979">
-                  Online Event
-                </label>
+              </div>
+              {/* IsFree */}
+              <div className="form-check">
+                <Controller
+                  name="isFree"
+                  control={control}
+                  render={({ field }) => (
+                    <>
+                      <input
+                        className="form-check-input"
+                        type="checkbox"
+                        id="flexCheckIndeterminate"
+                        checked={field.value}
+                        {...field}
+                      />
+                      <label className="form-check-label" htmlFor="flexCheckIndeterminate">
+                        Free Event
+                      </label>
+                    </>
+                  )}
+                />
               </div>
             </div>
 

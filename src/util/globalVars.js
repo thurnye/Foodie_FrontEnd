@@ -2,7 +2,7 @@ export const componentsNavs = [
     {name: 'All', type: 'all'},
     {name: 'Online', type: 'online'},
     {name: 'Today', type: 'today'},
-    {name: 'This Week', type: 'thisWeekend'},
+    {name: 'This Week', type: 'thisWeek'},
     {name: 'This Month', type: 'thisMonth'},
     {name: 'Free', type: 'free'},
     {name: 'Tomorrow', type: 'tomorrow'},

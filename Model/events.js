@@ -13,6 +13,7 @@ const eventsSchema = new Schema({
             required: true
         },
         isOnline: Boolean,
+        isFree: Boolean,
         repeat: Boolean,
         frequency: String,
         thumbnail: {
