@@ -40,6 +40,9 @@ import Events from './components/Dashboard/Events/EventsContainer/EventsContaine
 import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks'
 import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 
+import AddEvent from './components/Dashboard/Events/AddEvent/AddEvent';
+import EventListContainer from './components/Dashboard/Events/EventsList/EventListContainer';
+
 
 
 library.add(fab, fas, far)
@@ -86,7 +89,13 @@ function App() {
             <Route path="add-recipe" element={<NewRecipe/>} />
             <Route path="blog-manager" element={<BlogManager/>} />
             <Route path="notification" element={<Notification/>} />
-            <Route path="events" element={<Events/>} />
+            <Route path="events" element={<Events/>}>
+              <Route path="new-event" element={<AddEvent isEdit={false}/>} />
+              <Route path="edit-event" element={<AddEvent isEdit={true}/>} />
+              <Route path="scheduled-events" element={<EventListContainer/>}/>
+              <Route path="my-events" element={<EventListContainer/>} />
+              <Route path="*" element={<EventListContainer/>} />
+            </Route>
             <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} />
             <Route index element={<Navigate to="dashboard" />}></Route>
           </Route>

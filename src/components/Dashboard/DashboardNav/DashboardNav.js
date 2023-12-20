@@ -52,8 +52,29 @@ const DashboardNav = () => {
     // },
     {
       name: 'Events',
-      path: 'events',
-      icon: <Cast strokeWidth={1} size={18}/>
+      path: 'events/all',
+      icon: <Cast strokeWidth={1} size={18}/>,
+      // subMenu: [
+      //   {
+      //     name: 'Manage Events',
+      //     path: 'manage-events',
+      //     badge: 2,
+      //     icon: <Bell strokeWidth={1} size={18}/>
+          
+      //   },
+      //   {
+      //     name: 'New Event',
+      //     path: 'new-event',
+      //     icon: <Trash2  strokeWidth={1} size={18}/>
+    
+      //   },
+      //   {
+      //     name: 'Scheduled Event',
+      //     path: 'scheduled-events',
+      //     icon: <Trash2  strokeWidth={1} size={18}/>
+    
+      //   }
+      // ]
       
     },
     {
