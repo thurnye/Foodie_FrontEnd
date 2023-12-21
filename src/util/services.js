@@ -69,6 +69,11 @@ class StuffDataService {
     return http.post("/event/query", data);
   }
 
+   // get user event
+   getUserEvents(userId, data) {
+    return http.post(`/user/event/${userId}`, data);
+  }
+
   // ------------------------------------
  
 

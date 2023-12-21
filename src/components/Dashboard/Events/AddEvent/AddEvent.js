@@ -1,6 +1,6 @@
 // https://www.eventbrite.co.uk/blog/how-to-set-up-online-registration-for-an-event-ds00/
-import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './AddEvent.module.css';
 import { defaultEventForm, AddEventFormContext } from '../../../../store/formStateContext';
 import EventDetails from '../Forms/EventDetails/EventDetails';
@@ -11,19 +11,26 @@ import AdditionalSettings from '../Forms/AdditionalSettings/AdditionalSettings';
 
 
 
-const AddEvent = () => {
+const AddEvent = ({isNew}) => {
   let location = useLocation();
+  let navigate = useNavigate();
   let edit = location.state?.edit
   const event = location.state?.event;
+  const userId = location.state?.userId;
   
-
-
   const [eventForm, setEventForm] = useState(edit ? event : defaultEventForm);
 
   const formSteps = ['Event Details', 'Create Ticket', 'Additional Settings', 'Preview', 'Save And Publish'];
   const [currentFormStep, setCurrentFormStep] = useState(0);
 
-
+  useEffect(() => {
+    if(!isNew && userId){
+      if(event.createdBy._id !== userId){
+        //Kick the unauthorized user out
+        navigate("my-event", { state: { type: 'myEvent', edit: false}});
+      }
+    }
+  },[isNew, event, ])
 
   const getCurrentForm = (step) => {
     switch (step) {

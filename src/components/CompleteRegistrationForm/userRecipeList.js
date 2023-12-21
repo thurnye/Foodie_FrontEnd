@@ -23,7 +23,7 @@ export default function UserRecipeList() {
     const [allRecipes, setAllRecipes] = useState();
     const [myRecipes, setMyRecipes] = useState(null)
 
-    const fetchUpdatedUser = async (id) => {
+    const fetchUserRecipe = async (id) => {
         try {
             setLoading(true)
             const result = await services.getUserRecipes(id, {currentPage});
@@ -47,7 +47,7 @@ export default function UserRecipeList() {
 
     useEffect(() => {
         if(user){
-           fetchUpdatedUser(user._id);  
+           fetchUserRecipe(user._id);  
         }
     },[user, currentPage])
 

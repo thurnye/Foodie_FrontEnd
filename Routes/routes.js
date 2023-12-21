@@ -12,7 +12,7 @@ router.post('/api/user/login', Controller.getLogIn);
 //post the updated user
 router.post('/edit/:id', Controller.postUpdatedUser);
 
-//get the updated user
+//get the loggedIn user recipes
 router.post('/user/:id', Controller.getAUserRecipes);
 
 //post new recipe ---> this will be the post recipe
@@ -41,6 +41,21 @@ router.post('/api/event', Controller.postNewEvent);
 
 //get all events
 router.post('/event/query', Controller.getAllEvents)
+
+//get the loggedIn user events
+router.post('/user/event/:id', Controller.getUserEvents);
+
+
+
+
+
+
+
+
+
+
+
+
 // =============================================
 
 //get all users

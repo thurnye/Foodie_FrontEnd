@@ -1,38 +1,48 @@
 import React, {useEffect, useState} from 'react';
-import { Link, useLocation, useNavigate  } from 'react-router-dom';
+import { useNavigate  } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './EventsCard.module.css';
 import { formatNumber, formatDateWithTimeZoneRegion} from '../../../../util/commons';
 import { HiMiniEllipsisVertical } from "react-icons/hi2";
 import { MdLocationPin } from "react-icons/md";
 import { FaUserFriends} from "react-icons/fa";
+import ModalFeedBack from '../../../ModalFeedBack/ModalFeedBack';
 
-const EventsCard = ({event, type, setEventId}) => {
+const EventsCard = ({event, showAction, userId}) => {
   const navigate = useNavigate();
-  const events = useSelector(state => state.eventData.events);
+  const events = useSelector(state => state.eventData.userEvents);
+  const [eventId, setEventId] = useState(null);
+  const [show, setShow] = useState(false)
+  const [showMessage, setShowMessage] = useState('')
+  
 
-
-  const handleClick = (eventId) => {
-    const event = events?.find(el => parseInt(el._id) === parseInt(eventId));
-
-    navigate("edit-event", { state: { edit: true, type: "myEvent", eventId: event._id, event } });
-  }
+  
+//if the redirect to edit page to edit event
+  useEffect(() => {
+    if(eventId && !show){
+      const event = events?.find(el => String(el._id) === String(eventId));
+      if(!event){
+        setShowMessage('Event Not Found');
+        setShow(true);
+        return;
+      }
+      setShow(false);
+      navigate("edit-event", { state: { edit: true, type: "myEvent", eventId: event._id, event, userId } });
+    }
+  },[eventId, events])
 
   return(
   <div className={styles.Events}>
     <div className="card border" >
       <div className="card-body">
-        {type === 'myEvent' && <div className={`dropdown d-flex justify-content-end mb-2 ${styles.EventsListActionsContainer}`} >
+        { showAction && <div className={`dropdown d-flex justify-content-end mb-2 ${styles.EventsListActionsContainer}`} >
           <button className="btn nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
           <HiMiniEllipsisVertical />
           </button>
           <ul className="dropdown-menu">
             <li>
-              <button className='dropdown-item' onClick={() => handleClick(event._id)}>Modify Item</button>
+              <button className='dropdown-item' onClick={() => setEventId(event._id)}>Modify Item</button>
             </li>
-            {/* <li>
-              <Link to={"edit-event"} state={{ type: type, eventId: event._id, edit: true }} className="dropdown-item" >Modify Event</Link>
-            </li> */}
             <li>
               <button className="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete Event</button>
             </li>
@@ -80,6 +90,14 @@ const EventsCard = ({event, type, setEventId}) => {
           </div>
         </div>
       </div>
+
+      <ModalFeedBack
+        show={show}
+        setShow={setShow}
+        content={showMessage}
+        isClose={true}
+        closeLabel={'Close'}
+      />
   </div>
 )};
 

@@ -423,9 +423,8 @@ const postNewEvent = async(req, res, next) => {
 //GET ALL EVENTS BY PAGINATION AND FILTERS
 const getAllEvents = async(req, res, next) => {
     try{
-        console.log(req.body);
+        
         const filter = req.body;
-        const userId = filter.userId;
         const type = filter.activeComp
         const page = filter.currentPage;
         const keyword = filter.keywordSearch
@@ -434,19 +433,17 @@ const getAllEvents = async(req, res, next) => {
         const perPage = 12;
         let query = { };
         
-       console.log(keyword, timeFrameStarts, timeFrameEnds, page, type)
+      
         if(keyword){
             query["eventDetails.eventTitle"] = new RegExp(keyword, 'i')
         }
         if(type === 'online'){
             query["eventDetails.isOnline"] = true
         }
-        // if(type === 'free'){
-        //     query.eventDetails.isFree = true
-        // }
-        if(userId){
-            query.createdBy = userId
+        if(type === 'free'){
+            query["eventDetails.isFree"]= true
         }
+       
         //get date range
         if (timeFrameStarts ) {
             query["eventDetails.starts"] = {"$gte": new Date(timeFrameStarts)}
@@ -458,6 +455,7 @@ const getAllEvents = async(req, res, next) => {
         console.log('EventQuery =',query);
 
         const count = await Event.find(query).countDocuments();
+       
         const events = await Event.find(query)
         .skip((perPage * page) - perPage)
         .limit(perPage)
@@ -471,9 +469,40 @@ const getAllEvents = async(req, res, next) => {
             events, 
             count: Math.ceil(count / perPage)
         };
+        console.log(events.length);
         res.status(200).json(data);
     }catch(err){
         console.log(err)
+        res.status(400).json(err)
+    }   
+}
+
+// GET USER EVENTS
+const getUserEvents = async(req, res, next) => {
+    try{
+        console.log(req.body)
+        const userId = req.params.id;
+        const count = await Event.find({createdBy: userId}).countDocuments()
+        // console.log(count);
+        const perPage = 12;
+        const page = req.body.currentPage
+
+        const events =  await Event.find({createdBy: userId})
+        .skip((perPage * page) - perPage)
+        .limit(perPage)
+        .populate({
+            path: 'createdBy',
+            select: '_id avatar lastName firstName followers'
+            })
+        .exec()
+        const data = {
+            events, 
+            count: Math.ceil(count / perPage)
+        }
+        console.log(events.length);
+        res.status(200).json(data)
+
+    }catch(err){
         res.status(400).json(err)
     }   
 }
@@ -566,6 +595,7 @@ module.exports = {
     postDeleteARecipe,
     postNewEvent,
     getAllEvents,
+    getUserEvents,
     
     
     

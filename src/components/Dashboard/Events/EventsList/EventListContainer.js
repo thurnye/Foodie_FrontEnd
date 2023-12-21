@@ -17,20 +17,32 @@ const EventListContainer = ({userId}) => {
     const [counts, setCounts] = useState(0);
     const [loading, setLoading] = useState(true);
     const [eventId, setEventId] = useState(null);
+    const [userEvent, setUserEvent] = useState(false);
     const type = location.state?.type
     const calendarValue = location.state?.calendarValue;
     
 
-    const fetchFilteredRecipes = async (query) => {
-    try{
-      setLoading(true)
-      const allEvents = await services.getEvents(query);
-      setData(allEvents)
-      setLoading(false);
-    }catch(err){
-      console.log(err)
+    const fetchEvents = async (query, userId) => {
+        try{
+            setLoading(true)
+            let allEvents = null;
+
+            //fetch events created by the user only
+            if(type === 'myEvent' && userId){
+                setEvents([]);
+                allEvents = await services.getUserEvents(userId, query);
+            }
+            if(type !== 'myEvent'){
+                setEvents([]);
+                allEvents = await services.getEvents(query);
+            }
+
+            setData(allEvents)
+            setLoading(false);
+        }catch(err){
+            console.log(err)
+        }
     }
-  }
 
   const getTimeFrame = (period) => {
     let timeFrame = {starts: '', ends: ''}
@@ -61,50 +73,69 @@ const EventListContainer = ({userId}) => {
   }
 
   useEffect(() => {
-    console.log(type)
+    setEvents([]);
     const filter = {
-        userId : type === 'myEvent' ? user?.user._id : null,
         keywordSearch : '',
         activeComp: type,
         timeFrame: getTimeFrame(type),
         currentPage,
     }
-    
-    fetchFilteredRecipes(filter);
-    
+    fetchEvents(filter, user?.user._id);
+
   },[calendarValue, currentPage, type, user]);
+
+
 
 
     useEffect(() => {
     if(data){
-        console.log(data)
+        setLoading(true)
+        const eventData = data.data.events;
         setCounts(data.data.count);
         // store the event in redux state
-        dispatch(eventsActions.getEvents({
-            data: data.data.events
-        }));
-        setEvents(data.data.events)
+        if(type === 'myEvent'){
+            dispatch(eventsActions.getAllUsersEvents({
+                data: eventData
+            }));
+            setUserEvent(true)
+        }
+        if(type !== 'myEvent'){
+            dispatch(eventsActions.getEvents({
+                data: eventData
+            }));
+            setUserEvent(false)
+        }
+        setEvents(eventData)
+        setLoading(false);
     }
-},[data, dispatch]);
+    },[type, data, dispatch]);
 
 
 
     return (<>
-        {events.length > 0 && <>
-        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
-            {
-                events.map((event) => <div className="col" key={event?._id}>
-                <EventsCard
-                    event={event}
-                    type={type} 
-                    setEventId={setEventId}
-                />
-            </div>)    
-            }
-        </div>
-        {counts > 1 && <CustomPagination totalPages={counts} currentPage={currentPage} onPageChange={setCurrentPage}/>}
-        </>} 
-
+        {loading ? 
+            <div className="text-center resultSpinnerContainer">
+                <div className="spinner-border text-secondary" role="status">
+                </div>
+            </div> 
+        :
+            events.length > 0 && <>
+            <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                {
+                    events.map((event) => <div className="col" key={event?._id}>
+                    <EventsCard
+                        event={event}
+                        type={type} 
+                        setEventId={setEventId}
+                        showAction={userEvent}
+                        userId={user?.user._id}
+                    />
+                </div>)    
+                }
+            </div>
+            {counts > 1 && <CustomPagination totalPages={counts} currentPage={currentPage} onPageChange={setCurrentPage}/>}
+            </> 
+        }
     </>
 
     );

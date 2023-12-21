@@ -318,7 +318,7 @@ const EventDetails = ({edit}) => {
                             <div className="card">
                               <div className={`card-body ${styles.DropZoneCard} `}>
                                 <p className={`h1 ${styles.dropZoneIcon}`}>
-                                  <LiaCameraRetroSolid />
+                                  <LiaCameraRetroSolid/>
                                 </p>
                                 <p className="h3">ADD AN EVENT IMAGE</p>
                                 <h6 className="card-subtitle mb-2 text-body-secondary small">

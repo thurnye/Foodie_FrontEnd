@@ -3,7 +3,7 @@ import  {createSlice} from '@reduxjs/toolkit'
 
 const events = {
     events: null,
-    usersEvents: null,
+    userEvents: null,
     singleEvent: null,
 }
 
@@ -16,7 +16,7 @@ const eventsSlice = createSlice({
            state.events = action.payload.data;
        },
        getAllUsersEvents(state, action){
-           state.usersEvents = action.payload.data;
+           state.userEvents = action.payload.data;
        },
 
        getSingleEvent(state, action){

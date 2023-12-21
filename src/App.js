@@ -90,8 +90,8 @@ function App() {
             <Route path="blog-manager" element={<BlogManager/>} />
             <Route path="notification" element={<Notification/>} />
             <Route path="events" element={<Events/>}>
-              <Route path="new-event" element={<AddEvent isEdit={false}/>} />
-              <Route path="edit-event" element={<AddEvent isEdit={true}/>} />
+              <Route path="new-event" element={<AddEvent isNew={true}/>} />
+              <Route path="edit-event" element={<AddEvent isNew={false}/>} />
               <Route path="scheduled-events" element={<EventListContainer/>}/>
               <Route path="my-events" element={<EventListContainer/>} />
               <Route path="*" element={<EventListContainer/>} />
