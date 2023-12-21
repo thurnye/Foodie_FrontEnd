@@ -37,7 +37,7 @@ router.post('/api/recipe/update/:id', Controller.getRecipeUpdate);
 router.post('/api/removeRecipe/:id', Controller.postDeleteARecipe);
 
 //post new event ---> this will be the post recipe
-router.post('/api/event', Controller.postNewEvent);
+router.post('/api/event', Controller.postEvent);
 
 //get all events
 router.post('/event/query', Controller.getAllEvents)

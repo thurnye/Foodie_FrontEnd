@@ -81,11 +81,12 @@ export const defaultEventForm = {
       ],
     additionalSettings: { 
     currency: {
-      "label": "US Dollar - USD",
-      "symbol": "$",
-      "currency": "US Dollar"
+      label: "US Dollar - USD",
+      symbol: "$",
+      currency: "US Dollar"
     }}
 }
+
 
 const formSteps = ['Event Details', 'Create Ticket', 'Additional Settings'];
 

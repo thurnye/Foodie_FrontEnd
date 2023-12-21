@@ -11,7 +11,7 @@ const AdditionalSettings = () => {
   const { eventForm, setEventForm } = useAddEventFormContext();
   const [proceed, setProceed] = useState(false);
   const [currencies, setCurrencies] = useState([])
-  const [selectedOption, setSelectedOption] = useState([]);
+  const [selectedOption, setSelectedOption] = useState([eventForm.additionalSettings.currency]);
 
   const handleInputChange = (selected) => {
     setSelectedOption(selected);
@@ -20,13 +20,11 @@ const AdditionalSettings = () => {
 
   const handleSubmit = () => {
     const data = eventForm.additionalSettings;
-    data.currency = selectedOption;
+    data.currency = selectedOption[0];
     setEventForm((eventForm) => ({...eventForm, additionalSettings:data}))
     setProceed(true);
-
   }
 
-  console.log(eventForm)
 
   useEffect(() => {
     const options = []
