@@ -529,6 +529,24 @@ const getUserEvents = async(req, res, next) => {
 }
 
 
+//RETRIVE A Recipe BY ID
+const getSingleEvent = async (req, res, next) => {
+    try{
+        const eventId = req.params.id;
+        const event = await Event.findById(eventId)
+        .populate({
+            path: 'createdBy',
+            select: '_id avatar lastName firstName followers'
+            })
+        .exec()
+
+        res.status(200).json(event)
+    }catch(err){
+        res.status(400).json(err)
+    }   
+}
+
+
 
 
 
@@ -617,6 +635,7 @@ module.exports = {
     postEvent,
     getAllEvents,
     getUserEvents,
+    getSingleEvent
     
     
     

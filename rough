@@ -1,0 +1,35 @@
+
+                    {/* <OwlCarousel className='owl-theme' loop={false} margin={0} nav={false} dots={false} responsive={state.responsive}>
+                      {dateOptions.map((el) => <div class='item' key={getRandomInt()} onClick={() => setDateClicked(el)} >
+                        <div className={`border ${styles.calendarCard} ${dateClicked === el ? styles.activeCalendarCard : ''}`}>
+                          <Typography variant="h6" component="div" sx={{ fontSize: 15 }}>
+                          {getWeekDay(el)}
+                          </Typography>
+                          <Divider/>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                          {
+                            new Date().getFullYear() === new Date(el).getFullYear() ?  
+                            DateTime.fromISO(el).monthLong : 
+                            <>{DateTime.fromISO(el).monthShort}, {new Date(el).getFullYear()}</>
+                          }
+                        </Typography>
+                        <div className={`border ${styles.day} ${dateClicked === el ? styles.activeCalendarCardDay : ''}`}>
+                          <Typography variant="h6" component="div" sx={{ p: 1,}} >
+                          {new Date(el).getDay()}
+                          </Typography>
+                        </div>
+                        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                          {getLocalTime(new Date(el))}
+                        </Typography>
+                        </div>
+                      </div>)}
+                       {dateOptions.length > 6 && <div class='item'>
+                        <div className={`border ${styles.calendarCard}`} onClick={() => setShow(true)}>
+                          <Typography variant="h6" component="div" sx={{ fontSize: 15}}>
+                            <FaRegCalendar />
+                          </Typography>
+                          <Typography variant="h6" component="div" sx={{mt: 1, color: 'black', fontSize: 15, width: '55px'}}>More options</Typography>
+                        </div>
+                      </div>}   
+                      
+                    </OwlCarousel> */}

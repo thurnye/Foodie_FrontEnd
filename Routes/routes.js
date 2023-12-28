@@ -45,6 +45,9 @@ router.post('/event/query', Controller.getAllEvents)
 //get the loggedIn user events
 router.post('/user/event/:id', Controller.getUserEvents);
 
+//getting a event by id
+router.get('/event/:id', Controller.getSingleEvent);
+
 
 
 

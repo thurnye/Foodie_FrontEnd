@@ -23,6 +23,10 @@ export const getRandomInt = () => {
     return Math.floor(Math.random() * 500000000000);
 };
 
+
+//current user Time Zone
+export const getTimeZone = () => new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2];
+
 export const formatDateWithTimeZoneRegion = (date, time) => {
     return DateTime.fromJSDate(date).toFormat('EEE, MMM dd, yyyy, hh:mma');
 }
@@ -58,6 +62,22 @@ export const getDateShort = (dt) => {
 
 }
 
+// Output example: "8:00AM"
+export const getLocalTime = (date) => {
+  const currentDate = DateTime.now(date);
+  // Format the time in 12-hour format with AM/PM
+  const formattedTime = currentDate.toLocaleString({
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+  });
+
+  return formattedTime;
+}
+
+//Output => Monday, Tuesday, ..., Sunday
+export const getWeekDay = (date) => new Date(date).toLocaleDateString('en-US', { weekday: 'long' });
+
 //Get Weekends date
 export const getWeekendDates = ()  => {
     const today = DateTime.now();
@@ -76,6 +96,7 @@ export const getWeekendDates = ()  => {
     ends: endOfWeekend.toISODate()
   };
 }
+
 //Get Week date
 export const getWeekDates = ()  => {
     const today = DateTime.now();
@@ -108,17 +129,48 @@ export const getMonthDates = () => {
     };
   }
 
-  //Get Tomorrow
-  export const getTomorrowDate = () => {
-    const today = DateTime.now();
-    const tomorrow = today.plus({ days: 1 });
-  
-    return {
-        starts: tomorrow.toISODate(),
-        ends: ''
-    };
+//Get Tomorrow
+export const getTomorrowDate = () => {
+  const today = DateTime.now();
+  const tomorrow = today.plus({ days: 1 });
+
+  return {
+      starts: tomorrow.toISODate(),
+      ends: ''
+  };
+}
+
+// get the range of dates by their frequency - daily, weekly, monthly
+export const getAllDatesInRange = (startDate, endDate, intervalType) => {
+  const start = DateTime.fromISO(startDate);
+  const end = DateTime.fromISO(endDate) 
+
+  const dates = [];
+  let currentDate = start;
+  console.log({currentDate , end})
+
+  while (currentDate <= end) {
+    dates.push(currentDate.toISO());
+
+    // Update currentDate based on the specified interval
+    switch (intervalType) {
+      case 'daily':
+        currentDate = currentDate.plus({ days: 1 });
+        break;
+      case 'weekly':
+        currentDate = currentDate.plus({ weeks: 1 });
+        break;
+      case 'monthly':
+        currentDate = currentDate.plus({ months: 1 });
+        break;
+      // Add more cases as needed for other intervals
+      default:
+        throw new Error('Invalid interval type');
+    }
   }
-  
+  return dates;
+};
+
 
 
 //JWT Token Decode

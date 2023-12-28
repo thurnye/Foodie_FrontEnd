@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { useNavigate  } from 'react-router-dom';
+import { Link, useNavigate  } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './EventsCard.module.css';
 import { formatNumber, formatDateWithTimeZoneRegion} from '../../../../util/commons';
@@ -29,49 +29,57 @@ const EventsCard = ({event, showAction, userId}) => {
       setShow(false);
       navigate("edit-event", { state: { edit: true, type: "myEvent", eventId: event._id, event, userId } });
     }
-  },[eventId, events])
+  },[eventId, events]);
 
   return(
   <div className={styles.Events}>
-    <div className="card border" >
-      <div className="card-body">
-        { showAction && <div className={`dropdown d-flex justify-content-end mb-2 ${styles.EventsListActionsContainer}`} >
-          <button className="btn nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <HiMiniEllipsisVertical />
-          </button>
-          <ul className="dropdown-menu">
-            <li>
-              <button className='dropdown-item' onClick={() => setEventId(event._id)}>Modify Item</button>
-            </li>
-            <li>
-              <button className="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete Event</button>
-            </li>
-          </ul>
-        </div>}
-      <img src={event?.eventDetails.thumbnail} className={`card-img ${styles.Banner}`} alt="eventBanner"/>
-        <h4 className={` ${styles.Title}`}>{event?.eventDetails.eventTitle}</h4>
-        <h6 className={`${styles.Time}`}>{formatDateWithTimeZoneRegion(new Date(event?.eventDetails.starts))}</h6>
-        <h6 className={`${styles.Venue}`}>
-          <span>
-            <MdLocationPin size={'20px'}/>
-          </span>
-          <span>{event?.eventDetails.location}</span>
-          
-        </h6>
-        {event?.isFree && 
-          <h6 className={`${styles.Entry}`}>Free</h6>
-        }
-        <h6 className={`${styles.Organiser}`}>
-          {event?.createdBy.firstName} {event?.createdBy.lastName}
-        </h6>
-        <h6 className={`${styles.Followers}`}>
-          <span>
-            <FaUserFriends size={'20px'}/>
-          </span>
-          <span> {formatNumber(event?.createdBy.followers)} Followers</span>
-        </h6>
-      </div>
-    </div> 
+    <Link to={{
+      pathname: `/event` ,
+      search: `?q=${(event?.eventDetails.eventTitle).toLocaleLowerCase().replaceAll(" ", "-")}`,
+      }}
+      state={{eventId: event._id}}
+      >   
+        {event?.eventDetails.eventTitle}
+      <div className="card border" >
+        <div className="card-body">
+          { showAction && <div className={`dropdown d-flex justify-content-end mb-2 ${styles.EventsListActionsContainer}`} >
+            <button className="btn nav-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <HiMiniEllipsisVertical />
+            </button>
+            <ul className="dropdown-menu">
+              <li>
+                <button className='dropdown-item' onClick={() => setEventId(event._id)}>Modify Item</button>
+              </li>
+              <li>
+                <button className="dropdown-item" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Delete Event</button>
+              </li>
+            </ul>
+          </div>}
+        <img src={event?.eventDetails.thumbnail} className={`card-img ${styles.Banner}`} alt="eventBanner"/>
+          <h4 className={` ${styles.Title}`}>{event?.eventDetails.eventTitle}</h4>
+          <h6 className={`${styles.Time}`}>{formatDateWithTimeZoneRegion(new Date(event?.eventDetails.starts))}</h6>
+          <h6 className={`${styles.Venue}`}>
+            <span>
+              <MdLocationPin size={'20px'}/>
+            </span>
+            <span>{event?.eventDetails.location}</span>
+            
+          </h6>
+          {event?.isFree && 
+            <h6 className={`${styles.Entry}`}>Free</h6>
+          }
+          <h6 className={`${styles.Organiser}`}>
+            {event?.createdBy.firstName} {event?.createdBy.lastName}
+          </h6>
+          <h6 className={`${styles.Followers}`}>
+            <span>
+              <FaUserFriends size={'20px'}/>
+            </span>
+            <span> {formatNumber(event?.createdBy.followers)} Followers</span>
+          </h6>
+        </div>
+      </div> 
+    </Link>
     
     {/* <!-- Modal --> */}
     <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

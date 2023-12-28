@@ -74,6 +74,11 @@ class StuffDataService {
     return http.post(`/user/event/${userId}`, data);
   }
 
+  // get one event
+  findEventById(id) {
+    return http.get(`/event/${id}`);
+  };
+
   // ------------------------------------
  
 

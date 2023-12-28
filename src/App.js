@@ -42,6 +42,7 @@ import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 
 import AddEvent from './components/Dashboard/Events/AddEvent/AddEvent';
 import EventListContainer from './components/Dashboard/Events/EventsList/EventListContainer';
+import SingleEvent from './components/Dashboard/Events/SingleEvent/SingleEvent';
 
 
 
@@ -99,6 +100,8 @@ function App() {
             <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} />
             <Route index element={<Navigate to="dashboard" />}></Route>
           </Route>
+            <Route path="/event" element={<SingleEvent/>} />
+
 
         </Routes>
         {/* <Footer /> */}
