@@ -10,7 +10,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import {far} from "@fortawesome/free-regular-svg-icons"
 import {userActions } from './store/userSlice'
-
+import {  useJsApiLoader } from '@react-google-maps/api';
 
 import NavBar from './components/Nav/navbar'
 import Home from './pages/home';
@@ -47,11 +47,20 @@ import SingleEvent from './components/Dashboard/Events/SingleEvent/SingleEvent';
 
 
 library.add(fab, fas, far)
-// const history = require("history").createBrowserHistory()  
+// const history = require("history").createBrowserHistory() 
+
+const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+const placesLibrary = ['places'];
 
 function App() {
   const dispatch = useDispatch()
   let token = localStorage.getItem('token')
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: apiKey,
+    libraries: placesLibrary
+  })
 
   useEffect(() => {
     if (token) {
@@ -91,8 +100,8 @@ function App() {
             <Route path="blog-manager" element={<BlogManager/>} />
             <Route path="notification" element={<Notification/>} />
             <Route path="events" element={<Events/>}>
-              <Route path="new-event" element={<AddEvent isNew={true}/>} />
-              <Route path="edit-event" element={<AddEvent isNew={false}/>} />
+              <Route path="new-event" element={<AddEvent isNew={true} isLoaded={isLoaded}/>} />
+              <Route path="edit-event" element={<AddEvent isNew={false} isLoaded={isLoaded}/>} />
               <Route path="scheduled-events" element={<EventListContainer/>}/>
               <Route path="my-events" element={<EventListContainer/>} />
               <Route path="*" element={<EventListContainer/>} />
@@ -100,7 +109,7 @@ function App() {
             <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} />
             <Route index element={<Navigate to="dashboard" />}></Route>
           </Route>
-            <Route path="/event" element={<SingleEvent/>} />
+            <Route path="/event" element={<SingleEvent isLoaded={isLoaded}/>} />
 
 
         </Routes>

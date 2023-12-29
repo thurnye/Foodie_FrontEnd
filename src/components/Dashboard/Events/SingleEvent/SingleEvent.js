@@ -32,10 +32,11 @@ import { BsClockHistory } from "react-icons/bs";
 import { IoTicketOutline } from "react-icons/io5";
 import Loading from '../../../Loading/Loading'
 import {getWeekDay, getTimeZone, getLocalTime, getDateShort, formatNumber, getAllDatesInRange } from '../../../../util/commons';
+import Map from '../../../GoogleMapLocation/GoogleMap/Map';
 
 const { DateTime } = require('luxon');
 
-const SingleEvent = () => {
+const SingleEvent = ({isLoaded}) => {
 
   const location = useLocation();
     const eventId = location.state?.eventId
@@ -107,6 +108,8 @@ const SingleEvent = () => {
   <div className={` container ${styles.SingleEvent}`}>
     {loading ? <Loading/> : 
     <>
+      <Map isLoaded={isLoaded}/>
+
       <div className="jumbotron jumbotron-fluid border mb-4">
         <div className="container">
           <h1 className="display-4">Fluid jumbotron</h1>
@@ -199,7 +202,7 @@ const SingleEvent = () => {
                               <Grid item xs={6} sm={4} lg={3}>
                                 <Item>
                                   {dateOptions.length > 3 && 
-                                    <div class='item'>
+                                    <div className='item'>
                                       <div className={` ${styles.calendarCard}`} onClick={() => setShow(true)}>
                                         <Typography variant="h6" component="div" sx={{ fontSize: 15}}>
                                           <FaRegCalendar />
@@ -234,7 +237,8 @@ const SingleEvent = () => {
                         814 Bloor St W, Toronto, ON B Toronto, ON M6G 1L9
                       </Typography>
                       <Button variant="text" sx={{pl: 0}}>Show map</Button>
-                      
+                      {/* <GoogleLocation/>
+                      <GoogleMap/> */}
                     </div>
                   </div>
               </div>

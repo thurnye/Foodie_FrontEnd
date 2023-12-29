@@ -15,10 +15,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
+import GoogleLocation from '../../../../GoogleMapLocation/GoogleLocation/GoogleLocation';
 
 
 
-const EventDetails = ({edit}) => {
+const EventDetails = ({edit, isLoaded}) => {
   const { eventForm, setEventForm } = useAddEventFormContext();
   // const editAble = useSelector(state => state.eventData);
 
@@ -29,6 +30,7 @@ const EventDetails = ({edit}) => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
     watch
   } = useForm({
     defaultValues: eventForm.eventDetails, // Use eventForm directly
@@ -62,6 +64,7 @@ const EventDetails = ({edit}) => {
 
   return(
     <div className={styles.EventDetails}>
+      
       {/* Section 1: Event Details */}
       <div className={styles.sectionHeader}>
         <p className={`h1 ${styles.sectionNumber}`}>1</p>
@@ -101,7 +104,9 @@ const EventDetails = ({edit}) => {
             {/* Event Location */}
             <div className="mb-3">
               <label htmlFor="exampleFormControlInput_7861" className="form-label">Location</label>
-              <Controller
+              <GoogleLocation isLoaded={isLoaded} setValue={setValue} defaultValue={eventForm.eventDetails.location?.formattedAddress}/>
+              
+              {/* <Controller
                 name="location"
                 control={control}
                 rules={{
@@ -116,7 +121,7 @@ const EventDetails = ({edit}) => {
                     {...field}
                   />
                 )}
-              />
+              /> */}
               {errors.location && 
                 <span className={styles.errorMessage}>
                   <ErrorMessage errors={errors} name="location" />

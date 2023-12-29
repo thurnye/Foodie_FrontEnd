@@ -5,7 +5,15 @@ import { getRandomInt } from '../util/commons';
 export const defaultEventForm = {
     eventDetails : {
       eventTitle: '',
-      location: '',
+      location: {
+        name: "",
+        url: "",
+        coordinates: {
+            lat: 0,
+            lng: 0
+        },
+        formattedAddress: ""
+    },
       isOnline: false,
       isFree: false,
       repeat: false,

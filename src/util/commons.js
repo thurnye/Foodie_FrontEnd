@@ -147,7 +147,6 @@ export const getAllDatesInRange = (startDate, endDate, intervalType) => {
 
   const dates = [];
   let currentDate = start;
-  console.log({currentDate , end})
 
   while (currentDate <= end) {
     dates.push(currentDate.toISO());

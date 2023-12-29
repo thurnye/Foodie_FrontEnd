@@ -9,8 +9,23 @@ const eventsSchema = new Schema({
             required: true
         },
         location: {
-            type: String,
-            required: true
+                name: {
+                    type: String
+                },
+                url: {
+                    type: String
+                },
+                coordinates: {
+                    lat: {
+                        type: Number
+                    },
+                    lng: {
+                        type: Number
+                    }
+                },
+                formattedAddress: {
+                    type: String
+                }
         },
         isOnline: Boolean,
         isFree: Boolean,

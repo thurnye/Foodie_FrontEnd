@@ -11,7 +11,7 @@ import AdditionalSettings from '../Forms/AdditionalSettings/AdditionalSettings';
 
 
 
-const AddEvent = ({isNew}) => {
+const AddEvent = ({isNew, isLoaded}) => {
   let location = useLocation();
   let navigate = useNavigate();
   let edit = location.state?.edit
@@ -35,7 +35,7 @@ const AddEvent = ({isNew}) => {
   const getCurrentForm = (step) => {
     switch (step) {
       case 0:
-        return(<EventDetails/>)
+        return(<EventDetails isLoaded={isLoaded}/>)
       case 1:
         return (<CreateTicket/>)
       case 2:

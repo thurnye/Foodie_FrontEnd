@@ -40,6 +40,7 @@ const EventsCard = ({event, showAction, userId}) => {
       state={{eventId: event._id}}
       >   
         {event?.eventDetails.eventTitle}
+      </Link>
       <div className="card border" >
         <div className="card-body">
           { showAction && <div className={`dropdown d-flex justify-content-end mb-2 ${styles.EventsListActionsContainer}`} >
@@ -62,7 +63,7 @@ const EventsCard = ({event, showAction, userId}) => {
             <span>
               <MdLocationPin size={'20px'}/>
             </span>
-            <span>{event?.eventDetails.location}</span>
+            <span>{event?.eventDetails.location.name}</span>
             
           </h6>
           {event?.isFree && 
@@ -79,7 +80,7 @@ const EventsCard = ({event, showAction, userId}) => {
           </h6>
         </div>
       </div> 
-    </Link>
+    
     
     {/* <!-- Modal --> */}
     <div className="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabIndex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
