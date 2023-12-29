@@ -33,14 +33,6 @@ const EventsCard = ({event, showAction, userId}) => {
 
   return(
   <div className={styles.Events}>
-    <Link to={{
-      pathname: `/event` ,
-      search: `?q=${(event?.eventDetails.eventTitle).toLocaleLowerCase().replaceAll(" ", "-")}`,
-      }}
-      state={{eventId: event._id}}
-      >   
-        {event?.eventDetails.eventTitle}
-      </Link>
       <div className="card border" >
         <div className="card-body">
           { showAction && <div className={`dropdown d-flex justify-content-end mb-2 ${styles.EventsListActionsContainer}`} >
@@ -57,7 +49,16 @@ const EventsCard = ({event, showAction, userId}) => {
             </ul>
           </div>}
         <img src={event?.eventDetails.thumbnail} className={`card-img ${styles.Banner}`} alt="eventBanner"/>
-          <h4 className={` ${styles.Title}`}>{event?.eventDetails.eventTitle}</h4>
+          <h4 className={` ${styles.Title}`}>
+          <Link to={{
+            pathname: `/event` ,
+            search: `?q=${(event?.eventDetails.eventTitle).toLocaleLowerCase().replaceAll(" ", "-")}`,
+            }}
+            state={{eventId: event._id}}
+            >   
+              {event?.eventDetails.eventTitle}
+            </Link>
+            </h4>
           <h6 className={`${styles.Time}`}>{formatDateWithTimeZoneRegion(new Date(event?.eventDetails.starts))}</h6>
           <h6 className={`${styles.Venue}`}>
             <span>

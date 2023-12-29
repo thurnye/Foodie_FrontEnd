@@ -4,7 +4,7 @@ import { GoogleMap, useJsApiLoader, Marker, LoadScript, MarkerF, InfoWindowF } f
 import Skeleton from '@mui/material/Skeleton';
 
 const containerStyle = {
-  width: '400px',
+  width: '100%',
   height: '400px'
 };
 const center = {
@@ -12,12 +12,9 @@ const center = {
   lng: -79.3832
 };
 
-const Map = ({location = center, name='Young-Dundas Square', zoom = 12, isLoaded}) => {
-
-  // const { isLoaded } = useJsApiLoader({
-  //   id: 'google-map-script',
-  //   googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
-  // })
+const Map = ({location, zoom = 12, isLoaded}) => {
+  const {name, coordinate, url, formattedAddress} = location;
+  
   const [open, setOpen] = React.useState(false);
   const [map, setMap] = React.useState(null);
   const onLoad = React.useCallback(function callback(map) {
@@ -37,12 +34,12 @@ const Map = ({location = center, name='Young-Dundas Square', zoom = 12, isLoaded
     {isLoaded && 
     <GoogleMap
         mapContainerStyle={containerStyle}
-        center={location}
+        center={coordinate}
         zoom={12}
         onLoad={onLoad}
         onUnmount={onUnmount}
     >
-      <MarkerF position={location} name={name} title={name} onClick={() => setOpen(true)}>
+      <MarkerF position={coordinate} name={name} title={name} onClick={() => setOpen(true)}>
         {/* {open && 
           <InfoWindowF onClick={() => setOpen(false)}>
             <div> Something is here</div>

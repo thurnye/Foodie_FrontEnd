@@ -108,7 +108,7 @@ const SingleEvent = ({isLoaded}) => {
   <div className={` container ${styles.SingleEvent}`}>
     {loading ? <Loading/> : 
     <>
-      <Map isLoaded={isLoaded}/>
+      
 
       <div className="jumbotron jumbotron-fluid border mb-4">
         <div className="container">
@@ -166,7 +166,6 @@ const SingleEvent = ({isLoaded}) => {
                   </div>
                   <div className={`mt-4 ${styles.calendarContainer}`}>
                     <Box sx={{ flexGrow: 1 }}>
-                      
                         <Grid container item spacing={1}>
                           <Grid container item spacing={2}>
                             <React.Fragment>
@@ -231,14 +230,13 @@ const SingleEvent = ({isLoaded}) => {
                     </div>
                     <div className='col-11'>
                       <Typography variant="p" component="div">
-                      <b>Some hall Namee</b>
+                      <b>{event.eventDetails.location.name}</b>
                       </Typography>
                       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                        814 Bloor St W, Toronto, ON B Toronto, ON M6G 1L9
+                      {event.eventDetails.location.formattedAddress}
                       </Typography>
                       <Button variant="text" sx={{pl: 0}}>Show map</Button>
-                      {/* <GoogleLocation/>
-                      <GoogleMap/> */}
+                      <Map isLoaded={isLoaded} location={event.eventDetails.location}/>
                     </div>
                   </div>
               </div>
