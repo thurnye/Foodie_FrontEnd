@@ -13,6 +13,7 @@ import { LuShare } from "react-icons/lu";
 import { ImFlag } from "react-icons/im";
 import { FaRegHeart } from "react-icons/fa6";
 import { FaHeart } from "react-icons/fa";
+import { MdExpandMore } from "react-icons/md";
 import ModalFeedBack from '../../../ModalFeedBack/ModalFeedBack';
 import parser from 'html-react-parser';
 import Typography from '@mui/material/Typography';
@@ -24,6 +25,9 @@ import { Divider } from '@mui/material';
 import { experimentalStyled as styled } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import {getRandomInt} from '../../../../util/commons';
@@ -48,7 +52,7 @@ const SingleEvent = ({isLoaded}) => {
     const tags = ['Canada Events', 'Ontario Events', 'Things to do in Toronto', 'CanadaToronto', 'PerformancesToronto', 'Film & Media' ,'Performances','comedy','saturdays','comedyevent','comedyshow','standupcomedy','comedynight','livecomedy','standupshow','livecomedyshow','comedy_show'];
     const [loading, setLoading] = useState(true);
     const [dateOptions, setDateOptions] = useState([]);
-    
+    const [showMap, setShowMap] = React.useState(false);
 
     const fetchEvent = async () => {
       try{
@@ -108,8 +112,6 @@ const SingleEvent = ({isLoaded}) => {
   <div className={` container ${styles.SingleEvent}`}>
     {loading ? <Loading/> : 
     <>
-      
-
       <div className="jumbotron jumbotron-fluid border mb-4">
         <div className="container">
           <h1 className="display-4">Fluid jumbotron</h1>
@@ -144,10 +146,10 @@ const SingleEvent = ({isLoaded}) => {
               <div className='my-5'>
                 <h4 className='card-title'><strong>Select date and time</strong></h4>
                 <div className="border p-3">
-                  <div className='row'>
-                    <div className='col-1'>
+                  <Box sx={{display: 'flex', alignItems:'flex-start'}}>
+                    <Box sx={{mr: 1}}>
                       <FaRegCalendarCheck />
-                    </div>
+                    </Box>
                     <div className='col-11'>
                       <Typography variant="p" component="div">
                       By <b>{getDateShort(new Date(dateOptions[0]))} {getLocalTime(new Date(dateOptions[0])).toUpperCase()} {getTimeZone()}</b>
@@ -163,7 +165,7 @@ const SingleEvent = ({isLoaded}) => {
                         closeLabel={'Cancel'}
                       />
                     </div>
-                  </div>
+                  </Box>
                   <div className={`mt-4 ${styles.calendarContainer}`}>
                     <Box sx={{ flexGrow: 1 }}>
                         <Grid container item spacing={1}>
@@ -178,13 +180,13 @@ const SingleEvent = ({isLoaded}) => {
                                       {getWeekDay(new Date(el))}
                                       </Typography>
                                       <Divider/>
-                                    <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                      {
-                                        new Date().getFullYear() === new Date(el).getFullYear() ?  
-                                        DateTime.fromISO(el).monthLong : 
-                                        <>{DateTime.fromISO(el).monthShort}, {new Date(el).getFullYear()}</>
-                                      }
-                                    </Typography>
+                                      <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                                        {
+                                          new Date().getFullYear() === new Date(el).getFullYear() ?  
+                                          DateTime.fromISO(el).monthLong : 
+                                          <>{DateTime.fromISO(el).monthShort}, {new Date(el).getFullYear()}</>
+                                        }
+                                      </Typography>
                                     <div className={`border ${styles.day} ${dateClicked === el ? styles.activeCalendarCardDay : ''}`}>
                                       <Typography variant="h6" component="div" sx={{ p: 1,}} >
                                       {new Date(el).getDate()}
@@ -224,21 +226,23 @@ const SingleEvent = ({isLoaded}) => {
 
               <div className='mb-5'>
                 <h4 className='card-title'><strong>Location</strong></h4>
-                <div className='row'>
-                    <div className='col-1'>
+                <Box sx={{display: 'flex', alignItems:'flex-start'}}>
+                    <Box sx={{mr: 1}}>
                       <MdLocationOn />
-                    </div>
-                    <div className='col-11'>
+                    </Box>
+                    <div >
                       <Typography variant="p" component="div">
-                      <b>{event.eventDetails.location.name}</b>
+                        <b>{event.eventDetails.location.name}</b>
                       </Typography>
                       <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                       {event.eventDetails.location.formattedAddress}
                       </Typography>
-                      <Button variant="text" sx={{pl: 0}}>Show map</Button>
-                      <Map isLoaded={isLoaded} location={event.eventDetails.location}/>
+                      <Button variant="text" sx={{pl: 0}} onClick={() => setShowMap(!showMap)}>{showMap ? 'Hide Map' : 'Show Map'}</Button>
+                      <Box display={showMap ? 'block' : 'none'}>
+                        <Map isLoaded={isLoaded} location={event.eventDetails.location}/>
+                      </Box>
                     </div>
-                  </div>
+                  </Box>
               </div>
 
 
@@ -274,10 +278,32 @@ const SingleEvent = ({isLoaded}) => {
                         </div>
                     </div>
                 </div>
-                <Typography sx={{ fontSize: 14, mt:4 }} color="text.secondary" gutterBottom>
+                <Box sx={{ fontSize: 14, mt:4 }} color="text.secondary">
                 {parser(event.eventDetails.eventDescription)}
-                </Typography>
+                </Box>
               </div>
+              
+              {event.eventDetails.fAQs.length > 0 && 
+                <div className='mb-5'>
+                  <h4 className='card-title mb-3'><strong>Frequently Asked Questions</strong></h4>
+                  <div >
+                    {event.eventDetails.fAQs.map((el) => <Accordion sx={{ mb: 1}} key={getRandomInt()}>
+                      <AccordionSummary
+                        expandIcon={<MdExpandMore />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography>{el.ques}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails sx={{background: '#F8F7FA', m: 2}}>
+                        <Typography sx={{ pt: 2, pb: 2}}>
+                          {el.ans}
+                        </Typography>
+                      </AccordionDetails>
+                    </Accordion>)}
+                  </div>
+                </div>
+              }
 
               <div className='mb-5'>
                 <h4 className='card-title mb-3'><strong>Tags</strong></h4>

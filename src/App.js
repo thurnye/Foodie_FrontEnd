@@ -43,6 +43,10 @@ import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 import AddEvent from './components/Dashboard/Events/AddEvent/AddEvent';
 import EventListContainer from './components/Dashboard/Events/EventsList/EventListContainer';
 import SingleEvent from './components/Dashboard/Events/SingleEvent/SingleEvent';
+import EventBrit from './pages/Events/EventBrit/EventBrit';
+import CreateEvent from './pages/Events/CreateEvent/CreateEvent';
+import DashBoardContent from './pages/Events/Dashboard/DashBoardContent';
+import Organizer from './pages/Events/Organizer/Organizer';
 
 
 
@@ -86,6 +90,8 @@ function App() {
           {!user && <Route path="/login" element={<LoginUser/>} />}
           {user && <Route path="/new-account" element={<CompleteRegistration/>} />}
           
+          {/* <Route path="/eventbrit" element={<EventBrit/>} /> */}
+
           <Route path="/recipe" element={<SingleRecipe/>} />
           <Route path="/all-recipes" element={<AllRecipe/>} />
           <Route path="/forum" element={<Forum/>} />
@@ -107,10 +113,20 @@ function App() {
               <Route path="*" element={<EventListContainer/>} />
             </Route>
             <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} />
+            {/* set the landing section for this component */}
+            <Route index element={<Navigate to="dashboard" />}></Route> 
+          </Route>
+          <Route path="/event" element={<SingleEvent isLoaded={isLoaded}/>} />
+
+
+          {/* Testing */}
+          <Route path="eventbrit" element={<EventBrit/>}>
+            <Route path="dashboard" element={<DashBoardContent/> }/>
+            <Route path="create-event" element={<CreateEvent/>} />
+            <Route path="organizer" element={<Organizer/>} />
+
             <Route index element={<Navigate to="dashboard" />}></Route>
           </Route>
-            <Route path="/event" element={<SingleEvent isLoaded={isLoaded}/>} />
-
 
         </Routes>
         {/* <Footer /> */}

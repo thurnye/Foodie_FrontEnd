@@ -46,6 +46,11 @@ function Header(){
         name: 'Forum',
         path: '/forum',
         active: false,
+    },
+    {
+        name: 'EVENTFORM',
+        path: '/eventbrit',
+        active: false,
     }
   ]
 
