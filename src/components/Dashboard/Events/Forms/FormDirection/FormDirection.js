@@ -26,7 +26,7 @@ const FormDirection = ({onSubmit, proceed}) => {
   return (
     <div className={`${styles.FormDirection}`}>
       {currentFormStep > 0 &&
-        <button type="button"  className={`btn ${styles.previous}`} onClick={PrevFormStep}>
+        <button type="submit"  className={`btn ${styles.previous}`} onClick={PrevFormStep}>
           <span className={styles.iconDirection}>
             <GrLinkPrevious/>
           </span>
@@ -34,7 +34,7 @@ const FormDirection = ({onSubmit, proceed}) => {
         </button>
       }
       {currentFormStep < formSteps.length - 1 &&
-        <button type="button" className={`btn ${styles.next}`} onClick={()=> onSubmit()} >  
+        <button type="submit" className={`btn ${styles.next}`} onClick={()=> onSubmit()} >  
           {formSteps[currentFormStep + 1]} 
           <span className={styles.iconDirection}>
             <GrLinkNext/>

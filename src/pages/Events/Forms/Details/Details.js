@@ -1,14 +1,30 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState}from 'react';
 import styles from './Details.module.css';
-import FormDirection from '../../../../components/Dashboard/Events/Forms/FormDirection/FormDirection';
+import DetailsForm from './DetailsForm'
+import { useAddEventFormContext } from '../../../../store/formStateContext';
+
 
 
 const Details = () => {
-  const [proceed, setProceed] = useState(false);
+  const { eventBritForm, setEventBritForm } = useAddEventFormContext();
+  const [data, setData] = useState();
+
+
+  useEffect(() => {
+    if(data){
+      console.log({data})
+      setEventBritForm((eventBritForm) => ({ 
+        ...eventBritForm, 
+        details: data 
+      }
+      ));
+    }
+  }, [data]);
+
+
   return(
   <div className={styles.BasicInfos}>
-    Details Component
-    <FormDirection onSubmit={() => setProceed(true)} proceed={proceed}/>
+    <DetailsForm setData={setData}/>
   </div>
 )};
 

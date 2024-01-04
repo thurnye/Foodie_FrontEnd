@@ -104,7 +104,7 @@ const EventDetails = ({edit, isLoaded}) => {
             {/* Event Location */}
             <div className="mb-3">
               <label htmlFor="exampleFormControlInput_7861" className="form-label">Location</label>
-              <GoogleLocation isLoaded={isLoaded} setValue={setValue} defaultValue={eventForm.eventDetails.location?.formattedAddress}/>
+              <GoogleLocation fieldName={"location"}  isLoaded={isLoaded} setValue={setValue} defaultValue={eventForm.eventDetails.location?.formattedAddress} control={control}/>
               
               {/* <Controller
                 name="location"

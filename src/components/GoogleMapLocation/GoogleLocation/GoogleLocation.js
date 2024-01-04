@@ -1,19 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styles from './GoogleLocation.module.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@react-google-maps/api';
 
-
-// const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
-
-const GoogleLocation = ({isLoaded, setValue, defaultValue, label}) => {
+const GoogleLocation = ({ isLoaded, setValue, defaultValue, label, fieldName, control, placeholder }) => {
   const [searchResult, setSearchResult] = useState("Result: none");
-  
-  // const { isLoaded } = useLoadScript({
-  //   googleMapsApiKey: "AIzaSyB0BdzTkJ5UKhlZ43CoVjaNT1VWAuZ5o9s",
-  //   libraries: placesLibrary,
-  // });
 
   function onLoad(autocomplete) {
     setSearchResult(autocomplete);
@@ -31,10 +23,12 @@ const GoogleLocation = ({isLoaded, setValue, defaultValue, label}) => {
       const formattedAddress = place.formatted_address;
 
       const location = {
-        name, url, coordinates, formattedAddress
-      }
-      console.log(location);
-      setValue('location', location)
+        name,
+        url,
+        coordinates,
+        formattedAddress
+      };
+      setValue(fieldName, location);
     }
   }
 
@@ -42,34 +36,31 @@ const GoogleLocation = ({isLoaded, setValue, defaultValue, label}) => {
     return <div>Loading...</div>;
   }
 
-
-  
-  return(
-  <div className={styles.GoogleLocation}>
-    <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-    >
-      {!isLoaded && <div>Loading</div>}
-      {isLoaded && 
-      <Autocomplete
-            onPlaceChanged={onPlaceChanged}
-            onLoad={onLoad}
-            >
+  return (
+    <div className={styles.GoogleLocation}>
+      <Box
+        component="form"
+        sx={{
+          '& .MuiTextField-root': {  width: '100%'},
+        }}
+      >
+        {!isLoaded && <div>Loading</div>}
+        {isLoaded &&
+          <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
             <TextField
-            label={label}
+              label={label}
               fullWidth
               id="outlined-size-small"
               defaultValue={defaultValue}
               size="small"
+              placeholder={placeholder}
+              {...control} 
             />
-      </Autocomplete>}
-      
-      </Box>
-  </div>
-)};
+          </Autocomplete>}
 
+      </Box>
+    </div>
+  );
+};
 
 export default GoogleLocation;

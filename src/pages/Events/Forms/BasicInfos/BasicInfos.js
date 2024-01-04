@@ -1,14 +1,25 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from './BasicInfos.module.css';
-import FormDirection from '../../../../components/Dashboard/Events/Forms/FormDirection/FormDirection';
 import BasicForm from './BasicForm';
+import { useAddEventFormContext } from '../../../../store/formStateContext';
 
-const BasicInfos = () => {
-  const [proceed, setProceed] = useState(false);
+const BasicInfos = ({isLoaded}) => {
+  const {setEventBritForm } = useAddEventFormContext();
+
+  const [data, setData] = useState();
+  useEffect(() => {
+    if(data){
+      setEventBritForm((eventBritForm) => ({ 
+        ...eventBritForm, 
+        basicInfo: data 
+      }
+      ));
+    }
+  }, [data])
+  
   return(
-  <div className={styles.BasicInfos}>
-    <BasicForm />
-    <FormDirection onSubmit={() => setProceed(true)} proceed={proceed}/>
+  <div className={` ${styles.BasicInfos}`}>
+    <BasicForm  setData={setData} isLoaded={isLoaded}/>
   </div>
 )};
 

@@ -122,7 +122,7 @@ function App() {
           {/* Testing */}
           <Route path="eventbrit" element={<EventBrit/>}>
             <Route path="dashboard" element={<DashBoardContent/> }/>
-            <Route path="create-event" element={<CreateEvent/>} />
+            <Route path="create-event" element={<CreateEvent isLoaded={isLoaded} />} />
             <Route path="organizer" element={<Organizer/>} />
 
             <Route index element={<Navigate to="dashboard" />}></Route>

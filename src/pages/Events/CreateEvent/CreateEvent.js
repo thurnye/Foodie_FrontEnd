@@ -10,14 +10,15 @@ import { AddEventFormContext } from '../../../store/formStateContext';
 
 
 
-const CreateEvent = () => {
+const CreateEvent = ({isLoaded}) => {
   const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Publish'];
-  const [currentFormStep, setCurrentFormStep] = useState(0);
+  const [currentFormStep, setCurrentFormStep] = useState(2);
+  const [eventBritForm, setEventBritForm] = useState();
 
   const getCurrentForm = (step) => {
     switch (step) {
       case 0:
-        return(<BasicInfos/>)
+        return(<BasicInfos isLoaded={isLoaded}/>)
       case 1:
         return (<Schedule/>)
       case 2:
@@ -35,7 +36,7 @@ const CreateEvent = () => {
   <div className={styles.CreateEvent}>
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <div>
-      <AddEventFormContext.Provider value={{formSteps, currentFormStep, setCurrentFormStep, 
+      <AddEventFormContext.Provider value={{eventBritForm, setEventBritForm,formSteps, currentFormStep, setCurrentFormStep, 
     }}>   
       {getCurrentForm(currentFormStep)}
     </AddEventFormContext.Provider>
