@@ -1,18 +1,15 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MobileStepper from '@mui/material/MobileStepper';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { MdOutlineFileUpload } from "react-icons/md";
+import Previews from './Previews';
+import { MdOutlineEdit } from "react-icons/md";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -39,118 +36,145 @@ const images = [
   },
 ];
 
-function SwipeableCarousel() {
+function SwipeableCarousel({setEventImages, eventImages}) {
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
-  const maxSteps = images.length;
+  const [openImageAndVideo, setOpenImageAndVideo] = React.useState(false);
+  const defaultImages = eventImages.length > 0 ? eventImages : images;
+  const [isHovered, setIsHovered] = useState(false);
+  const maxSteps = defaultImages.length;
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
+
 
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1, position: 'relative' }}>
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)', // Change overlay color and transparency as needed
-          zIndex: 1,
-        }}
-      >
-        
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            pl: 2,
-            position: 'relative',
-            height: '100%',
-            background: 'transparent'
-          }}
-        >
-          <Box >
-            <Button >
-              <Card sx={{ width: 100 }} onClick={()=> console.log('clicked')}>
-                <CardContent>
-                  <Typography>
-                    <MdOutlineFileUpload color='#3559E3'/>
-                  </Typography>
-                  <Typography variant="body2" color="text.primary" sx={{fontSize: '7px', color: '#3559E3', mt: 2}}>
-                    Upload photos and video
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Button>
-          </Box>
-        </Box>
-      </div>
-      <AutoPlaySwipeableViews
-        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-        index={activeStep}
-        onChangeIndex={handleStepChange}
-        enableMouseEvents
-      >
-        {images.map((step, index) => (
-          <div key={step.label}>
-            {Math.abs(activeStep - index) <= 2 ? (
+    <Box sx={{m: 'auto'}}>
+      {!openImageAndVideo && 
+        <Box sx={{ maxWidth: '100%', flexGrow: 1, position: 'relative' }} 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}>
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              backgroundColor: eventImages.length === 0 ? 'rgba(0, 0, 0, 0.5)' : '', 
+              zIndex: 1,
+            }}
+          >
+            {eventImages.length === 0 && 
               <Box
-                component="img"
                 sx={{
-                  height: 255,
-                  display: 'block',
-                  maxWidth: 400,
-                  overflow: 'hidden',
-                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  pl: 2,
+                  position: 'relative',
+                  height: '100%',
+                  background: 'transparent'
                 }}
-                src={step.imgPath}
-                alt={step.label}
-              />
-            ) : null}
+              >
+                <Box >
+                  <Card sx={{ width: 100, textAlign: 'center' }} onClick={()=> setOpenImageAndVideo(true)}>
+                    <CardContent>
+                      <Typography>
+                        <MdOutlineFileUpload color='#3559E3'/>
+                      </Typography>
+                      <Typography variant="body2" color="text.primary" sx={{fontSize: '7px', color: '#3559E3', mt: 2}}>
+                        Upload photos and video
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Box>
+              </Box>
+            }
           </div>
-        ))}
-      </AutoPlaySwipeableViews>
-      <MobileStepper
-        steps={maxSteps}
-        position="static"
-        activeStep={activeStep}
-        // nextButton={
-        //   <Button
-        //     size="small"
-        //     onClick={handleNext}
-        //     disabled={activeStep === maxSteps - 1}
-        //   >
-        //     Next
-        //     {theme.direction === 'rtl' ? (
-        //       <KeyboardArrowLeft />
-        //     ) : (
-        //       <KeyboardArrowRight />
-        //     )}
-        //   </Button>
-        // }
-        // backButton={
-        //   <Button size="small" onClick={handleBack} disabled={activeStep === 0}>
-        //     {theme.direction === 'rtl' ? (
-        //       <KeyboardArrowRight />
-        //     ) : (
-        //       <KeyboardArrowLeft />
-        //     )}
-        //     Back
-        //   </Button>
-        // }
-      />
+
+          {/* Show edit button when user save images */}
+          {isHovered && 
+            <Box sx={{ maxWidth: '100%', flexGrow: 1, position: 'relative' }}>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: 6,
+                  right: 6,
+                  height: '100%',
+                  backgroundColor: 'white', // Change overlay color and transparency
+                  zIndex: 1,
+                  color: '#3559E3'
+                }}
+              >
+                <Card sx={{ width: 25, height: 25, borderRadius: '50%', textAlign: 'center' }} onClick={()=> setOpenImageAndVideo(true)}>
+                  <Typography>
+                    <MdOutlineEdit color='#3559E3'/>
+                  </Typography>
+                </Card>
+              </Box>
+            </Box>
+            }
+          <AutoPlaySwipeableViews
+            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+            index={activeStep}
+            onChangeIndex={handleStepChange}
+            enableMouseEvents
+          >
+            {defaultImages.map((step, index) => (
+              <div key={step.label}>
+                {Math.abs(activeStep - index) <= 2 ? (
+                  <Box
+                    component="img"
+                    sx={{
+                      height: {sx : 300, md: 470},
+                      display: 'block',
+                      maxWidth: '100%',
+                      overflow: 'hidden',
+                      width: '100%',
+                    }}
+                    src={step.imgPath}
+                    alt={step.label}
+                    
+                  />
+                ) : null}
+              </div>
+            ))}
+          </AutoPlaySwipeableViews>
+          <MobileStepper
+            steps={maxSteps}
+            position="static"
+            activeStep={activeStep}
+          />
+        </Box>
+      }
+      {openImageAndVideo && 
+        <Box >
+          <Card sx={{ minWidth: 275 }}>
+            <CardContent>
+              <Typography variant="h5" component="div" sx={{ mb: 2.5 }}>
+                Add images and video
+              </Typography>
+              <Typography sx={{  mb: 2 }} variant="body2">
+                Images
+              </Typography>
+              <Typography sx={{ fontSize: 14, mb: 2 }} color="text.secondary" >
+                Add photos to show what your event will be about. You can upload up to 3 images
+              </Typography>
+
+              <Previews 
+              setEventImages={setEventImages} 
+              eventImages={eventImages}
+              setOpen={setOpenImageAndVideo}
+              />  
+              
+            </CardContent>
+          </Card>
+        </Box>
+      }
     </Box>
   );
 }

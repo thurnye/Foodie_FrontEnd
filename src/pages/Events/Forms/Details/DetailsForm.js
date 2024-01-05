@@ -5,6 +5,7 @@ import SwipeableCarousel from './SwipeableCarousel'
 
 const DetailsForm = () => {
     const [proceed, setProceed] = useState(false);
+    const [eventImages, setEventImages] = useState([])
 
     const onSubmit = data => {
         if(data){
@@ -14,7 +15,7 @@ const DetailsForm = () => {
     return (
         <div>
             <FormContainer onSubmit={onSubmit}>
-                <SwipeableCarousel/>
+                <SwipeableCarousel setEventImages={setEventImages} eventImages={eventImages}/>
               <FormDirection onSubmit={() => setProceed(true)} proceed={proceed}/>
             </FormContainer>
         </div>
