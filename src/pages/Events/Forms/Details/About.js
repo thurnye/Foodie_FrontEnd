@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -8,37 +8,31 @@ import { FaRegImage } from "react-icons/fa6";
 import { RiVideoFill } from "react-icons/ri";
 import CompTextEditor from '../../../../components/CompTextEditor/CompTextEditor';
 import { useForm, Controller, useFieldArray } from "react-hook-form";
-import { ErrorMessage } from '@hookform/error-message';
-import {MdOutlineCancel} from 'react-icons/md';
 import styles from './Details.module.css'
-import Dropzone,  {useDropzone} from 'react-dropzone';
+import Dropzone from 'react-dropzone';
 import { convertToBase64 } from '../../../../util/commons';
-import { Card, CardContent } from '@mui/material';
+import { Card, CardContent, FormHelperText, IconButton } from '@mui/material';
 import {LiaCameraRetroSolid} from 'react-icons/lia';
+import { FaTrash } from "react-icons/fa6";
 
 const About = () => {
-    const [text, setText] = useState('');
-
     const {
         control,
-        register, 
         handleSubmit,
         formState: { errors },
-        reset,
-        setValue,
         watch
       } = useForm();
 
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'myForm',
-      });
+    });
 
-    
-      const onSubmit = (data) => {
-        console.log('Form data:', data);
-      };
-    
+
+    const onSubmit = (data) => {
+    console.log('Form data:', data);
+    };
+    console.log(errors)
       
 
 
@@ -54,10 +48,10 @@ const About = () => {
                                 control={control}
                                 defaultValue={item.value}
                                 rules={{
-                                required: "Event image/banner is required",
-                                }}
+                                    ...(item.type === 'image' && { required:  'Image is required' }),
+                                  }}
                                 render={({ field }) => (
-                                <>
+                                <Box sx={{maxHeight: 350, maxWidth: 350, mt: 3}}>
                                     <Dropzone
                                     multiple={false}
                                     onDrop={async (acceptedFiles) => {
@@ -72,7 +66,7 @@ const About = () => {
                                         >
                                         <input {...getInputProps()} />
                                         {!field.value ? (
-                                           <Card sx={{maxHeight: 250}}>
+                                           <Card sx={{maxHeight: 350, maxWidth: 350, mt: 3}}>
                                            <CardContent className={`card-body ${styles.DropZoneCard} `}>
                                                <Box sx={{textAlign: 'center', }}>
                                                    <Typography variant="h3" gutterBottom sx={{mb:1}}>
@@ -88,12 +82,7 @@ const About = () => {
                                            </CardContent>
                                            </Card>
                                         ) : (
-                                            // <div className="card">
-                                            // <div className={`card-body ${styles.DropZoneCard}`}>
-                                            //     <img src={field.value} className="card-img" alt="event_banner" />
-                                            // </div>
-                                            // </div>
-                                            <Card>
+                                            <Card sx={{maxHeight: 350, maxWidth: 350, mt: 3}}>
                                                 <CardContent>
                                                     <img src={field.value} className="card-img" alt="event_banner" />
                                                 </CardContent>
@@ -102,7 +91,12 @@ const About = () => {
                                         </div>
                                     )}
                                     </Dropzone>
-                                </>
+                                    {watch("myForm").length > 0 && errors.myForm?.[index]?.value && (
+                                        <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+                                            {errors.myForm[index].value.message}
+                                        </FormHelperText>
+                                    )}
+                                </Box>
                                 )}
                             />
                         }
@@ -112,16 +106,23 @@ const About = () => {
                                 control={control}
                                 defaultValue={item.value}
                                 rules={{
-                                required: "Event Description is required",
-                                }}
+                                    ...(item.type === 'text' && { required:  'This field is required' }),
+                                  }}
                                 render={({ field }) => (
-                                <CompTextEditor
-                                    setEditorData={(htmlValue) => field.onChange(htmlValue)}
-                                    show={true}
-                                    placeholder=""
-                                    content={field.value}
-                                    className={`form-control ${ errors.eventDescription ? styles.isError : ''}`}
-                                />
+                                    <Box sx={{mt: 3}}>
+                                        <CompTextEditor
+                                            setEditorData={(htmlValue) => field.onChange(htmlValue)}
+                                            show={true}
+                                            placeholder=""
+                                            content={field.value}
+                                            className={`form-control ${ errors.eventDescription ? styles.isError : ''}`}
+                                        />
+                                        {watch("myForm").length > 0 && errors.myForm?.[index]?.value && (
+                                            <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+                                                {errors.myForm[index].value.message}
+                                            </FormHelperText>
+                                        )}
+                                    </Box>
                                 )}
                             />
                         }
@@ -131,23 +132,52 @@ const About = () => {
                                 name={`myForm[${index}].value`}
                                 control={control}
                                 defaultValue={item.value}
+                                rules={{
+                                    ...(item.type === 'video' && { required:  'Video link is required' }),
+                                  }}
                                 render={({ field }) => (
-                                <TextField
-                                    fullWidth
-                                    {...field}
-                                    label="Video link"
-                                    id={`aboutEvent[${index}].value`}
-                                    defaultValue={field.value}
-                                    size="small"
-                                    />
+                                    <Box sx={{mt: 3}}>
+                                        <TextField
+                                            fullWidth
+                                            {...field}
+                                            label="Video link"
+                                            id={`aboutEvent[${index}].value`}
+                                            defaultValue={field.value}
+                                            size="small"
+                                            />
+                                        {field.value && 
+                                            <Card sx={{maxHeight: 350, maxWidth: 350, mt: 3}}>
+                                                <CardContent className={`card-body ${styles.DropZoneCard} `}>
+                                                    <Box sx={{textAlign: 'center', }}>
+                                                        <Typography variant="h3" gutterBottom sx={{mb:1}}>
+                                                            <LiaCameraRetroSolid/>
+                                                        </Typography>
+                                                        <Typography  gutterBottom sx={{mb:1, color: '#05A8F2'}}>
+                                                            ADD AN EVENT IMAGE
+                                                        </Typography>
+                                                        <Typography variant="caption" color="text.secondary" sx={{}}>
+                                                            Choose a beautiful image that perfectly captures your event.
+                                                        </Typography>
+                                                    </Box>
+                                                </CardContent>
+                                            </Card>
+                                        }
+                                        
+                                        {watch("myForm").length > 0 && errors.myForm?.[index]?.value && (
+                                            <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+                                                {errors.myForm[index].value.message}
+                                            </FormHelperText>
+                                        )}
+                                    </Box>
                                 )}
                             />
                         }
 
-
-                        <button type="button" onClick={() => remove(index)}>
-                            Remove
-                        </button>
+                        <Box>
+                        <IconButton aria-label="delete" color="text.secondary" onClick={() => remove(index)}>
+                            <FaTrash/>
+                        </IconButton>
+                        </Box>
                     </div>
                 ))}
                 <Box sx={{
@@ -166,11 +196,13 @@ const About = () => {
                         Add Video
                     </Button>
                 </Box>
-                <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+                <hr></hr>
+                {<Box sx={{display: 'flex', justifyContent:'flex-end', alignItems: 'center'}}>
+                    <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+                </Box>}
             </form>
             
             </Box>
-            <hr></hr>
         </Box>
     );
 }
