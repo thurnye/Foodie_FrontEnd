@@ -8,6 +8,7 @@ import './CompTextEditor.css'
 import {FaBold, FaHeading, FaItalic, FaListOl, FaListUl, FaParagraph, FaQuoteLeft, FaRedo, FaStrikethrough, FaUnderline, FaUndo} from 'react-icons/fa'
 import Underline from '@tiptap/extension-underline';
 import Placeholder from '@tiptap/extension-placeholder';
+import { Button } from '@mui/material';
 
 
 
@@ -19,7 +20,7 @@ const MenuBar = ({ editor }) => {
   return (
     <div className='editor-menu-bar'>
       <div>
-        <button
+        <Button
           onClick={() => editor.chain().focus().toggleBold().run()}
           disabled={
             !editor.can()
@@ -31,8 +32,8 @@ const MenuBar = ({ editor }) => {
           className={editor.isActive('bold') ? 'is-active' : ''}
         >
           <FaBold/>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => editor.chain().focus().toggleItalic().run()}
           disabled={
             !editor.can()
@@ -44,8 +45,8 @@ const MenuBar = ({ editor }) => {
           className={editor.isActive('italic') ? 'is-active' : ''}
         >
           <FaItalic/>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => editor.chain().focus().toggleUnderline().run()}
           disabled={
             !editor.can()
@@ -57,8 +58,8 @@ const MenuBar = ({ editor }) => {
           className={editor.isActive('underline') ? 'is-active' : ''}
         >
           <FaUnderline/>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => editor.chain().focus().toggleStrike().run()}
           disabled={
             !editor.can()
@@ -70,40 +71,40 @@ const MenuBar = ({ editor }) => {
           className={editor.isActive('strike') ? 'is-active' : ''}
         >
           <FaStrikethrough/>
-        </button>
-        {/* <button
+        </Button>
+        {/* <Button
           onClick={() => editor.chain().focus().setParagraph().run()}
           className={editor.isActive('paragraph') ? 'is-active' : ''}
         >
           <FaParagraph/>
-        </button> */}
-        <button
+        </Button> */}
+        <Button
           onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
           className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
         >
           <FaHeading/>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
         >
         <FaListUl/>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => editor.chain().focus().toggleOrderedList().run()}
           className={editor.isActive('orderedList') ? 'is-active' : ''}
         >
           <FaListOl/>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => editor.chain().focus().toggleBlockquote().run()}
           className={editor.isActive('blockquote') ? 'is-active' : ''}
         >
           <FaQuoteLeft/>
-        </button>
+        </Button>
       </div>
       <div>
-        <button
+        <Button
           onClick={() => editor.chain().focus().undo().run()}
           disabled={
             !editor.can()
@@ -114,8 +115,8 @@ const MenuBar = ({ editor }) => {
           }
         >
           <FaUndo/>
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => editor.chain().focus().redo().run()}
           disabled={
             !editor.can()
@@ -126,13 +127,13 @@ const MenuBar = ({ editor }) => {
           }
         >
           <FaRedo/>
-        </button>
+        </Button>
       </div>
     </div>
   )
 }
 
-const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Something...', content, className}) => {
+const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Something...', content, className, style}) => {
   const editor = useEditor({
     extensions: [
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
@@ -161,7 +162,7 @@ const CompTextEditor =  ({setEditorData, show = true, placeholder='Write Somethi
   })
 
   return (
-    <div className={`text-editor ${className}`}>
+    <div className={`text-editor ${className}`} style={style}>
       {show && <MenuBar editor={editor} />}
       <EditorContent editor={editor}/>
     </div>

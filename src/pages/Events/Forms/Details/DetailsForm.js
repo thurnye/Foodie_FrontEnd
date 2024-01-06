@@ -13,7 +13,7 @@ const defaultTitle = 'Festival 2024'
 const DetailsForm = () => {
     const [proceed, setProceed] = useState(false);
     const [eventImages, setEventImages] = useState([])
-    const [activeSection, setActiveSection] = useState("aboutForm")
+    const [activeSection, setActiveSection] = useState("")
     const [isHovered, setIsHovered] = useState("");
 
     const getEditIcons = (section) => <Box sx={{ maxWidth: '100%', flexGrow: 1, position: 'relative' }}>
@@ -109,6 +109,8 @@ const DetailsForm = () => {
                 </Box>
 
                 {/* About */}
+                   
+            </FormContainer>
                 <Box sx={{mb: 2}}>
                     {activeSection !== 'aboutForm' &&
                     <Box sx={{ }} onClick={() => setActiveSection('aboutForm')}>
@@ -150,8 +152,7 @@ const DetailsForm = () => {
                         </Box>
                     }
                 </Box>
-            <FormDirection onSubmit={onSubmit} proceed={proceed}/>
-            </FormContainer>
+                <FormDirection onSubmit={onSubmit} proceed={proceed}/>
         </div>
     );
 }
