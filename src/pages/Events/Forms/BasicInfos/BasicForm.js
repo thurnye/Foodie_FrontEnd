@@ -57,7 +57,7 @@ const BasicForm = ({isLoaded, setData}) => {
                                     label="Event Title"
                                     placeholder="Be clear and descriptive"
                                     isRequired={true} 
-                                    errorMessage='Event title is reuired!!'
+                                    errorMessage='Event title is required!!'
                                 />
                             </Box>
                             <Input

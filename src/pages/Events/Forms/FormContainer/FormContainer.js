@@ -1,6 +1,6 @@
 /* eslint-disable no-unreachable */
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, useFieldArray } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import ReactSelect from '../ReactSelect/ReactSelect';
 import GoogleLocation from '../../../../components/GoogleMapLocation/GoogleLocation/GoogleLocation';
@@ -11,12 +11,20 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
-
-
+import { Typography, Card, CardContent } from '@mui/material';
+import {LiaCameraRetroSolid} from 'react-icons/lia';
+import Dropzone,  {useDropzone} from 'react-dropzone';
+import { convertToBase64 } from '../../../../util/commons';
 import { Box, MenuItem, Select, TextField, FormHelperText } from '@mui/material';
+import CompTextEditor from '../../../../components/CompTextEditor/CompTextEditor';
 
-export function FormContainer({ defaultValues, children, onSubmit }) {
+export function FormContainer({ defaultValues, children, onSubmit, fieldArrayName }) {
   const { handleSubmit, control, formState: { errors }, setValue} = useForm({ defaultValues });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: fieldArrayName,
+  });
 
   const cloneChildrenWithProps = (children) => {
     return React.Children.map(children, (child) => {
@@ -66,6 +74,99 @@ export const Input = ({ type, control, errors, isRequired, name, label, placehol
             defaultValue={defaultValue}
             error={errors[name] ? true : false}
           />
+          {/* Display error message if there is an error */}
+          {errors[name] && (
+            <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+              {errors[name].message}
+            </FormHelperText>
+          )}
+        </>
+      )}
+      />
+      {/* Additional custom components passed as children */}
+      {children && <Box>{children}</Box>}
+  </Box>
+);
+
+export const TextEditor = ({ type, control, errors, isRequired, name, label, placeholder, children, errorMessage, defaultValue, ...rest }) => (
+  <Box sx={{ mb: 3 }}>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      rules={{
+        ...(isRequired && { required: errorMessage ? errorMessage : `${label} is required.` }),
+      }}
+      render={({ field }) => (
+        <>
+          <CompTextEditor
+            setEditorData={(htmlValue) => field.onChange(htmlValue)}
+            show={true}
+            placeholder={placeholder}
+            content={field.value}
+          />
+          {/* Display error message if there is an error */}
+          {errors[name] && (
+            <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+              {errors[name].message}
+            </FormHelperText>
+          )}
+        </>
+      )}
+      />
+      {/* Additional custom components passed as children */}
+      {children && <Box>{children}</Box>}
+  </Box>
+);
+
+
+export const InputImage = ({ type, control, errors, isRequired, name, label, placeholder, children, errorMessage, defaultValue, ...rest }) => (
+  <Box sx={{ mb: 3 }}>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      rules={{
+        ...(isRequired && { required: errorMessage ? errorMessage : `${label} is required.` }),
+      }}
+      render={({ field }) => (
+        <>
+          <Dropzone
+          multiple={false}
+          onDrop={async (acceptedFiles) => {
+              // Handle file upload and set the thumbnail value
+              field.onChange(await convertToBase64(acceptedFiles[0]));
+          }}
+          >
+          {({ getRootProps, getInputProps }) => (
+              <div>
+              <input {...getInputProps()} />
+              {!field.value ? (
+                  <Card sx={{maxHeight: 250}}>
+                  <CardContent>
+                      <Box sx={{textAlign: 'center', }}>
+                          <Typography variant="h3" gutterBottom sx={{mb:1}}>
+                              <LiaCameraRetroSolid/>
+                          </Typography>
+                          <Typography  gutterBottom sx={{mb:1, color: '#05A8F2'}}>
+                              ADD AN EVENT IMAGE
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary" sx={{}}>
+                              Choose a beautiful image that perfectly captures your event.
+                          </Typography>
+                      </Box>
+                  </CardContent>
+                  </Card>
+              ) : (
+                  <Card>
+                      <CardContent>
+                          <img src={field.value} className="card-img" alt="event_banner" />
+                      </CardContent>
+                  </Card>
+              )}
+              </div>
+          )}
+          </Dropzone>
           {/* Display error message if there is an error */}
           {errors[name] && (
             <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
@@ -185,6 +286,8 @@ export const CheckBoxField = ({ control, name, defaultChecked, label }) => <Box 
       )}
     />
 </Box>
+
+
 
 
   

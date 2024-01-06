@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import styles from './Details.module.css'
 import {useDropzone} from 'react-dropzone';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -8,9 +7,7 @@ import { FaImage } from "react-icons/fa6";
 import CropImg from './cropImg.js';
 import { IoMdAdd } from "react-icons/io";
 import Carousel from './Carousel.js'
-import { getRandomInt } from "../../../../util/commons";
 import { FaRegTrashCan } from "react-icons/fa6";
-import Badge from '@mui/material/Badge';
 import { IoMdStar } from "react-icons/io";
 import Card from '@mui/material/Card';
 
@@ -30,8 +27,6 @@ const thumb = {
   border: '1px solid #eaeaea',
   marginBottom: 8,
   marginRight: 8,
-  // width: 160,
-  // height: 100,
   width: '90px',
   height: '55px',
   padding: 4,
@@ -51,35 +46,6 @@ const img = {
   borderRadius: "10px",
 };
 
-const images = [
-  {
-    label: 'San Francisco – Oakland Bay Bridge, United States',
-    imgPath:
-      'https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60',
-      imgId: getRandomInt()
-  },
-  {
-    label: 'Bird',
-    imgPath:
-      'https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60',
-      imgId: getRandomInt()
-  },
-  {
-    label: 'Bali, Indonesia',
-    imgPath:
-      'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250',
-      imgId: getRandomInt()
-  },
-  {
-    label: 'Goč, Serbia',
-    imgPath:
-      'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-      imgId: getRandomInt()
-  },
-];
-
-
-
 
 const  Previews = ({setEventImages, eventImages, setOpen}) => {
   const [files, setFiles] = useState([]);
@@ -95,35 +61,16 @@ const  Previews = ({setEventImages, eventImages, setOpen}) => {
       'image/*': []
     },
     onDrop: acceptedFiles => {
-      console.log({acceptedFiles})
-      setToCrop(acceptedFiles);
-
+      setToCrop(acceptedFiles); //send files for cropping
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
     }
   });
-  
-  console.log(files);
-
-
-
+ 
   const thumbs = images.map((file, index) => {
     return(
       <div style={thumb} key={file.imgId}>
-      {/* {index === 0 && <Rating 
-      sx={{
-        position: 'absolute',
-        top:0,
-        right: 0
-      }}
-      size="small"
-      name="read-only" 
-      value={1} 
-      readOnly 
-      max={1}
-      />
-} */}
       <div style={thumbInner}>
         <img
           src={file.imgPath}
@@ -239,7 +186,6 @@ const  Previews = ({setEventImages, eventImages, setOpen}) => {
           // DropZone
         <div {...getRootProps({className: 'dropzone'})}>
           <input {...getInputProps()} />
-          {/* <p>Drag 'n' drop some files here, or click to select files</p> */}
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', background: '#F8F7FA', minWidth: 275, height: 300, borderRadius: '7px',  }} >
             <Typography sx={{ fontSize: 24, }} color="text.secondary" >
               <FaImage />
@@ -253,6 +199,7 @@ const  Previews = ({setEventImages, eventImages, setOpen}) => {
           </Box>
         </div>
         }
+        {/* image Previews */}
       <aside style={thumbsContainer}>
         {images.length > 0 && <>
           <Button sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center',textAlign: 'center', background: '#F8F7FA', width: '90px', height: '55px',  borderRadius: '7px', mr: 2 }} onClick={() => setImage("")} disabled={images.length === 3 ? true : false}>

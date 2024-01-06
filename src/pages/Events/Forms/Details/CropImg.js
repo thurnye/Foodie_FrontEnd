@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import Cropper, { ReactCropperElement } from "react-cropper";
+import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { getRandomInt } from "../../../../util/commons";
 import Typography from '@mui/material/Typography';

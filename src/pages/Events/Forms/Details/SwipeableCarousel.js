@@ -44,9 +44,6 @@ function SwipeableCarousel({setEventImages, eventImages}) {
   const [isHovered, setIsHovered] = useState(false);
   const maxSteps = defaultImages.length;
 
-
-
-
   const handleStepChange = (step) => {
     setActiveStep(step);
   };
