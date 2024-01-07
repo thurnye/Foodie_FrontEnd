@@ -7,13 +7,14 @@ import Typography from '@mui/material/Typography';
 import { Card, CardContent } from '@mui/material';
 import { MdOutlineEdit } from "react-icons/md";
 import About from './About';
+import FAQs from './faqs';
 
 const defaultTitle = 'Festival 2024'
 
 const DetailsForm = () => {
     const [proceed, setProceed] = useState(false);
     const [eventImages, setEventImages] = useState([])
-    const [activeSection, setActiveSection] = useState("")
+    const [activeSection, setActiveSection] = useState("faqForm")
     const [isHovered, setIsHovered] = useState("");
 
     const getEditIcons = (section) => <Box sx={{ maxWidth: '100%', flexGrow: 1, position: 'relative' }}>
@@ -41,6 +42,9 @@ const DetailsForm = () => {
             console.log(data)
         }
     };
+
+    const getAbout = (data) => data
+    const getFAQs =  (data) => data
     return (
         <div>
                 {/* <SwipeableCarousel setEventImages={setEventImages} eventImages={eventImages}/> */}
@@ -108,9 +112,9 @@ const DetailsForm = () => {
                     }
                 </Box>
 
-                {/* About */}
                    
             </FormContainer>
+                {/* About */}
                 <Box sx={{mb: 2}}>
                     {activeSection !== 'aboutForm' &&
                     <Box sx={{ }} onClick={() => setActiveSection('aboutForm')}>
@@ -145,13 +149,57 @@ const DetailsForm = () => {
                                     </Box>
 
                                     <Box sx={{mb:2}}>
-                                        <About/>
+                                        <About getAbout={getAbout}/>
                                     </Box>
                                 </CardContent>
                             </Card>
                         </Box>
                     }
                 </Box>
+
+                {/* FAQ*/}
+                <Box sx={{mb: 2}}>
+                    {activeSection !== 'faqForm' &&
+                    <Box sx={{ }} onClick={() => setActiveSection('faqForm')}>
+                        <Card 
+                            onMouseEnter={() => setIsHovered('faqForm')}
+                            onMouseLeave={() => setIsHovered("")}
+                        >
+                            {isHovered === 'faqForm' && getEditIcons('faqForm')}
+                            <CardContent>
+                                <Typography variant="h5" gutterBottom sx={{mb:3}}>
+                                    Add more sections to your event page
+                                </Typography>
+                                <Typography variant="body2" gutterBottom>
+                                    Make your event stand out even more. These sectons help attendees find information and answers their questions - which means more ticket sales and less time answering messages.
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                    }
+                    {activeSection === 'faqForm' && 
+                        <Box sx={{}}>
+                            <Card >
+                                <CardContent>
+                                    <Typography variant="h5" gutterBottom sx={{mb:3}}>
+                                        FAQ
+                                    </Typography>
+                                    <Box sx={{mb:3}}>
+                                        <Typography variant="caption" color="text.secondary">
+                                            Answer questions your attendees may have about the event, like parking, accessibility, refunds, and other informations.
+                                        </Typography>
+
+                                    </Box>
+
+                                    <Box sx={{mb:2}}>
+                                        <FAQs/>
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                        </Box>
+                    }
+                </Box>
+
                 <FormDirection onSubmit={onSubmit} proceed={proceed}/>
         </div>
     );

@@ -17,19 +17,15 @@ import { FaTrash } from "react-icons/fa6";
 import SortableList from '../SortableContainer/SortableList';
 import parser from 'html-react-parser';
 
-const urlRegex = /^(https?|ftp):\/\/[^\s/$.?#].[^\s]*$/;
 
-const About = () => {
+
+const About = ({getAbout}) => {
     const {
         control,
         handleSubmit,
         formState: { errors },
         watch
-      } = useForm({
-        defaultValues: {
-            myForm: [{ type: "text", value: "" }]
-        }
-      });
+      } = useForm();
 
     const { fields, append, remove , move} = useFieldArray({
         control,
@@ -40,12 +36,9 @@ const About = () => {
     const onSubmit = (data) => {
         // Sort the form items based on their order in the fields array
 
-        console.log({fields})
-        console.log({data})
-        const sortedFormData = fields.map((field) => data.myForm.find((item) => item.id === field.id));
-        console.log('Sorted Form data:', sortedFormData);
+        console.log(data)
     };
-      
+
 
 
     return (
@@ -156,14 +149,14 @@ const About = () => {
                                                     ...(item.type === 'video' && { required:  'Video link is required' }),
                                                 }}
                                                 render={({ field }) => (
-                                                    <Box sx={{mt: 3, maxWidth: 650, m: 'auto'}}>
+                                                    <Box sx={{ maxWidth: 650, m: 'auto'}}>
                                                         <TextField
+                                                            sx={{mt:3}}
                                                             fullWidth
                                                             rows={4}
                                                             {...field}
                                                             label="Embedded Video link"
                                                             id={`aboutEvent[${index}].value`}
-                                                            defaultValue={field.value}
                                                             size="small"
                                                             multiline
                                                             />
@@ -218,11 +211,13 @@ const About = () => {
                             Add Video
                         </Button>
                     </Box>
-                    <hr></hr>
-                    {<Box sx={{display: 'flex', justifyContent:'flex-end', alignItems: 'center'}}>
-                        <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
-                    </Box>}
                 </form>
+                {fields.length > 0 && <>
+                    <hr></hr>
+                    <Box sx={{display: 'flex', justifyContent:'flex-end', alignItems: 'center'}}>
+                        <Button onClick={handleSubmit(onSubmit)}>Add</Button>
+                    </Box>
+                </>}
             </Box>
         </Box>
     );
