@@ -19,25 +19,27 @@ import parser from 'html-react-parser';
 
 
 
-const About = ({getAbout}) => {
+const About = ({setAbout, about, setActiveSection}) => {
+
+    console.log(about)
+
     const {
         control,
         handleSubmit,
         formState: { errors },
         watch
-      } = useForm();
+      } = useForm({ defaultValues: about});
 
     const { fields, append, remove , move} = useFieldArray({
         control,
-        name: 'myForm',
+        name: 'about',
     });
 
 
     const onSubmit = (data) => {
-        // Sort the form items based on their order in the fields array
-
-        console.log(data)
-    };
+        setAbout(data);
+        setActiveSection("")
+    }
 
 
 
@@ -56,14 +58,14 @@ const About = ({getAbout}) => {
                                     <Box sx={{flexGrow: 1 }}>
                                         {item.type === 'image' && 
                                             <Controller
-                                                name={`myForm[${index}].value`}
+                                                name={`about[${index}].value`}
                                                 control={control}
                                                 defaultValue={item.value}
                                                 rules={{
                                                     ...(item.type === 'image' && { required:  'Image is required' }),
                                                 }}
                                                 render={({ field }) => (
-                                                <Box sx={{maxHeight: 350, maxWidth: 350, m:'auto' }}>
+                                                <Box sx={{maxHeight: {sm: 350, md: 650}, maxWidth: {sm: 350, md: 650}, m:'auto' }}>
                                                     <Dropzone
                                                     multiple={false}
                                                     onDrop={async (acceptedFiles) => {
@@ -78,7 +80,7 @@ const About = ({getAbout}) => {
                                                         >
                                                         <input {...getInputProps()} />
                                                         {!field.value ? (
-                                                        <Card sx={{maxHeight: 350, maxWidth: 350, mt: 3}}>
+                                                        <Card sx={{maxHeight: {sm: 350, md: 650}, maxWidth: {sm: 350, md: 650}, mt: 3}}>
                                                         <CardContent className={`card-body ${styles.DropZoneCard} `}>
                                                             <Box sx={{textAlign: 'center', }}>
                                                                 <Typography variant="h3" gutterBottom sx={{mb:1}}>
@@ -94,7 +96,7 @@ const About = ({getAbout}) => {
                                                         </CardContent>
                                                         </Card>
                                                         ) : (
-                                                            <Card sx={{maxHeight: 350, maxWidth: 350, mt: 3}}>
+                                                            <Card sx={{maxHeight: {sm: 350, md: 650}, maxWidth: {sm: 350, md: 650}, mt: 3}}>
                                                                 <CardContent>
                                                                     <img src={field.value} className="card-img" alt="event_banner" />
                                                                 </CardContent>
@@ -103,9 +105,9 @@ const About = ({getAbout}) => {
                                                         </div>
                                                     )}
                                                     </Dropzone>
-                                                    {watch("myForm").length > 0 && errors.myForm?.[index]?.value && (
+                                                    {watch("about").length > 0 && errors.about?.[index]?.value && (
                                                         <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
-                                                            {errors.myForm[index].value.message}
+                                                            {errors.about[index].value.message}
                                                         </FormHelperText>
                                                     )}
                                                 </Box>
@@ -114,7 +116,7 @@ const About = ({getAbout}) => {
                                         }
                                         {item.type === 'text' &&
                                             <Controller
-                                                name={`myForm[${index}].value`}
+                                                name={`about[${index}].value`}
                                                 control={control}
                                                 defaultValue={item.value}
                                                 rules={{
@@ -130,9 +132,9 @@ const About = ({getAbout}) => {
                                                             style={{width: '100%', margin: 'auto',
                                                          marginTop: '24px'}}
                                                         />
-                                                        {watch("myForm").length > 0 && errors.myForm?.[index]?.value && (
+                                                        {watch("about").length > 0 && errors.about?.[index]?.value && (
                                                             <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
-                                                                {errors.myForm[index].value.message}
+                                                                {errors.about[index].value.message}
                                                             </FormHelperText>
                                                         )}
                                                     </Box>
@@ -142,7 +144,7 @@ const About = ({getAbout}) => {
 
                                         {item.type === 'video' && 
                                             <Controller
-                                                name={`myForm[${index}].value`}
+                                                name={`about[${index}].value`}
                                                 control={control}
                                                 defaultValue={item.value}
                                                 rules={{
@@ -150,6 +152,7 @@ const About = ({getAbout}) => {
                                                 }}
                                                 render={({ field }) => (
                                                     <Box sx={{ maxWidth: 650, m: 'auto'}}>
+                                                        
                                                         <TextField
                                                             sx={{mt:3}}
                                                             fullWidth
@@ -159,6 +162,7 @@ const About = ({getAbout}) => {
                                                             id={`aboutEvent[${index}].value`}
                                                             size="small"
                                                             multiline
+                                                            // value={'<iframe width="100%" height="315" src="https://www.youtube.com/embed/_PfAYdYN_D0?si=vXTFMTxyp9awGarv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'}
                                                             />
                                                             <FormHelperText id="component-error-text">
                                                                 please change the width from the embedded element to '100%' if present*
@@ -173,9 +177,9 @@ const About = ({getAbout}) => {
                                                             </Card>
                                                         }
                                                         
-                                                        {watch("myForm").length > 0 && errors.myForm?.[index]?.value && (
+                                                        {watch("about").length > 0 && errors.about?.[index]?.value && (
                                                             <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
-                                                                {errors.myForm[index].value.message}
+                                                                {errors.about[index].value.message}
                                                             </FormHelperText>
                                                         )}
                                                     </Box>
@@ -215,7 +219,9 @@ const About = ({getAbout}) => {
                 {fields.length > 0 && <>
                     <hr></hr>
                     <Box sx={{display: 'flex', justifyContent:'flex-end', alignItems: 'center'}}>
-                        <Button onClick={handleSubmit(onSubmit)}>Add</Button>
+                        <Button onClick={handleSubmit(onSubmit)}>
+                            {about?.about?.length > 0 ? 'Update' : 'Add'}
+                        </Button>
                     </Box>
                 </>}
             </Box>

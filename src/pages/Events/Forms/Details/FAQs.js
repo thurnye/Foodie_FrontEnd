@@ -10,34 +10,35 @@ import { FaTrash } from "react-icons/fa6";
 import SortableList from '../SortableContainer/SortableList';
 
 
-const FAQs = () => {
+const FAQs = ({setFaqs, faqs, setActiveSection}) => {
     const {
         control,
         handleSubmit,
         formState: { errors },
         watch
-      } = useForm();
+      } = useForm({defaultValues: faqs });
 
     const { fields, append, remove , move} = useFieldArray({
         control,
-        name: 'myForm',
+        name: 'faqs',
     });
 
 
     const onSubmit = (data) => {
-        // Sort the form items based on their order in the fields array
+        setFaqs(data)
+        setActiveSection("")
+    }
 
-        console.log({data})
-    };
+    
     
 
 
     return (
         <Box>
             <Box sx={{m: 'auto', width: '100%'}}>
-                <form onSubmit={onSubmit}>
+                {/* <form onSubmit={onSubmit}> */}
                     <SortableList
-                    move={move}
+                        move={move}
                         items={fields.map((item, index) => ({
                             id: getRandomInt().toString(),
                             content: (
@@ -47,11 +48,11 @@ const FAQs = () => {
                                     <Box sx={{flexGrow: 1 }}>
 
                                             <Controller
-                                                name={`myForm[${index}].ques`}
+                                                name={`faqs[${index}].ques`}
                                                 control={control}
                                                 defaultValue={item.value}
                                                 rules={{
-                                                    ...(item.type === 'ques' && { required:  'A question is required for this section' }),
+                                                    required:  'A question is required for this section' ,
                                                 }}
                                                 render={({ field }) => (
                                                     <Box sx={{ maxWidth: 650, m: 'auto'}}>
@@ -60,23 +61,23 @@ const FAQs = () => {
                                                             fullWidth
                                                             {...field}
                                                             label="Question"
-                                                            id={`myForm[${index}].ques`}
+                                                            id={`faqs[${index}].ques`}
                                                             size="small"
                                                             />
-                                                        {watch("myForm").length > 0 && errors.myForm?.[index]?.ques && (
+                                                        {watch("faqs").length > 0 && errors.faqs?.[index]?.ques && (
                                                             <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
-                                                                {errors.myForm[index].ques.message}
+                                                                {errors.faqs[index].ques.message}
                                                             </FormHelperText>
                                                         )}
                                                     </Box>
                                                 )}
                                             />
                                             <Controller
-                                                name={`myForm[${index}].ans`}
+                                                name={`faqs[${index}].ans`}
                                                 control={control}
                                                 defaultValue={item.value}
                                                 rules={{
-                                                    ...(item.type === 'ans' && { required:  'An answer is required for this section' }),
+                                                    required:  'An answer is required for this section' ,
                                                 }}
                                                 render={({ field }) => (
                                                     <Box sx={{ maxWidth: 650, m: 'auto'}}>
@@ -86,15 +87,15 @@ const FAQs = () => {
                                                             rows={4}
                                                             {...field}
                                                             label="Answer"
-                                                            id={`myForm[${index}].ans`}
+                                                            id={`faqs[${index}].ans`}
                                                             size="small"
                                                             multiline
                                                             />
                                                             
                                                         
-                                                        {watch("myForm").length > 0 && errors.myForm?.[index]?.ans && (
+                                                        {watch("faqs").length > 0 && errors.faqs?.[index]?.ans && (
                                                             <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
-                                                                {errors.myForm[index].ans.message}
+                                                                {errors.faqs[index].ans.message}
                                                             </FormHelperText>
                                                         )}
                                                     </Box>
@@ -124,11 +125,11 @@ const FAQs = () => {
                             Add Question
                         </Button>
                     </Box>
-                </form>
+                {/* </form> */}
                 {fields.length > 0 && <>
                     <hr></hr>
                     <Box sx={{display: 'flex', justifyContent:'flex-end', alignItems: 'center'}}>
-                        <Button onClick={handleSubmit(onSubmit)}>Add</Button>
+                        <Button onClick={handleSubmit(onSubmit)}>{faqs?.faqs?.length > 0 ? 'Update' : 'Add'}</Button>
                     </Box>
                 </>}
             </Box>

@@ -13,18 +13,13 @@ import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import { Typography, Card, CardContent } from '@mui/material';
 import {LiaCameraRetroSolid} from 'react-icons/lia';
-import Dropzone,  {useDropzone} from 'react-dropzone';
+import Dropzone from 'react-dropzone';
 import { convertToBase64 } from '../../../../util/commons';
 import { Box, MenuItem, Select, TextField, FormHelperText } from '@mui/material';
 import CompTextEditor from '../../../../components/CompTextEditor/CompTextEditor';
 
 export function FormContainer({ defaultValues, children, onSubmit, fieldArrayName }) {
   const { handleSubmit, control, formState: { errors }, setValue} = useForm({ defaultValues });
-
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: fieldArrayName,
-  });
 
   const cloneChildrenWithProps = (children) => {
     return React.Children.map(children, (child) => {
