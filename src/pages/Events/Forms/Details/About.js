@@ -23,12 +23,36 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Dropdown from 'react-bootstrap/Dropdown';
 import { elGR } from '@mui/x-data-grid';
 import ImageLayout from './ImageLayout';
+import Avatar from '@mui/material/Avatar';
+import Switch from '@mui/material/Switch';
+import Paper from '@mui/material/Paper';
+import Grow from '@mui/material/Grow';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import { FaUnsplash } from "react-icons/fa";
+
 
 const options = [
   'Standard',
   'Masonry',
 //   'Quilted'
 ];
+
+
+const icon = (
+    <Paper sx={{ m: 1, width: 100, height: 100 }} elevation={4}>
+      <svg>
+        <Box
+          component="polygon"
+          points="0,100 50,00, 100,100"
+          sx={{
+            fill: (theme) => theme.palette.common.white,
+            stroke: (theme) => theme.palette.divider,
+            strokeWidth: 1,
+          }}
+        />
+      </svg>
+    </Paper>
+  );
 
 
 const About = ({setAbout, about, setActiveSection}) => {
@@ -43,6 +67,8 @@ const About = ({setAbout, about, setActiveSection}) => {
         control,
         name: 'about',
     });
+    const [checked, setChecked] = React.useState(false);
+
 
 
     const onSubmit = (data) => {
@@ -53,8 +79,8 @@ const About = ({setAbout, about, setActiveSection}) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [imageLayout, setImageLayout] = React.useState('Standard');
     const open = Boolean(anchorEl);
-    const [layoutAnchorEl, setLayoutAnchorEl] = React.useState(null);
-    const openLayoutOptions = Boolean(layoutAnchorEl);
+    // const [layoutAnchorEl, setLayoutAnchorEl] = React.useState(null);
+    // const openLayoutOptions = Boolean(layoutAnchorEl);
 
 
     return (
@@ -247,51 +273,95 @@ const About = ({setAbout, about, setActiveSection}) => {
                         }))}
                         onSortEnd={({ oldIndex, newIndex }) => move(oldIndex, newIndex)}
                     />
-                    <Box sx={{
-                        display: 'flex', 
-                        flexDirection: {xs: 'column', sm: 'row'},
-                        justifyContent: {xs: 'center', sm: 'space-between'},
-                        alignItems: 'center'
-                        }}>
-                        <Button variant="outlined" startIcon={<CiTextAlignLeft />} sx={{mb: {xs: 2, sm: 0}}} onClick={() => append({ type: "text", value: "" })}>
-                            Add Text
-                        </Button>
-                        <Box>
-                        <Button
-                            variant="outlined" 
-                            startIcon={<FaRegImage />} sx={{mb: {xs: 2, sm: 0}}}
-                            id="fade-button"
-                            aria-controls={open ? 'fade-menu' : undefined}
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
-                            onClick={(event) => setAnchorEl(event.currentTarget)}
-                        >
-                            Add Image
-                        </Button>
-                        <Menu
-                            id="fade-menu"
-                            MenuListProps={{
-                            'aria-labelledby': 'fade-button',
-                            }}
-                            anchorEl={anchorEl}
-                            open={open}
-                            onClose={() => setAnchorEl(null)}
-                            TransitionComponent={Fade}
-                        >
-                            <MenuItem onClick={()=>{
-                                append({ type: "image", value: "", isMultiple: false })
-                                setAnchorEl(null)
-                            }}>Single</MenuItem>
+                    
+                    
+                    <Box>
+                        <Box sx={{ display: 'flex'}}>
+                            <Avatar sx={{ bgcolor: 'red[500]', cursor: 'pointer'  }} aria-label="recipe" onClick={() => setChecked(!checked)}> + </Avatar>
+                            
+                            <Box sx={{ display: 'flex' }}>
 
-                            {/* <MenuItem onClick={()=>{
-                                append({ type: "image", value: "", isMultiple: true , layout: imageLayout})
-                                setAnchorEl(null)
-                            }}>Multiple </MenuItem> */}
-                        </Menu>
+                                {/* Text */}
+                                <Grow in={checked} sx={{ml: 2, cursor: 'pointer' }}>
+                                    <Avatar sx={{ }} aria-label="recipe" onClick={() => {
+                                    append({ type: "text", value: "" })
+                                    setChecked(!checked) 
+                                    }}>
+                                        <CiTextAlignLeft />
+                                    </Avatar>
+                                </Grow>
+                                
+                                {/* Images */}
+                                <Box>
+                                    <Grow
+                                    sx={{ml: 2, cursor: 'pointer' }}
+                                    in={checked}
+                                    style={{ transformOrigin: '0 0 0' }}
+                                    {...(checked ? { timeout: 1000 } : {})}
+                                    id="fade-button"
+                                    aria-controls={open ? 'fade-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? 'true' : undefined}
+                                    onClick={(event) => setAnchorEl(event.currentTarget)}
+                                    >
+                                        <Avatar sx={{ }} aria-label="recipe">
+                                            <FaRegImage />
+                                        </Avatar>
+                                    </Grow>
+                                    <Menu
+                                    id="fade-menu"
+                                    MenuListProps={{
+                                    'aria-labelledby': 'fade-button',
+                                    }}
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={() => setAnchorEl(null)}
+                                    TransitionComponent={Fade}
+                                >
+                                    <MenuItem onClick={()=>{
+                                        append({ type: "image", value: "", isMultiple: false })
+                                        setAnchorEl(null)
+                                        setChecked(!checked) 
+                                    }}>Single</MenuItem>
+
+                                    {/* Do not delete */}
+                                    {/* <MenuItem onClick={()=>{
+                                        append({ type: "image", value: "", isMultiple: true , layout: imageLayout})
+                                        setAnchorEl(null)
+                                    }}>Multiple </MenuItem> */}
+                                    </Menu>
+                                </Box>
+                                
+                                {/* Splash Images */}
+                                <Grow
+                                sx={{ml: 2, cursor: 'pointer' }}
+                                in={checked}
+                                style={{ transformOrigin: '0 0 0' }}
+                                {...(checked ? { timeout: 1500 } : {})}
+                                
+                                >
+                                    <Avatar sx={{ }} aria-label="recipe" onClick={() => console.log('clicked')}>
+                                        <FaUnsplash />
+                                    </Avatar>
+                                </Grow>
+
+                            {/* Video */}
+                                <Grow
+                                sx={{ml: 2, cursor: 'pointer' }}
+                                in={checked}
+                                style={{ transformOrigin: '0 0 0' }}
+                                {...(checked ? { timeout: 2500 } : {})}
+                                >
+                                    <Avatar sx={{ }} aria-label="recipe"onClick={() => {
+                                    append({ type: "video", value: "" })
+                                    setChecked(!checked) 
+                                    }}>
+                                        <RiVideoFill />
+                                    </Avatar>
+                                </Grow>
+
+                            </Box>
                         </Box>
-                        <Button variant="outlined" startIcon={<RiVideoFill />} sx={{}} onClick={() => append({ type: "video", value: "" })}>
-                            Add Video
-                        </Button>
                     </Box>
                 </form>
                 {fields.length > 0 && <>

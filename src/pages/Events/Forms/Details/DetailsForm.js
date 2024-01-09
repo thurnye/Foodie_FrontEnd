@@ -16,8 +16,7 @@ import { getRandomInt } from '../../../../util/commons';
 import { MdExpandMore } from "react-icons/md";
 import SwipeableCarousel from './SwipeableCarousel'
 import ImageLayout from './ImageLayout';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+
 
 
 const defaultTitle = 'Festival 2024'
