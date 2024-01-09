@@ -78,7 +78,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
           easing: theme.transitions.easing.sharp,
           duration: theme.transitions.duration.leavingScreen,
         }),
-        width: theme.spacing(7),
+        width: 0,
         [theme.breakpoints.up('sm')]: {
           width: theme.spacing(9),
         },
@@ -93,6 +93,7 @@ const defaultTheme = createTheme();
 
 const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
+  const [openMobile, setOpenMobile] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -111,10 +112,11 @@ const Dashboard = () => {
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              onClick={toggleDrawer}
+              onClick={() => setOpenMobile(!openMobile)}
               sx={{
-                marginRight: '36px',
-                ...(open && { display: 'none' }),
+                // marginRight: '36px',
+                // ...(open && { display: 'none' }),,
+                display: { xs: 'block', sm: 'none' },
               }}
             >
               <MenuIcon />
@@ -124,7 +126,7 @@ const Dashboard = () => {
               variant="h6"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1, ml: {xs: 0, sm: open ? 0 : 7 } }}
             >
               Events
             </Typography>
@@ -136,7 +138,32 @@ const Dashboard = () => {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+
+              {/* Mobile */}
+        <Drawer variant="permanent" open={openMobile} sx={{display: { xs: 'block', sm: 'none' }}}>
+          <Toolbar
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'flex-end',
+              px: [1],
+            }}
+          >
+            <IconButton onClick={() => setOpenMobile(!openMobile)} >
+              <ChevronLeftIcon />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List component="nav">
+            {mainListItems}
+            <Divider sx={{ my: 1 }} />
+            {secondaryListItems}
+          </List>
+        </Drawer>
+
+
+            {/* Potrait, large screens */}
+        <Drawer variant="permanent" open={open} sx={{display: { xs: 'none', sm: 'block' },}}>
           <Toolbar
             sx={{
               display: 'flex',
