@@ -15,6 +15,9 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getRandomInt } from '../../../../util/commons';
 import { MdExpandMore } from "react-icons/md";
 import SwipeableCarousel from './SwipeableCarousel'
+import ImageLayout from './ImageLayout';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
 
 
 const defaultTitle = 'Festival 2024'
@@ -25,7 +28,7 @@ const DetailsForm = ({setData}) => {
     const [faqs, setFaqs] = useState([])
     const [eventImages, setEventImages] = useState([])
     const [summary, setSummary] = useState('')
-    const [activeSection, setActiveSection] = useState("")
+    const [activeSection, setActiveSection] = useState("aboutForm")
     const [isHovered, setIsHovered] = useState("");
 
     const getEditIcons = (section) => <Box sx={{ maxWidth: '100%', flexGrow: 1, position: 'relative' }}>
@@ -56,9 +59,9 @@ const DetailsForm = ({setData}) => {
             ...faqs
         }
         console.log(details)
-        setData(details)
+        setData(details);
+        setProceed(true);
     };
-
 
 
 
@@ -121,7 +124,7 @@ const DetailsForm = ({setData}) => {
             {/* About */}
             <Box sx={{mb: 2}}>
                 {activeSection !== 'aboutForm' &&
-                <Box sx={{ }} onClick={() => setActiveSection('aboutForm')}>
+                <Box sx={{ }} onClick={() => about?.length === 0 && setActiveSection('aboutForm')}>
                     <Card 
                         onMouseEnter={() => setIsHovered('aboutForm')}
                         onMouseLeave={() => setIsHovered("")}
@@ -145,9 +148,37 @@ const DetailsForm = ({setData}) => {
                                             </Box>}
 
                                             {el.type === 'image' &&  <Box sx={{ maxWidth: 650, m: 'auto'}}>
-                                                <Box sx={{mb: 3}}>
-                                                    <img src={el.value} className="card-img" alt="event_banner" />
-                                                </Box>
+                                                    {!el.isMultiple ? 
+                                                        <Box sx={{mb: 3}}>
+                                                            <img src={el.value} 
+                                                            className="card-img" 
+                                                            alt="event_banner"
+                                                            style={{ objectFit: 'contain'}}
+                                                            />
+                                                        </Box>
+                                                    : 
+                                                        <Box>
+                                                            <Card sx={{boxShadow: 'none', border:0}}>
+                                                                <CardContent>
+                                                                    <ImageLayout layout={el.layout} imageList={el.value}/>
+                                                                    {/* <Box sx={{ flexGrow: 1 }}>
+                                                                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                                                                            {el.value.map((val, index) => (
+                                                                            <Grid item xs={12} sm={4} md={4} key={index}>
+                                                                                <img src={val} 
+                                                                                    className="card-img" 
+                                                                                    alt="event_banner"
+                                                                                    style={{ width: '10rem', objectFit: 'contain'}}
+                                                                                    />
+                                                                            </Grid>
+                                                                            ))}
+                                                                        </Grid>
+                                                                        </Box> */}
+
+                                                                </CardContent>
+                                                            </Card>
+                                                        </Box>
+                                                    }
                                             </Box>}
 
                                             {el.type === 'video' && <Box sx={{ maxWidth: 650, m: 'auto'}}>
@@ -193,7 +224,7 @@ const DetailsForm = ({setData}) => {
             {/* FAQ*/}
             <Box sx={{mb: 2}}>
                 {activeSection !== 'faqForm' &&
-                <Box sx={{ }}>
+                <Box sx={{ }} onClick={() => faqs?.length === 0 && setActiveSection('faqForm')}>
                     <Card 
                         onMouseEnter={() => setIsHovered('faqForm')}
                         onMouseLeave={() => setIsHovered("")}

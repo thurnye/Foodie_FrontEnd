@@ -23,7 +23,7 @@ const SortableItem = ({ id, content }) => {
   };
 
   return (
-    <Box ref={setNodeRef} style={style} {...attributes} {...listeners} sx={{ p: 1, width: '100%' }}>
+    <Box ref={setNodeRef} style={style} {...attributes} {...listeners} sx={{ p: 1, width: '100%', height: '100%' }}>
       <Paper>
         <Box sx={{display: 'flex', alignItems: 'center'}}>
           <IconButton  sx={{float: 'inline-end'}}>
