@@ -27,7 +27,7 @@ const DetailsForm = ({setData}) => {
     const [faqs, setFaqs] = useState([])
     const [eventImages, setEventImages] = useState([])
     const [summary, setSummary] = useState('')
-    const [activeSection, setActiveSection] = useState("aboutForm")
+    const [activeSection, setActiveSection] = useState("")
     const [isHovered, setIsHovered] = useState("");
 
     const getEditIcons = (section) => <Box sx={{ maxWidth: '100%', flexGrow: 1, position: 'relative' }}>

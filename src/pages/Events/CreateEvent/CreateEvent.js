@@ -12,7 +12,7 @@ import { AddEventFormContext } from '../../../store/formStateContext';
 
 const CreateEvent = ({isLoaded}) => {
   const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Publish'];
-  const [currentFormStep, setCurrentFormStep] = useState(2);
+  const [currentFormStep, setCurrentFormStep] = useState(3);
   const [eventBritForm, setEventBritForm] = useState();
 
   const getCurrentForm = (step) => {

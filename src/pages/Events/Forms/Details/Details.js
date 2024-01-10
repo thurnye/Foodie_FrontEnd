@@ -18,8 +18,11 @@ const Details = () => {
         details: data 
       }
       ));
+      
     }
+
   }, [data]);
+
 
 
   return(
