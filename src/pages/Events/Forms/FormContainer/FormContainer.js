@@ -11,12 +11,16 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import InputLabel from '@mui/material/InputLabel';
 import { Typography, Card, CardContent } from '@mui/material';
+import FormControl from '@mui/material/FormControl';
 import {LiaCameraRetroSolid} from 'react-icons/lia';
 import Dropzone from 'react-dropzone';
 import { convertToBase64 } from '../../../../util/commons';
 import { Box, MenuItem, Select, TextField, FormHelperText } from '@mui/material';
 import CompTextEditor from '../../../../components/CompTextEditor/CompTextEditor';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
 
 export function FormContainer({ defaultValues, children, onSubmit, fieldArrayName }) {
   const { handleSubmit, control, formState: { errors }, setValue} = useForm({ defaultValues });
@@ -48,7 +52,7 @@ export function FormContainer({ defaultValues, children, onSubmit, fieldArrayNam
   );
 }
 
-export const Input = ({ type, control, errors, isRequired, name, label, placeholder, children, errorMessage, defaultValue, ...rest }) => (
+export const Input = ({ type, max, min, control,size, errors, maxLength,isRequired, name, label, placeholder, children, errorMessage, defaultValue, ...rest }) => (
   <Box sx={{ mb: 3 }}>
     <Controller
       name={name}
@@ -58,8 +62,107 @@ export const Input = ({ type, control, errors, isRequired, name, label, placehol
         ...(isRequired && { required: errorMessage ? errorMessage : `${label} is required.` }),
       }}
       render={({ field }) => (
-        <>
+        <Box sx={{position: 'relative'}}>
           <TextField
+            {...field}
+            label={label}
+            fullWidth
+            type={type ? type : 'text'}
+            size={size ? size : "small"}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
+            error={errors[name] ? true : false}
+            {...(maxLength && { inputProps: { maxLength } })}
+            {...((type === 'number' && max) && { inputProps: { max } })}
+            {...((type === 'number' && min) && { inputProps: { min } })}
+          />
+          {/* Display error message if there is an error */}
+          {maxLength && (
+            <FormHelperText id="component-error-text" sx={{ color: 'text.secondary', position: 'absolute', right: 0 }}>
+              {`${field.value ? field.value.length : 0}/${maxLength}`}
+            </FormHelperText>
+          )}
+          {errors[name] && (
+            <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+              {errors[name].message}
+            </FormHelperText>
+          )}
+        </Box>
+      )}
+      />
+      {/* Additional custom components passed as children */}
+      {children && <Box>{children}</Box>}
+  </Box>
+);
+
+export const TextArea = ({ type, max, min, control,size, errors, maxLength,isRequired, name, label, placeholder, children, errorMessage, defaultValue, ...rest }) => (
+  <Box sx={{ mb: 3 }}>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      rules={{
+        ...(isRequired && { required: errorMessage ? errorMessage : `${label} is required.` }),
+      }}
+      render={({ field }) => (
+        <Box sx={{position: 'relative'}}>
+          <TextField
+            {...field}
+            id="outlined-multiline-static"
+            multiline
+            rows={4}
+            label={label}
+            fullWidth
+            placeholder={placeholder}
+            defaultValue={defaultValue}
+            error={errors[name] ? true : false}
+            {...(maxLength && { inputProps: { maxLength } })}
+        />
+          {/* Display error message if there is an error */}
+          {maxLength && (
+            <FormHelperText id="component-error-text" sx={{ color: 'text.secondary', position: 'absolute', right: 0 }}>
+              {`${field.value ? field.value.length : 0}/${maxLength}`}
+            </FormHelperText>
+          )}
+          {errors[name] && (
+            <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+              {errors[name].message}
+            </FormHelperText>
+          )}
+        </Box>
+      )}
+      />
+      {/* Additional custom components passed as children */}
+      {children && <Box>{children}</Box>}
+  </Box>
+);
+
+export const AmountInput = ({ type, control, errors, symbol,isRequired, name, label, placeholder, errorMessage, defaultValue, ...rest }) => (
+  <Box sx={{ mb: 3 }}>
+    <Controller
+      name={name}
+      control={control}
+      defaultValue={defaultValue}
+      rules={{
+        ...(isRequired && { required: errorMessage ? errorMessage : `${label} is required.` }),
+      }}
+      render={({ field }) => (
+        <Box sx={{position: 'relative'}}>
+          <FormControl fullWidth>
+            <InputLabel htmlFor="outlined-adornment-amount">{label}</InputLabel>
+            <OutlinedInput
+              {...field}
+              id="outlined-adornment-amount"
+              startAdornment={<InputAdornment position="start">{symbol}</InputAdornment>}
+              label={label}
+              fullWidth
+              // size="small"
+              placeholder={placeholder}
+              defaultValue={defaultValue}
+              error={errors[name] ? true : false}
+            />
+          </FormControl>
+          {/* <TextField
             {...field}
             label={label}
             fullWidth
@@ -68,18 +171,24 @@ export const Input = ({ type, control, errors, isRequired, name, label, placehol
             placeholder={placeholder}
             defaultValue={defaultValue}
             error={errors[name] ? true : false}
-          />
+            {...(maxLength && { inputProps: { maxLength } })}
+          /> */}
           {/* Display error message if there is an error */}
+          {/* {maxLength && (
+            <FormHelperText id="component-error-text" sx={{ color: 'text.secondary', position: 'absolute', right: 0 }}>
+              {`${field.value ? field.value.length : 0}/${maxLength}`}
+            </FormHelperText>
+          )} */}
           {errors[name] && (
             <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
               {errors[name].message}
             </FormHelperText>
           )}
-        </>
+        </Box>
       )}
       />
       {/* Additional custom components passed as children */}
-      {children && <Box>{children}</Box>}
+      {/* {children && <Box>{children}</Box>} */}
   </Box>
 );
 
@@ -206,18 +315,31 @@ export const LocationInput = ({ setValue, control, errors, isRequired, name, lab
   </Box>
 );
 
-export const SelectInput = ({ control, errors, options, name, label, isMulti, ...rest }) => <Box sx={{mb: 3}}>
+export const SelectInput = ({ control, errors, options, name, disabled, label, isMulti, defaultValue, isRequired,errorMessage, ...rest }) => <Box sx={{mb: 3}}>
   <Controller
     name={name}
     control={control}
-    render={({ field }) => (
-      <Select {...field} variant="outlined" fullWidth label={label} isMulti={isMulti} {...rest}>
-        {options.map((value) => (
-          <MenuItem key={value} value={value}>
-            {value}
-          </MenuItem>
-        ))}
-      </Select>
+    defaultValue={defaultValue ? defaultValue : ''}
+      rules={{
+        ...(isRequired && { required: errorMessage ? errorMessage : `${label} is required.` }),
+      }}
+    render={({ field }) => (<>
+      <FormControl fullWidth disabled={disabled}>
+        <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+        <Select {...field} variant="outlined" fullWidth label={label} isMulti={isMulti} {...rest}>
+          {options.map((value) => (
+            <MenuItem key={value} value={value}>
+              {value}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+      {errors[name] && (
+            <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+              {errors[name].message}
+            </FormHelperText>
+          )}
+    </>
     )}
     
   />

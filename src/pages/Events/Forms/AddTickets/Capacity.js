@@ -62,16 +62,17 @@ const capacityValues = [
     },
 ]
 
-export default function Capacity({capacity, setCapacity}) {
-  const [open, setOpen] = React.useState(!capacity ? true : false);
-  const [value, setValue] = React.useState(25);
+export default function Capacity({capacity, setCapacity, open, setOpen}) {
+  const [value, setValue] = React.useState(capacity.value);
   const [custom, setCustom] = React.useState();
 
   const handleContinue = () => {
+   
     if(custom > 0) {
+        
         setCapacity({
             type: 'custom',
-            value: custom
+            value: custom ? custom : 250
 
         })
     }else{
@@ -79,13 +80,13 @@ export default function Capacity({capacity, setCapacity}) {
         if(findOne){
             setCapacity({
                 type: findOne.label,
-                value: findOne.value
-    
+                value: findOne.value !== 'custom' ? findOne.value : 250
+                
             })
         }else{
             setCapacity({
-                type: 'Up to 25 tickets',
-                value: 25
+                type: 'Up to 100 tickets',
+                value: 100
     
             })
         }
@@ -93,18 +94,15 @@ export default function Capacity({capacity, setCapacity}) {
     setOpen(false);
   }
 
-  const [age, setAge] = React.useState('');
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
 
   return (
     <React.Fragment>
       <Dialog
       fullWidth={true}
         open={open}
-        onClose={()=> setOpen(!open)}
+        onClose={()=> {
+            setOpen(!open)
+        }}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
         maxWidth={'lg'}
@@ -131,7 +129,10 @@ export default function Capacity({capacity, setCapacity}) {
                                 <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                                     {capacityValues.map((el) => 
                                         <Grid item xs={6} key={getRandomInt()}>
-                                            <Card sx={{ minWidth: 275, position: 'relative', border: value === el.value ? '2px solid #1976d2' : 'initial' }} onClick={() => setValue(el.value)}>
+                                            <Card sx={{ minWidth: 275, position: 'relative', border: value === el.value ? '2px solid #1976d2' : 'initial' }} onClick={() => {
+                                                setValue(el.value) 
+                                                setCustom()
+                                                }}>
                                                 <CardContent sx={{display: 'flex', flexDirection: 'column',justifyContent: 'center', alignItems: 'center',borderRadius: '50%'}}>
                                                     <Box sx={{position: 'absolute', top: 0, right: 0}}>
                                                         <FormControl>
@@ -139,7 +140,10 @@ export default function Capacity({capacity, setCapacity}) {
                                                                 aria-labelledby="demo-controlled-radio-buttons-group"
                                                                 name="controlled-radio-buttons-group"
                                                                 value={value}
-                                                                onChange={() => setValue(el.value)}
+                                                                onChange={() => {
+                                                                    setValue(el.value)
+                                                                    setCustom()
+                                                                }}
                                                             >
                                                                 <FormControlLabel value={el.value} control={<Radio size='medium' />} />
                                                             </RadioGroup>
@@ -216,9 +220,8 @@ export default function Capacity({capacity, setCapacity}) {
             </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleContinue}>
-            Continue
-          </Button>
+            <Button  onClick={()=> {setOpen(!open)}}>Cancel</Button>
+            <Button onClick={handleContinue}>Update</Button>
         </DialogActions>
       </Dialog>
     </React.Fragment>
