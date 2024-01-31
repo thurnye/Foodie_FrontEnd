@@ -147,6 +147,7 @@ const TicketForm = ({data, setData, capacity, setCapacity, isCapacityEdit, setIs
                     setSections={setSections}
                     ticketType={type}
                     setTicketType={setType}
+                    editTicketType={null}
                 />
             </Paper>
         </div>

@@ -143,7 +143,7 @@ const Dashboard = () => {
               px: [1],
             }}
           >
-            <IconButton onClick={() => setOpenMobile(!openMobile)} >
+            <IconButton onClick={() => setOpenMobile(!openMobile)}>
               <ChevronLeftIcon />
             </IconButton>
           </Toolbar>

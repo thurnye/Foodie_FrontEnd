@@ -13,7 +13,8 @@ import { FormContainer, Input } from '../FormContainer/FormContainer';
 import { PiUserThin } from "react-icons/pi";
 import Typography from '@mui/material/Typography';
 import { getRandomInt } from '../../../../util/commons';
-
+import Alert from '@mui/material/Alert';
+// import CountrySelect from './AutoComplete';
 
 const Img = styled('img')({
     margin: 'auto',
@@ -22,15 +23,25 @@ const Img = styled('img')({
     maxHeight: '100%',
 });
 
-
-const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections}) => {
+const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections, disabled, remainingSection}) => {
+    const defaultCurrency = {
+        label: 'US Dollar - USD',
+        currency: 'US Dollar',
+        symbol: '$',
+    }
     const [open, setOpen] = useState(isEdit);
     const [section, setSection] = useState();
-
+    const [currency, setCurrency] = useState(defaultCurrency);
+    const [message, setMessage] = useState('')
 
     const onSubmit = (data) => {
+        const {name, capacity} = data;
+        if(capacity > remainingSection){
+            setMessage(`exceeded remaining capacity of ${remainingSection} ticket(s)`);
+            return;
+        }
+        setMessage();
         if(section){
-            const {name, capacity} = data;
             const found = sections.find((el) => el.id === section.id)
             if(found){
                 found.name = name;
@@ -41,17 +52,13 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections}) 
             const adjustData = {
                 ...data,
                 id: getRandomInt(),
-                currency: {
-                    label: 'US Dollar - USD',
-                    currency: 'US Dollar',
-                    symbol: '$',
-                },
+                currency,
                 ticketTypes: []
             }
             setSections((prev) => [...prev, adjustData])
 
         }
-        setIsEdit(!open)
+        setIsEdit && setIsEdit(!open)
         setOpen(!open)
     };
 
@@ -72,14 +79,15 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections}) 
             <Box sx={{mt:3}}>
                 <Button variant="outlined" onClick={() => setOpen(!open)} sx={{
                     borderColor: '#7d7f91', color: '#7d7f91'
-                }}>
+                }} disabled={disabled}>
                     Create a section
                 </Button>
                 <Dialog
                     open={open}
                     onClose={() => {
                         setOpen(!open)
-                        setIsEdit(!open)
+                        setIsEdit && setIsEdit(!open)
+                        setCurrency(defaultCurrency)
                     }}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
@@ -103,6 +111,7 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections}) 
 
                                         </DialogContentText>
                                         <Box sx={{ width: '100%', mt: 2 }}>
+                                       {message && <Alert severity="error" sx={{mb: 2}}>{message}</Alert>}
                                             <Box>
                                                 <Input 
                                                     type="text"
@@ -122,6 +131,10 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections}) 
                                                     errorMessage='Section capacity is required!'
                                                     defaultValue={section?.capacity}
                                                 />
+                                            </Box>
+                                            <Box sx={{mb: 2}}>
+                                                {/* Will be added later */}
+                                                {/* <CountrySelect currency={currency} setCurrency={setCurrency}/> */}
                                             </Box>
                                         </Box>
                                         <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#e7e9f4', p: 3}}>

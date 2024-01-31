@@ -72,7 +72,7 @@ export const Input = ({ type, max, min, control,size, errors, maxLength,isRequir
             placeholder={placeholder}
             defaultValue={defaultValue}
             error={errors[name] ? true : false}
-            {...(maxLength && { inputProps: { maxLength } })}
+            {...(maxLength && { inputProps: { maxLength }})}
             {...((type === 'number' && max) && { inputProps: { max } })}
             {...((type === 'number' && min) && { inputProps: { min } })}
           />
@@ -345,7 +345,6 @@ export const SelectInput = ({ control, errors, options, name, disabled, label, i
   />
 </Box>
 
-
 export const ReactSelectInput = ({ control, errors, options, name, ...rest }) => <Box sx={{mb: 3}}>
   <ReactSelect name={name} control={control} options={options} {...rest}/>
 </Box>
@@ -403,6 +402,7 @@ export const CheckBoxField = ({ control, name, defaultChecked, label }) => <Box 
       )}
     />
 </Box>
+
 
 
 

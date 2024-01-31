@@ -18,7 +18,9 @@ import { MdOutlineMoneyOff } from "react-icons/md";
 import { TfiTicket } from "react-icons/tfi";
 import AlertDialog from '../../../../components/AlertDialog/AlertDialog';
 import { PiTrashThin } from "react-icons/pi";
-
+import Capacity from './Capacity'
+import IconButton from '@mui/material/IconButton';
+import ModeIcon from '@mui/icons-material/Mode';
 
 const menuOptions = [
     {
@@ -137,41 +139,64 @@ function CustomTabPanel(props) {
 //     }
 // ]
 
-const Tickets = ({setSections, sections}) => {
+const Tickets = ({setSections, sections, capacity, setCapacity}) => {
     const [value, setValue] = React.useState(0);
-    
+    const[open, setOpen] = useState(false);
     const [expand, setExpand] = React.useState(0);
     const [openTicketType, setOpenTicketType] = useState(false)
     const [activeSection, setActiveSection] = useState()
     const [type, setType] = useState('')
     const [isEdit, setIsEdit] = React.useState(false);
-    const [isDelete, setIsDelete] = useState()
+    const [isTicketTypeEdit, setIsTicketTypeEdit] = React.useState();
+    const [isDelete, setIsDelete] = useState(false)
+    const [addMoreSection, setAddMoreSection] = useState(false)
     const [message, setMessage] = useState()
-    const [confirmDelete, setConfirmDelete] = useState(false)
+    const [remainingSection, setRemainingSection] = useState(capacity)
+    const [remainingTicket, setRemainingTicket] = useState()
 
     
+    
 
-    const handleDelete = (isSection, id) => {
-        if(isSection){
-            console.log(id)
-        }
-        if(!isSection){
-            console.log(false, id)
-        }
-    }
-
+    // Handle Add more tickets Types
     const handleAddMoreTickets = (option) => {
-        console.log(option.label);
+        
+        // set edit to false for ticket types
+        setIsTicketTypeEdit()
         setType(option.label)
         setOpenTicketType(!openTicketType)
     };
 
-   useEffect(() => {
-        if(confirmDelete){
-            const updatedArray = sections.filter((item) => item.id !== activeSection.id);
-            setSections(updatedArray);
+
+    //Remove a Section when it is confirmed
+   const handleSectionDelete = (() => {
+        const updatedArray = sections.filter((item) => item.id !== activeSection.id);
+        setSections(updatedArray);
+   })
+
+   //Delete Ticket Type from section
+   const handleDelete = ( id) => {
+    const updatedSections = sections.map(section => ({
+        ...section,
+        ticketTypes: section.ticketTypes.filter(ticketType => ticketType.id !== id)
+      }));
+      setSections(updatedSections);
+    
+    }
+
+    const getTotals = (data, field) =>  data.reduce((total, entry) => {
+    return total + parseInt(entry[field], 10);
+    }, 0);
+
+    useEffect(() => {
+        const totalSectionsCapacity = getTotals(sections, 'capacity');
+        if( totalSectionsCapacity >= capacity.value){
+            setAddMoreSection(true)
+        } else{
+            setRemainingSection(parseInt(capacity.value) - totalSectionsCapacity )
+            setAddMoreSection(false)
         }
-   },[sections, confirmDelete, activeSection, setSections])
+    },[sections, capacity]);
+
 
 
     return (
@@ -186,6 +211,22 @@ const Tickets = ({setSections, sections}) => {
                     menuOptions={menuOptions}
                     onClick={handleAddMoreTickets}
                 />
+                <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems:"center"}}>
+                    <Typography variant="body2" gutterBottom sx={{mt: 2}}>
+                    Event Capacity:  {getTotals(sections, 'capacity')}/{capacity.value}
+                    </Typography>
+                    <IconButton aria-label="fingerprint" onClick={() => setOpen(!open)} sx={{mt: 0.8}}fontSize="small">
+                        <ModeIcon />
+                    </IconButton>
+
+
+                </Box>
+                <Capacity 
+                    capacity={capacity} 
+                    setCapacity={setCapacity} 
+                    setOpen={setOpen}
+                    open={open}
+                />
             </Box>
             <TicketTypes 
                 open={openTicketType} 
@@ -194,8 +235,10 @@ const Tickets = ({setSections, sections}) => {
                 sections={sections} 
                 setSections={setSections}
                 ticketType={type}
+                editTicketType={isTicketTypeEdit}
+                remainingTicket={remainingTicket}
             />
-            <AlertDialog open={isDelete} setOpen={setIsDelete} setConfirmDelete={setConfirmDelete}>
+            <AlertDialog open={isDelete} setOpen={setIsDelete} setConfirmDelete={() => handleSectionDelete()}>
                 <Box sx={{display: 'flex', flexDirection: 'column', justifyContent:'center', alignItems:'center',}}>
                     <Typography variant="button" display="block" gutterBottom sx={{transform: 'none', display: 'flex',justifyContent:'center', alignItems:'center', height: 50, width: 50, borderRadius: '50%', backgroundColor:'#f8f7fa'}}>
                             <PiTrashThin fontSize={30}/>
@@ -223,6 +266,8 @@ const Tickets = ({setSections, sections}) => {
                             isEdit={isEdit}
                             setIsEdit={setIsEdit}
                             sections={sections}
+                            disabled={addMoreSection}
+                            remainingSection={remainingSection}
                         />
                     </Box>
                     <Box>
@@ -254,30 +299,37 @@ const Tickets = ({setSections, sections}) => {
                                                     </Box>
                                                     <Box sx={{minWidth: 200, mr: 2, textAlign: 'right'}}>
                                                         <Typography variant="body1" component="div">
-                                                            {el.capacity}
+                                                            {el.ticketTypes.length > 0 ? getTotals(el.ticketTypes, 'capacity') :  '-'} / {el.capacity}
                                                         </Typography>
                                                     </Box>
                                                     <Box sx={{minWidth: 100, mr: 2, textAlign: 'right'}}>
-                                                        CA$10.00
+                                                        {el.ticketTypes.length > 0 ? <>
+                                                            {el.currency.symbol}{getTotals(el.ticketTypes, 'price')}
+                                                        </> : '-'}
                                                     </Box>
                                                     <Box sx={{minWidth: 100, textAlign: 'left'}}>
                                                         <Dropdown
                                                             label="Options"
                                                             isIcon={true}
                                                             icon={<MoreVertIcon />} 
-                                                            menuOptions={['Add Ticket Type', 'Edit', 'Delete'].map((opt) => ({label: opt, id: el.id}))}
+                                                            menuOptions={[
+                                                                {label: 'Add Ticket Type', disabled: getTotals(el.ticketTypes, 'capacity') >= el.capacity},
+                                                                {label: 'Edit', disabled: false},
+                                                                {label: 'Delete', disabled: false},
+                                                            ].map((opt) => ({label: opt.label, id: el.id, disabled: opt.disabled}))}
                                                             onClick={(option) => {
                                                                 if(option.label === 'Add Ticket Type'){
-                                                                    setType()
+                                                                    setIsTicketTypeEdit()
+                                                                    setType('')
                                                                     setActiveSection(el)
                                                                     setOpenTicketType(!openTicketType)
+                                                                    setRemainingTicket(el.capacity - getTotals(el.ticketTypes, 'capacity'))
                                                                 }
                                                                 if(option.label === 'Edit'){
                                                                     setActiveSection(el)
                                                                     setIsEdit(!isEdit)
                                                                 }
                                                                 if(option.label === 'Delete'){
-                                                                    handleDelete(true, el.id)
                                                                     setMessage(`You will permanently delete ${el.name} and all tickets within this section.`)
                                                                     setIsDelete(!isDelete)
                                                                     setActiveSection(el)
@@ -307,7 +359,7 @@ const Tickets = ({setSections, sections}) => {
                                                                         </Typography>
                                                                     </Box>
                                                                     <Box sx={{minWidth: 100, mr: 2, textAlign: 'right'}}>
-                                                                        {ticketType.price}
+                                                                        {el.currency.symbol}{ticketType.price}
                                                                     </Box>
                                                                     <Box sx={{minWidth: 100, textAlign: 'left'}}>
                                                                         <Dropdown
@@ -316,12 +368,16 @@ const Tickets = ({setSections, sections}) => {
                                                                             icon={<MoreVertIcon />} 
                                                                             menuOptions={[ 'Edit', 'Delete'].map((opt) => ({label: opt, id: ticketType.id}))}
                                                                             onClick={(option) => {
-                                                                                console.log(option)
                                                                                 if(option.label === 'Edit'){
-                                                                                    // setActiveSection(el)
+                                                                                    setRemainingTicket(el.capacity - getTotals(el.ticketTypes, 'capacity') + parseInt(ticketType.capacity))
+                                                                                    setIsTicketTypeEdit(ticketType)
+                                                                                    setType(ticketType.type)
+                                                                                    setOpenTicketType(!openTicketType)
                                                                                 }
-                                                                                if(option.label === 'Add ticket Type'){
-                                                                                    handleDelete(false, ticketType.id)
+                                                                                if(option.label === 'Delete'){
+                                                                                    handleDelete(ticketType.id)
+                                                                                    setActiveSection(el)
+                                                                                    setMessage(`You will permanently delete ${ticketType.name} from this section.`)
                                                                                 }
                                                                             }}
                                                                         />

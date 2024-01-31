@@ -16,7 +16,7 @@ module.exports = {
     new Dotenv(),
   ],
   devServer: {
-    port: '3000',
+    port: '4000',
     historyApiFallback: true, // you can change the port
   },
   module: {

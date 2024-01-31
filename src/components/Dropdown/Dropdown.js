@@ -125,7 +125,11 @@ const Dropdown = ({label, isIcon, icon, onClick, menuOptions}) => {
         onClose={handleClose}
       >
         {menuOptions.map((option, index) => (
-          <MenuItem key={index} onClick={() => handleMenuCallBack(option)} disableRipple>
+          <MenuItem 
+          key={index} 
+          onClick={() => handleMenuCallBack(option)} 
+          disabled={option.disabled}
+          disableRipple>
 
             {option.icon && 
              <ListItemIcon sx={{ backgroundColor: option?.background, color: option?.color, p: 0.8, mr: 1}}>

@@ -6,7 +6,53 @@ import TicketForm from './TicketForm';
 import Tickets from './Tickets';
 
 
-
+const secs =[
+  {
+    "id": 64559206548,
+    "name": "General Assembly",
+    "capacity": "45",
+    "currency": {
+      "label": "US Dollar - USD",
+      "currency": "US Dollar",
+      "symbol": "$"
+    },
+    "ticketTypes": [
+      {
+        "id": 33273913744,
+        "name": "Test1",
+        "section": "General Assembly",
+        "capacity": "4",
+        "price": "4",
+        "salesEnd": 1,
+        "period": "Hour(s)",
+        "periodFrame": "Before event starts",
+        "type": "Paid"
+      },
+      {
+        "id": 48275706363,
+        "name": "self",
+        "section": "General Assembly",
+        "capacity": "4",
+        "price": "43",
+        "salesEnd": 1,
+        "period": "Hour(s)",
+        "periodFrame": "Before event starts",
+        "type": "Free"
+      },
+      {
+        "id": 280179038640,
+        "name": "Testing",
+        "section": "General Assembly",
+        "capacity": "3",
+        "price": "32",
+        "salesEnd": 1,
+        "period": "Hour(s)",
+        "periodFrame": "Before event starts",
+        "type": "Donation"
+      }
+    ]
+  }
+]
 
 const AddTickets = () => {
   const { eventBritForm, setEventBritForm } = useAddEventFormContext();
@@ -17,11 +63,10 @@ const AddTickets = () => {
 });
   const [proceed, setProceed] = useState(false);
   const [isCapacityEdit, setIsCapacityEdit] = useState(false);
-  const [sections, setSections] = useState([])
+  const [sections, setSections] = useState([...secs])
 
   useEffect(() => {
     if(data){
-      console.log({data})
       setEventBritForm((eventBritForm) => ({ 
         ...eventBritForm, 
         tickets: data 
@@ -32,9 +77,11 @@ const AddTickets = () => {
 
   }, [data]);
 
-  console.log(sections, capacity)
-  
 
+  
+const onSubmit = () => {
+  console.log(sections, capacity, data)
+}
 
 
 
@@ -54,9 +101,9 @@ const AddTickets = () => {
       />
     </> : 
     <><Tickets setSections={setSections}
-    sections={sections}/></>
+    sections={sections} capacity={capacity} setCapacity={setCapacity}/></>
     }
-    <FormDirection onSubmit={() => setProceed(false)} proceed={proceed}/>
+    <FormDirection onSubmit={onSubmit} proceed={proceed}/>
   </div>
 )};
 
