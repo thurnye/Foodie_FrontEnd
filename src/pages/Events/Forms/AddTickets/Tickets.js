@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -21,6 +22,13 @@ import { PiTrashThin } from "react-icons/pi";
 import Capacity from './Capacity'
 import IconButton from '@mui/material/IconButton';
 import ModeIcon from '@mui/icons-material/Mode';
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import Grid from '@mui/material/Grid';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
 
 const menuOptions = [
     {
@@ -74,70 +82,6 @@ function CustomTabPanel(props) {
   }
 
 
-// const data = [
-//     {   
-//         id: 34567,
-//         name: 'General Admission',
-//         currency: {
-//             label: 'US Dollar - USD',
-//             currency: 'US Dollar',
-//             symbol: '$',
-//         },
-//         capacity: 100,
-//         ticketTypes: [{
-//             id: 12756345,
-//             name: 'Free',
-//             capacity: 50,
-//             price: 'CA$2.00'
-//         }]
-//     },
-//     {   
-//         id: 347565067,
-//         name: 'Regular Admission',
-//         currency: {
-//             label: 'US Dollar - USD',
-//             currency: 'US Dollar',
-//             symbol: '$',
-//         },
-//         capacity: 100,
-//         ticketTypes: [{
-//             id: 1234545,
-//             name: 'Free',
-//             capacity: 50,
-//             price: 'CA$2.00'
-//         }]
-//     },
-//     {   
-//         id: 35765567,
-//         name: 'VIP Admission',
-//         currency: {
-//             label: 'US Dollar - USD',
-//             currency: 'US Dollar',
-//             symbol: '$',
-//         },
-//         capacity: 100,
-//         ticketTypes: [
-//             {
-//                 id: 1233445,
-//                 name: 'Free',
-//                 capacity: 50,
-//                 price: 'CA$2.00'
-//             },
-//             {
-//                 id: 1235634450,
-//                 name: 'Paid',
-//                 capacity: 50,
-//                 price: 'CA$12.00'
-//             },
-//             {
-//                 id: 12336864456,
-//                 name: 'Donations',
-//                 capacity: 50,
-//                 price: 'CA$1.00'
-//             },
-//         ]
-//     }
-// ]
 
 const Tickets = ({setSections, sections, capacity, setCapacity}) => {
     const [value, setValue] = React.useState(0);
@@ -196,6 +140,64 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
             setAddMoreSection(false)
         }
     },[sections, capacity]);
+
+
+    const [expanded, setExpanded] = React.useState(false);
+
+  const handleChange = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
+
+  const sectionActions = (el) => <Dropdown
+  label="Options"
+  isIcon={true}
+  icon={<MoreVertIcon />} 
+  menuOptions={[
+      {label: 'Add Ticket Type', disabled: getTotals(el.ticketTypes, 'capacity') >= el.capacity},
+      {label: 'Edit', disabled: false},
+      {label: 'Delete', disabled: false},
+  ].map((opt) => ({label: opt.label, id: el.id, disabled: opt.disabled}))}
+  onClick={(option) => {
+      if(option.label === 'Add Ticket Type'){
+          setIsTicketTypeEdit()
+          setType('')
+          setActiveSection(el)
+          setOpenTicketType(!openTicketType)
+          setRemainingTicket(el.capacity - getTotals(el.ticketTypes, 'capacity'))
+      }
+      if(option.label === 'Edit'){
+          setActiveSection(el)
+          setIsEdit(!isEdit)
+      }
+      if(option.label === 'Delete'){
+          setMessage(`You will permanently delete ${el.name} and all tickets within this section.`)
+          setIsDelete(!isDelete)
+          setActiveSection(el)
+      }
+  }}
+    />
+
+  const ticketTypeActions = (el, ticketType) => <Dropdown
+    label="Options"
+    isIcon={true}
+    icon={<MoreVertIcon />} 
+    menuOptions={[ 'Edit', 'Delete'].map((opt) => ({label: opt, id: ticketType.id}))}
+    onClick={(option) => {
+        if(option.label === 'Edit'){
+            setRemainingTicket(el.capacity - getTotals(el.ticketTypes, 'capacity') + parseInt(ticketType.capacity))
+            setIsTicketTypeEdit(ticketType)
+            setType(ticketType.type)
+            setOpenTicketType(!openTicketType)
+        }
+        if(option.label === 'Delete'){
+            handleDelete(ticketType.id)
+            setActiveSection(el)
+            setMessage(`You will permanently delete ${ticketType.name} from this section.`)
+        }
+    }}
+    />
+
 
 
 
@@ -271,12 +273,13 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                         />
                     </Box>
                     <Box>
+                        {/* Large Screen */}
                         <Box>
                             <Card sx={{
                                 display: {xs: 'none', md:'block'},
                                 boxShadow: 0, 
                                 width: {xs: 600, md: 'initial'},
-                                overflow: 'auto',
+                                overflow: 'hidden',
                                 background: 'none',
                                 }}>
                                 <CardContent>
@@ -308,34 +311,7 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                                                         </> : '-'}
                                                     </Box>
                                                     <Box sx={{minWidth: 100, textAlign: 'left'}}>
-                                                        <Dropdown
-                                                            label="Options"
-                                                            isIcon={true}
-                                                            icon={<MoreVertIcon />} 
-                                                            menuOptions={[
-                                                                {label: 'Add Ticket Type', disabled: getTotals(el.ticketTypes, 'capacity') >= el.capacity},
-                                                                {label: 'Edit', disabled: false},
-                                                                {label: 'Delete', disabled: false},
-                                                            ].map((opt) => ({label: opt.label, id: el.id, disabled: opt.disabled}))}
-                                                            onClick={(option) => {
-                                                                if(option.label === 'Add Ticket Type'){
-                                                                    setIsTicketTypeEdit()
-                                                                    setType('')
-                                                                    setActiveSection(el)
-                                                                    setOpenTicketType(!openTicketType)
-                                                                    setRemainingTicket(el.capacity - getTotals(el.ticketTypes, 'capacity'))
-                                                                }
-                                                                if(option.label === 'Edit'){
-                                                                    setActiveSection(el)
-                                                                    setIsEdit(!isEdit)
-                                                                }
-                                                                if(option.label === 'Delete'){
-                                                                    setMessage(`You will permanently delete ${el.name} and all tickets within this section.`)
-                                                                    setIsDelete(!isDelete)
-                                                                    setActiveSection(el)
-                                                                }
-                                                            }}
-                                                        />
+                                                        {sectionActions(el)}
                                                     </Box>
                                                 </Box>
 
@@ -362,25 +338,7 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                                                                         {el.currency.symbol}{ticketType.price}
                                                                     </Box>
                                                                     <Box sx={{minWidth: 100, textAlign: 'left'}}>
-                                                                        <Dropdown
-                                                                            label="Options"
-                                                                            isIcon={true}
-                                                                            icon={<MoreVertIcon />} 
-                                                                            menuOptions={[ 'Edit', 'Delete'].map((opt) => ({label: opt, id: ticketType.id}))}
-                                                                            onClick={(option) => {
-                                                                                if(option.label === 'Edit'){
-                                                                                    setRemainingTicket(el.capacity - getTotals(el.ticketTypes, 'capacity') + parseInt(ticketType.capacity))
-                                                                                    setIsTicketTypeEdit(ticketType)
-                                                                                    setType(ticketType.type)
-                                                                                    setOpenTicketType(!openTicketType)
-                                                                                }
-                                                                                if(option.label === 'Delete'){
-                                                                                    handleDelete(ticketType.id)
-                                                                                    setActiveSection(el)
-                                                                                    setMessage(`You will permanently delete ${ticketType.name} from this section.`)
-                                                                                }
-                                                                            }}
-                                                                        />
+                                                                        {ticketTypeActions(el, ticketType)}
                                                                     </Box>
                                                                 </Box>
                                                             </Card>
@@ -393,6 +351,57 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                                 </CardContent>
                             </Card>
                         </Box>
+
+                        {/* Small Screen */}
+                        <Box sx={{display: {xs: 'block', md:'none'},}}>
+                            {sections.map((el, index) => 
+                            <Card  key={`panel${index}`}>
+                                <CardContent sx={{position: 'relative'}}>
+                                    <Accordion expanded={expanded === `panel${index+1}`} onChange={handleChange(`panel${index+1}`)} sx={{boxShadow: 0, border: 'none'}}>
+                                        <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1bh-content"
+                                        id="panel1bh-header"
+                                        key={`panel${index+1}`}
+                                        >
+                                        <Typography sx={{ flexShrink: 0 }}>
+                                        {el.name}
+                                        </Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            {el.ticketTypes.map((ticketType) => 
+                                                <Box sx={{ flexGrow: 1 }} key={getRandomInt()}>
+                                                    <Grid container spacing={2}>
+                                                        <Grid item xs={8}>
+                                                        <List sx={{p: 0}}>
+                                                            <ListItem sx={{pt:0}}>
+                                                                <ListItemText primary={ticketType.name} secondary={ticketType.capacity} />
+                                                            </ListItem>
+                                                        </List>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                                                <Typography variant="body2" gutterBottom>
+                                                                    {el.currency.symbol}{ticketType.price} 
+                                                                </Typography>
+                                                                <Box>
+                                                                        {ticketTypeActions(el, ticketType)}
+                                                                    </Box>
+                                                            </Box>
+                                                        </Grid>
+                                                        
+                                                    </Grid>
+                                                </Box>
+                                            )}
+                                        </AccordionDetails>
+                                    </Accordion>
+                                    <Box sx={{position: 'absolute', top: 20, right: 0}}>
+                                        {sectionActions(el)}
+                                    </Box>
+                                </CardContent>
+                            </Card>
+                            )}
+                        </Box>                                                  
                     </Box>
                 </CustomTabPanel>
             </Box>
