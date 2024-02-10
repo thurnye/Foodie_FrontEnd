@@ -12,9 +12,8 @@ import ticket from '../../../../public/images/Event/createTicket.png'
 import { FormContainer, Input } from '../FormContainer/FormContainer';
 import { PiUserThin } from "react-icons/pi";
 import Typography from '@mui/material/Typography';
-import { getRandomInt } from '../../../../util/commons';
+import { getRandomInt, getTotals } from '../../../../util/commons';
 import Alert from '@mui/material/Alert';
-// import CountrySelect from './AutoComplete';
 
 const Img = styled('img')({
     margin: 'auto',
@@ -23,7 +22,7 @@ const Img = styled('img')({
     maxHeight: '100%',
 });
 
-const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections, disabled, remainingSection}) => {
+const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections, disabled, remainingSectionCapacity}) => {
     const defaultCurrency = {
         label: 'US Dollar - USD',
         currency: 'US Dollar',
@@ -33,22 +32,54 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections, d
     const [section, setSection] = useState();
     const [currency, setCurrency] = useState(defaultCurrency);
     const [message, setMessage] = useState('')
+    
 
     const onSubmit = (data) => {
         const {name, capacity} = data;
-        if(capacity > remainingSection){
-            setMessage(`exceeded remaining capacity of ${remainingSection} ticket(s)`);
+
+        //Check for Duplicate Names
+        const duplicatedName = sections.find((el) => el.name === name)
+        if(duplicatedName){
+            setMessage(`${name} already exist`);
             return;
         }
         setMessage();
-        if(section){
+        if(sections.length > 0 && section){
+            // Updating
+            console.log('updating...')
             const found = sections.find((el) => el.id === section.id)
             if(found){
+                
+                const updatedSections = sections
+                const totalFoundSectionCapacity = getTotals(found.ticketTypes, 'capacity')
+                const totalSectionsCapacity = getTotals(updatedSections,'capacity');
+                //check to see that the new capacity is less than the total number of all sections capacity and not greater
+                if(totalSectionsCapacity > remainingSectionCapacity){
+                    setMessage(`exceeded capacity of ${remainingSectionCapacity} ticket(s)`);
+                    return;
+                }
+                //check to see that the new capacity is not less than the total capacity of its ticketTypes
+                if(totalFoundSectionCapacity > capacity){
+                    setMessage(`cannot set capacity less than the total number of ticket(s) capacity`);
+                    return;
+                }
+
                 found.name = name;
                 found.capacity = capacity
-                setSections(sections)
+                // Adjust the Section name for all the its ticketType
+                if(found.ticketTypes.length > 0) {
+                    found.ticketTypes.forEach((ticket) => ticket.section = name)
+                }
+                
+
+                setSections(updatedSections)
             }
         }else{
+            // New Data
+            if(capacity > remainingSectionCapacity){
+                setMessage(`exceeded remaining capacity of ${remainingSectionCapacity} ticket(s)`);
+                return;
+            }
             const adjustData = {
                 ...data,
                 id: getRandomInt(),
@@ -150,7 +181,7 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections, d
                                 <DialogActions>
                                     <Button onClick={() => {
                                         setOpen(!open)
-                                        setIsEdit(!open)
+                                       setIsEdit && setIsEdit(!open)
                                         }} variant='outlined'>Cancel</Button>
                                     <Button  type="submit">{section ? 'Update' : 'Create'}</Button>
                                 </DialogActions>

@@ -6,51 +6,52 @@ import TicketForm from './TicketForm';
 import Tickets from './Tickets';
 
 
-const secs =[
+const secs = [
   {
-    "id": 64559206548,
-    "name": "General Assembly",
-    "capacity": "45",
-    "currency": {
-      "label": "US Dollar - USD",
-      "currency": "US Dollar",
-      "symbol": "$"
-    },
-    "ticketTypes": [
-      {
-        "id": 33273913744,
-        "name": "Test1",
-        "section": "General Assembly",
-        "capacity": "4",
-        "price": "4",
-        "salesEnd": 1,
-        "period": "Hour(s)",
-        "periodFrame": "Before event starts",
-        "type": "Paid"
+      "id": 77972707076,
+      "name": "General Admission",
+      "capacity": "50",
+      "currency": {
+          "label": "US Dollar - USD",
+          "currency": "US Dollar",
+          "symbol": "$"
       },
-      {
-        "id": 48275706363,
-        "name": "self",
-        "section": "General Assembly",
-        "capacity": "4",
-        "price": "43",
-        "salesEnd": 1,
-        "period": "Hour(s)",
-        "periodFrame": "Before event starts",
-        "type": "Free"
+      "ticketTypes": [
+          {
+              "id": 46569303980,
+              "name": "Testing",
+              "section": "General Admission",
+              "capacity": "15",
+              "price": "5",
+              "salesEnd": 1,
+              "period": "Hour(s)",
+              "periodFrame": "Before event starts",
+              "type": "Paid",
+              "sectionId": 77972707076
+          }
+      ]
+  },
+  {
+      "name": "VIP",
+      "capacity": "20",
+      "id": 388326920221,
+      "currency": {
+          "label": "US Dollar - USD",
+          "currency": "US Dollar",
+          "symbol": "$"
       },
-      {
-        "id": 280179038640,
-        "name": "Testing",
-        "section": "General Assembly",
-        "capacity": "3",
-        "price": "32",
-        "salesEnd": 1,
-        "period": "Hour(s)",
-        "periodFrame": "Before event starts",
-        "type": "Donation"
-      }
-    ]
+      "ticketTypes": []
+  },
+  {
+      "name": "Regular",
+      "capacity": "30",
+      "id": 48427895281,
+      "currency": {
+          "label": "US Dollar - USD",
+          "currency": "US Dollar",
+          "symbol": "$"
+      },
+      "ticketTypes": []
   }
 ]
 
@@ -72,7 +73,6 @@ const AddTickets = () => {
         tickets: data 
       }
       ));
-      
     }
 
   }, [data]);
@@ -80,7 +80,14 @@ const AddTickets = () => {
 
   
 const onSubmit = () => {
-  console.log(sections, capacity, data)
+  if(data){
+    setEventBritForm((eventBritForm) => ({ 
+      ...eventBritForm, 
+      tickets: data 
+    }
+    ));
+    setProceed(true)
+  }
 }
 
 

@@ -176,4 +176,13 @@ export const getAllDatesInRange = (startDate, endDate, intervalType) => {
 export const decodeJWToken =  (token) => {
     return jwtDecode(token)
 } 
+
+export const getTotals = (data, field) =>  data.reduce((total, entry) => {
+  return total + parseFloat(entry[field], 10);
+}, 0);
+
+export const currencyFormat = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
   

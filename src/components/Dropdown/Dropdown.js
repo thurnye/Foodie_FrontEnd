@@ -56,7 +56,7 @@ const StyledMenu = styled((props) => (
 
 
 
-const Dropdown = ({label, isIcon, icon, onClick, menuOptions}) => {
+const Dropdown = ({label, isIcon, icon, onClick, menuOptions, disabled}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 

@@ -8,79 +8,17 @@ import Typography from '@mui/material/Typography';
 import { FormHelperText } from '@mui/material';
 import { FormContainer, Input, SelectInput, AmountInput, TextArea } from '../FormContainer/FormContainer';
 import Accordion from '@mui/material/Accordion';
-import AccordionActions from '@mui/material/AccordionActions';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { getRandomInt } from '../../../../util/commons';
+import { getRandomInt, getTotals } from '../../../../util/commons';
 import Alert from '@mui/material/Alert';
+import _ from 'lodash';
 
 
 
-const data = [
-    {   
-        id: 34567,
-        name: 'General Admission',
-        currency: {
-            label: 'US Dollar - USD',
-            currency: 'US Dollar',
-            symbol: '$',
-        },
-        capacity: 100,
-        ticketTypes: [{
-            id: 12756345,
-            name: 'Free',
-            capacity: 50,
-            price: 'CA$2.00'
-        }]
-    },
-    {   
-        id: 347565067,
-        name: 'Regular Admission',
-        currency: {
-            label: 'US Dollar - USD',
-            currency: 'US Dollar',
-            symbol: '$',
-        },
-        capacity: 100,
-        ticketTypes: [{
-            id: 1234545,
-            name: 'Free',
-            capacity: 50,
-            price: 'CA$2.00'
-        }]
-    },
-    {   
-        id: 35765567,
-        name: 'VIP Admission',
-        currency: {
-            label: 'US Dollar - USD',
-            currency: 'US Dollar',
-            symbol: '$',
-        },
-        capacity: 100,
-        ticketTypes: [
-            {
-                id: 1233445,
-                name: 'Free',
-                capacity: 50,
-                price: 'CA$2.00'
-            },
-            {
-                id: 1235634450,
-                name: 'Paid',
-                capacity: 50,
-                price: 'CA$12.00'
-            },
-            {
-                id: 12336864456,
-                name: 'Donations',
-                capacity: 50,
-                price: 'CA$1.00'
-            },
-        ]
-    }
-]
+
+
 
 export default function TicketTypes({remainingTicket,open, setOpen, section, setSections, sections, ticketType, setTicketType, editTicketType, SectionCapacity}) {
     
@@ -89,8 +27,6 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
     const [typeError, setTypeError] = useState(false);
     const [sectionOptions, setSectionOptions] = useState([]);
     const [message, setMessage] = useState()
-
-
 
     useEffect(() => {
         setType(ticketType)
@@ -112,15 +48,40 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
         setMessage();
         if(editTicketType){
             // Updating
-            const updatedSections = sections.map(section => ({
-                ...section,
-                ticketTypes: section.ticketTypes.map(ticketType =>
-                ticketType.id === editTicketType.id ? { ...ticketType, ...data, ...type } : ticketType
-                )
-            }));
-            setSections(updatedSections);
-        }
+            const oldSection = sections.find((el) => el.name === editTicketType.section)
+            const foundSection = sections.find((el) => el.name === data.section);
+            if (foundSection) {
+                const newTicket = { ...data, type, sectionId: foundSection.id };
+                const existingTicketIndex = foundSection.ticketTypes.findIndex(ticketType => ticketType.id === editTicketType.id);
 
+                if (existingTicketIndex !== -1) {
+                    // Ticket exists, update it with a deep copy
+                    foundSection.ticketTypes[existingTicketIndex] = _.merge({}, foundSection.ticketTypes[existingTicketIndex], newTicket);
+                }  
+                if(existingTicketIndex){
+                   
+                    //check to see if it exceed the section capacity
+                    if(newTicket.capacity > foundSection.capacity){
+                        setMessage(`cannot exceeded capacity of ${foundSection.capacity} ticket(s) for ${data.section} section`);
+                        return;
+                    }
+                    //check to  see if it exceeds the remaining ticket ticket capacity
+                    const foundSectionRemainingCapacity = foundSection.capacity - getTotals(foundSection.ticketTypes, 'capacity');
+                    if(newTicket.capacity > foundSectionRemainingCapacity){
+                        setMessage(`cannot exceeded remaining capacity of ${foundSectionRemainingCapacity} ticket(s) for ${data.section} section`);
+                        return;
+                    }
+
+                     // remove the existing ticket from the old section tickeTypes
+                     oldSection.ticketTypes = oldSection.ticketTypes.filter(ticketType => ticketType.id !== editTicketType.id);
+                    
+                    //Ticket doesn't exist, add it
+                    foundSection.ticketTypes.push(newTicket);
+                }
+                // Now update the sections array if needed
+                
+            }
+    }
         // Creating New Ticket
         if(!editTicketType){
             if (data && type) {
@@ -129,13 +90,19 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
         
             if (findOne) {
                 const { ticketTypes } = findOne;
-                findOne.ticketTypes = [...ticketTypes, newData];
+                findOne.ticketTypes = [...ticketTypes, {...newData, sectionId: findOne.id}];
             } else {
+                const newSectionId = getRandomInt()
+                const defaultSectionName = "General Admission"
                 // When there is no section so we create a new one
-                const adjustedData = { ...newData, section: "General Assembly" };
+                const adjustedData = { 
+                    ...newData, 
+                    section: defaultSectionName, 
+                    sectionId: newSectionId
+                };
                 const defaultSection = {
-                id: getRandomInt(),
-                name: "General Assembly",
+                id: newSectionId,
+                name: defaultSectionName,
                 capacity: data.capacity,
                 currency: {
                         label: 'US Dollar - USD',
@@ -153,18 +120,21 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
         handleClose();
     };
     
-    
     useEffect(() => {
-        if(sections.length > 0){
-        setSectionOptions(sections.map((el) => el.name));
-        }
-    },[sections])
+            console.log({sections})
+            const options = sections?.map((el) => ({label: el.name, value: el.name}))
+        setSectionOptions(options);
+     
+    },[sections, open])
 
     const handleClose = () => {
         setOpen(!open)
         setMessage('')
         setTypeError('')
     }
+
+
+
 
 
     return (
@@ -218,7 +188,7 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                         />
                     </Box>
                     
-                    <Box sx={{}}>
+                    <Box>
                         <SelectInput 
                             disabled={sectionOptions.length === 0 ? true : false}
                             options={sectionOptions}
@@ -251,10 +221,11 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                             type="number"
                             name="price" 
                             label="Price"
-                            isRequired={true} 
+                            isRequired={type === 'Free' ?  false : true} 
                             errorMessage='Price is required!'
                             symbol={section?.currency?.symbol ?? '$'}
-                            defaultValue={editTicketType?.price}
+                            defaultValue={type === 'Free' ?  0 : editTicketType?.price}
+                            disabled={type === 'Free' ?  true : false}
                         />
                     </Box>
                     <Box sx={{}}>
@@ -275,7 +246,20 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                             </Box>
                             <Box sx={{width: '49%'}}>
                                 <SelectInput 
-                                    options={['Day(s)', 'Hour(s)', 'Minute(s)']}
+                                    options={[
+                                        {
+                                            label:'Day(s)',
+                                            value: 'Day(s)'
+                                        }, 
+                                            {
+                                            label:'Hour(s)',
+                                            value: 'Hour(s)'
+                                        }, 
+                                            {
+                                            label:'Minute(s)',
+                                            value: 'Minute(s)'
+                                        }
+                                    ]}
                                     isMulti={false}
                                     name="period" 
                                     isRequired={true} 
@@ -286,7 +270,7 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                         </Box>
                         <Box>
                             <SelectInput 
-                                options={['Before event starts', 'Before event ends']}
+                                options={[{label:'Before event starts', value:'Before event starts'}, {label:'Before event ends', value:'Before event ends'}]}
                                 isMulti={false}
                                 name="periodFrame" 
                                 isRequired={true} 

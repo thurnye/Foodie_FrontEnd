@@ -137,7 +137,7 @@ export const TextArea = ({ type, max, min, control,size, errors, maxLength,isReq
   </Box>
 );
 
-export const AmountInput = ({ type, control, errors, symbol,isRequired, name, label, placeholder, errorMessage, defaultValue, ...rest }) => (
+export const AmountInput = ({ type, control, errors, symbol, disabled, isRequired, name, label, placeholder, errorMessage, defaultValue, ...rest }) => (
   <Box sx={{ mb: 3 }}>
     <Controller
       name={name}
@@ -157,6 +157,7 @@ export const AmountInput = ({ type, control, errors, symbol,isRequired, name, la
               label={label}
               fullWidth
               // size="small"
+              disabled={disabled}
               placeholder={placeholder}
               defaultValue={defaultValue}
               error={errors[name] ? true : false}
@@ -327,9 +328,9 @@ export const SelectInput = ({ control, errors, options, name, disabled, label, i
       <FormControl fullWidth disabled={disabled}>
         <InputLabel id="demo-simple-select-label">{label}</InputLabel>
         <Select {...field} variant="outlined" fullWidth label={label} isMulti={isMulti} {...rest}>
-          {options.map((value) => (
-            <MenuItem key={value} value={value}>
-              {value}
+          {options.map((option) => (
+            <MenuItem key={option.value} value={option.value}>
+              {option.label}
             </MenuItem>
           ))}
         </Select>

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -12,7 +11,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import TicketTypes from './TicketTypes';
 import Fade from '@mui/material/Fade';
-import { getRandomInt } from '../../../../util/commons';
+import { getRandomInt, getTotals, currencyFormat } from '../../../../util/commons';
 import Dropdown from '../../../../components/Dropdown/Dropdown';
 import { LuHeart } from "react-icons/lu";
 import { MdOutlineMoneyOff } from "react-icons/md";
@@ -95,7 +94,7 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
     const [isDelete, setIsDelete] = useState(false)
     const [addMoreSection, setAddMoreSection] = useState(false)
     const [message, setMessage] = useState()
-    const [remainingSection, setRemainingSection] = useState(capacity)
+    const [remainingSectionCapacity, setRemainingSectionCapacity] = useState(capacity.value)
     const [remainingTicket, setRemainingTicket] = useState()
 
     
@@ -127,16 +126,14 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
     
     }
 
-    const getTotals = (data, field) =>  data.reduce((total, entry) => {
-    return total + parseInt(entry[field], 10);
-    }, 0);
-
+   
     useEffect(() => {
+        console.log(sections);
         const totalSectionsCapacity = getTotals(sections, 'capacity');
         if( totalSectionsCapacity >= capacity.value){
             setAddMoreSection(true)
         } else{
-            setRemainingSection(parseInt(capacity.value) - totalSectionsCapacity )
+            setRemainingSectionCapacity(parseInt(capacity.value) - totalSectionsCapacity )
             setAddMoreSection(false)
         }
     },[sections, capacity]);
@@ -169,6 +166,7 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
       if(option.label === 'Edit'){
           setActiveSection(el)
           setIsEdit(!isEdit)
+          setRemainingSectionCapacity(capacity.value)
       }
       if(option.label === 'Delete'){
           setMessage(`You will permanently delete ${el.name} and all tickets within this section.`)
@@ -269,7 +267,7 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                             setIsEdit={setIsEdit}
                             sections={sections}
                             disabled={addMoreSection}
-                            remainingSection={remainingSection}
+                            remainingSectionCapacity={remainingSectionCapacity}
                         />
                     </Box>
                     <Box>
@@ -307,7 +305,7 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                                                     </Box>
                                                     <Box sx={{minWidth: 100, mr: 2, textAlign: 'right'}}>
                                                         {el.ticketTypes.length > 0 ? <>
-                                                            {el.currency.symbol}{getTotals(el.ticketTypes, 'price')}
+                                                            {currencyFormat.format(getTotals(el.ticketTypes, 'price'))}
                                                         </> : '-'}
                                                     </Box>
                                                     <Box sx={{minWidth: 100, textAlign: 'left'}}>
@@ -335,7 +333,7 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                                                                         </Typography>
                                                                     </Box>
                                                                     <Box sx={{minWidth: 100, mr: 2, textAlign: 'right'}}>
-                                                                        {el.currency.symbol}{ticketType.price}
+                                                                        {currencyFormat.format(ticketType.price)}
                                                                     </Box>
                                                                     <Box sx={{minWidth: 100, textAlign: 'left'}}>
                                                                         {ticketTypeActions(el, ticketType)}
@@ -382,7 +380,8 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                                                         <Grid item xs={4}>
                                                             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                                                                 <Typography variant="body2" gutterBottom>
-                                                                    {el.currency.symbol}{ticketType.price} 
+                                                                    {/* {el.currency.symbol}{ticketType.price}  */}
+                                                                    {currencyFormat.format(ticketType.price)}
                                                                 </Typography>
                                                                 <Box>
                                                                         {ticketTypeActions(el, ticketType)}
