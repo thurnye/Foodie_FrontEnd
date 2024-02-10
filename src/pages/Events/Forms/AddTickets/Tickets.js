@@ -95,7 +95,8 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
     const [addMoreSection, setAddMoreSection] = useState(false)
     const [message, setMessage] = useState()
     const [remainingSectionCapacity, setRemainingSectionCapacity] = useState(capacity.value)
-    const [remainingTicket, setRemainingTicket] = useState()
+    const [remainingTicket, setRemainingTicket] = useState();
+    const totalSectionsCapacity = getTotals(sections, 'capacity'); 
 
     
     
@@ -128,15 +129,13 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
 
    
     useEffect(() => {
-        console.log(sections);
-        const totalSectionsCapacity = getTotals(sections, 'capacity');
         if( totalSectionsCapacity >= capacity.value){
             setAddMoreSection(true)
         } else{
             setRemainingSectionCapacity(parseInt(capacity.value) - totalSectionsCapacity )
             setAddMoreSection(false)
         }
-    },[sections, capacity]);
+    },[totalSectionsCapacity, capacity]);
 
 
     const [expanded, setExpanded] = React.useState(false);
@@ -213,7 +212,7 @@ const Tickets = ({setSections, sections, capacity, setCapacity}) => {
                 />
                 <Box sx={{display: 'flex', justifyContent: 'flex-end', alignItems:"center"}}>
                     <Typography variant="body2" gutterBottom sx={{mt: 2}}>
-                    Event Capacity:  {getTotals(sections, 'capacity')}/{capacity.value}
+                    Event Capacity:  {totalSectionsCapacity}/{capacity.value}
                     </Typography>
                     <IconButton aria-label="fingerprint" onClick={() => setOpen(!open)} sx={{mt: 0.8}}fontSize="small">
                         <ModeIcon />

@@ -121,7 +121,6 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
     };
     
     useEffect(() => {
-            console.log({sections})
             const options = sections?.map((el) => ({label: el.name, value: el.name}))
         setSectionOptions(options);
      
@@ -202,8 +201,7 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                     </Box>
                     
                     <Box sx={{}}>
-                        <Input 
-                            type="number"
+                        <AmountInput 
                             name="capacity" 
                             label="Capacity"
                             isRequired={true} 
@@ -214,18 +212,18 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                             <FormHelperText id="component-error-text" sx={{ color: 'secondary' }}>
                                 Limit the total that can be sold of this specific ticket type
                             </FormHelperText>
-                        </Input>
+                        </AmountInput>
                     </Box>
                     <Box sx={{}}>
                         <AmountInput 
-                            type="number"
                             name="price" 
                             label="Price"
                             isRequired={type === 'Free' ?  false : true} 
                             errorMessage='Price is required!'
                             symbol={section?.currency?.symbol ?? '$'}
-                            defaultValue={type === 'Free' ?  0 : editTicketType?.price}
+                            defaultValue={type === 'Free' ?  0 : (editTicketType?.price ?? '')}
                             disabled={type === 'Free' ?  true : false}
+                            customValues={type === 'Free' ?  true : false}
                         />
                     </Box>
                     <Box sx={{}}>

@@ -137,7 +137,7 @@ export const TextArea = ({ type, max, min, control,size, errors, maxLength,isReq
   </Box>
 );
 
-export const AmountInput = ({ type, control, errors, symbol, disabled, isRequired, name, label, placeholder, errorMessage, defaultValue, ...rest }) => (
+export const AmountInput = ({ control, errors, symbol, disabled, isRequired, name, label, placeholder, errorMessage, defaultValue, customValues, ...rest }) => (
   <Box sx={{ mb: 3 }}>
     <Controller
       name={name}
@@ -148,38 +148,18 @@ export const AmountInput = ({ type, control, errors, symbol, disabled, isRequire
       }}
       render={({ field }) => (
         <Box sx={{position: 'relative'}}>
-          <FormControl fullWidth>
-            <InputLabel htmlFor="outlined-adornment-amount">{label}</InputLabel>
-            <OutlinedInput
-              {...field}
-              id="outlined-adornment-amount"
-              startAdornment={<InputAdornment position="start">{symbol}</InputAdornment>}
-              label={label}
+          <TextField
               fullWidth
-              // size="small"
-              disabled={disabled}
+              type="number"
+              inputProps={{ min: 0 }}
+              label={label}
               placeholder={placeholder}
               defaultValue={defaultValue}
               error={errors[name] ? true : false}
+              variant="outlined"
+              disabled={disabled}
+              {...(customValues && { value: 0 })}
             />
-          </FormControl>
-          {/* <TextField
-            {...field}
-            label={label}
-            fullWidth
-            type={type ? type : 'text'}
-            size="small"
-            placeholder={placeholder}
-            defaultValue={defaultValue}
-            error={errors[name] ? true : false}
-            {...(maxLength && { inputProps: { maxLength } })}
-          /> */}
-          {/* Display error message if there is an error */}
-          {/* {maxLength && (
-            <FormHelperText id="component-error-text" sx={{ color: 'text.secondary', position: 'absolute', right: 0 }}>
-              {`${field.value ? field.value.length : 0}/${maxLength}`}
-            </FormHelperText>
-          )} */}
           {errors[name] && (
             <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
               {errors[name].message}
@@ -188,8 +168,6 @@ export const AmountInput = ({ type, control, errors, symbol, disabled, isRequire
         </Box>
       )}
       />
-      {/* Additional custom components passed as children */}
-      {/* {children && <Box>{children}</Box>} */}
   </Box>
 );
 

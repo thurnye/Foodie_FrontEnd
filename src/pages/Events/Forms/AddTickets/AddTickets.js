@@ -10,7 +10,7 @@ const secs = [
   {
       "id": 77972707076,
       "name": "General Admission",
-      "capacity": "50",
+      "capacity": "40",
       "currency": {
           "label": "US Dollar - USD",
           "currency": "US Dollar",

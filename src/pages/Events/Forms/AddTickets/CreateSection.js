@@ -9,7 +9,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import ticket from '../../../../public/images/Event/createTicket.png'
-import { FormContainer, Input } from '../FormContainer/FormContainer';
+import { FormContainer, Input, AmountInput } from '../FormContainer/FormContainer';
 import { PiUserThin } from "react-icons/pi";
 import Typography from '@mui/material/Typography';
 import { getRandomInt, getTotals } from '../../../../util/commons';
@@ -37,16 +37,16 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections, d
     const onSubmit = (data) => {
         const {name, capacity} = data;
 
-        //Check for Duplicate Names
-        const duplicatedName = sections.find((el) => el.name === name)
-        if(duplicatedName){
-            setMessage(`${name} already exist`);
-            return;
-        }
+        
         setMessage();
         if(sections.length > 0 && section){
             // Updating
-            console.log('updating...')
+            const duplicatedName = sections.find(element => element.id !== section.id && element.name === name)
+            //Check for Duplicate Names
+            if(duplicatedName){
+                setMessage(`${name} already exist`);
+                return;
+            }
             const found = sections.find((el) => el.id === section.id)
             if(found){
                 
@@ -64,18 +64,24 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections, d
                     return;
                 }
 
+                
+
                 found.name = name;
                 found.capacity = capacity
                 // Adjust the Section name for all the its ticketType
                 if(found.ticketTypes.length > 0) {
                     found.ticketTypes.forEach((ticket) => ticket.section = name)
                 }
-                
-
                 setSections(updatedSections)
             }
         }else{
             // New Data
+            //Check for Duplicate Names
+            const duplicatedName = sections.find(element => element.name === name)
+            if(duplicatedName){
+                setMessage(`${name} already exist`);
+                return;
+            }
             if(capacity > remainingSectionCapacity){
                 setMessage(`exceeded remaining capacity of ${remainingSectionCapacity} ticket(s)`);
                 return;
@@ -154,8 +160,7 @@ const CreateSection = ({setSections, editSection, isEdit, setIsEdit, sections, d
                                                 />
                                             </Box>
                                             <Box>
-                                                <Input 
-                                                    type="number"
+                                                <AmountInput
                                                     name="capacity" 
                                                     label="Section capacity"
                                                     isRequired={true} 
