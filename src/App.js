@@ -26,9 +26,9 @@ import UpdateRecipe from './pages/updateRecipe'
 import NewRecipe from './pages/newRecipe'
 
 
-import DashboardInfo from './components/Dashboard/DashboardInfo/DashboardInfo'
-import BlogManager from './components/Dashboard/BlogManager/BlogManager'
-import Notification from './components/Dashboard/Notification/Notification'
+import DashboardInfo from './components/TestingDashboard/DashboardInfo/DashboardInfo'
+import BlogManager from './components/TestingDashboard/BlogManager/BlogManager'
+import Notification from './components/TestingDashboard/Notification/Notification'
 // import Footer from './elements/<Footer/>/footer'
 
 
@@ -36,17 +36,21 @@ import './public/css/hover.css'
 import './App.css';
 import Dashboard from './pages/Dashboard/Dashboard';
 import UserRecipeList from './components/CompleteRegistrationForm/userRecipeList';
-import Events from './components/Dashboard/Events/EventsContainer/EventsContainer'
-import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks'
+import Events from './components/TestingDashboard/Events/EventsContainer/EventsContainer'
+import SavedBookmarks from './components/TestingDashboard/SavedBookmarks/SavedBookmarks'
 import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 
-import AddEvent from './components/Dashboard/Events/AddEvent/AddEvent';
-import EventListContainer from './components/Dashboard/Events/EventsList/EventListContainer';
-import SingleEvent from './components/Dashboard/Events/SingleEvent/SingleEvent';
-import EventBrit from './pages/Events/EventBrit/EventBrit';
-import CreateEvent from './pages/Events/CreateEvent/CreateEvent';
-import DashBoardContent from './pages/Events/Dashboard/DashBoardContent';
-import Organizer from './pages/Events/Organizer/Organizer';
+import AddEvent from './components/TestingDashboard/Events/AddEvent/AddEvent';
+import EventListContainer from './components/TestingDashboard/Events/EventsList/EventListContainer';
+import SingleEvent from './components/TestingDashboard/Events/SingleEvent/SingleEvent';
+
+
+
+import EventBrit from './components/Dashboard/DashboardContents/EventBrit/EventBrit';
+import CreateEvent from './components/Dashboard/Events/CreateEvent/CreateEvent';
+import DashBoardContent from './components/Dashboard/DashboardContents/DashBoardContent';
+import Organizer from './components/Dashboard/Events/Organizer/Organizer'
+import EventFeed from './components/Dashboard/Events/EventFeed/EventFeed'
 
 
 
@@ -122,6 +126,7 @@ function App() {
           {/* Testing */}
           <Route path="eventbrit" element={<EventBrit/>}>
             <Route path="dashboard" element={<DashBoardContent/> }/>
+            <Route path="events-feeds" element={<EventFeed/> }/>
             <Route path="create-event" element={<CreateEvent isLoaded={isLoaded} />} />
             <Route path="organizer" element={<Organizer/>} />
 

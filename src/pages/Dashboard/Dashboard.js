@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import styles from './Dashboard.module.css';
 import { Menu } from 'react-feather';
-import DashboardNav from '../../components/Dashboard/DashboardNav/DashboardNav';
+import DashboardNav from '../../components/TestingDashboard/DashboardNav/DashboardNav';
 
 const Dashboard = () => {
   const [show, setShow] = useState(false);
