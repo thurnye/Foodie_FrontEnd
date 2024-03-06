@@ -22,6 +22,7 @@ const CreateEvent = ({isLoaded}) => {
   const [currentFormStep, setCurrentFormStep] = useState(0);
   let edit = location.state?.edit
   const [eventForm, setEventForm] = useState(edit ? event : defaultForm);
+  const [saveResultStatus, setSaveResultStatus] = useState();
 
   const getCurrentForm = (step) => {
     switch (step) {
@@ -35,7 +36,7 @@ const CreateEvent = ({isLoaded}) => {
         return (<AddTickets/>)
       case 4:
         return (<Publish/>)
-      case 4:
+      case 5:
         return (<GoLive/>)
       default:
         return <></>
@@ -46,7 +47,7 @@ const CreateEvent = ({isLoaded}) => {
   <div className={styles.CreateEvent}>
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <div>
-      <AddEventFormContext.Provider value={{formSteps, currentFormStep, setCurrentFormStep,eventForm, setEventForm, 
+      <AddEventFormContext.Provider value={{formSteps, currentFormStep, setCurrentFormStep,eventForm, setEventForm, saveResultStatus, setSaveResultStatus
     }}>   
       {getCurrentForm(currentFormStep)}
     </AddEventFormContext.Provider>

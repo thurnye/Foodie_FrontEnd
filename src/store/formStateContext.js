@@ -131,9 +131,11 @@ const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Publish
 export const AddEventFormContext = createContext({
   eventForm: defaultForm,
   setEventForm: (form) => form,
-  currentFormStep: 'Event Details',
+  currentFormStep: 'Basic Info',
   formSteps,
-  setCurrentFormStep: (step) => step
+  setCurrentFormStep: (step) => step,
+  saveResultStatus : 200,  //default save successful,
+  setSaveResultStatus: (status) => status
     
 })
 

@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
+import {useSelector} from 'react-redux'
 import FormDirection from '../../../../components/Dashboard/Events/Forms/FormDirection/FormDirection';
 import styles from './Publish.module.css';
 import { useAddEventFormContext } from '../../../../store/formStateContext';
+import services from '../../../../util/services';
 import Box from '@mui/material/Box';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
@@ -17,7 +19,8 @@ import Preview from './Preview'
 
 const Publish = () => {
   const [proceed, setProceed] = useState(false);
-  const { eventForm} = useAddEventFormContext();
+  const user = useSelector(state => state.userLog?.user?.user)
+  const { eventForm, setSaveResultStatus} = useAddEventFormContext();
   const coverImage = eventForm.details.images[0]?.imgPath
   const totalSectionsCapacity = getTotals(eventForm.tickets.sections, 'capacity');
 
@@ -33,7 +36,24 @@ const Publish = () => {
     });
 
     return totalPrice;
-};
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const data = {
+        userId: user._id,
+        eventForm
+      }
+      const result  = await services.postEvent(data);
+      console.log(result);
+      setSaveResultStatus(result.status)
+      setProceed(true);
+    } catch (error) {
+      setSaveResultStatus(error.status)
+      console.log(error);
+    }
+    //sent to the backend here
+  };
 
   return(
   <div className={styles.Publish}>
@@ -111,7 +131,7 @@ const Publish = () => {
           </Paper>
         </Box>
     </Box>
-    <FormDirection onSubmit={() => setProceed(true)} proceed={proceed}/>
+    <FormDirection onSubmit={() => handleSubmit()} proceed={proceed}/>
   </div>
 )};
 

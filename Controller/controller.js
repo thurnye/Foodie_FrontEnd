@@ -386,6 +386,60 @@ const postDeleteARecipe = async (req, res, next) => {
 }
 
 //POST NEW EVENT
+// const postEvent = async(req, res, next) => {
+//     try {
+//         const userId = req.body.userId;
+//         const eventForm = req.body.eventForm;
+//         const eventId = req.body.eventForm._id
+
+//         console.log(userId, eventId, eventForm)
+
+//         const newEvent = new Event({
+//             ...eventForm,
+//             eventDetails:{ 
+//                 ...eventForm.eventDetails,
+//                 starts: new Date(eventForm.eventDetails.starts),
+//                 ends: new Date(eventForm.eventDetails.starts)
+//             },
+//             createdBy: userId, 
+//             attendees:[]
+//         })
+
+//         //Update Event
+//         if(eventId){
+//             const event = await Event.findById(eventId);
+            
+//             if(event._id.toString() === eventId.toString() && event.createdBy.toString() === userId.toString()){
+//                 event.eventDetails = eventForm.eventDetails
+//                 event.tickets = eventForm.tickets
+//                 event.additionalSettings = eventForm.additionalSettings
+
+//                 await event.save();
+//                 console.log('Updated')
+//             }
+//         }
+        
+//         //Create NewEvent
+//         if(!eventId){
+//             let savedEvent = await newEvent.save()
+//             const eventId = savedEvent._id
+//             const foundUser = await User.findById(userId)
+//             foundUser.events.myEvents.push(eventId)
+//             await foundUser.save()
+//             console.log('Saved')
+
+//         }
+
+//         const user =  await User.findById(userId).populate({
+//             path: 'events.myEvents'
+//         }).exec()
+//         const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+//         res.status(200).json(token)
+//     } catch (err) {
+//         console.log(err);
+//         res.status(400).json(err)
+//     }
+// }
 const postEvent = async(req, res, next) => {
     try {
         const userId = req.body.userId;
@@ -396,23 +450,18 @@ const postEvent = async(req, res, next) => {
 
         const newEvent = new Event({
             ...eventForm,
-            eventDetails:{ 
-                ...eventForm.eventDetails,
-                starts: new Date(eventForm.eventDetails.starts),
-                ends: new Date(eventForm.eventDetails.starts)
-            },
             createdBy: userId, 
             attendees:[]
         })
 
-        //Update Event
+        // Update Event
         if(eventId){
             const event = await Event.findById(eventId);
-            
             if(event._id.toString() === eventId.toString() && event.createdBy.toString() === userId.toString()){
-                event.eventDetails = eventForm.eventDetails
+                event.basicInfo = eventForm.basicInfo
+                event.details = eventForm.details
+                event.schedule = eventForm.schedule
                 event.tickets = eventForm.tickets
-                event.additionalSettings = eventForm.additionalSettings
 
                 await event.save();
                 console.log('Updated')
