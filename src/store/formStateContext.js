@@ -97,24 +97,40 @@ export const defaultEventForm = {
 
 export const defaultForm = {
   basicInfo: {
-    eventTitle:"Festival 2024",
-    // displayEndTime:"",
+    eventTitle:"",
+    displayEndTime: '',
     // ends:"",
-    // location:"",
-    // organizer:"",
+    locationState: "venue",
+    dateOccurrence: "recurring",
+    dateTime:{
+      start: "",
+      end: "",
+  },
+    location:"",
+    organizer:"",
     // starts: "",
-    // tags: undefined
-  }
-  
+    tags: []
+  },
+  schedule:[],
+  details: {
+    images: [],
+    summary: "",
+    about: [],
+    faqs: []
+  },
+  tickets:  {
+    capacity:{
+      "type": "Up to 100 tickets",
+      "value": 100
+  },
+  sections:[]
+  } 
 }
 
-const formSteps = ['Event Details', 'Create Ticket', 'Additional Settings'];
-
+const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Publish']
 export const AddEventFormContext = createContext({
-  eventForm: defaultEventForm,
-  eventBritForm: defaultForm,
+  eventForm: defaultForm,
   setEventForm: (form) => form,
-  setEventBritForm: (form) => form,
   currentFormStep: 'Event Details',
   formSteps,
   setCurrentFormStep: (step) => step

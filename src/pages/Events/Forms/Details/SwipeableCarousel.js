@@ -127,7 +127,7 @@ function SwipeableCarousel({setEventImages, eventImages}) {
                   <Box
                     component="img"
                     sx={{
-                      height: {sx : 300, md: 500},
+                      // height: {sx : 300, md: 500},
                       display: 'block',
                       maxWidth: '100%',
                       overflow: 'hidden',

@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import { Card, CardContent, CardMedia } from '@mui/material';
 import { MdOutlineEdit } from "react-icons/md";
 import About from './About';
-import FAQs from './faqs';
+import FAQs from './FAQs';
 import OverView from './Overview';
 import parser from 'html-react-parser';
 import Accordion from '@mui/material/Accordion';
@@ -19,14 +19,14 @@ import ImageLayout from './ImageLayout';
 
 
 
-const defaultTitle = 'Festival 2024'
 
-const DetailsForm = ({setData}) => {
+
+const DetailsForm = ({setData, defaultValues, defaultTitle}) => {
     const [proceed, setProceed] = useState(false);
-    const [about, setAbout] = useState([])
-    const [faqs, setFaqs] = useState([])
-    const [eventImages, setEventImages] = useState([])
-    const [summary, setSummary] = useState('')
+    const [about, setAbout] = useState(defaultValues.about)
+    const [faqs, setFaqs] = useState(defaultValues.faqs)
+    const [eventImages, setEventImages] = useState(defaultValues.images)
+    const [summary, setSummary] = useState(defaultValues.summary)
     const [activeSection, setActiveSection] = useState("")
     const [isHovered, setIsHovered] = useState("");
 
@@ -54,15 +54,13 @@ const DetailsForm = ({setData}) => {
         const details = {
             images: eventImages,
             summary,
-            ...about,
-            ...faqs
+            about,
+            faqs
         }
         console.log(details)
         setData(details);
         setProceed(true);
     };
-
-
 
     return (
         <div>
@@ -138,7 +136,7 @@ const DetailsForm = ({setData}) => {
                                     Use this section to provide more details about your event. You can include things to know, venue information, parking, accessibility options-anything that will help people know what to expect.
                                 </Typography>
                             </> : <>
-                                    {about?.about?.map((el, i) => {
+                                    {about?.map((el, i) => {
 
                                         return <Box sx={{width: '100%', mb: 3}}>
                                             
@@ -147,7 +145,7 @@ const DetailsForm = ({setData}) => {
                                             </Box>}
 
                                             {el.type === 'image' &&  <Box sx={{ maxWidth: 650, m: 'auto'}}>
-                                                    {!el.isMultiple ? 
+                                                    {/* {!el.isMultiple ? 
                                                         <Box sx={{mb: 3}}>
                                                             <img src={el.value} 
                                                             className="card-img" 
@@ -160,24 +158,17 @@ const DetailsForm = ({setData}) => {
                                                             <Card sx={{boxShadow: 'none', border:0}}>
                                                                 <CardContent>
                                                                     <ImageLayout layout={el.layout} imageList={el.value}/>
-                                                                    {/* <Box sx={{ flexGrow: 1 }}>
-                                                                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                                                            {el.value.map((val, index) => (
-                                                                            <Grid item xs={12} sm={4} md={4} key={index}>
-                                                                                <img src={val} 
-                                                                                    className="card-img" 
-                                                                                    alt="event_banner"
-                                                                                    style={{ width: '10rem', objectFit: 'contain'}}
-                                                                                    />
-                                                                            </Grid>
-                                                                            ))}
-                                                                        </Grid>
-                                                                        </Box> */}
-
                                                                 </CardContent>
                                                             </Card>
                                                         </Box>
-                                                    }
+                                                    } */}
+                                                    <Box sx={{mb:3}}>
+                                                            <Card sx={{boxShadow: 'none', border:0}}>
+                                                                <CardContent>
+                                                                    <ImageLayout isMultiple={el.isMultiple} imageList={el.value}/>
+                                                                </CardContent>
+                                                            </Card>
+                                                        </Box>
                                             </Box>}
 
                                             {el.type === 'video' && <Box sx={{ maxWidth: 650, m: 'auto'}}>
@@ -209,9 +200,9 @@ const DetailsForm = ({setData}) => {
 
                                 <Box sx={{mb:2}}>
                                     <About 
-                                    setAbout={setAbout} 
-                                    about={about}
-                                    setActiveSection={setActiveSection}
+                                        setAbout={setAbout} 
+                                        about={about}
+                                        setActiveSection={setActiveSection}
                                     />
                                 </Box>
                             </CardContent>
@@ -230,7 +221,7 @@ const DetailsForm = ({setData}) => {
                     >
                         {isHovered === 'faqForm' && getEditIcons('faqForm')}
                         <CardContent>
-                        {faqs.length === 0 ? <>
+                        {faqs?.length === 0 ? <>
                             <Typography variant="h5" gutterBottom sx={{mb:3}}>
                                 Add more sections to your event page
                             </Typography>
@@ -243,7 +234,7 @@ const DetailsForm = ({setData}) => {
                                     <Typography variant="h5" gutterBottom sx={{mb:3}}>
                                         Frequently Asked Questions
                                     </Typography>
-                                    {faqs?.faqs?.map((el) => <Accordion sx={{ maxWidth: 650, mb: 1}} key={getRandomInt()}>
+                                    {faqs?.map((el) => <Accordion sx={{ maxWidth: 650, mb: 1}} key={getRandomInt()}>
                                         <AccordionSummary
                                             expandIcon={<MdExpandMore />}
                                             aria-controls="panel1a-content"
@@ -278,9 +269,9 @@ const DetailsForm = ({setData}) => {
 
                                 <Box sx={{mb:2}}>
                                     <FAQs 
-                                    setFaqs={setFaqs} 
-                                    faqs={faqs}
-                                    setActiveSection={setActiveSection}
+                                        setFaqs={setFaqs} 
+                                        faqs={faqs}
+                                        setActiveSection={setActiveSection}
                                     />
                                 </Box>
                             </CardContent>

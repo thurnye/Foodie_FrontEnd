@@ -1,19 +1,27 @@
 import React, {useState} from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './CreateEvent.module.css';
 import Container from '@mui/material/Container';
 import AddTickets from '../Forms/AddTickets/AddTickets'
 import BasicInfos from '../Forms/BasicInfos/BasicInfos'
 import Details from '../Forms/Details/Details'
 import Publish from '../Forms/Publish/Publish'
+import GoLive from '../Forms/GoLive/GoLive'
 import Schedule from '../Forms/Schedule/Schedule'
-import { AddEventFormContext } from '../../../store/formStateContext';
+import { AddEventFormContext, defaultForm } from '../../../store/formStateContext';
 
 
 
 const CreateEvent = ({isLoaded}) => {
-  const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Publish'];
-  const [currentFormStep, setCurrentFormStep] = useState(3);
-  const [eventBritForm, setEventBritForm] = useState();
+  let location = useLocation();
+  let navigate = useNavigate();
+  const event = location.state?.event;
+  const userId = location.state?.userId;
+  
+  const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Publish', 'Go Live'];
+  const [currentFormStep, setCurrentFormStep] = useState(0);
+  let edit = location.state?.edit
+  const [eventForm, setEventForm] = useState(edit ? event : defaultForm);
 
   const getCurrentForm = (step) => {
     switch (step) {
@@ -27,6 +35,8 @@ const CreateEvent = ({isLoaded}) => {
         return (<AddTickets/>)
       case 4:
         return (<Publish/>)
+      case 4:
+        return (<GoLive/>)
       default:
         return <></>
     }
@@ -36,7 +46,7 @@ const CreateEvent = ({isLoaded}) => {
   <div className={styles.CreateEvent}>
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <div>
-      <AddEventFormContext.Provider value={{eventBritForm, setEventBritForm,formSteps, currentFormStep, setCurrentFormStep, 
+      <AddEventFormContext.Provider value={{formSteps, currentFormStep, setCurrentFormStep,eventForm, setEventForm, 
     }}>   
       {getCurrentForm(currentFormStep)}
     </AddEventFormContext.Provider>

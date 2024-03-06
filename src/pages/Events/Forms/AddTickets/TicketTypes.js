@@ -85,7 +85,7 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
         // Creating New Ticket
         if(!editTicketType){
             if (data && type) {
-            const newData = { id: getRandomInt(), ...data, type };
+            const newData = { id: getRandomInt(), ...data, type, sold: 0 };
             const findOne = sections.find((el) => el.name === data.section);
         
             if (findOne) {
@@ -214,6 +214,7 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                             </FormHelperText>
                         </AmountInput>
                     </Box>
+                    {(type !== 'Free' || ticketType !== 'Free') &&
                     <Box sx={{}}>
                         <AmountInput 
                             name="price" 
@@ -226,6 +227,7 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                             customValues={type === 'Free' ?  true : false}
                         />
                     </Box>
+                    }
                     <Box sx={{}}>
                         <Typography variant="subtitle2" gutterBottom>
                             Ticket sales end

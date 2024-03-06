@@ -8,6 +8,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { MobileTimePicker } from '@mui/x-date-pickers/MobileTimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -21,6 +22,7 @@ import { Box, MenuItem, Select, TextField, FormHelperText } from '@mui/material'
 import CompTextEditor from '../../../../components/CompTextEditor/CompTextEditor';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+import DateRangePicker from '../BasicInfos/DateRangePicker';
 
 export function FormContainer({ defaultValues, children, onSubmit, fieldArrayName }) {
   const { handleSubmit, control, formState: { errors }, setValue} = useForm({ defaultValues });
@@ -149,17 +151,18 @@ export const AmountInput = ({ control, errors, symbol, disabled, isRequired, nam
       render={({ field }) => (
         <Box sx={{position: 'relative'}}>
           <TextField
-              fullWidth
-              type="number"
-              inputProps={{ min: 0 }}
-              label={label}
-              placeholder={placeholder}
-              defaultValue={defaultValue}
-              error={errors[name] ? true : false}
-              variant="outlined"
-              disabled={disabled}
-              {...(customValues && { value: 0 })}
-            />
+            {...field}
+            fullWidth
+            type="number"
+            inputProps={{ min: 0 }}
+            label={label}
+            placeholder={placeholder}
+            defaultValue={defaultValue}
+            error={errors[name] ? true : false}
+            variant="outlined"
+            disabled={disabled}
+            {...(customValues && { value: 0 })}
+          />
           {errors[name] && (
             <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
               {errors[name].message}
@@ -346,15 +349,15 @@ export const DateAndTimeInput = ({ control, errors, name, defaultValue, minDate,
             fullWidth
             margin="small"
             id="date-picker"
-            value={field.value}
+            value={field?.value}
             onChange={(date) => field.onChange(date)}
             viewRenderers={{
               hours: renderTimeViewClock,
               minutes: renderTimeViewClock,
             }}
             minDate={minDate}
-            error={!!errors.starts}
-            helperText={errors.starts?.message}
+            // error={!!errors.starts}
+            // helperText={errors.starts?.message}
           />
         )}
       />
@@ -362,7 +365,70 @@ export const DateAndTimeInput = ({ control, errors, name, defaultValue, minDate,
   </LocalizationProvider>
   {errors[name] && 
     <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
-      {errors[name].message}
+      {errors[name]?.message}
+    </FormHelperText>
+  }
+</Box>
+
+
+export const TimeInput = ({ control, errors, name, defaultValue, minDate, label, isRequired, errorMessage, }) => <Box sx={{mb: 3}}>
+  <LocalizationProvider dateAdapter={AdapterDateFns}>
+    <DemoContainer components={['MobileTimePicker']}>
+      <Controller
+        name={name}
+        control={control}
+        defaultValue={defaultValue}
+        rules={{
+          ...(isRequired && { required: errorMessage ? errorMessage : `${label} is required.` }),
+        }}
+        render={({ field }) => (
+          <MobileTimePicker
+            {...field}
+            label={label}
+            fullWidth
+            margin="small"
+            id="date-picker"
+            size='small'
+            value={field?.value}
+            onChange={(date) => field.onChange(date)}
+            viewRenderers={{
+              hours: renderTimeViewClock,
+              minutes: renderTimeViewClock,
+            }}
+            // minDate={minDate}
+            // error={!!errors.starts}
+            // helperText={errors.starts?.message}
+          />
+        )}
+      />
+    </DemoContainer>
+  </LocalizationProvider>
+  {errors[name] && 
+    <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+      {errors[name]?.message}
+    </FormHelperText>
+  }
+</Box>
+
+export const DateTimeRange = ({ control, errors, name, defaultDates, minDate, label, isRequired, errorMessage, }) => <Box sx={{mb: 3}}>
+  <Controller
+            name={name}
+            control={control}
+            defaultValue={defaultDates} // Set default value to null
+            render={({ field }) => (
+              <DateRangePicker
+                {...field}
+                buttonText={label}
+                onChange={(dateRange) => field.onChange(dateRange)}
+                onSubmit={(dateRange) => field.onChange(dateRange)}
+                onCloseCallback={() => field.onBlur()}
+                defaultDate={field.defaultValue}
+              />
+            )}
+          />
+  {errors[name] && 
+    <FormHelperText id="component-error-text" sx={{ color: '#ff604f' }}>
+      {errors[name]?.message}
     </FormHelperText>
   }
 </Box>

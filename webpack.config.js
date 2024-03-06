@@ -1,6 +1,8 @@
 const Dotenv = require("dotenv-webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+
 
 module.exports = {
   output: {
@@ -14,10 +16,12 @@ module.exports = {
       template: "src/index.html", // to import index.html file inside index.js
     }),
     new Dotenv(),
+    new webpack.HotModuleReplacementPlugin(), 
   ],
   devServer: {
     port: '4000',
     historyApiFallback: true, // you can change the port
+    hot: true, 
   },
   module: {
     rules: [

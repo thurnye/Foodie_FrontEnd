@@ -14,10 +14,10 @@ import { Button, Grid,TextField } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+import ModeIcon from '@mui/icons-material/Mode';
 import DialogTitle from '@mui/material/DialogTitle';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
+import InputAdornment from '@mui/material/InputAdornment';
 import { getDateShort, getLocalTime, getTimeZone } from '../../../../util/commons';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -48,7 +48,7 @@ const localizer = dateFnsLocalizer({
   locales,
 })
 
-export default function Selectable({setData, title}) {
+export default function Selectable({setData, title, defaultValues}) {
   const [myEvents, setMyEvents] = useState([])
   const [openDrawer, setOpenDrawer] = useState(false)
   const [event, setEvent] = useState({
@@ -94,19 +94,30 @@ export default function Selectable({setData, title}) {
   }
 
   const handleSaveEditEventDate = () => {
-    console.log(event)
-    const updatedEvents = myEvents.map(el => {
-      if (event.eventId === el.eventId) {
-        return {
-          ...el,
-          start: event.start,
-          end: event.end,
-        };
-      }
-      return event;
-    });
-    setMyEvents(updatedEvents);
-    setOpenDrawer(!openDrawer);
+    const {title, start, end} = event;
+    if(new Date(start) < new Date()){
+      window.alert('Error, min date should be greater than present date/time')
+      return;
+    }
+    if(new Date(start) >= new Date(end)){
+      window.alert('End Date and time must be greater than start date and time!')
+      return;
+    }
+    if(title && start && end){
+      const updatedEvents = myEvents.map(el => {
+        if (event.eventId === el.eventId) {
+          return {
+            ...el,
+            title: event.title,
+            start: event.start,
+            end: event.end,
+          };
+        }
+        return event;
+      });
+      setMyEvents(updatedEvents);
+      setOpenDrawer(!openDrawer);
+    }
   }
     
   const { defaultDate, scrollToTime } = useMemo(
@@ -117,15 +128,12 @@ export default function Selectable({setData, title}) {
     []
     )
   const onSubmit = () => {
-    console.log('clicked')
     if(myEvents.length){
       setData(myEvents)
       setProceed(true);
     }
   };
 
-  console.log(myEvents);
-  console.log(event);
 
   return (
     <Box>
@@ -146,17 +154,34 @@ export default function Selectable({setData, title}) {
     
 
       <Dialog
-        maxWidth={'lg'}
+        maxWidth={'md'}
         open={openDrawer}
         onClose={() => setOpenDrawer(!openDrawer)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-        {event?.title}
+        <DialogTitle id="alert-dialog-title" sx={{mt: 3}}>
+          <TextField
+            autoFocus
+            variant="standard" 
+            fullWidth
+            label="Title"
+            error={!event.title ? true : false}
+            id="outlined-error-helper-text"
+            defaultValue={event?.title}
+            helperText={!event.title && 'Title is required!'}
+            onChange={(e) => setEvent({
+              ...event,
+              title: e.target.value
+            })}
+            InputProps={{
+              endAdornment: <InputAdornment position="end"><ModeIcon/></InputAdornment>,
+            }}
+          />
         </DialogTitle>
         <DialogContent>
           <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+            
             <Grid item xs={12} md={6} sx={{mb: {xs: 3}}}>
             <label htmlFor="inputEmail_6754" className="form-label"
                 >Starts</label>

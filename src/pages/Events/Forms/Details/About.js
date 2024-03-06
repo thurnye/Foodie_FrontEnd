@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -38,22 +38,6 @@ const options = [
 ];
 
 
-const icon = (
-    <Paper sx={{ m: 1, width: 100, height: 100 }} elevation={4}>
-      <svg>
-        <Box
-          component="polygon"
-          points="0,100 50,00, 100,100"
-          sx={{
-            fill: (theme) => theme.palette.common.white,
-            stroke: (theme) => theme.palette.divider,
-            strokeWidth: 1,
-          }}
-        />
-      </svg>
-    </Paper>
-  );
-
 
 const About = ({setAbout, about, setActiveSection}) => {
     const {
@@ -61,7 +45,7 @@ const About = ({setAbout, about, setActiveSection}) => {
         handleSubmit,
         formState: { errors },
         watch
-    } = useForm({ defaultValues: about});
+    } = useForm({ defaultValues: useMemo(() => ({about}), [about])});
 
     const { fields, append, remove , move} = useFieldArray({
         control,
@@ -69,10 +53,12 @@ const About = ({setAbout, about, setActiveSection}) => {
     });
     const [checked, setChecked] = React.useState(false);
 
+    console.log({about})
+
 
 
     const onSubmit = (data) => {
-        setAbout(data);
+        setAbout(data.about);
         setActiveSection("")
     }
 
@@ -148,7 +134,7 @@ const About = ({setAbout, about, setActiveSection}) => {
                                                         </CardContent>
                                                         </Card>
                                                         ) : (<>
-                                                            {item.isMultiple ? <>
+                                                            {/* {item.isMultiple ? <>
                                                             <Card>
                                                                 <CardContent>
                                                                     {<ImageLayout layout={imageLayout} imageList={field.value}/>}
@@ -160,9 +146,18 @@ const About = ({setAbout, about, setActiveSection}) => {
                                                                 <CardContent>
                                                                     <img src={field.value} className="card-img" alt="event_banner" />
                                                                 </CardContent>
-                                                            </Card>}
+                                                            </Card>} */}
+                                                            <Card sx={{
+                                                                maxWidth: item.isMultiple ? 'unset' : { sm: 350, md: 650 },
+                                                                mt: 3
+                                                                }}>
+                                                                <CardContent>
+                                                                    <ImageLayout isMultiple={item.isMultiple} imageList={field.value}/>
+                                                                </CardContent>
+                                                            </Card>
                                                         </>
-                                                        )}
+                                                        )
+                                                        }
                                                         </div>
                                                     )}
                                                     </Dropzone>
@@ -250,7 +245,7 @@ const About = ({setAbout, about, setActiveSection}) => {
                                     </Box>
 
                                     <Box sx={{display: 'inline-flex'}}>
-                                        {item.isMultiple && 
+                                        {/* {item.isMultiple && 
                                             <Box>              
                                                 <Dropdown>
                                                     <Dropdown.Toggle  id="dropdown-basic" style={{background: 'none', border: 'none', color: '#2626268a'}}>
@@ -262,7 +257,7 @@ const About = ({setAbout, about, setActiveSection}) => {
                                                     </Dropdown.Menu>
                                                 </Dropdown>
                                             </Box>
-                                        }
+                                        } */}
 
                                         <IconButton aria-label="delete"  onClick={() => remove(index)} sx={{width: 27}}>
                                             <FaTrash color="#a3a2a28a"/>
@@ -325,10 +320,10 @@ const About = ({setAbout, about, setActiveSection}) => {
                                     }}>Single</MenuItem>
 
                                     {/* Do not delete */}
-                                    {/* <MenuItem onClick={()=>{
+                                    <MenuItem onClick={()=>{
                                         append({ type: "image", value: "", isMultiple: true , layout: imageLayout})
                                         setAnchorEl(null)
-                                    }}>Multiple </MenuItem> */}
+                                    }}>Multiple </MenuItem>
                                     </Menu>
                                 </Box>
                                 

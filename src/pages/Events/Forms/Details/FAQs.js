@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
@@ -16,7 +16,7 @@ const FAQs = ({setFaqs, faqs, setActiveSection}) => {
         handleSubmit,
         formState: { errors },
         watch
-      } = useForm({defaultValues: faqs });
+    } = useForm({ defaultValues: useMemo(() => ({faqs}), [faqs])});
 
     const { fields, append, remove , move} = useFieldArray({
         control,
@@ -25,7 +25,7 @@ const FAQs = ({setFaqs, faqs, setActiveSection}) => {
 
 
     const onSubmit = (data) => {
-        setFaqs(data)
+        setFaqs(data.faqs)
         setActiveSection("")
     }
 

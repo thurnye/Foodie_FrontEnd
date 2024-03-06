@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import {Button} from '@mui/material';
 import { FaImage } from "react-icons/fa6";
-import CropImg from './cropImg.js';
+import CropImg from './CropImg';
 import { IoMdAdd } from "react-icons/io";
 import Carousel from './Carousel.js'
 import { FaRegTrashCan } from "react-icons/fa6";

@@ -1,12 +1,15 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Typography, Container, Button, Stack } from '@mui/material';
+import { Box, Typography, Container, Button, Stack, FormHelperText } from '@mui/material';
+import TextField from '@mui/material/TextField';
 import { CiText } from "react-icons/ci";
 import { GrMapLocation } from "react-icons/gr";
 import { ImCalendar } from "react-icons/im";
-import { FormContainer, Input, LocationInput, ReactSelectInput, DateAndTimeInput, CheckBoxField } from '../FormContainer/FormContainer';
+import { FormContainer, Input, LocationInput, ReactSelectInput, CheckBoxField, TimeInput } from '../FormContainer/FormContainer';
 import metaData from '../../../../components/metaData';
 import FormDirection from '../../../../components/Dashboard/Events/Forms/FormDirection/FormDirection';
+import DateRangePicker from './DateRangePicker'
+import {getDateShort, mergeTimeToDate} from '../../../../util/commons'
 
 const tagsOptions = []
 metaData[0].tags.forEach(el => {
@@ -15,29 +18,56 @@ metaData[0].tags.forEach(el => {
     )
 });
 
-const BasicForm = ({isLoaded, setData}) => {
-    const [locationValue, setLocationValue] = React.useState('venue');
-    const [dateOccurrence, setDateOccurrence] = React.useState('single');
+const BasicForm = ({isLoaded, setData, defaultValues}) => {
+    const [locationValue, setLocationValue] = React.useState(defaultValues.locationState);
+    const [dateOccurrence, setDateOccurrence] = React.useState(defaultValues.dateOccurrence);
     const [proceed, setProceed] = useState(false);
-    
+    const [selected, setSelected] = useState(defaultValues.dateTime.start ? true : false);
+    const [noDateError, setNoDateError] = useState (false);
+    const [dateState, setDateState] = useState({
+        start: defaultValues.dateTime.start,
+        end: defaultValues.dateTime.end,
+    });
   
-
 
     const onSubmit = data => {
         if(data){
-            let {location, starts, ends, ...rest} = data;
-            starts = dateOccurrence === 'single' ? starts : ''
-            ends = dateOccurrence === 'single' ? ends : ''
-            location = locationValue === 'venue' ? location : locationValue
-            const newData = { location, starts, ends, ...rest };
-            setData(newData);
+           const {endTime, startTime} = data;
+           const { start, end } = dateState;
+            //    merge the date and time together
+            if (dateOccurrence === 'single' && (start === ""  || end === "" || startTime === ""  || endTime === "")) {
+            return setNoDateError(true);
+            }
+            setNoDateError(false);
+            const mergedStart = mergeTimeToDate(new Date(start),  new Date(startTime));
+            const mergedEnd = mergeTimeToDate( new Date(end),  new Date(endTime));
+            setDateState(prevState => ({
+                ...prevState,
+                start: mergedStart,
+                end: mergedEnd
+            }));
+            setData({...data, 
+                dateTime: {start: mergedStart, end: mergedEnd}, 
+                locationState: locationValue, 
+                dateOccurrence 
+            });
             setProceed(true);
         }
     };
 
+    // Adding the date range date fo single date
+    const handleDateChange = (dt) => {
+        const {startDate, endDate} = dt;
+        setDateState(prevState => ({
+            ...prevState,
+            start: startDate,
+            end: endDate
+          }));
+    }
+
     return (
         <Container>
-            <FormContainer onSubmit={onSubmit}>
+            <FormContainer onSubmit={onSubmit} defaultValues={defaultValues}>
                 {/* BASIC INFO */}
                 <Box sx={{display: 'flex', alignItems:'flex-start'}}>
                     <Box sx={{mr: 3, mt:-1, fontSize: 35 }} color="text.secondary">
@@ -77,9 +107,6 @@ const BasicForm = ({isLoaded, setData}) => {
                             <Box>
                                 <ReactSelectInput name="tags" options={tagsOptions} label="Tags" isMulti={true}/>
                             </Box>
-
-
-                            
                     </div>
                 </Box>
 
@@ -102,9 +129,13 @@ const BasicForm = ({isLoaded, setData}) => {
 
                         <Box>
                         <Stack spacing={2} direction="row">
-                            <Button variant="outlined" onClick={() => setLocationValue('venue')}>Venue</Button>
-                            <Button variant="outlined" onClick={() => setLocationValue('online')}>Online event</Button>
-                            <Button variant="outlined" onClick={() => setLocationValue('toBeAnnounced')}>To be announced</Button>
+                        {['Venue', 'Online event', 'To be announced'].map((el) => <Button 
+                            sx={{}}
+                            variant={locationValue === el.toLowerCase() ? 'contained' : 'outlined'}
+                            onClick={() => {
+                                setLocationValue(el.toLowerCase());
+                            }}
+                            >{el}</Button>)}
                         </Stack>
                         </Box>
 
@@ -155,22 +186,71 @@ const BasicForm = ({isLoaded, setData}) => {
                             Date and time Tell event-goers when your event starts and ends so they can make plans to attend.
                         </Typography>
 
-                        <Box>
+                                    {/* will add later */}
+                        {/* <Box>
                         <Stack spacing={2} direction="row">
-                            <Button variant="outlined" onClick={() => setDateOccurrence('single')}>Single</Button>
-                            <Button variant="outlined" onClick={() => setDateOccurrence('recurring')}>Recurring Event</Button>
+                            {[{label:'Single', name:'single'}, {label:'Recurring Event', name:'recurring'}].map((el) => <Button 
+                            sx={{}}
+                            variant={dateOccurrence === el.name ? 'contained' : 'outlined'}
+                            onClick={() => {
+                                setDateOccurrence(el.name);
+                            }}
+                            >{el.label}</Button>)}
                         </Stack>
-                        </Box>
+                        </Box> */}
 
-                        <Box sx={{ width: '100%' }}>
+                        <Box sx={{ width: '100%', mt: 1 }}>
                             <Box>
                                 {dateOccurrence === 'single' && <>
-                                    <Typography sx={{ fontSize: 14, mb: 2 }} >
-                                    Single event happens once and can last multiple days
+                                    <Typography sx={{ fontSize: 14, }} color="text.secondary">
+                                        Single event happens once and can last multiple days with a fix time.
                                     </Typography>
+
                                     <Box>
-                                        <DateAndTimeInput name="starts" minDate={new Date()} label='Event Starts' isRequired={dateOccurrence === 'single' ? true : false}/>
-                                        <DateAndTimeInput name="ends" minDate={new Date()} label='Event Ends' isRequired={dateOccurrence === 'single' ? true : false}/>
+                                        <DateRangePicker
+                                            buttonText={dateState.start ? 'Edit Date' : 'Add Date'}
+                                            onChange={(dateRange) => {
+                                                handleDateChange(dateRange);
+                                                setNoDateError(true);
+                                            }}
+                                            onSubmit={(dateRange) => {
+                                                handleDateChange(dateRange); 
+                                                setSelected(true);
+                                            }}
+                                            defaultDate={{
+                                                "startDate": dateState.start,
+                                                "endDate": dateState.end
+                                            }}
+                                        />
+                                        {noDateError && 
+                                            <FormHelperText id="component-error-text" sx={{ color: '#ff604f', mb: 3 }}>
+                                                Start and End Date is needed for this option.
+                                            </FormHelperText>
+                                        }
+                                        <Box>
+                                            
+                                            {selected && Object.entries(dateState).map(([key, value]) => (
+                                                <Box key={key}>
+                                                    <Typography sx={{ fontSize: 14, mb: 2, fontWeight: 700 }} >
+                                                        {key}
+                                                    </Typography>
+                                                    <Box
+                                                    sx={{
+                                                        display:'flex',
+                                                        justifyContent: 'space-around',
+                                                        alignItems: 'center'
+                                                    }}
+                                                    >
+                                                    <TextField  value={getDateShort(value)} id="fullWidth" disabled size='small'/>
+                                                    <TimeInput 
+                                                        name={`${key}Time`} 
+                                                        label={`${key} Time`} 
+                                                        isRequired={dateOccurrence === 'single' ? true : false}
+                                                    />
+                                                    </Box>
+                                                </Box>
+                                            ))}
+                                        </Box>
                                     </Box>
                                 </>}
                             

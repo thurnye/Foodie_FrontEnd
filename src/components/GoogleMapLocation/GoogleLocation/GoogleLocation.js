@@ -3,6 +3,7 @@ import styles from './GoogleLocation.module.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Autocomplete } from '@react-google-maps/api';
+import LinearProgress from '@mui/material/LinearProgress';
 
 const GoogleLocation = ({ isLoaded, setValue, defaultValue, label, fieldName, control, placeholder }) => {
   const [searchResult, setSearchResult] = useState("Result: none");
@@ -33,7 +34,7 @@ const GoogleLocation = ({ isLoaded, setValue, defaultValue, label, fieldName, co
   }
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return <div> <LinearProgress /></div>;
   }
 
   return (
@@ -44,8 +45,8 @@ const GoogleLocation = ({ isLoaded, setValue, defaultValue, label, fieldName, co
           '& .MuiTextField-root': {  width: '100%'},
         }}
       >
-        {!isLoaded && <div>Loading</div>}
-        {isLoaded &&
+        {/* {!isLoaded && <div>Loading</div>} */}
+        {/* {isLoaded && */}
           <Autocomplete onPlaceChanged={onPlaceChanged} onLoad={onLoad}>
             <TextField
               label={label}
@@ -56,8 +57,8 @@ const GoogleLocation = ({ isLoaded, setValue, defaultValue, label, fieldName, co
               placeholder={placeholder}
               {...control} 
             />
-          </Autocomplete>}
-
+          </Autocomplete>
+          {/*  } */}
       </Box>
     </div>
   );

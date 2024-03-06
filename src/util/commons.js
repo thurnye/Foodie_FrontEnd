@@ -186,3 +186,31 @@ export const currencyFormat = new Intl.NumberFormat('en-US', {
   currency: 'USD',
 });
   
+
+export const backDatedDate = (date, num, period) => {
+  // Get the current date and time
+  console.log("backDate", date)
+  const currentDate = DateTime.fromJSDate(date);
+
+  switch (period.toLowerCase()) {
+    case 'day(s)':
+      return currentDate.minus({ days: num }).toJSDate();
+    case 'hour(s)':
+      return currentDate.minus({ hours: num }).toJSDate();
+    case 'minute(s)':
+      return currentDate.minus({ minutes: num }).toJSDate();
+    default:
+      return '';
+  }
+};
+
+export const mergeTimeToDate = (dateStamp, timeStamp) => {
+  const date = DateTime.fromJSDate(dateStamp);
+  const time = DateTime.fromJSDate(timeStamp);
+// Extract the time components from the time DateTime object
+  const { hour, minute, second, millisecond } = time;
+
+// Merge the time components into the date DateTime object
+  const mergedDateTime = date.set({ hour, minute, second, millisecond });
+  return mergedDateTime.toISO();
+}
