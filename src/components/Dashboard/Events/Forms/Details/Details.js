@@ -5,7 +5,7 @@ import { useAddEventFormContext } from '../../../../../store/formStateContext';
 
 
 
-const Details = () => {
+const Details = ({edit, updateEvent}) => {
   const { eventForm, setEventForm } = useAddEventFormContext();
   const [data, setData] = useState();
   
@@ -15,12 +15,13 @@ const Details = () => {
   useEffect(() => {
     if(data){
       console.log({data})
-      setEventForm((eventForm) => ({ 
+      const updatedData = { 
         ...eventForm, 
         details: data 
       }
-      ));
-      console.log('Details:', data)
+      console.log('Details:', updatedData)
+      setEventForm(updatedData);
+      edit && updateEvent(updatedData);
     }
 
   }, [data]);
@@ -29,7 +30,12 @@ const Details = () => {
 
   return(
   <div className={styles.BasicInfos}>
-    <DetailsForm setData={setData} defaultValues={eventForm.details} defaultTitle={eventForm.basicInfo.eventTitle}/>
+    <DetailsForm 
+      setData={setData} 
+      defaultValues={eventForm.details} 
+      defaultTitle={eventForm.basicInfo.eventTitle}
+      edit={edit}
+    />
   </div>
 )};
 

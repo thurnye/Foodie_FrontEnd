@@ -463,9 +463,10 @@ const postEvent = async(req, res, next) => {
                 event.schedule = eventForm.schedule
                 event.tickets = eventForm.tickets
 
-                await event.save();
-                console.log('Updated')
             }
+            const updatedEvent = await event.save();
+            console.log('Updated')
+            res.status(200).json({event:updatedEvent});
         }
         
         //Create NewEvent
@@ -477,13 +478,13 @@ const postEvent = async(req, res, next) => {
             await foundUser.save()
             console.log('Saved')
 
+            const user =  await User.findById(userId).populate({
+                path: 'events.myEvents'
+            }).exec()
+            const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
+            res.status(200).json(token)
         }
 
-        const user =  await User.findById(userId).populate({
-            path: 'events.myEvents'
-        }).exec()
-        const token = jwt.sign({ user }, process.env.SECRET,{ expiresIn: '24h' });
-        res.status(200).json(token)
     } catch (err) {
         console.log(err);
         res.status(400).json(err)
@@ -500,7 +501,7 @@ const getAllEvents = async(req, res, next) => {
         const keyword = filter.keywordSearch
         const timeFrameStarts = filter?.timeFrame?.starts;
         const timeFrameEnds = filter?.timeFrame?.ends;
-        const perPage = 12;
+        const perPage = filter.perPage || 12;
         let query = { };
         
       
@@ -576,7 +577,6 @@ const getUserEvents = async(req, res, next) => {
         res.status(400).json(err)
     }   
 }
-
 
 //RETRIVE A Recipe BY ID
 const getSingleEvent = async (req, res, next) => {

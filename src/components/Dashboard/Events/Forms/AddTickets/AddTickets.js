@@ -4,9 +4,10 @@ import FormDirection from '../FormDirection/FormDirection';
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
 import TicketForm from './TicketForm';
 import Tickets from './Tickets';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
-
-const AddTickets = () => {
+const AddTickets = ({edit, updateEvent}) => {
   const { eventForm, setEventForm  } = useAddEventFormContext();
   const [data, setData] = useState();
   const [capacity, setCapacity] = useState(eventForm.tickets.capacity);
@@ -31,14 +32,15 @@ const AddTickets = () => {
   
 const onSubmit = () => {
   if(sections.length > 0){
-    setEventForm((eventBritForm) => ({ 
-      ...eventBritForm, 
+    const data = { 
+      ...eventForm, 
       tickets: {
         capacity,
         sections
       } 
     }
-    ));
+    setEventForm(data);
+    edit && updateEvent(data);
     setProceed(true)
   }
 }
@@ -65,7 +67,16 @@ console.log(sections)
     <><Tickets setSections={setSections}
     sections={sections} capacity={capacity} setCapacity={setCapacity}/></>
     }
-    <FormDirection onSubmit={onSubmit} proceed={proceed}/>
+    {edit ? <Box sx={{textAlign: 'end', mt: 3}}>
+        <Button 
+        variant="contained" 
+        type="submit"
+        onClick={onSubmit}
+        >Save Section</Button>
+      </Box> 
+      : 
+      <FormDirection onSubmit={onSubmit} proceed={proceed}/>
+    }  
   </div>
 )};
 

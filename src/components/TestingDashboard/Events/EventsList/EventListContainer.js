@@ -22,27 +22,27 @@ const EventListContainer = ({userId}) => {
     const calendarValue = location.state?.calendarValue;
     
 
-    const fetchEvents = async (query, userId) => {
-        try{
-            setLoading(true)
-            let allEvents = null;
+  const fetchEvents = async (query, userId) => {
+      try{
+          setLoading(true)
+          let allEvents = null;
 
-            //fetch events created by the user only
-            if(type === 'myEvent' && userId){
-                setEvents([]);
-                allEvents = await services.getUserEvents(userId, query);
-            }
-            if(type !== 'myEvent'){
-                setEvents([]);
-                allEvents = await services.getEvents(query);
-            }
+          //fetch events created by the user only
+          if(type === 'myEvent' && userId){
+              setEvents([]);
+              allEvents = await services.getUserEvents(userId, query);
+          }
+          if(type !== 'myEvent'){
+              setEvents([]);
+              allEvents = await services.getEvents(query);
+          }
 
-            setData(allEvents)
-            setLoading(false);
-        }catch(err){
-            console.log(err)
-        }
-    }
+          setData(allEvents)
+          setLoading(false);
+      }catch(err){
+          console.log(err)
+      }
+  }
 
   const getTimeFrame = (period) => {
     let timeFrame = {starts: '', ends: ''}

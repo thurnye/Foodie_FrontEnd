@@ -32,7 +32,7 @@ const intitalEvt = {
   end: '',
 }
 
-  export default function EventCalendar({setData, defaultDates}) {
+  export default function EventCalendar({setData, defaultDates, edit}) {
     const [weekendsVisible, setWeekendsVisible] = useState(true)
     const [currentEvents, setCurrentEvents] = useState([])
     const [openDrawer, setOpenDrawer] = useState(false)
@@ -235,7 +235,15 @@ const intitalEvt = {
         </DialogActions>
       </Dialog>
 
-      <FormDirection onSubmit={onSubmit} proceed={proceed}/>
+      {edit ? <Box sx={{textAlign: 'end', mt: 3}}>
+              <Button variant="contained" 
+              type="submit"
+              onClick={onSubmit} 
+              >Save Section</Button>
+            </Box> 
+            : 
+            <FormDirection onSubmit={onSubmit} proceed={proceed}/>
+          }
     
     </Box>
     )

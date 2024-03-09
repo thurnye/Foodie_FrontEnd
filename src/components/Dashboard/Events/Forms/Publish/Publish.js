@@ -5,6 +5,7 @@ import styles from './Publish.module.css';
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
 import services from '../../../../../util/services';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -17,7 +18,7 @@ import Preview from './Preview'
 
 
 
-const Publish = () => {
+const Publish = ({edit}) => {
   const [proceed, setProceed] = useState(false);
   const user = useSelector(state => state.userLog?.user?.user)
   const { eventForm, setSaveResultStatus} = useAddEventFormContext();
@@ -131,7 +132,8 @@ const Publish = () => {
           </Paper>
         </Box>
     </Box>
-    <FormDirection onSubmit={() => handleSubmit()} proceed={proceed}/>
+    {!edit && <FormDirection onSubmit={() => handleSubmit()} proceed={proceed}/>} 
+    
   </div>
 )};
 

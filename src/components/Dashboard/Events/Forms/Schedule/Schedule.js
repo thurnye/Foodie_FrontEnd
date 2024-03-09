@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 import FormDirection from '../../../../TestingDashboard/Events/Forms/FormDirection/FormDirection';
 import EventCalendar from './eventCalendar/eventCalendar'
 
-const Schedule = () => {
+const Schedule = ({edit, updateEvent}) => {
   const { eventForm, setEventForm } = useAddEventFormContext();
   const [data, setData] = useState();
   const [proceed, setProceed] = useState(false);
@@ -20,12 +20,13 @@ const Schedule = () => {
 
   useEffect(() => {
     if(data){
-      setEventForm((eventBritForm) => ({ 
-        ...eventBritForm, 
+      const updatedData = { 
+        ...eventForm,  
         schedule: data 
       }
-      ));
       console.log('Schedule:', data)
+      setEventForm(updatedData);
+      edit && updateEvent(updatedData);
     }
   }, [data])
 
@@ -56,11 +57,15 @@ const Schedule = () => {
               </Typography>
             </CardContent>
           </Card>
-          <FormDirection onSubmit={() => setProceed(true)} proceed={proceed}/>
+          {/* <FormDirection onSubmit={() => setProceed(true)} proceed={proceed}/> */}
         </Box>
         :
         <Box>
-          <EventCalendar setData={setData} defaultDates={eventForm.schedule}/>
+          <EventCalendar 
+            setData={setData} 
+            defaultDates={eventForm.schedule} 
+            edit={edit}
+          />
           {/* <Selectable setData={setData} title={eventForm?.basicInfo?.eventTitle} defaultValues={eventForm.schedule}/> */}
         </Box>
       }

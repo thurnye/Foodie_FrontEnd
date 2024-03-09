@@ -18,7 +18,7 @@ metaData[0].tags.forEach(el => {
     )
 });
 
-const BasicForm = ({isLoaded, setData, defaultValues}) => {
+const BasicForm = ({isLoaded, setData, defaultValues, edit}) => {
     const [locationValue, setLocationValue] = React.useState(defaultValues.locationState);
     const [dateOccurrence, setDateOccurrence] = React.useState(defaultValues.dateOccurrence);
     const [proceed, setProceed] = useState(false);
@@ -32,22 +32,9 @@ const BasicForm = ({isLoaded, setData, defaultValues}) => {
 
     const onSubmit = data => {
         if(data){
-           const {endTime, startTime} = data;
-           const { start, end } = dateState;
-            //    merge the date and time together
-            if (dateOccurrence === 'single' && (start === ""  || end === "" || startTime === ""  || endTime === "")) {
-            return setNoDateError(true);
-            }
-            setNoDateError(false);
-            const mergedStart = mergeTimeToDate(new Date(start),  new Date(startTime));
-            const mergedEnd = mergeTimeToDate( new Date(end),  new Date(endTime));
-            setDateState(prevState => ({
-                ...prevState,
-                start: mergedStart,
-                end: mergedEnd
-            }));
-            setData({...data, 
-                dateTime: {start: mergedStart, end: mergedEnd}, 
+            console.log({data})
+            setData({...data,
+                dateTime: {start: '', end: ''}, 
                 locationState: locationValue, 
                 dateOccurrence 
             });
@@ -279,8 +266,17 @@ const BasicForm = ({isLoaded, setData, defaultValues}) => {
                     
                     </div>
                 </Box>
-
-                <FormDirection onSubmit={onSubmit} proceed={proceed}/>
+                {edit ? <Box sx={{textAlign: 'end', mt: 3}}>
+                        <Button 
+                        variant="contained" 
+                        // onClick={onSubmit}
+                        type="submit"
+                        >Save Section</Button>
+                    </Box> 
+                    : 
+                    <FormDirection onSubmit={onSubmit} proceed={proceed}/>
+                }            
+                
             </FormContainer>
 
         </Container>

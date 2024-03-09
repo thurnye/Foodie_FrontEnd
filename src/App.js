@@ -48,6 +48,7 @@ import SingleEvent from './components/TestingDashboard/Events/SingleEvent/Single
 
 import EventBrit from './components/Dashboard/DashboardContents/EventBrit/EventBrit';
 import CreateEvent from './components/Dashboard/Events/CreateEvent/CreateEvent';
+import EditEvent from './components/Dashboard/Events/EditEvent/EditEvent';
 import DashBoardContent from './components/Dashboard/DashboardContents/DashBoardContent';
 import Organizer from './components/Dashboard/Events/Organizer/Organizer'
 import EventFeed from './components/Dashboard/Events/EventFeed/EventFeed'
@@ -128,6 +129,7 @@ function App() {
             <Route path="dashboard" element={<DashBoardContent/> }/>
             <Route path="events-feeds" element={<EventFeed/> }/>
             <Route path="create-event" element={<CreateEvent isLoaded={isLoaded} />} />
+            <Route path="edit-event" element={<EditEvent isLoaded={isLoaded} />} />
             <Route path="organizer" element={<Organizer/>} />
 
             <Route index element={<Navigate to="dashboard" />}></Route>
