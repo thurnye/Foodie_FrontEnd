@@ -48,6 +48,9 @@ router.post('/user/event/:id', Controller.getUserEvents);
 //getting a event by id
 router.get('/event/:id', Controller.getSingleEvent);
 
+//delete an event
+router.post('/event/:id', Controller.postDeleteEvent);
+
 
 
 

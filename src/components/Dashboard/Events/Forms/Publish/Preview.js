@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Dialog from '@mui/material/Dialog';
@@ -9,13 +9,19 @@ import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { FaExternalLinkAlt } from "react-icons/fa";
-import SingleEvent from './SingleEvent/SingleEvent'
+// import SingleEvent from './SingleEvent/SingleEvent';
+import {useDispatch} from 'react-redux'
+import SingleEvent from '../../SingleEvent/SingleEvent'
+import { useAddEventFormContext } from '../../../../../store/formStateContext';
+import { eventsActions } from '../../../../../store/eventSlice';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function Preview({data}) {
+export default function Preview({edit, isPublish}) {
+  const { eventForm } = useAddEventFormContext();
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -24,12 +30,21 @@ export default function Preview({data}) {
 
   const handleClose = () => {
     setOpen(false);
+  //   dispatch(eventsActions.getSingleEvent({
+  //     data: ''
+  // }))
   };
+
+  useEffect(() => {
+    isPublish && eventForm && dispatch(eventsActions.getSingleEvent({
+        data: eventForm
+    }))
+  },[eventForm, isPublish]);
 
   return (
     <React.Fragment>
       <Button variant="text" onClick={handleClickOpen} sx={{textTransform: 'none'}}>
-          Preview your event  <FaExternalLinkAlt style={{marginLeft: '5px'}}/>
+          { edit ? 'Preview' : <> Preview your event  <FaExternalLinkAlt style={{marginLeft: '5px'}}/></>}
       </Button>
       <Dialog
         fullScreen
@@ -56,7 +71,8 @@ export default function Preview({data}) {
           </Toolbar>
         </AppBar>
         <Box>
-            <SingleEvent isPreview={true}/>
+            {/* <SingleEvent isPreview={true} data={data}/> */}
+            <SingleEvent isPreview={true} />
         </Box>
       </Dialog>
     </React.Fragment>

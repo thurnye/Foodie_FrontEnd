@@ -43,8 +43,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useAddEventFormContext } from '../../../../../../store/formStateContext';
 
 const { DateTime } = require('luxon');
-const SingleEvent = ({isLoaded,isPreview}) => {
-  
+
+const SingleEvent = ({isLoaded,isPreview, data}) => {
   const location = useLocation();
   const { eventForm } = useAddEventFormContext();
   const eventId = location.state?.eventId
@@ -61,12 +61,9 @@ const SingleEvent = ({isLoaded,isPreview}) => {
   const [ticketNumber, setTicketNumber] = useState([]);
   const [expanded, setExpanded] = React.useState(false);
   const [activeTickets, setActiveTickets] = useState([]);
-  const {basicInfo, schedule, details, tickets} = eventForm;
 
-  
-  
-  console.log('datas: ',{basicInfo, schedule, details, tickets});
 
+  const {basicInfo, schedule, details, tickets} = eventForm
 
 
   const handleChange = (panel) => (event, isExpanded) => {
@@ -121,22 +118,15 @@ const SingleEvent = ({isLoaded,isPreview}) => {
 
 
   const allDateRange = [];
-        // get all the date ranges in the schedule data
-        schedule.forEach((el) => {
-            const range = getAllDatesInRange(el.start, el.end, 'daily');
-            range.forEach((dt) => allDateRange.push(dt))
+  // get all the date ranges in the schedule data
+  schedule.forEach((el) => {
+      const range = getAllDatesInRange(el.start, el.end, 'daily');
+      range.forEach((dt) => allDateRange.push(dt))
 
-        })
-
-        console.log({ allDateRange})
-
+  })
+  const sortedSchedule = allDateRange.filter(dateStr => new Date(dateStr) > currentDate);
+  sortedSchedule.sort((a, b) => new Date(a) - new Date(b));
   
-
-        const sortedSchedule = allDateRange.filter(dateStr => new Date(dateStr) > currentDate);
-        sortedSchedule.sort((a, b) => new Date(a) - new Date(b));
-
-
-
   const checkSingleDate = () => {
     const start = basicInfo.dateTime.start; 
     const end = basicInfo.dateTime.end;

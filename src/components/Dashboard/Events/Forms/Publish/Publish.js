@@ -18,7 +18,7 @@ import Preview from './Preview'
 
 
 
-const Publish = ({edit}) => {
+const Publish = ({edit, }) => {
   const [proceed, setProceed] = useState(false);
   const user = useSelector(state => state.userLog?.user?.user)
   const { eventForm, setSaveResultStatus} = useAddEventFormContext();
@@ -122,7 +122,7 @@ const Publish = ({edit}) => {
                     </Box>
                     <Box sx={{width: '100%', }}>
                       <Box sx={{borderTop: '2px solid #F8F7FA', textAlign: 'center', pt: 3}}>
-                        <Preview data={eventForm}/>
+                        <Preview data={eventForm} isPublish={true}/>
                       </Box>
                     </Box>
                   </Box>

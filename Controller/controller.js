@@ -595,6 +595,34 @@ const getSingleEvent = async (req, res, next) => {
     }   
 }
 
+//DELETING AN EVENT
+const postDeleteEvent = async (req, res, next) => {
+    try{ 
+        // console.log(req.params.id)
+        const eventId = req.params.id;
+        const event =  await Event.findById(eventId);
+        const organizerId = event.createdBy
+        //  delete recipe from author account
+        const foundUser = await User.findById(organizerId).populate({
+            path: 'events.myEvents'
+        }).exec()
+        const userEvent = foundUser.events.myEvents;
+        const delEvent = userEvent.findIndex(el => el._id.toString() === eventId.toString());
+        
+        // // delete relations
+        userEvent.splice(delEvent, 1);
+        await Event.deleteMany({ _id: eventId})
+        userEvent.remove()
+        const user = await foundUser.save();
+
+        const token = jwt.sign({ user}, process.env.SECRET,{ expiresIn: '24h' });
+        res.status(200).json({token, deleted: true})
+
+    }catch(err){
+        res.status(400).json({err, deleted: false})
+    } 
+}
+
 
 
 
@@ -684,7 +712,8 @@ module.exports = {
     postEvent,
     getAllEvents,
     getUserEvents,
-    getSingleEvent
+    getSingleEvent,
+    postDeleteEvent
     
     
     

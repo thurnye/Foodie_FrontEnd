@@ -58,19 +58,19 @@ class StuffDataService {
   removeRecipe(id) {
     return http.post(`/api/removeRecipe/${id}`);
   }
-
+  
   //create event
   postEvent(data) {
     return http.post("/api/event", data);
   }
-
+  
   //get event query
   getEvents(data) {
     return http.post("/event/query", data);
   }
 
-   // get user event
-   getUserEvents(userId, data) {
+  // get user event
+  getUserEvents(userId, data) {
     return http.post(`/user/event/${userId}`, data);
   }
 
@@ -78,6 +78,13 @@ class StuffDataService {
   findEventById(id) {
     return http.get(`/event/${id}`);
   };
+  
+  // remove Recipe
+  removeEvent(id) {
+    return http.post(`/event/${id}`);
+  }
+
+
 
   // ------------------------------------
  
