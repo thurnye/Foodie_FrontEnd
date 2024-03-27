@@ -17,7 +17,7 @@ import services from '../../../../util/services';
 
 const CreateEvent = ({isLoaded, active, edit, id}) => {
   const user = useSelector(state => state.userLog?.user?.user)
-  const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Publish', 'Go Live'];
+  const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Preview', 'Go Live'];
   const [currentFormStep, setCurrentFormStep] = useState(0);
   const [loading, setLoading] = useState(true);
   const [eventForm, setEventForm] = useState(defaultForm);

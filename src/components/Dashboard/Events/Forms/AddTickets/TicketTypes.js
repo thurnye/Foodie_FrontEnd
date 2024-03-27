@@ -27,10 +27,24 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
     const [typeError, setTypeError] = useState(false);
     const [sectionOptions, setSectionOptions] = useState([]);
     const [message, setMessage] = useState()
+    const [isFree, setIsFree] = useState(false)
 
     useEffect(() => {
         setType(ticketType)
-    },[ticketType])
+        if(ticketType === 'Free'){
+            setIsFree(true)
+        }else{
+            setIsFree(false)
+        }
+    },[ticketType]);
+
+    useEffect(() => {
+        if(type === 'Free'){
+            setIsFree(true)
+        }else{
+            setIsFree(false)
+        }
+    },[type])
 
     const onSubmit = (data) => {
         if (!type) {
@@ -214,20 +228,20 @@ export default function TicketTypes({remainingTicket,open, setOpen, section, set
                             </FormHelperText>
                         </AmountInput>
                     </Box>
-                    {(type !== 'Free' || ticketType !== 'Free') &&
+                    
                     <Box sx={{}}>
                         <AmountInput 
                             name="price" 
                             label="Price"
-                            isRequired={type === 'Free' ?  false : true} 
+                            isRequired={isFree ?  false : true} 
                             errorMessage='Price is required!'
                             symbol={section?.currency?.symbol ?? '$'}
-                            defaultValue={type === 'Free' ?  0 : (editTicketType?.price ?? '')}
-                            disabled={type === 'Free' ?  true : false}
-                            customValues={type === 'Free' ?  true : false}
+                            defaultValue={isFree ?  0 : (editTicketType?.price ?? '')}
+                            disabled={isFree ?  true : false}
+                            customValues={isFree ?  true : false}
                         />
                     </Box>
-                    }
+
                     <Box sx={{}}>
                         <Typography variant="subtitle2" gutterBottom>
                             Ticket sales end

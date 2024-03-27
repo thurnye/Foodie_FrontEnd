@@ -13,7 +13,7 @@ import { LiaImageSolid } from "react-icons/lia";
 import Paper from '@mui/material/Paper';
 import { TfiTicket } from "react-icons/tfi";
 import { FaUsers } from "react-icons/fa";
-import { currencyFormat, getTotals } from '../../../../../util/commons';
+import { currencyFormat, getTotals, getAllDatesInRange, getDateShort, getLocalTime, getTimeZone, filterSortSchedule, getLocalDateString } from '../../../../../util/commons';
 import Preview from './Preview'
 
 
@@ -23,7 +23,10 @@ const Publish = ({edit, }) => {
   const user = useSelector(state => state.userLog?.user?.user)
   const { eventForm, setSaveResultStatus} = useAddEventFormContext();
   const coverImage = eventForm.details.images[0]?.imgPath
+  const title = eventForm.basicInfo?.eventTitle
+  const summary = eventForm.details?.summary
   const totalSectionsCapacity = getTotals(eventForm.tickets.sections, 'capacity');
+  const currentDate = new Date();
 
   const getTotalPrice = (tickets) => {
     let totalPrice = 0;
@@ -32,12 +35,39 @@ const Publish = ({edit, }) => {
         // Iterate over each ticket type within the ticket category
         ticket.ticketTypes.forEach(ticketType => {
             // Convert price to number and add it to total price
-            totalPrice += parseFloat(ticketType.price);
+            totalPrice += parseFloat(ticketType?.price || 0);
         });
     });
 
     return totalPrice;
   };
+
+  const getEventStartDate = () => {
+
+  const allDateRange = [];
+    eventForm?.schedule.forEach((el) => {
+      const range = getAllDatesInRange(el.start, el.end, 'daily');
+      range.forEach((dt) => allDateRange.push(dt))
+
+    })
+    const sortedSchedule = allDateRange.filter(dateStr => new Date(dateStr) > currentDate);
+    sortedSchedule.sort((a, b) => new Date(a) - new Date(b));
+
+    return <Typography 
+      variant="caption" 
+      display="block" 
+      gutterBottom 
+      color={sortedSchedule[1] ? '' : 'error'}
+    >
+      {/* {
+      sortedSchedule[1] ? 
+      ` ${getDateShort(sortedSchedule[1])} at ${getLocalTime(sortedSchedule[1])} ${getTimeZone(sortedSchedule[1])}` 
+      : 
+      ` ${getDateShort(allDateRange[0])} at ${getLocalTime(allDateRange[0])} ${getTimeZone(allDateRange[0])}`
+      } */}
+      {`${getLocalDateString(filterSortSchedule(eventForm?.schedule)[0].start)} ${getTimeZone()}`}
+    </Typography> 
+  }
 
   const handleSubmit = async () => {
     try {
@@ -63,7 +93,7 @@ const Publish = ({edit, }) => {
           <Paper sx={{ flex: '1 0 auto', p: 3, }} elevation={3} >
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={1}>
-                <Grid item xs={12} sm={5} sx={{background: '#F8F7FA'}}>
+                <Grid item xs={12} md={5} sx={{background: '#F8F7FA', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                   <Box>
                     {coverImage ? 
                       <CardMedia
@@ -83,14 +113,12 @@ const Publish = ({edit, }) => {
                     }
                   </Box>
                 </Grid>
-                <Grid item xs={12} sm={7} sx={{}}>
+                <Grid item xs={12} md={7} sx={{}}>
                   <Box sx={{pt: 4, px:4, position: 'relative',  height: '100%'}}>
-                    <Typography variant="body1" gutterBottom>Test</Typography>
-                    <Typography variant="caption" display="block" gutterBottom>
-                      Thursday, May 2, 2024 at 7:00pm EDT
-                    </Typography>
-                    <Typography variant="body2" display="block" gutterBottom sx={{my: 2}}>
-                      something nice
+                    <Typography variant="body1" gutterBottom>{title}</Typography>
+                    {getEventStartDate()}
+                    <Typography variant="caption" display="block" gutterBottom sx={{my: 2, fontStyle: 'italic'}}>
+                      {summary}
                     </Typography>
                     <Box sx={{
                         display: 'flex',

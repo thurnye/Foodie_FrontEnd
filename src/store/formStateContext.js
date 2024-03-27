@@ -127,7 +127,7 @@ export const defaultForm = {
   } 
 }
 
-const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Publish']
+const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Preview']
 export const AddEventFormContext = createContext({
   eventForm: defaultForm,
   setEventForm: (form) => form,

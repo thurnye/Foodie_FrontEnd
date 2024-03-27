@@ -14,6 +14,8 @@ export const CropImg = ({ getImage,files}) => {
   const [image, setImage] = useState("");
   const cropperRef = useRef(null);
   const [open, setOpen] = React.useState(false);
+  const [dimensions, setDimensions] = useState({ width: null, height: null });
+
 
   useEffect(()=> {
     if(files.length > 0){
@@ -32,8 +34,16 @@ export const CropImg = ({ getImage,files}) => {
         getImage({
         imgPath: cropperRef.current?.cropper.getCroppedCanvas().toDataURL(),
         imgId: getRandomInt(),
+        dimensions
     });
     setOpen(false)
+    }
+  };
+  const getCroppedDimensions = () => {
+    const cropper = cropperRef.current.cropper;
+    if (cropper) {
+      const croppedCanvas = cropper.getCroppedCanvas();
+      setDimensions({ width: croppedCanvas.width, height: croppedCanvas.height });
     }
   };
 
@@ -52,7 +62,8 @@ export const CropImg = ({ getImage,files}) => {
         </DialogTitle>
         <DialogContent>
             <Typography variant="caption" display="block" sx={{mb: 3}}>
-                <li>Recommended image size: 2160px x 1080px</li>
+                <li>image width: {dimensions.width}</li>
+                <li>image height: {dimensions.height}</li>
             </Typography>
             <div style={{ width: "100%" }}>
                 <Cropper
@@ -69,6 +80,7 @@ export const CropImg = ({ getImage,files}) => {
                 responsive={true}
                 checkOrientation={false} 
                 zoom={-5}
+                crop={getCroppedDimensions}
                 />
             </div>
         </DialogContent>

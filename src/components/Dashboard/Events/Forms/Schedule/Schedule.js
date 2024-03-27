@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import styles from './Schedule.module.css';
-import Selectable from './Selectable'
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -8,8 +7,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import FormDirection from '../../../../TestingDashboard/Events/Forms/FormDirection/FormDirection';
-import EventCalendar from './eventCalendar/eventCalendar'
+import FullCalendarComponent from './FullCalendarComponent';
 
 const Schedule = ({edit, updateEvent}) => {
   const { eventForm, setEventForm } = useAddEventFormContext();
@@ -57,16 +55,14 @@ const Schedule = ({edit, updateEvent}) => {
               </Typography>
             </CardContent>
           </Card>
-          {/* <FormDirection onSubmit={() => setProceed(true)} proceed={proceed}/> */}
         </Box>
         :
         <Box>
-          <EventCalendar 
+          <FullCalendarComponent
             setData={setData} 
             defaultDates={eventForm.schedule} 
             edit={edit}
           />
-          {/* <Selectable setData={setData} title={eventForm?.basicInfo?.eventTitle} defaultValues={eventForm.schedule}/> */}
         </Box>
       }
     </Box>

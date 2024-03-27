@@ -36,7 +36,7 @@ const formSteps = [
   { label: 'Schedule', icon: <GrSchedule /> },
   { label: 'Details', icon: <TbListDetails /> },
   { label: 'Add Tickets', icon: <TfiTicket /> },
-  { label: 'Publish', icon: <VscOpenPreview /> },
+  { label: 'Preview', icon: <VscOpenPreview /> },
 ];
 
 const EditEvent = ({isLoaded}) => {

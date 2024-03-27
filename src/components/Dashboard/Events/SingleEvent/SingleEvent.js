@@ -28,7 +28,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-import {getRandomInt, getWeekDay, getTimeZone, getLocalTime, getDateShort, formatNumber, getAllDatesInRange, getTotals, backDatedDate, currencyFormat} from '../../../../util/commons';
+import {getRandomInt, getWeekDay, getTimeZone, getLocalTime, getDateShort, formatNumber, getAllDatesInRange, getTotals, backDatedDate, currencyFormat, getLocalDateString, averageDurationOfEvent, filterSortSchedule} from '../../../../util/commons';
 import { MdLocationOn } from "react-icons/md";
 import { BsClockHistory } from "react-icons/bs";
 import { IoTicketOutline } from "react-icons/io5";
@@ -120,32 +120,6 @@ const SingleEvent = ({isPreview, isLoaded,}) => {
   const sortedSchedule = allDateRange.filter(dateStr => new Date(dateStr) > currentDate);
   sortedSchedule.sort((a, b) => new Date(a) - new Date(b));
   
-  const checkSingleDate = () => {
-    const start = basicInfo.dateTime.start; 
-    const end = basicInfo.dateTime.end;
-    const getStart = new Date(getDateShort(start));
-    const getEnd = new Date(getDateShort(end));
-    
-    console.log({basicInfo});
-    console.log({getStart, getEnd});
-
-    if(basicInfo.dateOccurrence === 'single'){
-      if(getStart === getEnd){
-        return getStart
-      }
-      const dateRanges = getAllDatesInRange(start, end, 'daily');
-      console.log({dateRanges})
-
-      const firstFutureDate = dateRanges.find(date => new Date(date) > currentDate);
-      return getDateShort(firstFutureDate);
-    }
-    if(basicInfo.dateOccurrence === 'recurring'){
-      const firstDate = sortedSchedule.find(date => new Date(date) > currentDate);
-      return getDateShort(firstDate);
-    }
-
-  }
-
 
   // get the non-expired tickets
   const isExpired = () => {
@@ -178,7 +152,7 @@ const SingleEvent = ({isPreview, isLoaded,}) => {
     });
 
     return activeSections;
-};
+  };
 
 
   useEffect(() => tickets && setActiveTickets(isExpired()), [tickets]);
@@ -234,8 +208,7 @@ const SingleEvent = ({isPreview, isLoaded,}) => {
     }
   };
 
-  // End of updating ticket count
-
+  
   return(
   <div className={` container ${styles.SingleEvent}`}>
      {loading ? (
@@ -251,7 +224,7 @@ const SingleEvent = ({isPreview, isLoaded,}) => {
             <div className="row g-0">
               <div className="col-md-8">
                 <div className="card-body">
-                  <h6 className="card-title">{checkSingleDate()}</h6>
+                  <h6 className="card-title">{getLocalDateString(filterSortSchedule(schedule)[0].start)}</h6>
                   <h2 className="card-title"><strong>{basicInfo.eventTitle}</strong></h2>
                   <p className="card-text py-4">{details.summary}</p>
                   <div className={`p-4 d-flex justify-content-between align-items-center ${styles.followContainer}`}>
@@ -280,7 +253,7 @@ const SingleEvent = ({isPreview, isLoaded,}) => {
                         </Box>
                         <div className='col-11'>
                           <Typography variant="p" component="div">
-                          Starts on <b>{checkSingleDate(basicInfo.dateTime.start, basicInfo.dateTime.end)} {getLocalTime(new Date(basicInfo.dateTime.start)).toUpperCase()} {getTimeZone()}</b>
+                          Starts on <b>{getLocalDateString(filterSortSchedule(schedule)[0].start)} {getTimeZone()}</b>
                           </Typography>
                           {basicInfo.dateOccurrence === 'recurring' && <>
                             <Button variant="text" sx={{pl: 0}} onClick={() => setShow(true)}>More options</Button>
@@ -303,36 +276,36 @@ const SingleEvent = ({isPreview, isLoaded,}) => {
                               <Grid container item spacing={1}>
                                 <Grid container item spacing={2}>
                                   <React.Fragment>
-                                    {sortedSchedule.slice(0, 3).map((el) => 
+                                    {filterSortSchedule(schedule).slice(0, 3).map((el) => 
                                     <Grid item xs={6} sm={4} lg={3} key={getRandomInt()}>
                                       <Item className={`  ${dateClicked === el.id ? styles.activeCalendarCard : ''}`}>
                                         <div onClick={() => setDateClicked(el.id)}>
                                           <div className={` ${styles.calendarCard}`}>
                                             <Typography variant="h6" component="div" sx={{ fontSize: 15 }}>
-                                            {getWeekDay(new Date(el))}
+                                            {getWeekDay(new Date(el.start))}
                                             </Typography>
                                             <Divider/>
                                             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                                               {
-                                                new Date().getFullYear() === new Date(el).getFullYear() ?  
-                                                DateTime.fromISO(el).monthLong : 
-                                                <>{DateTime.fromISO(el).monthShort}, {new Date(el).getFullYear()}</>
+                                                new Date().getFullYear(el.start) === new Date(el).getFullYear(el.start) ?  
+                                                DateTime.fromISO(el.start).monthLong : 
+                                                <>{DateTime.fromISO(el.start).monthShort}, {new Date(el.start).getFullYear()}</>
                                               }
                                             </Typography>
                                           <div className={`border ${styles.day} ${dateClicked === el.id ? styles.activeCalendarCardDay : ''}`}>
                                             <Typography variant="h6" component="div" sx={{ p: 1,}} >
-                                            {new Date(el).getDate()}
+                                            {new Date(el.start).getDate()}
                                             </Typography>
                                           </div>
                                           <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-                                            {getLocalTime(new Date(el.start))}
+                                            {getLocalTime(el.start)}
                                           </Typography>
                                           </div>
                                         </div>
                                       </Item>
                                     </Grid>
                                     )}
-                                    {sortedSchedule.length > 3 && 
+                                    {filterSortSchedule(schedule).length > 3 && 
                                       <Grid item xs={6} sm={4} lg={3}>
                                         <Item>
                                             <div className='item'>
@@ -412,7 +385,7 @@ const SingleEvent = ({isPreview, isLoaded,}) => {
                           <div className={`${styles.aboutEventHeadIcon}`}><BsClockHistory /></div>
                           <div>
                           <small className="text-body-secondary">
-                            1 hour 45 minutes
+                          ~ {averageDurationOfEvent(filterSortSchedule(schedule))}
                           </small>
                             </div>
                         </div>

@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import {jwtDecode} from 'jwt-decode';
 
-
+const currentDate = new Date();
 
 
 //convert image to base64
@@ -26,6 +26,26 @@ export const getRandomInt = () => {
 
 //current user Time Zone
 export const getTimeZone = () => new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2];
+
+
+// Wed, Mar 27, 2024, 9:30 AM EDT
+export const getLocalDateString = (dateString) => {
+  const date = new Date(dateString);
+  
+  const options = { 
+    weekday: 'short', // abbreviated day of the week (e.g., 'Wed')
+    day: '2-digit', // two-digit day (e.g., '27')
+    month: 'short', // abbreviated month name (e.g., 'Mar')
+    year: 'numeric', // full numeric year (e.g., '2024')
+    hour: 'numeric', // numeric hour (e.g., '9')
+    minute: '2-digit', // two-digit minute (e.g., '30')
+    hour12: true // 12-hour clock format (e.g., 'AM' or 'PM')
+  };
+  
+  const formattedDate = date.toLocaleString('en-US', options);
+  console.log(formattedDate);
+  return formattedDate;
+}
 
 export const formatDateWithTimeZoneRegion = (date, time) => {
     return DateTime.fromJSDate(date).toFormat('EEE, MMM dd, yyyy, hh:mma');
@@ -64,14 +84,15 @@ export const getDateShort = (dt) => {
 
 // Output example: "8:00AM"
 export const getLocalTime = (date) => {
-  const currentDate = DateTime.now(date);
+  const currentDate = new Date(date);
+  console.log('currentDate::', currentDate);
   // Format the time in 12-hour format with AM/PM
-  const formattedTime = currentDate.toLocaleString({
+  const formattedTime = currentDate.toLocaleString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true,
   });
-
+  console.log('formattedTime', formattedTime)
   return formattedTime;
 }
 
@@ -147,6 +168,9 @@ export const getAllDatesInRange = (startDate, endDate, intervalType) => {
 
   const dates = [];
   let currentDate = start;
+  if (start.equals(end)) {
+    dates.push(start.toISODate());
+  }
 
   while (currentDate <= end) {
     dates.push(currentDate.toISO());
@@ -178,7 +202,8 @@ export const decodeJWToken =  (token) => {
 } 
 
 export const getTotals = (data, field) =>  data.reduce((total, entry) => {
-  return total + parseFloat(entry[field], 10);
+  const num = entry[field] ? entry[field] : 0
+  return total + parseFloat(num, 10);
 }, 0);
 
 export const currencyFormat = new Intl.NumberFormat('en-US', {
@@ -213,4 +238,44 @@ export const mergeTimeToDate = (dateStamp, timeStamp) => {
 // Merge the time components into the date DateTime object
   const mergedDateTime = date.set({ hour, minute, second, millisecond });
   return mergedDateTime.toISO();
+}
+
+
+export const averageDurationOfEvent = (eventSchedule) => {
+  // Function to calculate the duration between two dates in minutes
+const getDurationInMinutes = (start, end) => {
+  const diffInMs = new Date(end).getTime() - new Date(start).getTime();
+  return diffInMs / (1000 * 60); // Convert milliseconds to minutes
+};
+
+// Calculate total duration of all events in minutes
+const totalDurationInMinutes = eventSchedule.reduce((total, event) => {
+  const duration = getDurationInMinutes(event.start, event.end);
+  return total + duration;
+}, 0);
+
+// Calculate average duration
+const averageDurationInMinutes = totalDurationInMinutes / eventSchedule.length;
+
+// Convert average duration from minutes to hours and minutes
+const hours = Math.floor(averageDurationInMinutes / 60);
+const minutes = Math.round(averageDurationInMinutes % 60);
+
+console.log(`Average duration of events: ${hours} hrs ${minutes} mins`);
+return `${hours} hr(s) ${minutes} min(s)`
+}
+
+//filter and sort schedule to remove past dates
+
+export const filterSortSchedule = (schedule) => {
+  if(schedule.length > 0){
+
+    // Filter and sort the schedule
+    const filteredSchedule = schedule.filter(item => new Date(item.end) > currentDate);
+    const sortedSchedule = filteredSchedule.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+    console.log('date',getDateShort(new Date(sortedSchedule[0].start)), 'Time', getLocalTime(new Date(sortedSchedule[0].start)))
+    // Log the sorted schedule
+    return sortedSchedule;
+  }
 }

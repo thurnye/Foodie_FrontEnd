@@ -10,7 +10,6 @@ export default function AlertDialog({open, setOpen, children, title, setConfirmD
 
 
   const handleClose = () => {
-    setConfirmDelete(false);
     setOpen(false);
   };
 
