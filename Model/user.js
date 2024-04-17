@@ -44,6 +44,13 @@ const userSchema = new Schema({
       }
     }
   ],
+  events: {
+      myEvents: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Events',
+      }]
+    }
+  ,
   images: [{
       recipe: {
         type: Schema.Types.ObjectId,
@@ -64,8 +71,10 @@ const userSchema = new Schema({
         ref: 'Recipes',
       }
     }
-  ]
-    
+  ],
+  followers: {
+    type: Number
+  } 
 },
    
 {

@@ -3,6 +3,7 @@
     overflow: auto;
     .cardContainer{
         overflow: auto;
+        overflow-x: hidden;
     }
     .mobileNavigationContainer{
         display: none;

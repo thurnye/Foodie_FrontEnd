@@ -1,6 +1,7 @@
 import  { configureStore} from '@reduxjs/toolkit'
 import userReducer from './userSlice'
 import allRecipesReducer from './allRecipesSlice'
+import eventReducer from './eventSlice'
 
 
 
@@ -8,7 +9,8 @@ import allRecipesReducer from './allRecipesSlice'
 const store = configureStore({
     reducer: {
         userLog: userReducer,
-        recipesData: allRecipesReducer
+        recipesData: allRecipesReducer,
+        eventData: eventReducer
     }
 })
 

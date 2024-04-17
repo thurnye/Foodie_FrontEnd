@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import jwt_decode from "jwt-decode";
+//import jwt_decode from "jwt-decode";
 import {Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'react-feather';
 import {useSelector, useDispatch} from 'react-redux'
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { redirect } from "react-router-dom";
 import services from '../../util/services'
 import Modal from './confirmDeleteModal';
@@ -11,6 +11,12 @@ import UserRecipeList from './userRecipeList';
 import '../../public/css/userCompleteForm.css'
 import {userActions} from '../../store/userSlice'
 import Loading from '../Loading/Loading';
+import {decodeJWToken} from '../../util/commons'
+import { ErrorMessage } from '@hookform/error-message';
+import CompTextEditor from '../CompTextEditor/CompTextEditor';
+
+
+
 
 export default function CompleteForm() {
     const dispatch = useDispatch()
@@ -19,6 +25,7 @@ export default function CompleteForm() {
     const [user, setUser] = useState()
     const [loading, setLoading] = useState(true);
     const {
+        control,
         register, 
         handleSubmit,
         formState: { errors },
@@ -34,19 +41,21 @@ export default function CompleteForm() {
 
 
 
+
   const onSubmit = async (data) => {
     try{
+        console.log(data);
       const result =  await services.postEdit(user._id, data)
       console.log(result)
       let token = result.data
       localStorage.setItem('token', token);  
-      const userDoc = jwt_decode(token); 
-
+      const userDoc = decodeJWToken(token); 
+        
       // store the user in redux state
       dispatch(userActions.login({
         user: userDoc
       }))
-      redirect("/");
+    //   redirect("/");
       
     }catch(err){
       console.log(err)
@@ -197,78 +206,38 @@ export default function CompleteForm() {
                         
                             <hr></hr>
                             {/* BIO */}
+                            {console.log(user.aboutMe)}
                             <div className="card mb-3 userInformation" >
+                                <Controller
+                                    name="aboutMe"
+                                    control={control}
+                                    rules={{
+                                        required: "This field is required",
+                                    }}
+                                    defaultValue={user?.aboutMe}
+                              
+                                    render={({ field }) => (
+                                    <CompTextEditor
+                                        setEditorData={(htmlValue) => field.onChange(htmlValue)}
+                                        show={true}
+                                        placeholder="We want to know about you, your recipe sources, and whats your inspiration, etc..."
+                                        content={field.value}
+                                        className={`form-control`}
+                                    />
+                                    )}
+                                />
+                                {errors.aboutMe && 
+                                    <span className="text-danger">
+                                        <ErrorMessage errors={errors} name="aboutMe" className="text-danger" />
+                                    </span>
+                                }
                                 <div className="row g-0">
-                                    {/* ABOUT ME, RESOURCES */}
                                     <div className="col-md-6">
-                                        {/* TAB BUTTONS */}
-                                        <ul className="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                            <li className="nav-item" role="presentation">
-                                                <button className=" pill-btn btn-warning nav-link active" id="pills-about-me-tab" data-bs-toggle="pill" data-bs-target="#pills-about-me" type="button" role="tab" aria-controls="pills-about-me" aria-selected="true">About Me</button>
-                                            </li>
-                                            <li className="nav-item" role="presentation">
-                                                <button className=" pill-btn btn-warning nav-link" id="pills-my-resources-tab" data-bs-toggle="pill" data-bs-target="#pills-my-resources" type="button" role="tab" aria-controls="pills-my-resources" aria-selected="false">My Resources</button>
-                                            </li>
-                                            <li className="nav-item" role="presentation">
-                                                <button className=" pill-btn btn-warning nav-link" id="pills-resource-list-tab" data-bs-toggle="pill" data-bs-target="#pills-resource-list" type="button" role="tab" aria-controls="pills-resource-list" aria-selected="false">Resources List</button>
-                                            </li>
-                                        </ul>
-
-                                        {/* Error handling for pills tabs */}
-                                        <p style={{color: 'salmon'}}>{errors.aboutMe && <span  role="alert">{errors.aboutMe.message}</span>}</p>
-                                        <p style={{color: 'salmon'}}>{errors.myResources && <span  role="alert">{errors.myResources.message}</span>}</p>
-                                        {/* End of errow handling */}
-
-                                            {/* ABOUT ME ITEM, RESOURCES ITEM */}
-                                        <div className="tab-content" id="pills-tabContent">
-                                            {/* ABOUT ME */}
-                                            <div className="tab-pane fade show active" id="pills-about-me" role="tabpanel" aria-labelledby="pills-about-me-tab">
-                                                <label htmlFor="exampleFormControlAboutMe" className="form-label text-muted">let us know about you</label>
-                                                <textarea 
-                                                className="form-control" 
-                                                id="exampleFormControlAboutMe" 
-                                                rows="20"
-                                                aria-invalid={errors.aboutMe ? "true" : "false"}
-                                                {...register("aboutMe", {
-                                                required: "About me field is required"
-                                                })}
-                                                ></textarea>
-                                                
-                                            </div>
-                                            
-                                            {/* MY RESOURCE */}
-                                            <div className="tab-pane fade" id="pills-my-resources" role="tabpanel" aria-labelledby="pills-my-resources-tab">
-                                            <label htmlFor="exampleFormControlMyResources" className="form-label text-muted">what inspires you for your recipes method</label>
-                                                <textarea 
-                                                className="form-control" 
-                                                id="exampleFormControlMyResources" 
-                                                rows="20"
-                                                aria-invalid={errors.myResources ? "true" : "false"}
-                                                {...register("myResources", {
-                                                required: "My Resources field is required",
-                                                })}
-                                                ></textarea>
-                                            </div>
-                                            
-                                            {/* MY SOURCE LIST */}
-                                            <div className="tab-pane fade" id="pills-resource-list" role="tabpanel" aria-labelledby="pills-resource-list-tab">
-                                                <label htmlFor="exampleFormControlResourcesList" className="form-label text-muted">list resources use or external sources</label>
-
-                                            </div> 
-                                        </div>
 
                                         <div className="getForm">  
                                         <input type="submit" className="btn btn-dark btn-block submit-user-info"/>
 
                                         </div>
-                                    </div>
-                                    
-                                    
-                                    
-                                    {/* MY RECIPE LIST */}
-                                    <div className="col-md-6 user-recipe-list">
-                                        {/* <UserRecipeList /> */}
-                                    
                                     </div>
                                 </div>
                             </div>

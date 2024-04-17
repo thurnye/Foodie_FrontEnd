@@ -1,0 +1,64 @@
+.Event {
+    .cardContainer{
+        border: 1px solid #ededed;
+        box-shadow: 0.3rem 0.3rem 0.625rem 0.188rem rgba(0,0,0,0.10);
+        width: 25rem;
+        margin: auto;
+        margin-top: 3rem;
+    }
+    img{
+        border-radius: 0;
+        height: 11.375rem;
+    }
+    .bodyHeader{
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        
+    }
+    font-family: inherit;
+    .Title,
+    .Time,
+    .Venue,
+    .Entry,
+    .Organiser,
+    .Followers{
+        margin-bottom: 1rem;
+        font-family: inherit;
+    }
+    .Title{
+        font-weight: 600;
+    }
+    .Time{
+        color: #c95226;
+        width: 200px;
+    }
+    .Venue{
+        color: #8f8f8f;
+    }
+    .Entry{
+        color: #8f8f8f;
+        margin-bottom: 1rem;
+    }
+    .Organiser{
+        font-family: inherit;
+        margin-bottom: 1rem;
+    }
+    .Followers {
+        font-family: inherit;
+        margin-bottom: 1rem;
+    }
+}
+.modalFooter{
+    padding: 0.8rem;
+    border-top: 1px solid #d7d5d5d5;
+    
+    .closeModal{
+        border: 1px solid grey;
+        padding: 0.2rem;
+        font-size: x-large;
+        width: 8rem;
+        text-align: center;
+        margin-left: auto;
+    }
+}

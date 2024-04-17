@@ -1,0 +1,39 @@
+.Events {
+    font-family: inherit;
+    
+    .Title,
+    .Time,
+    .Venue,
+    .Entry,
+    .Organiser,
+    .Followers{
+        margin-bottom: 1rem;
+        font-family: inherit;
+    }
+    .Title{
+        font-weight: 600;
+    }
+    .Time{
+        color: #c95226;
+        width: 200px;
+    }
+    .Venue{
+        color: #8f8f8f;
+    }
+    .Entry{
+        color: #8f8f8f;
+        margin-bottom: 1rem;
+    }
+    .Organiser{
+        font-family: inherit;
+        margin-bottom: 1rem;
+    }
+    .Followers {
+        font-family: inherit;
+        margin-bottom: 1rem;
+    }
+    img{
+        border-radius: 0;
+        height: 11.375rem;
+    }
+}

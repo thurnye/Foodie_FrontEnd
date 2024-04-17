@@ -46,6 +46,16 @@ function Header(){
         name: 'Forum',
         path: '/forum',
         active: false,
+    },
+    {
+        name: 'EVENTFORM',
+        path: '/eventbrit',
+        active: false,
+    },
+    {
+        name: 'Events',
+        path: '/events',
+        active: false,
     }
   ]
 
@@ -73,7 +83,7 @@ function Header(){
                                 {appNav.map((el, i) => <a className="nav-link" key={`nav_${el}_${i}`} aria-current="page" href={el.path}>{el.name}</a>
                                 )}
                                 {!user && <a className="nav-link" aria-current="page" href="/login">Login</a>}
-                                {user && <a className="nav-link " aria-current="page" href="/user">Dashboard</a>}
+                                {user && <a className="nav-link " aria-current="page" href="/account">Dashboard</a>}
                                 {user && <a className="nav-link " aria-current="page" href="http://localhost:3001/" target="_blank">News Feeds</a>}
                                 {user &&  <button className="nav-link btn" onClick={logoutHandler}>Logout</button>}
                                 

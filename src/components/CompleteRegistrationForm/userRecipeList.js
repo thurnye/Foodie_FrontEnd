@@ -10,6 +10,7 @@ import CustomPagination from '../CustomPagination/CustomPagination';
 import { recipesActions } from '../../store/allRecipesSlice';
 import styles from './userRecipeList.module.css';
 import Loading from '../Loading/Loading';
+import {decodeJWToken} from '../../util/commons'
 
 export default function UserRecipeList() {
     const dispatch = useDispatch()
@@ -22,7 +23,7 @@ export default function UserRecipeList() {
     const [allRecipes, setAllRecipes] = useState();
     const [myRecipes, setMyRecipes] = useState(null)
 
-    const fetchUpdatedUser = async (id) => {
+    const fetchUserRecipe = async (id) => {
         try {
             setLoading(true)
             const result = await services.getUserRecipes(id, {currentPage});
@@ -46,7 +47,7 @@ export default function UserRecipeList() {
 
     useEffect(() => {
         if(user){
-           fetchUpdatedUser(user._id);  
+           fetchUserRecipe(user._id);  
         }
     },[user, currentPage])
 
@@ -58,7 +59,7 @@ export default function UserRecipeList() {
             // console.log(result)
             let token = result.data
                   localStorage.setItem('token', token);  
-                  const userDoc = jwt_decode(token); 
+                  const userDoc = decodeJWToken(token); 
 
                 //   store the user in redux state
                   dispatch(userActions.login({

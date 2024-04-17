@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from './FeatureTesting.module.css';
 import parser from 'html-react-parser'
 import CompTextEditor from '../CompTextEditor/CompTextEditor';
-import Location from '../Dashboard/Location/Location';
+import Location from '../TestingDashboard/Location/Location';
 
 const FeatureTesting = () => {
 

@@ -7,7 +7,7 @@ import services from '../util/services'
 import Nav from 'react-bootstrap/Nav';
 import {Link} from 'react-router-dom'
 import {userActions } from '../store/userSlice'
-
+import {decodeJWToken} from '../util/commons'
 
 export default function LogInUser() {
    const dispatch = useDispatch()
@@ -25,7 +25,7 @@ export default function LogInUser() {
       let token = result.data
       console.log(token.length);
       localStorage.setItem('token', token);  
-      const userDoc = jwt_decode(token); 
+      const userDoc = decodeJWToken(token); 
 
       // store the user in redux state
       dispatch(userActions.login({
@@ -33,7 +33,7 @@ export default function LogInUser() {
       }))
       redirect("/");
     }catch(err){
-      console.log(err)
+      console.log({err})
     }
   };
   

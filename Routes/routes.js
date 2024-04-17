@@ -12,7 +12,7 @@ router.post('/api/user/login', Controller.getLogIn);
 //post the updated user
 router.post('/edit/:id', Controller.postUpdatedUser);
 
-//get the updated user
+//get the loggedIn user recipes
 router.post('/user/:id', Controller.getAUserRecipes);
 
 //post new recipe ---> this will be the post recipe
@@ -21,11 +21,8 @@ router.post('/api/recipe', Controller.postNewRecipe);
 //get all recipes
 router.post('/', Controller.getAllRecipes)
 
-
 //get all recipes
 router.post('/query', Controller.getQueryRecipes)
-
-
 
 //post new user review 
 router.post('/api/recipe/review', Controller.postReview);
@@ -38,6 +35,32 @@ router.post('/api/recipe/update/:id', Controller.getRecipeUpdate);
 
 //delete a recipe
 router.post('/api/removeRecipe/:id', Controller.postDeleteARecipe);
+
+//post new event ---> this will be the post recipe
+router.post('/api/event', Controller.postEvent);
+
+//get all events
+router.post('/event/query', Controller.getAllEvents)
+
+//get the loggedIn user events
+router.post('/user/event/:id', Controller.getUserEvents);
+
+//getting a event by id
+router.get('/event/:id', Controller.getSingleEvent);
+
+//delete an event
+router.post('/event/:id', Controller.postDeleteEvent);
+
+
+
+
+
+
+
+
+
+
+
 
 // =============================================
 
