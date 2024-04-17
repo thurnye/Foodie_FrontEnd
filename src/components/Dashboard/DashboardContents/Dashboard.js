@@ -89,6 +89,7 @@ const defaultTheme = createTheme();
 
 const Dashboard = () => {
   const [open, setOpen] = React.useState(false);
+  const [header, setHeader] = React.useState('Dashboard')
   const [openMobile, setOpenMobile] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -122,7 +123,7 @@ const Dashboard = () => {
               noWrap
               sx={{ flexGrow: 1, ml: {xs: 0, sm: open ? 0 : 7 } }}
             >
-              Events
+              {header}
             </Typography>
             <SearchEvent/>
             <IconButton color="inherit">

@@ -496,41 +496,40 @@ const getAllEvents = async(req, res, next) => {
     try{
         
         const filter = req.body;
-        const type = filter.activeComp
-        const page = filter.currentPage;
+        const type = filter?.activeComp
+        const page = filter.page;
         const keyword = filter.keywordSearch
         const timeFrameStarts = filter?.timeFrame?.starts;
         const timeFrameEnds = filter?.timeFrame?.ends;
-        const perPage = filter.perPage || 12;
+        const limit = filter.limit || 12;
         let query = { };
         
       
         if(keyword){
             query["eventDetails.eventTitle"] = new RegExp(keyword, 'i')
         }
-        if(type === 'online'){
-            query["eventDetails.isOnline"] = true
-        }
-        if(type === 'free'){
-            query["eventDetails.isFree"]= true
-        }
+        // if(type === 'online'){
+        //     query["eventDetails.isOnline"] = true
+        // }
+        // if(type === 'free'){
+        //     query["eventDetails.isFree"]= true
+        // }
        
         //get date range
-        if (timeFrameStarts ) {
-            query["eventDetails.starts"] = {"$gte": new Date(timeFrameStarts)}
-        }
-        if (timeFrameEnds) {
-            query["eventDetails.ends"] = {"$lte": new Date(timeFrameEnds)}
-        }
+        // if (timeFrameStarts ) {
+        //     query["eventDetails.starts"] = {"$gte": new Date(timeFrameStarts)}
+        // }
+        // if (timeFrameEnds) {
+        //     query["eventDetails.ends"] = {"$lte": new Date(timeFrameEnds)}
+        // }
         
-        console.log('EventQuery =',query);
+        console.log('EventQuery::',query);
 
         const count = await Event.find(query).countDocuments();
        
         const events = await Event.find(query)
-        .skip((perPage * page) - perPage)
-        .limit(perPage)
-        .limit(perPage)
+        .skip((limit * page) - limit)
+        .limit(limit)
         .populate({
             path: 'createdBy',
             select: '_id avatar lastName firstName followers'
@@ -538,7 +537,7 @@ const getAllEvents = async(req, res, next) => {
         .exec()
         const data = {
             events, 
-            count: Math.ceil(count / perPage)
+            count: Math.ceil(count / limit)
         };
         console.log(events.length);
         res.status(200).json(data);

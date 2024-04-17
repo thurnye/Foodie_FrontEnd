@@ -279,3 +279,32 @@ export const filterSortSchedule = (schedule) => {
     return sortedSchedule;
   }
 }
+
+export const findMinimumPriceOrFreeTicket = (sections) => {
+  let minimumPrice = Infinity; // Initialize minimumPrice to positive infinity
+  let hasFreeTicket = false; // Initialize hasFreeTicket to false
+
+  sections.forEach((section) => {
+    section.ticketTypes?.forEach((ticket) => {
+      // Convert price to a number
+      const price = parseFloat(ticket.price);
+
+      if (ticket.type.toLowerCase() === 'free') {
+        // If the price is 0, set hasFreeTicket to true
+        hasFreeTicket = true;
+      } else if (price < minimumPrice) {
+        // If the price is less than the current minimumPrice, update minimumPrice
+        minimumPrice = price;
+      }
+    });
+  });
+
+  if (hasFreeTicket) {
+    // If there is a free ticket, return true
+    return 'Free';
+  } else {
+    console.log("minimumPrice::", minimumPrice)
+    // If there is no free ticket, return the smallest ticket price
+    return `from ${currencyFormat.format(minimumPrice)}`;
+  }
+};

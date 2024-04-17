@@ -36,7 +36,7 @@ import './public/css/hover.css'
 import './App.css';
 import Dashboard from './pages/Dashboard/Dashboard';
 import UserRecipeList from './components/CompleteRegistrationForm/userRecipeList';
-import Events from './components/TestingDashboard/Events/EventsContainer/EventsContainer'
+// import Events from './components/TestingDashboard/Events/EventsContainer/EventsContainer'
 import SavedBookmarks from './components/TestingDashboard/SavedBookmarks/SavedBookmarks'
 import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 
@@ -50,8 +50,11 @@ import EventBrit from './components/Dashboard/DashboardContents/EventBrit/EventB
 import CreateEvent from './components/Dashboard/Events/CreateEvent/CreateEvent';
 import EditEvent from './components/Dashboard/Events/EditEvent/EditEvent';
 import DashBoardContent from './components/Dashboard/DashboardContents/DashBoardContent';
-import Organizer from './components/Dashboard/Events/Organizer/Organizer'
-import EventFeed from './components/Dashboard/Events/EventFeed/EventFeed'
+import Organizer from './components/Dashboard/Events/Organizer/Organizer';
+import EventFeed from './components/Dashboard/Events/EventFeed/EventFeed';
+import Events from './components/Dashboard/Events/Events/Events';
+import AccountMenu from './components/Nav/AccountMenu';
+import SingleEventContainer from './components/Dashboard/Events/SingleEventContainer/SingleEventContainer';
 
 
 
@@ -88,7 +91,8 @@ function App() {
   return (
     <React.Fragment>
       <BrowserRouter>
-      <NavBar/>
+      {/* <NavBar/> */}
+      <AccountMenu/>
         <Routes>
           <Route path="/"  exact element={<Home/>} />
           {!user && <Route path="/signup" element={<Signup/>} /> }
@@ -98,6 +102,8 @@ function App() {
           {/* <Route path="/eventbrit" element={<EventBrit/>} /> */}
 
           <Route path="/recipe" element={<SingleRecipe/>} />
+          <Route path="/events" element={<Events/>} />
+          <Route path="/event" element={<SingleEventContainer/>} />
           <Route path="/all-recipes" element={<AllRecipe/>} />
           <Route path="/forum" element={<Forum/>} />
           <Route path="/author" element={<Author/>} />
@@ -110,18 +116,18 @@ function App() {
             <Route path="add-recipe" element={<NewRecipe/>} />
             <Route path="blog-manager" element={<BlogManager/>} />
             <Route path="notification" element={<Notification/>} />
-            <Route path="events" element={<Events/>}>
+            {/* <Route path="events" element={<Events/>}>
               <Route path="new-event" element={<AddEvent isNew={true} isLoaded={isLoaded}/>} />
               <Route path="edit-event" element={<AddEvent isNew={false} isLoaded={isLoaded}/>} />
               <Route path="scheduled-events" element={<EventListContainer/>}/>
               <Route path="my-events" element={<EventListContainer/>} />
               <Route path="*" element={<EventListContainer/>} />
-            </Route>
+            </Route> */}
             <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} />
             {/* set the landing section for this component */}
             <Route index element={<Navigate to="dashboard" />}></Route> 
           </Route>
-          <Route path="/event" element={<SingleEvent isLoaded={isLoaded}/>} />
+          {/* <Route path="/event" element={<SingleEvent isLoaded={isLoaded}/>} /> */}
 
 
           {/* Testing */}
@@ -135,6 +141,7 @@ function App() {
             <Route index element={<Navigate to="dashboard" />}></Route>
           </Route>
 
+          
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>

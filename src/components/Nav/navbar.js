@@ -51,6 +51,11 @@ function Header(){
         name: 'EVENTFORM',
         path: '/eventbrit',
         active: false,
+    },
+    {
+        name: 'Events',
+        path: '/events',
+        active: false,
     }
   ]
 

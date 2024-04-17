@@ -9,6 +9,8 @@ import PeopleIcon from '@mui/icons-material/People';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import EventNoteIcon from '@mui/icons-material/EventNote';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { Link } from 'react-router-dom';
 
 export const mainListItems = (
@@ -25,7 +27,7 @@ export const mainListItems = (
     <ListItemButton>
       <ListItemIcon>
         <Link to="events-feeds">
-          <ShoppingCartIcon />
+          <EventNoteIcon />
         </Link>
       </ListItemIcon>
       <ListItemText primary="Events" />
@@ -34,7 +36,7 @@ export const mainListItems = (
     <ListItemButton>
       <ListItemIcon>
         <Link to="">
-          <PeopleIcon />
+          <MenuBookIcon />
         </Link>
       </ListItemIcon>
       <ListItemText primary="Recipes" />
