@@ -13,10 +13,12 @@ import EventNoteIcon from '@mui/icons-material/EventNote';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { Link } from 'react-router-dom';
 
-export const mainListItems = (
+
+const MainListItems = ({header, setHeader})  => {
+  return (
   <React.Fragment>
     <ListItemButton>
-      <ListItemIcon>
+      <ListItemIcon onClick={() => setHeader('Dashboard')}>
         <Link to="dashboard">
           <DashboardIcon />
         </Link>
@@ -25,7 +27,7 @@ export const mainListItems = (
     </ListItemButton>
 
     <ListItemButton>
-      <ListItemIcon>
+      <ListItemIcon onClick={() => setHeader('Events')}>
         <Link to="events-feeds">
           <EventNoteIcon />
         </Link>
@@ -34,7 +36,7 @@ export const mainListItems = (
     </ListItemButton>
 
     <ListItemButton>
-      <ListItemIcon>
+      <ListItemIcon onClick={() => setHeader('Recipes')}>
         <Link to="">
           <MenuBookIcon />
         </Link>
@@ -56,30 +58,32 @@ export const mainListItems = (
       <ListItemText primary="Integrations" />
     </ListItemButton>
   </React.Fragment>
-);
+)};
 
-export const secondaryListItems = (
-  <React.Fragment>
-    <ListSubheader component="div" inset>
-      Saved reports
-    </ListSubheader>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Current month" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Last quarter" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItemButton>
-  </React.Fragment>
-);
+// export const secondaryListItems = (
+//   <React.Fragment>
+//     <ListSubheader component="div" inset>
+//       Saved reports
+//     </ListSubheader>
+//     <ListItemButton>
+//       <ListItemIcon>
+//         <AssignmentIcon />
+//       </ListItemIcon>
+//       <ListItemText primary="Current month" />
+//     </ListItemButton>
+//     <ListItemButton>
+//       <ListItemIcon>
+//         <AssignmentIcon />
+//       </ListItemIcon>
+//       <ListItemText primary="Last quarter" />
+//     </ListItemButton>
+//     <ListItemButton>
+//       <ListItemIcon>
+//         <AssignmentIcon />
+//       </ListItemIcon>
+//       <ListItemText primary="Year-end sale" />
+//     </ListItemButton>
+//   </React.Fragment>
+// );
+
+export default MainListItems;
