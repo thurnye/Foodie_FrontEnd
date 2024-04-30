@@ -52,9 +52,12 @@ import EditEvent from './components/Dashboard/Events/EditEvent/EditEvent';
 import DashBoardContent from './components/Dashboard/DashboardContents/DashBoardContent';
 import Organizer from './components/Dashboard/Events/Organizer/Organizer';
 import EventFeed from './components/Dashboard/Events/EventFeed/EventFeed';
-import Events from './components/Dashboard/Events/Events/Events';
+import Events from './components/Dashboard/Events/AllEvents/AllEvents';
 import AccountMenu from './components/Nav/AccountMenu';
 import SingleEventContainer from './components/Dashboard/Events/SingleEventContainer/SingleEventContainer';
+import RecipeFeeds from './components/Dashboard/Recipes/RecipeFeeds/RecipeFeeds';
+import EditRecipe from './components/Dashboard/Recipes/EditRecipe/EditRecipe';
+import CreateRecipe from './components/Dashboard/Recipes/CreateRecipe/CreateRecipe';
 
 
 
@@ -133,10 +136,17 @@ function App() {
           {/* Testing */}
           <Route path="eventbrit" element={<EventBrit/>}>
             <Route path="dashboard" element={<DashBoardContent/> }/>
+            {/* Events */}
             <Route path="events-feeds" element={<EventFeed/> }/>
             <Route path="create-event" element={<CreateEvent isLoaded={isLoaded} />} />
             <Route path="edit-event" element={<EditEvent isLoaded={isLoaded} />} />
             <Route path="organizer" element={<Organizer/>} />
+
+            {/* Recipes */}
+            <Route path="recipe-feeds" element={<RecipeFeeds/> }/>
+            <Route path="create-recipe" element={<CreateRecipe/>} />
+            <Route path="edit-recipe" element={<EditRecipe/>} />
+
 
             <Route index element={<Navigate to="dashboard" />}></Route>
           </Route>

@@ -19,28 +19,24 @@ import Typography from '@mui/material/Typography';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import IconButton from '@mui/material/IconButton';
+import { FaUnsplash } from "react-icons/fa";
 
 const root = `https://api.unsplash.com/`
 const key = process.env.REACT_APP_UNSPLASH_ACCESS_KEY
 const limit = 30
 
-const Unsplash = () => {
-  const [open, setOpen] = useState(false);
+const Unsplash = ({open, setOpen, selectedImages, setSelectedImages, showButton, multi}) => {
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(1);
   const [searchedQuery, setSearchedQuery] = useState('');
   const [searchedResult, setSearchedResult] = useState([]);
-  const [selectedImages, setSelectedImages] = useState([])
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const [tempSelectedImages, setTempSelectedImages] = useState([]);
 
   const handleClose = () => {
     setOpen(false);
   };
 
-  useEffect(() => { handleSearch()},[page])
+  useEffect(() => { page && open && handleSearch()},[page])
 
 
 
@@ -64,13 +60,17 @@ const Unsplash = () => {
 
 
   const handleSelect = (image) => {
-    const isSelected = selectedImages.includes(image);
-  
-    if (isSelected) {
-      const updatedImages = selectedImages.filter((selectedImage) => selectedImage !== image);
-      setSelectedImages(updatedImages);
-    } else {
-      setSelectedImages([...selectedImages, image]);
+    if(!multi){
+      setTempSelectedImages([image]);
+    }else{
+      const isSelected = tempSelectedImages.includes(image);
+    
+      if (isSelected) {
+        const updatedImages = tempSelectedImages.filter((selectedImage) => selectedImage !== image);
+        setTempSelectedImages(updatedImages);
+      } else {
+        setTempSelectedImages([...tempSelectedImages, image]);
+      }
     }
   };
 
@@ -78,9 +78,16 @@ const Unsplash = () => {
 
   return(
   <div className={styles.Unsplash}>
-    <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button>
+    {showButton && <CustomizedButton 
+      variant="text" 
+      label={'unsplash'} 
+      startIcon={<FaUnsplash />} 
+      id="demo-customized-button"
+      disableElevation
+      onClick={() => setOpen(true)}
+      sx={{textTransform: 'none', color: '#121212'}}
+    />
+    }
       <Dialog
         open={open}
         onClose={handleClose}
@@ -153,7 +160,7 @@ const Unsplash = () => {
                     right: 0
                     }}>
                       <IconButton aria-label="icon" onClick={() => handleSelect(item.image)}>
-                      {selectedImages.includes(item.image) ? 
+                      {tempSelectedImages.includes(item.image) ? 
                         <CheckCircleOutlineIcon sx={{color: '#038703'}}/> :
                         <RadioButtonUncheckedIcon /> 
                       }
@@ -176,15 +183,19 @@ const Unsplash = () => {
         </DialogContent>
         <DialogActions sx={{
           justifyContent: 'space-between'}}>
-          
           <Typography variant="body2" sx={{
             textAlign: 'start'
             }}>
-            <i>{selectedImages.length > 0 && `Selections: ${selectedImages.length}`}</i>
+            <i>{tempSelectedImages.length > 0 && `Selections: ${tempSelectedImages.length}`}</i>
           </Typography>
           <Box>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button onClick={handleClose} autoFocus>Save</Button>
+            <Button  onClick={() => {
+              setSelectedImages(tempSelectedImages);
+              handleClose();
+            }}>
+              Save
+            </Button>
           </Box>
         </DialogActions>
       </Dialog>

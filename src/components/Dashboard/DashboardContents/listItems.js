@@ -37,7 +37,7 @@ const MainListItems = ({header, setHeader})  => {
 
     <ListItemButton>
       <ListItemIcon onClick={() => setHeader('Recipes')}>
-        <Link to="">
+        <Link to="recipe-feeds">
           <MenuBookIcon />
         </Link>
       </ListItemIcon>

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import jwt_decode from "jwt-decode";
 import {Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'react-feather';
-import MetaData from '../metaData'
+import {useMetaDataHook} from '../metaData'
 import {decodeJWToken} from '../../util/commons'
 
 import Select from 'react-select'
@@ -22,7 +22,9 @@ export default function NewRecipeForm() {
     // console.log(Tags)
     const dispatch = useDispatch()
     const animatedComponents = makeAnimated();
-
+    const metaData = useMetaDataHook();
+    const {tagsOptions, categoryOptions, durationOptions, servingOptions, levelOptions, nutrientsOptions} = metaData;
+    
     const user = useSelector(state => state.userLog?.user?.user)
     const [selectedTag, setSelectedTag] = useState(null);
     const [selectedCat, setSelectedCat] = useState(null);
@@ -43,37 +45,7 @@ export default function NewRecipeForm() {
         formState: { errors },
     } = useForm();
 
-    const tagsOptions = []
-    const servingOptions = []
-    const catOptions = []
-    const durationOptions = []
-    const levelOptions = []
-    
-    MetaData[0].tags.forEach(el => {
-        tagsOptions.push(
-            { value: el, label: el }
-        )
-    })
-    MetaData[0].serving.forEach(el => {
-        servingOptions.push(
-            { value: el, label: el }
-        )
-    })
-    MetaData[0].category.forEach(el => {
-        catOptions.push(
-            { value: el, label: el }
-        )
-    })
-    MetaData[0].duration.forEach(el => {
-        durationOptions.push(
-            { value: el, label: el }
-        )
-    })
-    MetaData[0].level.forEach(el => {
-        levelOptions.push(
-            { value: el, label: el }
-        )
-    })
+
 
 
    
@@ -422,7 +394,7 @@ export default function NewRecipeForm() {
                                         isMulti
                                         defaultValue={selectedTag}
                                         onChange={setSelectedCat}
-                                        options={catOptions}
+                                        options={categoryOptions}
                                     />
                                 </div>
                                 
@@ -464,7 +436,7 @@ export default function NewRecipeForm() {
                                                         <span className="text-muted"><i>*all fields are required</i></span>
                                                     </div>
                                                     <div className="row row-cols-1 row-cols-md-2 g-4">
-                                                        {MetaData[0].nutrients.map(el => {
+                                                        {nutrientsOptions.map(el => {
                                                             const name = el.name
                                                             return (
                                                                 <div className="col form-fields" key={el.name}>

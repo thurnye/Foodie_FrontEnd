@@ -20,3 +20,8 @@ input[type=number]:focus,
 [contenteditable].form-control:focus {
   box-shadow: inset 0 -1px 0 #ddd;
 }
+
+.tox .tox-statusbar__right-container,
+.tox .tox-statusbar__help-text {
+  display: none !important
+}

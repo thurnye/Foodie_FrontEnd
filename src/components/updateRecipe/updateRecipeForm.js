@@ -2,13 +2,10 @@ import React, { useState, useEffect } from 'react'
 import jwt_decode from "jwt-decode";
 import {Link } from 'react-router-dom';
 import { Edit, Trash2 } from 'react-feather';
-import MetaData from '../metaData'
+import {useMetaDataHook} from '../metaData'
 import {decodeJWToken} from '../../util/commons'
-
-
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated';
-
 import {useSelector, useDispatch} from 'react-redux'
 import { useForm } from "react-hook-form";
 import { redirect } from "react-router-dom";
@@ -39,6 +36,8 @@ export default function NewRecipeForm() {
     const [thumbnail, setThumbnail] = useState(null)
     const [error, setError] = useState(false)
     const [dataError, setDataError] = useState(null)
+    const metaData = useMetaDataHook();
+    const {tagsOptions, categoryOptions, durationOptions, servingOptions, levelOptions, nutrientsOptions} = metaData;
     
 
 
@@ -96,43 +95,6 @@ export default function NewRecipeForm() {
         handleSubmit,
         formState: { errors },
     } = useForm();
-
-    const tagsOptions = []
-    const servingOptions = []
-    const catOptions = []
-    const durationOptions = []
-    const levelOptions = []
-    
-
-    
-    MetaData[0].tags.forEach(el => {
-        tagsOptions.push(
-            { value: el, label: el }
-        )
-    })
-    MetaData[0].serving.forEach(el => {
-        servingOptions.push(
-            { value: el, label: el }
-        )
-    })
-    MetaData[0].category.forEach(el => {
-        catOptions.push(
-            { value: el, label: el }
-        )
-    })
-    MetaData[0].duration.forEach(el => {
-        durationOptions.push(
-            { value: el, label: el }
-        )
-    })
-    MetaData[0].level.forEach(el => {
-        levelOptions.push(
-            { value: el, label: el }
-        )
-    })
-
-
-   
 
     const addItem = (e, ingredientType) => {
         e.preventDefault();
@@ -477,7 +439,7 @@ export default function NewRecipeForm() {
                                                 label: el
                                             }))}
                                             onChange={setSelectedCat}
-                                            options={catOptions}
+                                            options={categoryOptions}
                                         />
                                     </div>
                                     

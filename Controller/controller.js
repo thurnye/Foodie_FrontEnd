@@ -52,34 +52,36 @@ const getLogIn = async (req, res) => {
 
 const getAUserRecipes = async(req, res, next) => {
     try{
-        // console.log(req.body)
+        console.log(req.body)
         const author = req.params.id;
         const count = await Recipe.find({author: author}).countDocuments()
         // console.log(count);
-        const perPage = 9;
-        const page = req.body.currentPage
+        const perPage = req.body.perPage || 9;
+        const page = req.body.currentPage || 1
 
         const recipes =  await Recipe.find({author: author})
         .skip((perPage * page) - perPage)
         .limit(perPage)
-        .populate({
-            path: 'reviews.review',
-            populate: ({ 
-                path: 'userId',
-                populate: {path: 'myRecipes.recipe'}
-            }) 
-        })
-        .populate({
-            path: 'author'
-        })
+        .select('_id thumbnail recipeName createdAt')
+        // .populate({
+        //     path: 'reviews.review',
+        //     populate: ({ 
+        //         path: 'userId',
+        //         populate: {path: 'myRecipes.recipe'}
+        //     }) 
+        // })
+        // .populate({
+        //     path: 'author'
+        // })
         .exec()
         const data = {
             recipes, 
-            count: Math.ceil(count / perPage)
+            count: Math.ceil(count)
         }
         res.status(200).json(data)
 
     }catch(err){
+        console.log(err)
         res.status(400).json(err)
     }   
 }

@@ -6,8 +6,6 @@ import { useAddEventFormContext } from '../../../../../store/formStateContext';
 const BasicInfos = ({isLoaded, edit, updateEvent}) => {
   const {eventForm, setEventForm  } = useAddEventFormContext();
   
-  console.log(eventForm);
-
   const [data, setData] = useState();
 
   useEffect(() => {
@@ -20,7 +18,6 @@ const BasicInfos = ({isLoaded, edit, updateEvent}) => {
       edit && updateEvent(updatedData);
     }
   }, [data]);
-  console.log('basicInfo', eventForm)
   
   return(
   <div className={` ${styles.BasicInfos}`}>

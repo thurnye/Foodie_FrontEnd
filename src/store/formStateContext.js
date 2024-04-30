@@ -135,8 +135,7 @@ export const AddEventFormContext = createContext({
   formSteps,
   setCurrentFormStep: (step) => step,
   saveResultStatus : 200,  //default save successful,
-  setSaveResultStatus: (status) => status
-    
+  setSaveResultStatus: (status) => status  
 })
 
 
