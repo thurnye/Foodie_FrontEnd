@@ -1,0 +1,387 @@
+.foodAd-container{
+    margin-top: 5vh;
+}
+.about-me-avatar .image-content img{
+    width: 120px;
+    border-radius: 50%;
+    text-align: center;
+    margin-bottom: 3vh;
+}
+.about-me-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+/* ======================================== */
+/* Share */
+.share{
+    margin: 3vh 0;
+}
+.share-container{
+    align-items: center;
+}
+.content-share-author{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 3vh;
+}
+
+.share-img-container .image-content img{
+    width: 40px;
+    border-radius: 50%;
+}
+.content-share-author-body,
+.content-share-items-container{
+    padding: 0;
+    margin-left: 10px;
+}
+.content-share-author-name {
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+}
+.content-share-author-name span:last-child {
+    margin-top: -10px;
+}
+
+.content-share-items-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left:0;
+}
+.my-share-links{
+    padding:0;
+   width: -webkit-fill-available;
+    margin: 0;
+    align-items: center;
+}
+.my-share-links .list-items {
+    text-align: center;
+    width: 100px;
+    color: white;
+    margin: 0 5px 5px 5px;
+}
+.my-share-links .list-items a{
+    text-decoration: none;
+}
+.my-share-links .list-items a .brand-name {
+    text-decoration: none;
+    color: white;
+    margin-left: 5px; 
+}
+/* ================================================================= */
+
+.cover-tags{
+    margin: 0 0 5vh;
+}
+.coverImg-card-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+} 
+.coverImg-card-container p{
+    margin: 0 5px;
+}
+.about-recipe p{
+    font-size: 18px;
+    line-height: 35px;
+}
+
+/* ======================================================================= */
+
+/* Ratings */
+.coverImg .rating:before{
+    content: 'Ratings';
+    margin-right: 5px;
+    color: black;
+    font-family: 'Merriweather', serif;
+    margin-left: 10px;
+    
+}
+.coverImg .rating{
+    color: gold;
+    width: fit-content;
+    background-color: #f8f6e6;
+    padding: 10px;
+    margin-bottom: 5vh;
+}
+
+/* ================================================================================ */
+/* Nutrients Info */
+.nutrients-info{
+    margin-bottom: 5vh;
+}
+.nutrient-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.nutrient-container h5{
+    background-color: #fee86d;
+    /* padding: x 16px; */
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 20%;
+    flex: 0 0 20%;
+    padding: 21px;
+    text-align: left;
+    margin: 0;
+    background-color: #fee86d;
+    padding: 21px 16px;
+    text-align: center;
+    width: -webkit-fill-available;
+}
+.nutrients-contents{
+    display: flex;
+    flex-wrap: wrap;
+    width: -webkit-fill-available;
+    justify-content: initial;
+    padding: 11px 16px;
+    background-color: #f8f6e6;
+
+}
+.nutrients-contents p{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.nutrients-contents p span:first-child{
+    font-family: 'Merriweather', serif;
+    font-weight: 590;
+}
+
+/* ====================================================== */
+/* Directions */
+.directions{
+    margin-top: 3vh;
+}
+/* .order-directions:before{
+    content: '';
+    width: 1px;
+    height: 100%;
+    position: absolute;
+    left: 42px;
+    background: #fee86d;
+} */
+.order-directions span{
+    font-size: 24px;
+    position: absolute;
+    /* left: 0; */
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #fee86d;
+    text-align: center;
+    line-height: 48px;
+    color: #060606;
+}
+.direction-steps{
+    padding-left: 70px;
+    padding-bottom: 56px;
+    padding-top: 10px;
+}
+.order-directions:after{
+    clear: both;
+}
+.step-complete{
+    margin-top: 30px;
+    margin-bottom: 0;
+}
+/* ================================================================= */
+/* Note */
+.note-heading{
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}
+
+/* ================================================================= */
+/* favBkmkPrt */
+.favBkmkPrt{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+.favBkmkPrt button{
+    width: 130px;
+    height: 50px;
+    margin: 10px;
+    background-color: #f7f7f7;
+}
+
+.favBkmkPrt .heart{
+    margin-left: 0px;
+}
+
+
+
+button{
+    border: none;
+}
+ 
+button:focus {
+    outline: none;
+    border: none;
+}
+button.change:hover {
+    cursor: pointer;
+}
+    
+button:active {
+    outline: none;
+    border: none;
+}
+
+/* ======================================================= */
+/* Tags */
+.tags{
+    margin-top: 5vh;
+    /* margin-bottom: 5vh; */
+}
+.tags p span:first-child{
+    margin-left: 15px;
+}
+.recipe-tag{
+    background-color: #f7f7f7;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+/* ============================================================ */
+/* BookAd */
+.bookAd{
+    margin-top: 10vh;
+}
+/* ================================================================= */
+/* Recommendations */
+.recommendation{
+    margin-top: 5vh;
+}
+.recommendation .recommend-heading{
+    margin-bottom: 3vh;
+}
+.recommendation .recommend-heading .headings .strokes{
+    width: 50%;
+}
+
+.recommendation-body{
+    padding: 0;
+}
+/* =========================================================== */
+/* Comment Form */
+.comment-form {
+    margin-top: 5vh;
+
+}
+.comment-heading{
+    margin-bottom: 3vh;
+}
+.getComment{
+    width: 200px;
+}
+.getComment .btn{
+    height: 60px;
+    background-color: black;
+}
+.comment-heading .strokes{
+    width: 61%;
+}
+/* Star Rating */
+.rating{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.ratingErr{
+    margin-top: -15px;
+    margin-bottom: 20px;
+    color: salmon;
+}
+.star-rating {
+    display:flex;
+    flex-direction: row-reverse;
+    font-size:1.5em;
+    justify-content:space-around;
+    padding:0 .2em;
+    text-align:center;
+    width:5em;
+    margin-left: 10px;
+  }
+  
+  .star-rating input {
+    display:none;
+  }
+  
+  .star-rating label {
+    color:#ccc;
+    cursor:pointer;
+  }
+  
+  .star-rating :checked ~ label {
+    color:#f90;
+  }
+  
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color:#fc0;
+  }
+  .getReview{
+      margin-top: 2vh;
+  }
+/* =============================================================== */
+
+.review-ratings .rating{
+    display: flex;
+    justify-content: flex-end;
+    
+}
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 300px) { 
+    
+ }
+@media (min-width: 440px) { 
+    .coverImg-card-container{
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+    } 
+ }
+
+@media (min-width: 520px) { 
+    .favBkmkPrt{
+        flex-direction: row;
+    }
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    
+    
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+    
+    
+ }
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+    .nutrient-container{
+        flex-direction: row;
+    }
+    .nutrient-container h5{
+        padding: 46px 16px;
+    }
+ }
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {  }
+
+
+

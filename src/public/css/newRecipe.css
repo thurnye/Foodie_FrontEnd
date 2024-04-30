@@ -1,0 +1,105 @@
+.requiredField{
+    color: salmon
+}
+.getRecipe{
+    margin-bottom: 3vh;
+}
+.requiredNutrients{
+    margin-bottom: 15px;
+}
+.ingredient-container{
+}
+.additional-field{
+    display: flex;
+}
+.add-input{
+    /* border: 2px dotted red; */
+}
+.ingredient-items{
+    padding: 0;
+}
+.ingredient-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #483f8c;
+}
+.ingredient-container-dressing {
+    /* border-top: 2px solid #dadada; */
+}
+.ingredient-container-dressing h6, .ingredient-container-main h6 {
+    margin-top: 5vh;
+    margin-bottom: 2vh;
+}
+.method-steps{
+    /* border: none; */
+    /* border-bottom: 1px solid #dadada;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; */
+}
+.step-del{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2vh;
+}
+.imgPreview{
+    margin-bottom: 3vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* border: 1px solid #dadada; */
+}
+
+.removeImg{
+    position: absolute;
+    right: 0;
+    background-color: salmon;
+    border-radius: 1px;
+    width: 15px;
+    text-align: center;
+
+}
+/* disable the submit button in the drag and drop */
+.dzu-submitButtonContainer {
+   
+    /* display: none; */
+}
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    .ingredient-container-dressing h6, .ingredient-container-main h6 {
+        margin-top: 0vh;
+        
+    }
+    
+    .ingredient-container-dressing {
+        border-top: none;
+        border-left: 1px solid #cababa;
+    }
+    .imgPreview  {
+        margin-right: 10px
+        
+    }
+    .imgThumbnail{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-end;
+        margin-top: 6vh;
+    }
+    
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+   
+ 
+ }
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+
+}
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {  }

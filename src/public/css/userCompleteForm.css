@@ -1,0 +1,117 @@
+.received-data{
+    /* border: 2px dotted red; */
+}
+
+.indigo{
+    /* border: 2px dotted blue; */
+    height: 20vh;
+}
+.userForm .jumbotron {
+    /* border: 2px dotted red; */
+    background-attachment: fixed;
+    background-color: #cccccc;
+    /* height: 60vh; */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.my-recipes-body {
+    padding: 0;
+    
+}
+.my-recipes-body h6{
+    font-size: 12px;
+    margin-top: 5px;
+    
+}
+.pill-btn{
+    margin: 20px 20px 20px 0;
+}
+.userInformation{
+    margin-top: 5vh;
+}
+.received-data .form-fields, .data-social-media .form-fields{
+    margin-bottom: 3vh;
+}
+.user-recipe-list{
+    margin-top: 8vh;
+    /* border: 2px dotted black; */
+    max-height: 677px;
+}
+.user-recipe-list h5{
+    border-bottom: 2px solid black;
+    margin-bottom: 15px;
+}
+.submit-user-info{
+    margin-top: 35px;
+}
+.user-recipe-list-items{
+    /* border: 2px dotted red; */
+    max-height: 550px;
+    overflow: auto;
+}
+
+.card-actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    width: 100%;
+}
+.card-actions a{
+   
+    background-color: #0077c8;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    margin-left: 5px;
+}
+.card-actions .action-btn{
+   position: relative;
+    background-color: red;
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+
+/* // Small devices (landscape phones, 576px and up) */
+@media (min-width: 300px) { 
+    
+ }
+@media (min-width: 322px) { 
+    .home .jumbotron {
+        /* height: 60vh; */
+        
+    }
+ }
+
+@media (min-width: 520px) { 
+   
+ }
+
+/* // Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    
+    
+ }
+
+/* // Large devices (desktops, 992px and up) */
+@media (min-width: 992px) { 
+    .user-recipe-list{
+        margin-top: 20px;
+    }
+    .userInformation{
+        margin-top: 30px;
+    }
+ }
+
+/* // X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) { 
+    
+ }
+
+/* // XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {  }

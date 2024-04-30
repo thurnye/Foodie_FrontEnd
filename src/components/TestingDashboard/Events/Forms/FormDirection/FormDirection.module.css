@@ -1,0 +1,17 @@
+.FormDirection{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    .previous,
+    .next{
+        border-radius: 3px;
+        border: 1px solid #ededed;
+        &:hover{
+            background-color: #ededed
+        }
+        .iconDirection{
+            margin: 2px;
+        }
+    }
+}

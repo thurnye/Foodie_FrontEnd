@@ -1,0 +1,65 @@
+.navbar-nav {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+    justify-content: flex-start;
+    align-items: center;
+}
+.logo-nav{
+    padding: 2rem 4rem 0 4rem
+}
+
+.mobileViewNav{
+    display: none
+}
+
+
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+    display: block;
+    padding: .5rem 1rem;
+}
+
+.navbar-light .navbar-nav a ::after,
+.navbar-light .navbar-nav a ::before{
+   box-sizing: border-box;
+}
+
+.brand-foodie{
+    display: none
+}
+.main-menu{
+    border-top: 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
+}
+.nav-list-items{
+    margin-top: 5rem;
+}
+.nav-list-items li {
+    border: none;
+    padding: 2rem 0 0 2rem;
+}
+
+@media (max-width: 990px) {
+.navbar-nav{
+    width: 90%;
+}
+.logo-nav{
+    padding: 1rem 2rem 0 2rem;
+}
+}
+
+@media (max-width: 767.98px) { 
+    .showDesktopHeader{
+        display: none !important
+    }
+    .logo-nav{
+        display: none !important
+    }
+    .brand-foodie{
+        display: block
+    }
+    .mobileViewNav{
+        display: block
+    }
+ }

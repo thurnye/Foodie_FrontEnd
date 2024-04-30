@@ -1,0 +1,10 @@
+.RecipeDetails {
+    
+    .isError{
+        border: 1px solid salmon
+    }
+    .errorMessage{
+        color: salmon;
+        font-size: smaller;
+    }
+}
