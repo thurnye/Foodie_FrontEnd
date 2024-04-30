@@ -10,7 +10,6 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import CustomizedButton from '../CustomizedButton/CustomizedButton';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const StyledMenu = styled((props) => (
   <Menu
