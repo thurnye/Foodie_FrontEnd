@@ -1,4 +1,4 @@
-import React, {useMemo, useEffect} from 'react';
+import React, {useMemo, useEffect, useState} from 'react';
 import styles from './RecipeDirections.module.css';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -41,8 +41,6 @@ const DirectionsForm = ({setData, directions,
         ), [directions])
     });
     
-    
-    console.log(directions)
 
     const { fields, append, remove , move} = useFieldArray({
         control,
@@ -54,9 +52,6 @@ const DirectionsForm = ({setData, directions,
     });
     const [openUnsplash, setOpenUnsplash] = React.useState(false);
     const [unsplashImages, setUnsplashImages] = React.useState([]);
-
-
-    
 
     const handleAppend = () => {
         append({ step: [{ type: 'title', value: ""}] })
@@ -100,39 +95,39 @@ const DirectionsForm = ({setData, directions,
 
 
     const addField = (index, field) => {
-        const updatedDirections = [...directions]; // Copy the directions array
-        if (updatedDirections[index]) {
-            // Check if directions[index] exists
-            if (!updatedDirections[index].step) {
-                updatedDirections[index].step = []; 
+        // check to for errors in the step array
+        const stepErrors = errors.directions?.[index]?.step || [];
+        const hasStepErrors = stepErrors.some(error => !!error);
+    
+        if (!hasStepErrors) {
+            const updatedDirections = [...directions]; 
+            if (updatedDirections[index]) {
+                // Check if directions[index] exists
+                if (!updatedDirections[index].step) {
+                    updatedDirections[index].step = []; 
+                }
+                updatedDirections[index].step.push(field); 
             }
-            updatedDirections[index].step.push(field); 
-        }
-        setData(updatedDirections); // Update the data
-
-        const updatedFields = [...fields]; // Copy the fields array
-        if (updatedFields[index]) {
-            // Check if fields[index] exists
-            if (!updatedFields[index].step) {
-                updatedFields[index].step = []; 
+            setData(updatedDirections); 
+    
+            const updatedFields = [...fields]; 
+            if (updatedFields[index]) {
+                // Check if fields[index] exists
+                if (!updatedFields[index].step) {
+                    updatedFields[index].step = []; 
+                }
+                updatedFields[index].step.push(field); 
             }
-            updatedFields[index].step.push(field); 
-        }
-        setChecked((prevState) => ({...prevState, open: !prevState.open}));
-        }
+        } 
+        setChecked((prevState) => ({...prevState, open: !prevState.open})); 
+    };
+    
 
     const onSubmit = (data) => {
-        console.log(data)
         setData(data.directions)
         setOpen('')
         
     }
-
-    console.log("DIRECTIONS::", directions)
-    console.log("FIELDS::", fields)
-    
-    
-
 
     const Controls = (index) => <>
         <Avatar sx={{ bgcolor: 'red[500]', cursor: 'pointer', mr: 2,  }} aria-label="add" onClick={() => setChecked((prevState) => ({...prevState, index, open: true}))}> + </Avatar>
@@ -200,8 +195,6 @@ const DirectionsForm = ({setData, directions,
             </Avatar>
         </Grow>
     </>
-        
-        console.log({fields})
 
     const getDeleteIcons = (index, subIndex) =>
     <Box
