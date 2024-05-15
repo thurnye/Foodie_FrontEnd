@@ -5,17 +5,21 @@ import { Card, CardContent, Button } from '@mui/material';
 import { MdOutlineEdit } from "react-icons/md";
 import Container from '@mui/material/Container'
 import EastIcon from '@mui/icons-material/East';
-import DirectionsForm from './DirectionsForm'
-import DirectionStepper from '../../../../DirectionStepper/DirectionStepper'
+import DirectionsForm from './DirectionsForm';
+import DirectionStepper from '../../../../DirectionStepper/DirectionStepper';
+import IngredientsAndDressingForm from './IngredientsAndDressingForm';
+import IngredientsList from '../../../../IngredientsList/IngredientsList';
+
 
 
 const RecipeDirectionsForm = ({setData, defaultValues}) => {
-    const [directions, setDirections] = useState(defaultValues.methods ?? [])
-    const [open, setOpen] = useState(false)
-    const [isHovered, setIsHovered] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [methods, setMethods] = useState(defaultValues.methods)
+    const [ingredients, setIngredients] = useState(defaultValues.ingredients)
+    const [activeSection, setActiveSection] = useState("")
+    const [isHovered, setIsHovered] = useState("");
 
-    const getEditIcons = () => <Box sx={{ maxWidth: '100%', flexGrow: 1, position: 'relative' }}>
+    const getEditIcons = (section) => <Box sx={{ maxWidth: '100%', flexGrow: 1, position: 'relative' }}>
     <Box
         sx={{
         position: 'absolute',
@@ -27,7 +31,7 @@ const RecipeDirectionsForm = ({setData, defaultValues}) => {
         color: '#3559E3'
         }}
     >
-        <Card sx={{ width: 25, height: 25, borderRadius: '50%', textAlign: 'center', background:'inherit' }} onClick={() => setOpen(true)}>
+        <Card sx={{ width: 25, height: 25, borderRadius: '50%', textAlign: 'center', background:'inherit' }} onClick={() => setActiveSection(section)}>
         <Typography>
             <MdOutlineEdit color='#3559E3'/>
         </Typography>
@@ -36,70 +40,134 @@ const RecipeDirectionsForm = ({setData, defaultValues}) => {
     </Box>
 
     const onSubmit = () => {
-        if(directions.length === 0){
-            setIsError(true);
-            return;
-        }
         
+        const directions = {
+            methods,
+            ingredients
+        }
+        console.log(directions)
         setData(directions);
+        // setIsError(false)
     };
-
-    console.log(directions)
 
     return (
         <Container>
+            {/* methods */}
             <Box sx={{mb: 2}}>
-                {!open &&
-                <Box sx={{ }} onClick={() => directions?.length === 0 && setOpen(true)}>
+                {activeSection !== 'methodsForm' &&
+                <Box sx={{ }} onClick={() => methods?.length === 0 && setActiveSection('methodsForm')}>
                     <Card 
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
+                        onMouseEnter={() => setIsHovered('methodsForm')}
+                        onMouseLeave={() => setIsHovered("")}
                     >
-                        {isHovered  && getEditIcons()}
+                        {isHovered === 'methodsForm' && getEditIcons('methodsForm')}
                         <CardContent>
-                            
-                        {directions?.length === 0 ? <Box>
-                           
-                            
-                           <Card 
-                            sx={{ width: '100%', height: '50vh',display: 'flex', justifyContent: 'center',  alignItems: 'center', border: 'none', boxShadow: 'none' }}
-                            >
-                               <CardContent>
-                                   <Typography variant="h5" component="div" color="text.secondary">
-                                       No Directions Added!.
-                                   </Typography>
-                                   <Typography variant="caption" component="div"   color="text.secondary" sx={{textAlign: 'center'}}>
-                                       click to add directions
-                                   </Typography>
-                                   {isError && 
-                                        <Typography variant="caption"  component="div" gutterBottom sx={{mb:3, color:'salmon', textAlign:'center'}}>
-                                            *directions are needed!
-                                        </Typography>
-                                    }   
-                               </CardContent>
-                           </Card>
-                       </Box>
-                        : 
-                            <Box>
-                                <Typography variant="h5" gutterBottom sx={{mb:3}}>
-                                    directions
+                            <Typography variant="h5" gutterBottom sx={{mb:3}}>
+                               Preparation Methods and Steps
+                            </Typography>
+                            {isError &&<>
+                                <Typography variant="caption" gutterBottom sx={{mb:3, color:'salmon'}}>
+                                    {(methods.some(obj => obj.type !== 'text') || methods.length === 0 ) && '*recipe steps are required'}
                                 </Typography>
-                                <DirectionStepper methods={directions}/>
-                            </Box>
-                                    
-                        }  
+                                </>
+                            }
+                            {methods?.length === 0 ? <>
+                                <Typography variant="body2" gutterBottom>
+                                    Use this section to provide more details preparation steps on your recipe. You can include things to add, customization tips, anything that will help people know what to expect.
+                                </Typography>
+                            </> 
+                            : 
+                                <DirectionStepper methods={methods}/>
+                            }
                         </CardContent>
                     </Card>
                 </Box>
-                  } 
-                {open  && 
-                <DirectionsForm 
-                    setData={setDirections} 
-                    directions={directions}
-                    open={open} 
-                    setOpen={setOpen}
-                />
-                } 
+                }
+                {activeSection === 'methodsForm' && 
+                    <Box sx={{}}>
+                        <Card >
+                            <CardContent>
+                                <Typography variant="h5" gutterBottom sx={{mb:3}}>
+                                    Preparation Methods / Steps for this recipe
+                                </Typography>
+                                <Box sx={{mb:3}}>
+                                    <Typography variant="caption" color="text.secondary">
+                                       <i>It's all bout the recipe here...</i>
+                                    </Typography>
+
+                                </Box>
+
+                                <Box sx={{mb:2,  position: 'relative'}}>
+                                    <DirectionsForm 
+                                        setData={setMethods} 
+                                        directions={methods}
+                                        open={true} 
+                                        setOpen={setActiveSection}
+                                    />
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                }
+            </Box>
+
+            {/* FAQ*/}
+            <Box sx={{mb: 2}}>
+                {activeSection !== 'faqForm' &&
+                <Box sx={{ }} onClick={() => ingredients?.length === 0 && setActiveSection('faqForm')}>
+                    <Card 
+                        onMouseEnter={() => setIsHovered('faqForm')}
+                        onMouseLeave={() => setIsHovered("")}
+                    >
+                        {isHovered === 'faqForm' && getEditIcons('faqForm')}
+                        <CardContent>
+                        {ingredients?.length === 0 ? <>
+                            <Typography variant="h5" gutterBottom sx={{mb:3}}>
+                                Ingredients And Dressings
+                            </Typography>
+                            
+                            <Typography variant="body2" gutterBottom>
+                                Add the main ingredients and Dressing Ingredients used to prepare your recipe
+                            </Typography>
+
+                                </> : <>
+                                    <Typography variant="h5" gutterBottom sx={{mb:3}}>
+                                        Frequently Asked Questions
+                                    </Typography>
+                                    <IngredientsList ingredients={ingredients}/>
+                                </>
+                        }
+                            
+                        </CardContent>
+                    </Card>
+                </Box>
+                }
+                {activeSection === 'faqForm' && 
+                    <Box sx={{}}>
+                        <Card >
+                            <CardContent>
+                                <Typography variant="h5" gutterBottom sx={{mb:3}}>
+                                    FAQ
+                                </Typography>
+                                <Box sx={{mb:3}}>
+                                    <Typography variant="caption" color="text.secondary">
+                                        Answer questions your attendees may have methods the event, like parking, accessibility, refunds, and other informations.
+                                    </Typography>
+                                </Box>
+
+                                <Box sx={{mb:2}}>
+                                    <IngredientsAndDressingForm
+                                        setData={setIngredients}
+                                        ingredients={ingredients}
+                                        open={true}
+                                        setOpen={setActiveSection}
+                                    />
+                                    
+                                </Box>
+                            </CardContent>
+                        </Card>
+                    </Box>
+                }
             </Box>
 
             <Box sx={{mt: 10, width: '100%', textAlign: 'end'}}>

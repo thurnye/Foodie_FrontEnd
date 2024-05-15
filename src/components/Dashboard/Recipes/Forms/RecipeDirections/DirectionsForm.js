@@ -100,30 +100,29 @@ const DirectionsForm = ({setData, directions,
         const hasStepErrors = stepErrors.some(error => !!error);
     
         if (!hasStepErrors) {
-            const updatedDirections = [...directions]; 
-            if (updatedDirections[index]) {
-                // Check if directions[index] exists
-                if (!updatedDirections[index].step) {
-                    updatedDirections[index].step = []; 
-                }
-                updatedDirections[index].step.push(field); 
-            }
-            setData(updatedDirections); 
     
             const updatedFields = [...fields]; 
             if (updatedFields[index]) {
+                console.log("FIELDS SECT::", field)
                 // Check if fields[index] exists
                 if (!updatedFields[index].step) {
                     updatedFields[index].step = []; 
                 }
                 updatedFields[index].step.push(field); 
+                setData(updatedFields); 
             }
+
+
         } 
+
+        console.log('FIELDS::', fields)
         setChecked((prevState) => ({...prevState, open: !prevState.open})); 
     };
     
 
     const onSubmit = (data) => {
+        console.log('DATA:::', data)
+        console.log('DATA-FIELDS:::', fields)
         setData(data.directions)
         setOpen('')
         
@@ -174,7 +173,7 @@ const DirectionsForm = ({setData, directions,
             aria-label="recipe"
             onClick={() => {
                 setOpenUnsplash(true)
-                addField(index, { type: "image", value: "", isUnsplash:true, isMultiple: true })
+                addField(index, { type: "image", value: [], isUnsplash:true, isMultiple: true })
                 }}
             >
                 <FaUnsplash />
@@ -274,6 +273,7 @@ const DirectionsForm = ({setData, directions,
                                                             rules={{
                                                             required:  'This field is required' 
                                                             }}
+                                                            type="text"
                                                             render={({ field }) => (
                                                                 <Box sx={{ width: '100%', m: 'auto', mt: 3}}>
                                                                         <TextField
@@ -351,7 +351,7 @@ const DirectionsForm = ({setData, directions,
                                                         <Controller
                                                             name={`directions[${index}].step[${i}].value`}
                                                             control={control}
-                                                            defaultValue={item.value}
+                                                            defaultValue={el.value}
                                                             rules={{
                                                                 required:  'This field is required'
                                                             }}
@@ -359,7 +359,7 @@ const DirectionsForm = ({setData, directions,
                                                             <Box sx={{ maxWidth: {sm: 350, md: 650}, m:'auto' }}>
                                                                 {!el.isUnsplash && <>
                                                                     <Dropzone
-                                                                    multiple={item.isMultiple}
+                                                                    multiple={true}
                                                                     onDrop={async (acceptedFiles) => {
                                                                         if (acceptedFiles.length > 9) {
                                                                             alert(`You can select up to ${9} files.`);
@@ -375,6 +375,7 @@ const DirectionsForm = ({setData, directions,
                                                                     
                                                                         // Set the thumbnail values for each file
                                                                         field.onChange(base64Images);
+                                                                        // field.onChange({ type: "image", value: base64Images, isUnsplash:false, isMultiple: true });
                                                                     }}
                                                                     >
                                                                     {({ getRootProps, getInputProps }) => (
@@ -427,6 +428,12 @@ const DirectionsForm = ({setData, directions,
                                                                         open={openUnsplash} 
                                                                         setOpen={setOpenUnsplash} 
                                                                         setSelectedImages={(images) => {
+                                                                            // field.onChange({
+                                                                            //     type: "image",
+                                                                            //     value: images,
+                                                                            //     isUnsplash: true,
+                                                                            //     isMultiple: true
+                                                                            // });
                                                                             field.onChange(images);
                                                                             setUnsplashImages(images)
                                                                         }}
@@ -488,3 +495,4 @@ const DirectionsForm = ({setData, directions,
 }
 
 export default DirectionsForm;
+
