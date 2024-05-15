@@ -10,7 +10,7 @@ import DirectionStepper from '../../../../DirectionStepper/DirectionStepper'
 
 
 const RecipeDirectionsForm = ({setData, defaultValues}) => {
-    const [directions, setDirections] = useState(defaultValues.directions ?? [])
+    const [directions, setDirections] = useState(defaultValues.methods ?? [])
     const [open, setOpen] = useState(false)
     const [isHovered, setIsHovered] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -40,6 +40,7 @@ const RecipeDirectionsForm = ({setData, defaultValues}) => {
             setIsError(true);
             return;
         }
+        
         setData(directions);
     };
 
@@ -83,49 +84,22 @@ const RecipeDirectionsForm = ({setData, defaultValues}) => {
                                 <Typography variant="h5" gutterBottom sx={{mb:3}}>
                                     directions
                                 </Typography>
-                                {/* <NutritionalTable data={directions}/> */}
-                                <DirectionStepper/>
+                                <DirectionStepper methods={directions}/>
                             </Box>
                                     
                         }  
                         </CardContent>
                     </Card>
                 </Box>
-                 } 
-                {open  && <DirectionsForm 
-                                        setData={setDirections} 
-                                        directions={directions}
-                                        open={open} 
-                                        setOpen={setOpen}
-                                    />
-                    // <Box sx={{}}>
-                    //     <Card >
-                    //         <CardContent>
-                    //             <Typography variant="h5" gutterBottom sx={{mb:3}}>
-                    //                 Add directions Here!
-                    //             </Typography>
-                    //             {isError && 
-                    //                 <Typography variant="caption" gutterBottom sx={{mb:3, color:'salmon'}}>
-                    //                     *directions are needed!
-                    //                 </Typography>
-                    //             }
-                    //             <Box sx={{mb:3}}>
-                    //                 <Typography variant="caption" color="text.secondary">
-                    //                     Answer questions your attendees may have about the event, like parking, accessibility, refunds, and other informations.
-                    //                 </Typography>
-                    //             </Box>
-
-                    //             <Box sx={{mb:2}}>
-                    //                 <DirectionsForm 
-                    //                     setData={setDirections} 
-                    //                     directions={directions}
-                    //                     // setOpen={setOpen}
-                    //                 />
-                    //             </Box>
-                    //         </CardContent>
-                    //     </Card>
-                    // </Box>
-                }
+                  } 
+                {open  && 
+                <DirectionsForm 
+                    setData={setDirections} 
+                    directions={directions}
+                    open={open} 
+                    setOpen={setOpen}
+                />
+                } 
             </Box>
 
             <Box sx={{mt: 10, width: '100%', textAlign: 'end'}}>

@@ -20,7 +20,7 @@ export default function NutritionalTable({data}) {
     },[data])
   return (
     <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell>Nutrients</TableCell>

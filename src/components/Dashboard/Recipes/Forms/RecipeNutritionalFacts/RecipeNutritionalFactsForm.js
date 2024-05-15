@@ -10,7 +10,7 @@ import NutritionalTable from './NutritionalTable';
 
 
 const RecipeDetailsForm = ({setData, defaultValues}) => {
-    const [nutrients, setNutrients] = useState(defaultValues.nutrients ?? [])
+    const [nutrients, setNutrients] = useState(defaultValues)
     const [open, setOpen] = useState(false)
     const [isHovered, setIsHovered] = useState(false);
     const [isError, setIsError] = useState(false);
@@ -40,11 +40,9 @@ const RecipeDetailsForm = ({setData, defaultValues}) => {
             setIsError(true);
             return;
         }
-        const details = {
-            nutrients
-        }
-        console.log(details)
-        setData(details);
+       
+        console.log(nutrients)
+        setData(nutrients);
     };
 
     console.log({nutrients})

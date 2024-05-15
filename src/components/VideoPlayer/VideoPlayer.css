@@ -1,0 +1,28 @@
+/* For screens up to 300px */
+@media (max-width: 300px) {
+    .reactPlayer {
+      width: 250px;
+    }
+  }
+  
+  /* For screens from 301px to 600px */
+  @media (min-width: 301px) and (max-width: 600px) {
+    .reactPlayer {
+      width: 300px;
+    }
+  }
+  
+  /* For screens from 601px to 900px */
+  @media (min-width: 601px) and (max-width: 900px) {
+    .reactPlayer {
+      width: 400px;
+    }
+  }
+  
+  /* For screens above 900px */
+  @media (min-width: 901px) {
+    .reactPlayer {
+      width: 560px;
+    }
+  }
+  

@@ -1,0 +1,14 @@
+.Ingredients{
+    h5, h6, td, th{
+        font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+    }
+    .tableContainer{
+        margin-top: 5vh;
+        margin-bottom: 5vh;
+    }
+    .IngredientsTable th:first-child{
+        padding-right: 0;
+        width: 50px;
+        border-right: 2px solid #dee2e6;
+    }
+}

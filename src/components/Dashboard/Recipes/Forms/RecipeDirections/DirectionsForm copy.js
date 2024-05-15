@@ -56,7 +56,12 @@ const DirectionsForm = ({setData, directions,
     const [unsplashImages, setUnsplashImages] = React.useState([]);
 
 
-    
+    const onSubmit = (data) => {
+        console.log(data)
+        setData(data.directions)
+        setOpen('')
+        
+    }
 
     const handleAppend = () => {
         append({ step: [{ type: 'title', value: ""}] })
@@ -100,41 +105,22 @@ const DirectionsForm = ({setData, directions,
 
 
     const addField = (index, field) => {
-        const updatedDirections = [...directions]; // Copy the directions array
-        if (updatedDirections[index]) {
-            // Check if directions[index] exists
-            if (!updatedDirections[index].step) {
-                updatedDirections[index].step = []; 
-            }
-            updatedDirections[index].step.push(field); 
-        }
-        setData(updatedDirections); // Update the data
+        const findField = fields[index]?.step
+        const clonedFields = [...findField];
 
-        const updatedFields = [...fields]; // Copy the fields array
-        if (updatedFields[index]) {
-            // Check if fields[index] exists
-            if (!updatedFields[index].step) {
-                updatedFields[index].step = []; 
-            }
-            updatedFields[index].step.push(field); 
-        }
-        setChecked((prevState) => ({...prevState, open: !prevState.open}));
-        }
-
-    const onSubmit = (data) => {
-        console.log(data)
-        setData(data.directions)
-        setOpen('')
-        
+        console.log('findField::', findField)
+        findField.push(field)
+        clonedFields.push(field)
+        console.log('clonedFields::', clonedFields)
+        setValue(`directions[${index}].step`, findField);
+        setChecked((prevState) => ({...prevState, open: !prevState.open})) 
     }
-
-    console.log("DIRECTIONS::", directions)
-    console.log("FIELDS::", fields)
     
     
 
 
     const Controls = (index) => <>
+        {console.log('Index::', index, fields)}
         <Avatar sx={{ bgcolor: 'red[500]', cursor: 'pointer', mr: 2,  }} aria-label="add" onClick={() => setChecked((prevState) => ({...prevState, index, open: true}))}> + </Avatar>
 
         {/* Text */}
@@ -290,6 +276,7 @@ const DirectionsForm = ({setData, directions,
                                                                             id={`directions[${index}].step[${i}].value`}
                                                                             size="small"
                                                                             multiline
+                                                                            defaultValue={field.value}
                                                                             rows={14}
                                                                         />
                                                                     {watch("directions").length > 0 && errors.directions?.[index]?.step[i].value && (

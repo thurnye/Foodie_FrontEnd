@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import styles from './RecipeDirections.module.css';
 import { useAddRecipeFormContext } from '../../../../../store/recipeStateContext';
 import RecipeDirectionsForm from './RecipeDirectionsForm';
+import Sample from './Sample';
 
 const RecipeDirections = () => {
   const {formSteps, recipeForm, setRecipeForm, currentFormStep, setCurrentFormStep  } = useAddRecipeFormContext();
@@ -13,7 +14,7 @@ const RecipeDirections = () => {
       console.log({data})
       const updatedData = { 
         ...recipeForm, 
-        directions: data 
+        directions: data
       }
       // formSteps[currentFormStep + 1]?.isDisabled = false
       setRecipeForm(updatedData);
@@ -21,11 +22,13 @@ const RecipeDirections = () => {
     }
 
   },[data, setRecipeForm, recipeForm]);
-  console.log('recipeForm::',recipeForm)
+  // console.log('recipeForm::',recipeForm)
 
   return(
   <div className={styles.RecipeDirections}>
-    <RecipeDirectionsForm setData={setData} defaultValues={recipeForm}/>
+    {/* <RecipeDirectionsForm setData={setData} defaultValues={recipeForm.directions}/> */}
+    <Sample setData={setData} 
+      defaultValues={recipeForm.directions}/>
     </div>
 )};
 
