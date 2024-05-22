@@ -9,15 +9,15 @@ import parser from 'html-react-parser';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import { convertToBase64, getRandomInt } from '../../../../../util/commons';
 import { MdExpandMore } from "react-icons/md";
-import ImageLayout from './ImageLayout';
+import { convertToBase64, getRandomInt } from '../../../../../util/commons';
 import Container from '@mui/material/Container'
 import FileUpload from '../../../../FileUpload/FileUpload';
 import CardActions from '@mui/material/CardActions';
 import Stack from '@mui/material/Stack';
 import UnSplash from '../../../../Unsplash/Unsplash'
 import EastIcon from '@mui/icons-material/East';
+import ImageLayout from '../../../../ImageLayout/ImageLayout';
 
 
 const thumbnailPlaceholder = 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0ODIwNDd8MHwxfHNlYXJjaHw4fHxyZWNpcGV8ZW58MHx8fHwxNzEzNzUxNDU4fDA&ixlib=rb-4.0.3&q=80&w=400'
@@ -52,10 +52,14 @@ const RecipeDetailsForm = ({setData, defaultValues}) => {
     </Box>
 
     const onSubmit = () => {
-        if(thumbnail === thumbnailPlaceholder || about.length === 0 || about.some(obj => obj.type !== 'text')){
+
+        console.log("ABOUT::", about)
+        console.log("thumbnail::", thumbnail)
+        if(about.length === 0 || about.some(obj => obj.type !== 'text')){
             setIsError(true)
             return;
         }
+        setIsError(false)
         
         const details = {
             thumbnail,
@@ -64,7 +68,6 @@ const RecipeDetailsForm = ({setData, defaultValues}) => {
         }
         console.log(details)
         setData(details);
-        setIsError(false)
     };
 
     return (
@@ -84,10 +87,7 @@ const RecipeDetailsForm = ({setData, defaultValues}) => {
                             </Typography>
                             {isError &&<>
                                 <Typography variant="caption" gutterBottom sx={{mb:3, color:'salmon'}}>
-                                    {thumbnail === thumbnailPlaceholder && '*recipe thumbnail is required'}
-                                </Typography>
-                                <Typography variant="caption" gutterBottom sx={{mb:3, color:'salmon'}}>
-                                    {(about.some(obj => obj.type !== 'text') || about.length === 0 ) && '*recipe details is required'}
+                                    *recipe details is required
                                 </Typography>
                                 </>
                             }
@@ -96,7 +96,7 @@ const RecipeDetailsForm = ({setData, defaultValues}) => {
                                     Use this section to provide more details about your recipe. You can include things to know, inspiration, options-anything that will help people know what to expect.
                                 </Typography>
                             </> : <>
-                                {thumbnail !== thumbnailPlaceholder && <Box
+                                <Box
                                     component="img"
                                     sx={{
                                     display: 'block',
@@ -107,7 +107,7 @@ const RecipeDetailsForm = ({setData, defaultValues}) => {
                                     src={thumbnail}
                                     alt={'recipe thumbnail'}
                                     
-                                />}
+                                />
                                     {about?.map((el, i) => {
                                         return <Box sx={{width: '100%', my: 2}} key={getRandomInt()}>
                                             

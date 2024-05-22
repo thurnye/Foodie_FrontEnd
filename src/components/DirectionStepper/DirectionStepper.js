@@ -8,10 +8,9 @@ import StepContent from '@mui/material/StepContent';
 import Typography from '@mui/material/Typography';
 import parser from 'html-react-parser';
 import { Card, CardContent } from '@mui/material';
-import ImageLayout from '../Dashboard/Recipes/Forms/RecipeDirections/ImageLayout';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import { getRandomInt } from '../../util/commons';
-
+import ImageLayout from '../ImageLayout/ImageLayout';
 
 const DirectionStepper = ({methods}) => {
 

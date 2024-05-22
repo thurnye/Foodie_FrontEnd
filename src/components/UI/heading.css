@@ -3,6 +3,9 @@
     justify-content: initial;
     align-items: baseline;
 }
+.headings h4 {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+}
  .strokes{
     display: none;
 }

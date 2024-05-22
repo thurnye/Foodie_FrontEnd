@@ -15,12 +15,12 @@ const RecipeDirections = () => {
         ...recipeForm, 
         directions: data
       }
-      // formSteps[currentFormStep + 1]?.isDisabled = false
+      formSteps[currentFormStep + 1].isDisabled = false
       setRecipeForm(updatedData);
-      // setCurrentFormStep(currentFormStep + 1)
+      setCurrentFormStep(currentFormStep + 1)
     }
 
-  },[data, setRecipeForm, recipeForm]);
+  },[data, setRecipeForm, recipeForm, formSteps, currentFormStep, setCurrentFormStep]);
   console.log('recipeForm::',recipeForm)
 
   return(

@@ -15,12 +15,12 @@ import {LiaCameraRetroSolid} from 'react-icons/lia';
 import { FaTrash } from "react-icons/fa6";
 import SortableList from '../../../Events/Forms/SortableContainer/SortableList';
 import parser from 'html-react-parser';
-import ImageLayout from './ImageLayout';
 import Avatar from '@mui/material/Avatar';
 import Grow from '@mui/material/Grow';
 import { FaUnsplash } from "react-icons/fa";
 import UnSplash from '../../../../Unsplash/Unsplash'
 import TextEditor from '../../../../TextEditor/TextEditor';
+import ImageLayout from '../../../../ImageLayout/ImageLayout';
 
 
 const options = [

@@ -21,9 +21,9 @@ import { FaRegImage } from "react-icons/fa6";
 import { RiVideoFill } from "react-icons/ri";
 import Dropzone from 'react-dropzone';
 import {LiaCameraRetroSolid} from 'react-icons/lia';
-import ImageLayout from './ImageLayout';
 import parser from 'html-react-parser';
 import { RiDeleteBin2Line } from "react-icons/ri";
+import ImageLayout from '../../../../ImageLayout/ImageLayout';
 
 
 
@@ -111,8 +111,6 @@ const DirectionsForm = ({setData, directions,
                 updatedFields[index].step.push(field); 
                 setData(updatedFields); 
             }
-
-
         } 
 
         console.log('FIELDS::', fields)

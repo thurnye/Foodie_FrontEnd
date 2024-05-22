@@ -9,6 +9,7 @@ import BasicRecipeInfo from '../Forms/BasicRecipeInfo/BasicRecipeInfo';
 import RecipeDetails from '../Forms/RecipeDetails/RecipeDetails';
 import RecipeNutritionalFacts from '../Forms/RecipeNutritionalFacts/RecipeNutritionalFacts';
 import RecipeDirections from '../Forms/RecipeDirections/RecipeDirections';
+import RecipePreview from '../Forms/RecipePreview/RecipePreview';
 import {getRandomInt} from '../../../../util/commons'
 import { AddRecipeFormContext, defaultForm } from '../../../../store/recipeStateContext';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
@@ -45,12 +46,13 @@ const formSteps = [
   { label: "Basic Info", isDisabled: false },
   { label: "Details", isDisabled: false },
   { label: "Nutritional Facts", isDisabled: false },
-  { label: "Directions", isDisabled: false }
+  { label: "Directions", isDisabled: false },
+  { label: "Preview", isDisabled: false }
 ];
 
 const CreateRecipe = () => {
   const navigate = useNavigate();
-  const [currentFormStep, setCurrentFormStep] = React.useState(3);
+  const [currentFormStep, setCurrentFormStep] = React.useState(4);
   const [recipeForm, setRecipeForm] = useState(defaultForm);
   const [saveResultStatus, setSaveResultStatus] = useState();
   const handleChange = (event, newValue) => {
@@ -69,6 +71,8 @@ const CreateRecipe = () => {
         return <RecipeNutritionalFacts/>
       case 3:
         return <RecipeDirections/>
+      case 4:
+        return <RecipePreview/>
       default:
         return <></>
     }

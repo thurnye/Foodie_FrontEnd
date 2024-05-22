@@ -1,0 +1,10 @@
+.Recommendation{
+    margin-top: 5vh;
+    .recommendHeading{
+        margin-bottom: 3vh;
+    }
+    
+    .recommendationBody{
+        padding: 0;
+    }
+}

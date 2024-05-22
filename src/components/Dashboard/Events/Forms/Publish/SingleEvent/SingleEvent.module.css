@@ -1,0 +1,58 @@
+.SingleEvent {
+    .followContainer{
+        background-color: #F8F7FA;
+        .avatar{
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+    
+        }
+    }
+    .calendarCard{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        /* width: 100px;
+        height: 128px; */
+        text-align: center;
+        border-radius: 8px;
+        .day{
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background-color: #EAEEFD;
+        }
+        .activeCalendarCardDay{
+            background-color: #3559E3;
+            color: white;
+
+        }
+    }
+    .activeCalendarCard{
+        border: 2px solid #3559E3 !important;
+    }
+    .aboutEventHeadIcon, .cardGlobalIcon{
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 45px;
+        background: #F8F7FA;
+        margin-right: 8px;
+    }
+    .cardGlobalIcon{
+        margin: auto;
+    }
+    .organizerCard{
+        height: 80px;
+        width: 80px;
+        border-radius: 50%;
+    }
+}
+
+

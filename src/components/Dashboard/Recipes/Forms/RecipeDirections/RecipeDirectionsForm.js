@@ -13,7 +13,11 @@ import IngredientsList from '../../../../IngredientsList/IngredientsList';
 
 
 const RecipeDirectionsForm = ({setData, defaultValues}) => {
-    const [isError, setIsError] = useState(false);
+    const [isError, setIsError] = useState({
+        error: false,
+        type: '',
+        message: ''
+    });
     const [methods, setMethods] = useState(defaultValues.methods)
     const [ingredients, setIngredients] = useState(defaultValues.ingredients)
     const [activeSection, setActiveSection] = useState("")
@@ -40,14 +44,33 @@ const RecipeDirectionsForm = ({setData, defaultValues}) => {
     </Box>
 
     const onSubmit = () => {
-        
+        if(ingredients.length === 0){
+            setIsError({
+                error: true,
+                method: 'ingredients',
+                message: 'Ingredients are needed for this recipe*'
+            })
+            return;
+        }
+        if(methods.length === 0){
+            setIsError({
+                error: true,
+                type: 'method',
+                message: 'Preparation methods or steps are needed for this recipe*'
+            })
+            return;
+        }
+        setIsError({
+            error: false,
+            type: '',
+            message: ''
+        })
         const directions = {
             methods,
             ingredients
         }
         console.log(directions)
         setData(directions);
-        // setIsError(false)
     };
 
     return (
@@ -65,9 +88,9 @@ const RecipeDirectionsForm = ({setData, defaultValues}) => {
                             <Typography variant="h5" gutterBottom sx={{mb:3}}>
                                Preparation Methods and Steps
                             </Typography>
-                            {isError &&<>
+                            {isError.type === 'method' && isError.error &&<>
                                 <Typography variant="caption" gutterBottom sx={{mb:3, color:'salmon'}}>
-                                    {(methods.some(obj => obj.type !== 'text') || methods.length === 0 ) && '*recipe steps are required'}
+                                    {isError.message}
                                 </Typography>
                                 </>
                             }
@@ -111,7 +134,7 @@ const RecipeDirectionsForm = ({setData, defaultValues}) => {
                 }
             </Box>
 
-            {/* FAQ*/}
+            {/* Ingredients*/}
             <Box sx={{mb: 2}}>
                 {activeSection !== 'faqForm' &&
                 <Box sx={{ }} onClick={() => ingredients?.length === 0 && setActiveSection('faqForm')}>
@@ -130,9 +153,16 @@ const RecipeDirectionsForm = ({setData, defaultValues}) => {
                                 Add the main ingredients and Dressing Ingredients used to prepare your recipe
                             </Typography>
 
+                            {isError.type === 'ingredients' && isError.error &&<>
+                                <Typography variant="caption" gutterBottom sx={{mb:3, color:'salmon'}}>
+                                    {isError.message}
+                                </Typography>
+                                </>
+                            }
+
                                 </> : <>
                                     <Typography variant="h5" gutterBottom sx={{mb:3}}>
-                                        Frequently Asked Questions
+                                        Ingredients and Dressings
                                     </Typography>
                                     <IngredientsList ingredients={ingredients}/>
                                 </>
