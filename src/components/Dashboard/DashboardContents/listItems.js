@@ -6,59 +6,63 @@ import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import LayersIcon from '@mui/icons-material/Layers';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
 import { Link } from 'react-router-dom';
+import BookmarkAddedIcon from '@mui/icons-material/BookmarkAdded';
 
-
-const MainListItems = ({header, setHeader})  => {
+const MainListItems = ({ header, setHeader }) => {
   return (
-  <React.Fragment>
-    <ListItemButton>
-      <ListItemIcon onClick={() => setHeader('Dashboard')}>
-        <Link to="dashboard">
-          <DashboardIcon />
-        </Link>
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItemButton>
+    <React.Fragment>
+      <Link to='dashboard'>
+        <ListItemButton>
+          <ListItemIcon onClick={() => setHeader('Dashboard')}>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary='Dashboard' />
+        </ListItemButton>
+      </Link>
 
-    <ListItemButton>
-      <ListItemIcon onClick={() => setHeader('Events')}>
-        <Link to="events-feeds">
-          <EventNoteIcon />
-        </Link>
-      </ListItemIcon>
-      <ListItemText primary="Events" />
-    </ListItemButton>
+      <Link to='events-feeds'>
+        <ListItemButton>
+          <ListItemIcon onClick={() => setHeader('Events')}>
+            <EventNoteIcon />
+          </ListItemIcon>
+          <ListItemText primary='Events' />
+        </ListItemButton>
+      </Link>
 
-    <ListItemButton>
-      <ListItemIcon onClick={() => setHeader('Recipes')}>
-        <Link to="recipe-feeds">
-          <MenuBookIcon />
-        </Link>
-      </ListItemIcon>
-      <ListItemText primary="Recipes" />
-    </ListItemButton>
-    <ListItemButton>
+      <Link to='recipe-feeds'>
+        <ListItemButton>
+          <ListItemIcon onClick={() => setHeader('Recipes')}>
+            <MenuBookIcon />
+          </ListItemIcon>
+          <ListItemText primary='Recipes' />
+        </ListItemButton>
+      </Link>
+
+      {/* <ListItemButton>
       <ListItemIcon>
         <Link to="">
-          <BarChartIcon />
+          <NotificationsActiveIcon />
         </Link>
       </ListItemIcon>
-      <ListItemText primary="Sales" />
-    </ListItemButton>
-    <ListItemButton>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton>
-  </React.Fragment>
-)};
+      <ListItemText primary="Notification" />
+    </ListItemButton> */}
+     <Link to='saves-and-bookmarks'>
+      <ListItemButton>
+        <ListItemIcon>
+          <BookmarkAddedIcon />
+        </ListItemIcon>
+        <ListItemText primary='Saves and Bookmarks' />
+      </ListItemButton>
+     </Link>
+    </React.Fragment>
+  );
+};
 
 // export const secondaryListItems = (
 //   <React.Fragment>

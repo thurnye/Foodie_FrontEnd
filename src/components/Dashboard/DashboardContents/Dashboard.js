@@ -1,7 +1,7 @@
 // https://mui.com/material-ui/getting-started/templates/
 import React from 'react';
 import styles from './Dashboard.module.css';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -115,11 +114,13 @@ const Dashboard = () => {
               {header}
             </Typography>
             <SearchEvent/>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            <Link to={'/eventbrit/notification'}>
+              <IconButton sx={{color: 'white'}}>
+                <Badge badgeContent={4} color="secondary">
+                  <NotificationsIcon/>
+                </Badge>
+              </IconButton>
+            </Link>
           </Toolbar>
         </AppBar>
 
