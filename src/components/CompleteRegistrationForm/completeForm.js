@@ -6,8 +6,6 @@ import {useSelector, useDispatch} from 'react-redux'
 import { useForm, Controller } from "react-hook-form";
 import { redirect } from "react-router-dom";
 import services from '../../util/services'
-import Modal from './confirmDeleteModal';
-import UserRecipeList from './userRecipeList';
 import '../../public/css/userCompleteForm.css'
 import {userActions} from '../../store/userSlice'
 import Loading from '../Loading/Loading';

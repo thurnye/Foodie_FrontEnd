@@ -56,25 +56,9 @@ const DashboardNav = () => {
       icon: <Cast strokeWidth={1} size={18}/>
       
     },
-    {
-      name: 'Notification',
-      path: 'notification',
-      badge: 2,
-      icon: <Bell strokeWidth={1} size={18}/>
-      
-    },
-    {
-      name: 'Profile',
-      path: 'profile',
-      icon: <Trash2  strokeWidth={1} size={18}/>
-
-    },
-    {
-      name: 'Saves and Bookmarks',
-      path: 'saves-and-bookmarks',
-      icon: <Bookmark  strokeWidth={1} size={18}/>
-
-    },
+    
+    
+   
   ]
 
     return (

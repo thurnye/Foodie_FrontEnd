@@ -21,28 +21,23 @@ import Signup from './pages/signup';
 import LoginUser from './pages/login';
 import NewsFeeds from './pages/NewsFeeds/NewsFeeds';
 import CompleteRegistration from './pages/completeRegistrationForm';
-import UpdateRecipe from './pages/updateRecipe'
-import NewRecipe from './pages/newRecipe'
+
 import SingleRecipe from './pages/singleRecipe'
 
 
-import DashboardInfo from './components/TestingDashboard/DashboardInfo/DashboardInfo'
-import BlogManager from './components/TestingDashboard/BlogManager/BlogManager'
+
 import Notification from './components/TestingDashboard/Notification/Notification'
 // import Footer from './elements/<Footer/>/footer'
 
 
 import './public/css/hover.css'
 import './App.css';
-import Dashboard from './pages/Dashboard/Dashboard';
-import UserRecipeList from './components/CompleteRegistrationForm/userRecipeList';
+
 // import Events from './components/TestingDashboard/Events/EventsContainer/EventsContainer'
 import SavedBookmarks from './components/TestingDashboard/SavedBookmarks/SavedBookmarks'
 import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 
-import AddEvent from './components/TestingDashboard/Events/AddEvent/AddEvent';
-import EventListContainer from './components/TestingDashboard/Events/EventsList/EventListContainer';
-import SingleEvent from './components/TestingDashboard/Events/SingleEvent/SingleEvent';
+
 
 
 
@@ -110,24 +105,16 @@ function App() {
           <Route path="/forum" element={<Forum/>} />
           <Route path="/author" element={<Author/>} />
           <Route path="/test" element={<FeatureTesting/>}/>
-          <Route path="account"  element={<Dashboard />}>
-            <Route path="dashboard" element={<DashboardInfo/>}/>
+          
+          <Route path="account"  element={<>Nav</>}>
+            <Route path="dashboard" element={<>Info</>}/>
             
-            {/* <Route path="manage-recipe/edit" element={<UpdateRecipe/>} />
-            <Route path="manage-recipe" element={<UserRecipeList/>}/> */}
-            {/* <Route path="add-recipe" element={<NewRecipe/>} /> */}
-            {/* <Route path="blog-manager" element={<BlogManager/>} /> */}
-            {/* <Route path="notification" element={<Notification/>} /> */}
-            {/* <Route path="events" element={<Events/>}>
-              <Route path="new-event" element={<AddEvent isNew={true} isLoaded={isLoaded}/>} />
-              <Route path="edit-event" element={<AddEvent isNew={false} isLoaded={isLoaded}/>} />
-              <Route path="scheduled-events" element={<EventListContainer/>}/>
-              <Route path="my-events" element={<EventListContainer/>} />
-              <Route path="*" element={<EventListContainer/>} />
-            </Route> */}
-            {/* <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} /> */}
-            {/* set the landing section for this component */}
-            {/* <Route index element={<Navigate to="dashboard" />}></Route>  */}
+           
+
+
+            
+            
+           
           </Route>
           {/* <Route path="/event" element={<SingleEvent isLoaded={isLoaded}/>} /> */}
 
