@@ -55,7 +55,7 @@ const RecipeDetailsForm = ({setData, defaultValues}) => {
 
         console.log("ABOUT::", about)
         console.log("thumbnail::", thumbnail)
-        if(about.length === 0 || about.some(obj => obj.type !== 'text')){
+        if(about.length === 0){
             setIsError(true)
             return;
         }

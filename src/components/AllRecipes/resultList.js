@@ -6,7 +6,7 @@ import services from '../../util/services'
 import {recipesActions} from '../../store/allRecipesSlice'
 import '../../public/css/allRecipe.css'
 import './resultList.css';
-import CustomPagination from '../CustomPagination/CustomPagination';
+import PaginationControlled from '../CustomPagination/CustomPaginations';
 
 
 export default function ResultList(props) {
@@ -84,20 +84,20 @@ export default function ResultList(props) {
                                     state={{recipeId: el._id}}
                                     >    */}
                         <div className="card">
-                            <img src={el.thumbnail} className="card-img-top allRecipeImg" alt="recipeResult" />
+                            <img src={el.details.thumbnail} className="card-img-top allRecipeImg" alt="recipeResult" />
                             <div className="card-body result-body">
                                  <p>
-                                    <span className="duration"><small><strong><Clock strokeWidth="1" size="15"/> {el.duration}</strong></small></span>
-                                    <span className="level"><small><strong><ThumbsUp strokeWidth="1" size="15"/> {el.level}</strong></small></span>
+                                    <span className="duration"><small><strong><Clock strokeWidth="1" size="15"/> {el.basicInfo.duration.value}</strong></small></span>
+                                    <span className="level"><small><strong><ThumbsUp strokeWidth="1" size="15"/> {el.basicInfo.level.value}</strong></small></span>
                                 </p>
                                 <h5 className="card-title result-title">
                                 <Link to={{
                                         pathname: `/recipe` ,
-                                        search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
+                                        search: `?q=${(el.basicInfo.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
                                     }}
                                     state={{recipeId: el._id}}
                                     >   
-                                    {el.recipeName}
+                                    {el.basicInfo.recipeName}
                                 </Link>
                                     </h5>
                             </div>
@@ -108,7 +108,7 @@ export default function ResultList(props) {
                 </div>
             } 
             </section>
-            {counts > 1 && <CustomPagination totalPages={counts} currentPage={currentPage} onPageChange={setCurrentPage}/>}
+            {counts > 1 && <PaginationControlled totalPages={counts} currentPage={currentPage} onPageChange={setCurrentPage}/>}
         </>
     )
 }

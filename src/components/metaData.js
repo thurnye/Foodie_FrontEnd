@@ -15,9 +15,9 @@ export const useMetaDataHook = () => {
             '60+ Minutes'
         ].map((el) => ({value: el,label: el})),
         servingOptions : [
-            1,
-            5,
-            10,
+            '1',
+           ' 5',
+            '10',
             '10+'
         ].map((el) => ({value: el,label: el})),
         levelOptions : [

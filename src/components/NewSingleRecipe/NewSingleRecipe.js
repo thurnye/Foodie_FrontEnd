@@ -3,17 +3,14 @@ import styles from './NewSingleRecipe.module.css';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import NewAvatar from '../NewAvatar/NewAvatar';
-import Grid from '@mui/material/Grid';
 import { FaPinterestSquare } from 'react-icons/fa';
 import { FaLinkedin } from 'react-icons/fa';
 import { FaFacebookSquare } from 'react-icons/fa';
 import { FaXTwitter } from 'react-icons/fa6';
 import parser from 'html-react-parser';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import { IoTimeOutline } from 'react-icons/io5';
 import { FaRegThumbsUp } from 'react-icons/fa';
 import { FaUtensils } from 'react-icons/fa6';
@@ -41,10 +38,6 @@ const NewSingleRecipe = ({ recipe }) => {
 
   const { thumbnail, about, faqs } = details;
   const { methods, ingredients } = directions;
-
-  console.log(duration);
-
-  console.log(thumbnail);
 
   return (
     <Box className={styles.NewSingleRecipe}>
@@ -288,14 +281,16 @@ const NewSingleRecipe = ({ recipe }) => {
             mt: 5,
             display: 'flex',
             flexWrap: 'wrap',
+            alignItems: 'center'
           }}
         >
-          <Typography sx={{ mr: 1 }}>Tags:</Typography>
+          <Typography sx={{ mr: 1, mb: 1 }}>Tags:</Typography>
           {tags.map((el) => (
             <Typography
               key={el.value}
               sx={{
                 mr: 1,
+                mb: 1,
                 background: '#f7f7f7',
                 p: 0.3,
                 px: 0.8,

@@ -1,10 +1,8 @@
 import React, {useState} from 'react'
 import { useForm } from "react-hook-form";
 import styles from './ReviewForm.module.css'
-import { redirect, Link } from "react-router-dom";
-import {useSelector, useDispatch} from 'react-redux'
-import Heading from '../../../UI/heading';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Link } from "react-router-dom";
+import {useSelector} from 'react-redux'
 import services from '../../../../util/services'
 
 export default function ReviewForm()  {
@@ -24,23 +22,25 @@ export default function ReviewForm()  {
   
   const onSubmit = async (data) => {
     try{
-      const ratings = data.ratings
-
-      if(!ratings){  //if ratings !== null
-        setRatingErr('*rating is required')
-      }else{
-        setRatingErr(null)
-        
-        const review= {
-          ...data, 
-          userId: user.user._id,
-          recipeId: recipe._id
+      if(user.user._id && recipe._id){
+        const ratings = data.ratings
+  
+        if(!ratings){  //if ratings !== null
+          setRatingErr('*rating is required')
+        }else{
+          setRatingErr(null)
+          
+          const review= {
+            ...data, 
+            userId: user.user._id,
+            recipeId: recipe._id
+          }
+          console.log(review)
+  
+          const result = await services.postReview(review)
+          console.log(result)
+          // refresh the page if the status is 200
         }
-        console.log(review)
-
-        const result = await services.postReview(review)
-        console.log(result)
-        // refresh the page if the status is 200
       }
     }catch(err){
       console.log(err)

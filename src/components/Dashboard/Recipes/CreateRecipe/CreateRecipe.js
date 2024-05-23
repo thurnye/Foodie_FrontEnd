@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useLocation} from 'react-router-dom';
 import styles from './CreateRecipe.module.css';
 import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
@@ -14,6 +14,7 @@ import {getRandomInt} from '../../../../util/commons'
 import { AddRecipeFormContext, defaultForm } from '../../../../store/recipeStateContext';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import Button from '@mui/material/Button';
+import services from '../../../../util/services';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,12 +53,34 @@ const formSteps = [
 
 const CreateRecipe = () => {
   const navigate = useNavigate();
-  const [currentFormStep, setCurrentFormStep] = React.useState(4);
+  let location = useLocation()
+  const [currentFormStep, setCurrentFormStep] = React.useState(0);
   const [recipeForm, setRecipeForm] = useState(defaultForm);
   const [saveResultStatus, setSaveResultStatus] = useState();
   const handleChange = (event, newValue) => {
     setCurrentFormStep(newValue);
   };
+  const recipeId = location.state?.id
+
+  const getRecipeData = async (id) => {
+    try {
+      //get single Recipe
+      
+      const recipe = await services.findById(id);
+      console.log('SINGLE RECIPE:::', recipe.data);
+      const { _id, basicInfo, details, directions, nutritionalFacts, author } =
+        recipe.data;
+      setRecipeForm({ _id, basicInfo, details, directions, nutritionalFacts, author });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+useEffect(() => {
+ if(recipeId){
+  getRecipeData(recipeId);
+ }
+}, [recipeId])
 
   const getCurrentForm = (step) => {
     switch (step) {
