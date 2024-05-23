@@ -23,6 +23,7 @@ import NewsFeeds from './pages/NewsFeeds/NewsFeeds';
 import CompleteRegistration from './pages/completeRegistrationForm';
 import UpdateRecipe from './pages/updateRecipe'
 import NewRecipe from './pages/newRecipe'
+import SingleRecipe from './pages/singleRecipe'
 
 
 import DashboardInfo from './components/TestingDashboard/DashboardInfo/DashboardInfo'
@@ -102,7 +103,7 @@ function App() {
           {user && <Route path="/new-account" element={<CompleteRegistration/>} />}
           
           {/* <Route path="/eventbrit" element={<EventBrit/>} /> */}
-
+          <Route path="/recipe" element={<SingleRecipe/>} />
           <Route path="/events" element={<Events/>} />
           <Route path="/event" element={<SingleEventContainer/>} />
           <Route path="/all-recipes" element={<AllRecipe/>} />
@@ -116,7 +117,7 @@ function App() {
             <Route path="manage-recipe" element={<UserRecipeList/>}/> */}
             {/* <Route path="add-recipe" element={<NewRecipe/>} /> */}
             {/* <Route path="blog-manager" element={<BlogManager/>} /> */}
-            <Route path="notification" element={<Notification/>} />
+            {/* <Route path="notification" element={<Notification/>} /> */}
             {/* <Route path="events" element={<Events/>}>
               <Route path="new-event" element={<AddEvent isNew={true} isLoaded={isLoaded}/>} />
               <Route path="edit-event" element={<AddEvent isNew={false} isLoaded={isLoaded}/>} />
@@ -124,9 +125,9 @@ function App() {
               <Route path="my-events" element={<EventListContainer/>} />
               <Route path="*" element={<EventListContainer/>} />
             </Route> */}
-            <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} />
+            {/* <Route path="saves-and-bookmarks" element={<SavedBookmarks/>} /> */}
             {/* set the landing section for this component */}
-            <Route index element={<Navigate to="dashboard" />}></Route> 
+            {/* <Route index element={<Navigate to="dashboard" />}></Route>  */}
           </Route>
           {/* <Route path="/event" element={<SingleEvent isLoaded={isLoaded}/>} /> */}
 
