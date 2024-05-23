@@ -2,7 +2,7 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import ReactSelect from '../ReactSelect/ReactSelect';
-import GoogleLocation from '../GoogleMapLocation/GoogleLocation/GoogleLocation';
+import GoogleLocation from '../../GoogleMapLocation/GoogleLocation/GoogleLocation';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -16,10 +16,10 @@ import { Typography, Card, CardContent } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import {LiaCameraRetroSolid} from 'react-icons/lia';
 import Dropzone from 'react-dropzone';
-import { convertToBase64 } from '../../util/commons';
 import { Box, MenuItem, Select, TextField, FormHelperText } from '@mui/material';
-import TextEditor from '../TextEditor/TextEditor'
-import DateRangePicker from '../DateRangePicker/DateRangePicker';
+import TextEditor from '../../TextEditor/TextEditor'
+import DateRangePicker from '../../DateRangePicker/DateRangePicker';
+import { convertToBase64 } from '../../../util/commons';
 
 export function FormContainer({ defaultValues, children, onSubmit, fieldArrayName }) {
   const { handleSubmit, control, formState: { errors }, setValue} = useForm({ defaultValues });

@@ -114,7 +114,7 @@ const Dashboard = () => {
               {header}
             </Typography>
             <SearchEvent/>
-            <Link to={'/eventbrit/notification'}>
+            <Link to={'/account/notification'}>
               <IconButton sx={{color: 'white'}}>
                 <Badge badgeContent={4} color="secondary">
                   <NotificationsIcon/>

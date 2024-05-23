@@ -12,36 +12,27 @@ import {far} from "@fortawesome/free-regular-svg-icons"
 import {userActions } from './store/userSlice'
 import {  useJsApiLoader } from '@react-google-maps/api';
 
-import NavBar from './components/Nav/navbar'
+
 import Home from './pages/home';
 import AllRecipe from './pages/Recipes/AllRecipes/allRecipes'
 import Author from './pages/author';
 import Forum from './pages/forum';
 import Signup from './pages/signup';
 import LoginUser from './pages/login';
-import NewsFeeds from './pages/NewsFeeds/NewsFeeds';
 import CompleteRegistration from './pages/completeRegistrationForm';
 
 import SingleRecipe from './pages/singleRecipe'
 
 
 
-import Notification from './components/TestingDashboard/Notification/Notification'
-// import Footer from './elements/<Footer/>/footer'
-
-
 import './public/css/hover.css'
 import './App.css';
-
-// import Events from './components/TestingDashboard/Events/EventsContainer/EventsContainer'
-import SavedBookmarks from './components/TestingDashboard/SavedBookmarks/SavedBookmarks'
 import FeatureTesting from './components/FeatureTesting/FeatureTesting';
 
 
 
 
 
-import EventBrit from './components/Dashboard/DashboardContents/EventBrit/EventBrit';
 import CreateEvent from './components/Dashboard/Events/CreateEvent/CreateEvent';
 import EditEvent from './components/Dashboard/Events/EditEvent/EditEvent';
 import DashBoardContent from './components/Dashboard/DashboardContents/DashBoardContent';
@@ -53,6 +44,9 @@ import SingleEventContainer from './components/Dashboard/Events/SingleEventConta
 import RecipeFeeds from './components/Dashboard/Recipes/RecipeFeeds/RecipeFeeds';
 import EditRecipe from './components/Dashboard/Recipes/EditRecipe/EditRecipe';
 import CreateRecipe from './components/Dashboard/Recipes/CreateRecipe/CreateRecipe';
+import Notification from './components/Dashboard/Notification/Notification';
+import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks';
+import AccountDashboard from './components/Dashboard/DashboardContents/AccountDashboard/AccountDashboard';
 
 
 
@@ -106,21 +100,12 @@ function App() {
           <Route path="/author" element={<Author/>} />
           <Route path="/test" element={<FeatureTesting/>}/>
           
-          <Route path="account"  element={<>Nav</>}>
-            <Route path="dashboard" element={<>Info</>}/>
-            
-           
 
-
-            
-            
-           
-          </Route>
           {/* <Route path="/event" element={<SingleEvent isLoaded={isLoaded}/>} /> */}
 
 
           {/* Testing */}
-          <Route path="eventbrit" element={<EventBrit/>}>
+          <Route path="account" element={<AccountDashboard/>}>
             <Route path="dashboard" element={<DashBoardContent/> }/>
             {/* Events */}
             <Route path="events-feeds" element={<EventFeed/> }/>

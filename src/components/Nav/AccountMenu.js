@@ -47,11 +47,6 @@ const appNav = [
       active: false,
   },
   {
-      name: 'EventForm',
-      path: '/eventbrit',
-      active: false,
-  },
-  {
       name: 'Events',
       path: '/events',
       active: false,

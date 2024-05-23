@@ -1,11 +1,11 @@
 import React, {useEffect, useState}  from 'react';
 import styles from './AddTickets.module.css';
-import FormDirection from '../FormDirection/FormDirection';
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
 import TicketForm from './TicketForm';
 import Tickets from './Tickets';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import FormDirection from '../../../../Forms/FormDirection/FormDirection';
 
 const AddTickets = ({edit, updateEvent}) => {
   const { eventForm, setEventForm  } = useAddEventFormContext();

@@ -106,7 +106,7 @@ useEffect(() => {
         el.isDisabled = true;
       }
     })
-    navigate(`/eventbrit/recipe-feeds`);
+    navigate(`/account/recipe-feeds`);
   }
 
   return(

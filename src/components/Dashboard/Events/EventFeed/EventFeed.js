@@ -162,11 +162,11 @@ useEffect(() => {
             }}
           >
             <Typography  gutterBottom sx={{mx: 3}}>
-              <Link to="/eventbrit/create-event">Create Event</Link>
+              <Link to="/account/create-event">Create Event</Link>
             </Typography>
 
             <Typography  gutterBottom>
-              <Link to="/eventbrit/create-event">Upcoming Event</Link>
+              <Link to="/account/create-event">Upcoming Event</Link>
             </Typography>
           </Box>
         </Grid>
@@ -189,7 +189,7 @@ useEffect(() => {
                 <Button 
                   variant="text" 
                   disabled={selectedEventId !== undefined ? false : true}
-                  onClick={() =>   navigate("/eventbrit/edit-event", { state: { edit: false, id:  selectedEventId} })}
+                  onClick={() =>   navigate("/account/edit-event", { state: { edit: false, id:  selectedEventId} })}
                   sx={{textTransform: 'none'}} 
                 >
                   Edit

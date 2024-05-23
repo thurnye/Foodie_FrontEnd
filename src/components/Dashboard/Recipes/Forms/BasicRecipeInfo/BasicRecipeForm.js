@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
-import { FormContainer, Input, ReactSelectInput } from '../../../../FormContainer/FormContainer';
+import {  FormContainer, Input, ReactSelectInput } from '../../../../Forms/FormContainer/FormContainer';
 import Container from '@mui/material/Container';
 import {useMetaDataHook} from '../../../../metaData';
 import Grid from '@mui/material/Grid';

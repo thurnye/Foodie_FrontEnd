@@ -9,11 +9,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import ticket from '../../../../../public/images/Event/createTicket.png'
-import { FormContainer, Input, AmountInput } from '../FormContainer/FormContainer';
 import { PiUserThin } from "react-icons/pi";
 import Typography from '@mui/material/Typography';
 import { getRandomInt, getTotals } from '../../../../../util/commons';
 import Alert from '@mui/material/Alert';
+import { FormContainer, Input, AmountInput } from '../../../../Forms/FormContainer/FormContainer';
 
 const Img = styled('img')({
     margin: 'auto',
