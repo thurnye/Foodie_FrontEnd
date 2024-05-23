@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
@@ -41,7 +41,11 @@ const RecipeNutrientsAddEdit = ({setData, nutrients, setOpen}) => {
         handleSubmit,
         formState: { errors },
         watch
-    } = useForm({ defaultValues: useMemo(() => ({nutrients}), [nutrients])});
+    } = useForm({
+        defaultValues: useMemo(() => (
+            nutrients.length > 0 ? { nutrients } : { nutrients: [{ name: "", amount: "", unit: "" }] }
+        ), [nutrients])
+    });
 
     const { fields, append, remove , move} = useFieldArray({
         control,
@@ -54,6 +58,12 @@ const RecipeNutrientsAddEdit = ({setData, nutrients, setOpen}) => {
         setData(data.nutrients)
         setOpen(false)
     }
+
+    useEffect(() => {
+        if (fields.length === 0){
+            setOpen('')
+        }
+    }, [fields, setOpen])
 
 
     const addButton = () => <Box sx={{

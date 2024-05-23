@@ -1,9 +1,9 @@
-
-import { createContext, useContext} from 'react';
-
-
+import { createContext, useContext } from 'react';
+// import placeholder from '../public/images/IMG_0970.PNG'
 
 export const defaultForm = {
+  _id: null,
+  authorId: '',
   basicInfo: {
     recipeName: '',
     duration: '',
@@ -14,39 +14,25 @@ export const defaultForm = {
   },
   details: {
     about: [],
-    faqs:[],
+    faqs: [],
     thumbnail: '',
   },
-  nutritionalFacts: {
-    nutrients: [],
-  },
+  nutritionalFacts: [],
   directions: {
-    ingredients:{ 
-      main: [],
-      dressing: []
-    },
-    steps: [],
-  },
+    ingredients: [],
+    methods: [],
+  }
+};
 
-// notes: [],
-// mainIngredients: [],
-// dressingIngredients: [],
-// nutritionFacts: [],
-// directions: [],
-}
-
-const formSteps = ["Basic Info", "Details", "Nutritional Facts", "Directions" ];
+const formSteps = ['Basic Info', 'Details', 'Nutritional Facts', 'Directions'];
 export const AddRecipeFormContext = createContext({
   eventForm: defaultForm,
   setRecipeForm: (form) => form,
   currentFormStep: 'Basic Info',
   formSteps,
   setCurrentFormStep: (step) => step,
-  saveResultStatus : 200,  //default save successful,
-  setSaveResultStatus: (status) => status
-    
-})
+  saveResultStatus: 200, //default save successful,
+  setSaveResultStatus: (status) => status,
+});
 
-
-
-export const useAddRecipeFormContext = () => useContext(AddRecipeFormContext)
+export const useAddRecipeFormContext = () => useContext(AddRecipeFormContext);

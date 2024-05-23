@@ -9,7 +9,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.<br />
-Open [http://localhost:3000] for th client side
+Open [http://localhost:3000](http://localhost:3000) for th client side
 (http://localhost:8000) for the server side
 
 To connect to the database - MongoDB
@@ -22,3 +22,6 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 
 ### `npm run build`
  if to send to production
+
+ ### `Live Site`
+ [Foodie-Blog](https://foodie-frontend-z89c.onrender.com)

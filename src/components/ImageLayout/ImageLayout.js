@@ -2,9 +2,9 @@ import * as React from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import { Box } from '@mui/material';
-import { getRandomInt } from '../../../../../util/commons';
 import Grid from '@mui/material/Grid';
 import CardMedia from '@mui/material/CardMedia';
+import { getRandomInt } from '../../util/commons';
 
 export default function ImageLayout({isMultiple, imageList}) {
 

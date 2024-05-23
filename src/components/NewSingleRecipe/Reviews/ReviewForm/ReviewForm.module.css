@@ -1,0 +1,45 @@
+.ReviewForm{
+    
+    .rating{
+        display: flex;
+        justify-content: flex-start;
+        align-items: baseline;
+        .starRating {
+            display:flex;
+            flex-direction: row-reverse;
+            font-size:1em;
+            justify-content:space-around;
+            padding:0 .2em;
+            text-align:center;
+            width:5em;
+            margin-left: 10px;
+            input {
+              display:none;
+            }
+            
+             label {
+              color:#ccc;
+              cursor:pointer;
+            }
+            :checked ~ label {
+             color:#f90;
+           }
+          }
+           label:hover,
+          label:hover ~ label {
+            color:#fc0;
+          }
+          
+          
+          
+    }
+    .ratingErr{
+        margin-top: -15px;
+        margin-bottom: 20px;
+        color: salmon;
+    }
+      .getReview{
+          margin-top: 2vh;
+      }
+
+}

@@ -13,19 +13,20 @@ const RecipeDirections = () => {
       console.log({data})
       const updatedData = { 
         ...recipeForm, 
-        directions: data 
+        directions: data
       }
       formSteps[currentFormStep + 1].isDisabled = false
       setRecipeForm(updatedData);
       setCurrentFormStep(currentFormStep + 1)
     }
 
-  },[data]);
+  },[data, setRecipeForm, recipeForm, formSteps, currentFormStep, setCurrentFormStep]);
   console.log('recipeForm::',recipeForm)
 
   return(
   <div className={styles.RecipeDirections}>
-    <RecipeDirectionsForm/>
+    <RecipeDirectionsForm setData={setData} 
+      defaultValues={recipeForm.directions}/>
     </div>
 )};
 

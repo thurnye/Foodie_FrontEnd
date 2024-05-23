@@ -112,48 +112,7 @@
 
 /* ================================================================================ */
 /* Nutrients Info */
-.nutrients-info{
-    margin-bottom: 5vh;
-}
-.nutrient-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.nutrient-container h5{
-    background-color: #fee86d;
-    /* padding: x 16px; */
-    -webkit-box-flex: 0;
-    -ms-flex: 0 0 20%;
-    flex: 0 0 20%;
-    padding: 21px;
-    text-align: left;
-    margin: 0;
-    background-color: #fee86d;
-    padding: 21px 16px;
-    text-align: center;
-    width: -webkit-fill-available;
-}
-.nutrients-contents{
-    display: flex;
-    flex-wrap: wrap;
-    width: -webkit-fill-available;
-    justify-content: initial;
-    padding: 11px 16px;
-    background-color: #f8f6e6;
 
-}
-.nutrients-contents p{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-.nutrients-contents p span:first-child{
-    font-family: 'Merriweather', serif;
-    font-weight: 590;
-}
 
 /* ====================================================== */
 /* Directions */

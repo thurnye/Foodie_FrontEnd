@@ -15,18 +15,17 @@ import {LiaCameraRetroSolid} from 'react-icons/lia';
 import { FaTrash } from "react-icons/fa6";
 import SortableList from '../../../Events/Forms/SortableContainer/SortableList';
 import parser from 'html-react-parser';
-import ImageLayout from './ImageLayout';
 import Avatar from '@mui/material/Avatar';
 import Grow from '@mui/material/Grow';
 import { FaUnsplash } from "react-icons/fa";
 import UnSplash from '../../../../Unsplash/Unsplash'
 import TextEditor from '../../../../TextEditor/TextEditor';
+import ImageLayout from '../../../../ImageLayout/ImageLayout';
 
 
 const options = [
   'Standard',
   'Masonry',
-//   'Quilted'
 ];
 
 
@@ -90,7 +89,6 @@ const About = ({setAbout, about, setActiveSection}) => {
             </Avatar>
         </Grow>
 
-
         {/* Splash Images */}
         <Grow
         sx={{mt: 2, cursor: 'pointer', mr: {xs: 2, md: 'initial'} }}
@@ -147,13 +145,10 @@ const About = ({setAbout, about, setActiveSection}) => {
 
 
         <Box sx={{flexGrow: 1}}>
-
-
             <Box sx={{m: 'auto', width: '100%'}}>
                 <form onSubmit={onSubmit}>
-                    
                     <SortableList
-                    move={move}
+                        move={move}
                         items={fields.map((item, index) => ({
                             id: getRandomInt().toString(),
                             content: (
@@ -180,13 +175,10 @@ const About = ({setAbout, about, setActiveSection}) => {
                                                                 return;
                                                             }
                                                             // Handle file upload and set the thumbnail value
-                                                            // field.onChange(await convertToBase64(acceptedFiles[0]));
                                                             const base64Promises = acceptedFiles.map(async (file) => {
                                                                 return convertToBase64(file);
                                                             });
-                                                        
                                                             const base64Images = await Promise.all(base64Promises);
-                                                        
                                                             // Set the thumbnail values for each file
                                                             field.onChange(base64Images);
                                                         }}

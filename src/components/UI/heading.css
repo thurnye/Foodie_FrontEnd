@@ -2,12 +2,27 @@
     display: flex;
     justify-content: initial;
     align-items: baseline;
+    flex-direction: column;
+}
+.headings h4 {
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+    text-wrap: nowrap;
 }
  .strokes{
-    display: none;
+    /* display: none; */
+    display: block;
+    border: 1px solid #c4cac7;
+    width: 100%;
+    height: 5px;
+    border-right: none;
+    border-left: none;
+    margin-top: -10px;
 }
 
 @media (min-width: 768px) { 
+    .headings{
+        flex-direction: row;
+    }
     .strokes{
         display: block;
         border: 1px solid #c4cac7;

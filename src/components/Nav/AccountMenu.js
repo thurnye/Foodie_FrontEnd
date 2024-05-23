@@ -169,10 +169,12 @@ function AccountMenu() {
               </MenuItem>
               <Divider />
               <MenuItem onClick={handleClose}>
-                <ListItemIcon>
-                  <Settings fontSize="small" />
-                </ListItemIcon>
-                Settings
+                <Link to={'/'}>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  Settings
+                </Link>
               </MenuItem>
               { user ? 
               <MenuItem onClick={handleClose}>

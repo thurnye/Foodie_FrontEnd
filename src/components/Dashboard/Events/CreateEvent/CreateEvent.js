@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {useSelector} from 'react-redux'
+import {useSelector} from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import styles from './CreateEvent.module.css';
 import Container from '@mui/material/Container';
 import AddTickets from '../Forms/AddTickets/AddTickets'
@@ -12,10 +13,12 @@ import GoLive from '../Forms/GoLive/GoLive'
 import Schedule from '../Forms/Schedule/Schedule'
 import { AddEventFormContext, defaultForm } from '../../../../store/formStateContext';
 import services from '../../../../util/services';
+import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 
 
 
 const CreateEvent = ({isLoaded, active, edit, id}) => {
+  const navigate = useNavigate();
   const user = useSelector(state => state.userLog?.user?.user)
   const formSteps = ['Basic Info', 'Schedule', 'Details', 'Add Tickets', ' Preview', 'Go Live'];
   const [currentFormStep, setCurrentFormStep] = useState(0);
@@ -83,9 +86,21 @@ const CreateEvent = ({isLoaded, active, edit, id}) => {
     }
   }
 
+  const handleBackClick = () => {
+    setCurrentFormStep(0);
+    setEventForm(defaultForm);
+    navigate(`/eventbrit/events-feeds`);
+  }
+
   return(
   <div className={styles.CreateEvent}>
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+
+    <Box sx={{my: 2}}>
+          <Button variant="text" startIcon={<KeyboardBackspaceIcon/>} onClick={handleBackClick}>
+          Back
+        </Button>
+      </Box>
       <div>
       <AddEventFormContext.Provider 
       value={{

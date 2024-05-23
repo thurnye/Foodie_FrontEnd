@@ -2,95 +2,94 @@ import http from './http-commons';
 
 class StuffDataService {
 
+  // ===================USER==================
   // signup
   create(data) {
-    return http.post("/api", data);
+    return http.post('/user', data);
   }
 
   // update user
   postEdit(id, data) {
-    return http.post(`/edit/${id}`, data);
-  }
-
-  // get user recipes
-  getUserRecipes(id, data) {
-    return http.post(`/user/${id}`, data);
+    return http.post(`/user/edit/${id}`, data);
   }
 
   // login
   postLogin(data) {
-    return http.post(`/api/user/login`, data);
+    return http.post(`/user/login`, data);
   }
 
-   // create experience -> post new recipe
-  postRecipe(data) {
-    return http.post("/api/recipe", data);
+  //======================Recipes============================
+
+  // post recipe -> create and update
+  postRecipe(userId, data) {
+    return http.post(`/recipe/${userId}`, data);
   }
-
-
-
-  // create experience comments
-  postReview(data) {
-    return http.post("/api/recipe/review", data);
+  // get user recipes
+  getUserRecipes(id, data) {
+    return http.post(`/recipe/user/${id}`, data);
   }
 
   // get all recipes
   find(data) {
-    return http.post("/", data);
+    return http.post('/recipes', data);
   }
 
-  // get all recipes
+  // get all recipes by query
   findQuery(data) {
-    return http.post("/query", data);
+    return http.post('/recipes/query', data);
   }
 
-  // get one recipe
+  // get one recipe by id
   findById(id) {
-    return http.get(`/api/${id}`);
+    return http.get(`/recipe/${id}`);
   }
 
-  //updateRecipe
+  //updateRecipe ---> Deprecated
   postUpdatedRecipe(id, data) {
-    return http.post(`/api/recipe/update/${id}`, data);
+    return http.post(`/recipe/update/${id}`, data);
   }
 
   // remove Recipe
   removeRecipe(id) {
-    return http.post(`/api/removeRecipe/${id}`);
+    return http.post(`/recipe/removeRecipe/${id}`);
   }
-  
+
+  // =====================Reviews===============================
+
+  // create experience comments
+  postReview(data) {
+    return http.post('/review/recipe', data);
+  }
+
+  // ======================EVENTS================================
+
   //create event
   postEvent(data) {
-    return http.post("/api/event", data);
+    return http.post('/event', data);
   }
-  
+
   //get event query
   getEvents(data) {
-    return http.post("/event/query", data);
+    return http.post('/event/query', data);
   }
 
   // get user event
   getUserEvents(userId, data) {
-    return http.post(`/user/event/${userId}`, data);
+    return http.post(`/event/user/${userId}`, data);
   }
 
   // get one event
   findEventById(id) {
     return http.get(`/event/${id}`);
-  };
-  
-  // remove Recipe
+  }
+
+  // remove event
   removeEvent(id) {
     return http.post(`/event/${id}`);
   }
 
-
-
   // ------------------------------------
- 
 
-  
-  
   findOne(id) {
     return http.get(`/edit/${id}`);
   }
