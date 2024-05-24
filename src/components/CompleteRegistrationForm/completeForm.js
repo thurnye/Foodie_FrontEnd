@@ -12,15 +12,17 @@ import Loading from '../Loading/Loading';
 import { decodeJWToken } from '../../util/commons';
 import { ErrorMessage } from '@hookform/error-message';
 import CompTextEditor from '../CompTextEditor/CompTextEditor';
+import AboutMe from './AboutMe/AboutMe';
+import { Container } from '@mui/material';
 
 export default function CompleteForm() {
   const dispatch = useDispatch();
 
   const author = useSelector((state) => state.userLog?.user?.user);
   const [user, setUser] = useState();
+  const [aboutMe, setAboutMe] = useState();
   const [loading, setLoading] = useState(true);
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -28,16 +30,20 @@ export default function CompleteForm() {
 
   useEffect(() => {
     if (author) {
+      const {aboutMe, avatar} = author
       setUser(author);
+      setAboutMe({aboutMe, avatar})
       setLoading(false);
     }
   }, [author]);
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-      const result = await services.postEdit(user._id, data);
-      console.log(result);
+      const details = {
+        ...data,
+        ...aboutMe
+      }
+      const result = await services.postEdit(user._id, details);
       let token = result.data;
       localStorage.setItem('token', token);
       const userDoc = decodeJWToken(token);
@@ -48,7 +54,7 @@ export default function CompleteForm() {
           user: userDoc,
         })
       );
-      //   redirect("/");
+        // redirect("/");
     } catch (err) {
       console.log(err);
     }
@@ -153,12 +159,12 @@ export default function CompleteForm() {
               </div>
               <hr></hr>
               {/* Social Media and Slogan */}
-              <div className='card mb-3'>
+              <div className=' mb-3'>
                 <div className='row g-0'>
                   {/* SLOGAN */}
-                  <div className='col-md-4'>
+                  <legend className='legend'>Slogan / Motto</legend>
+                  <div className='col-md-8 mb-4 card'>
                     <fieldset className='fieldset'>
-                      <legend className='legend'>Slogan / Motto</legend>
                       <textarea
                         className='form-control'
                         id='exampleFormControlAboutMe'
@@ -166,14 +172,16 @@ export default function CompleteForm() {
                         {...register('slogan')}
                         maxLength='120'
                         placeholder='maximum characters 120'
+                        defaultValue={user.slogan}
                       ></textarea>
                     </fieldset>
                   </div>
-                  <div className='col-md-8'>
-                    {/* Social Media */}
+
+                  {/* Social Media */}
+                  <legend className='legend'>Social Media Links</legend>
+                  <div className='col-12 card'>
                     <div className='data-social-media'>
                       <fieldset className='fieldset'>
-                        <legend className='legend'>Social Media Links</legend>
                         <div className='row row-cols-2 row-cols-md-4 g-4'>
                           <div className='col form-fields'>
                             <label
@@ -240,34 +248,10 @@ export default function CompleteForm() {
 
               <hr></hr>
               {/* BIO */}
-              {console.log(user.aboutMe)}
+
+              <AboutMe setData={setAboutMe} defaultValues={aboutMe}/>
+
               <div className='card mb-3 userInformation'>
-                <Controller
-                  name='aboutMe'
-                  control={control}
-                  rules={{
-                    required: 'This field is required',
-                  }}
-                  defaultValue={user?.aboutMe}
-                  render={({ field }) => (
-                    <CompTextEditor
-                      setEditorData={(htmlValue) => field.onChange(htmlValue)}
-                      show={true}
-                      placeholder='We want to know about you, your recipe sources, and whats your inspiration, etc...'
-                      content={field.value}
-                      className={`form-control`}
-                    />
-                  )}
-                />
-                {errors.aboutMe && (
-                  <span className='text-danger'>
-                    <ErrorMessage
-                      errors={errors}
-                      name='aboutMe'
-                      className='text-danger'
-                    />
-                  </span>
-                )}
                 <div className='row g-0'>
                   <div className='col-md-6'>
                     <div className='getForm'>
