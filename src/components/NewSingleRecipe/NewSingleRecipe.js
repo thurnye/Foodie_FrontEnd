@@ -14,7 +14,7 @@ import CardMedia from '@mui/material/CardMedia';
 import { IoTimeOutline } from 'react-icons/io5';
 import { FaRegThumbsUp } from 'react-icons/fa';
 import { FaUtensils } from 'react-icons/fa6';
-import { getRandomInt } from '../../util/commons';
+import { getDateShort, getRandomInt } from '../../util/commons';
 import ImageLayout from '../ImageLayout/ImageLayout';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import Ratings from '../Ratings/Ratings';
@@ -33,6 +33,8 @@ import { MdExpandMore } from 'react-icons/md';
 
 const NewSingleRecipe = ({ recipe }) => {
   const { basicInfo, details, nutritionalFacts, directions } = recipe;
+
+  console.log(recipe)
 
   const { recipeName, duration, level, serving, tags } = basicInfo;
 
@@ -53,9 +55,10 @@ const NewSingleRecipe = ({ recipe }) => {
         }}
       >
         <NewAvatar
-          title={'Test Tester'}
-          image={''}
-          subHeader={'May 15th 2024'}
+          title={recipe.author ? `${recipe?.author?.firstName} ${recipe?.author?.lastName}` : 'John Doe'}
+          image={recipe?.author?.avatar}
+          subHeader={recipe?.createdAt ? getDateShort(recipe?.createdAt) : getDateShort(new Date())}
+          id={recipe?.author?._id}
         />
 
         <Box
