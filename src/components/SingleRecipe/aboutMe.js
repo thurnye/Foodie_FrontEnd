@@ -8,7 +8,7 @@ export default function AboutMe() {
   const recipe = useSelector((state) => state.recipesData.singleRecipe);
 
   // if(recipe){
-  //     console.log(recipe)
+      console.log(recipe)
   //     console.log(recipe.author.firstName)
   // }
   return (
@@ -26,8 +26,8 @@ export default function AboutMe() {
                       ' ',
                       '-'
                     )}`,
-                    state: { postId: recipe.author._id },
                   }}
+                  state={{ authorId: recipe.author._id }}
                   className='image-content'
                 >
                   <img src={recipe.author.avatar} alt='author-avatar' />

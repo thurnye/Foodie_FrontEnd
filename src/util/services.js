@@ -18,6 +18,11 @@ class StuffDataService {
     return http.post(`/user/login`, data);
   }
 
+  // get one user by id
+  findUserById(id) {
+    return http.get(`/user/${id}`);
+  }
+
   //======================Recipes============================
 
   // post recipe -> create and update
