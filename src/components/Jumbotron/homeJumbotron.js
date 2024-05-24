@@ -1,10 +1,7 @@
 import React from 'react';
 import Bg2 from '../../public/images/jumbotron/bg2.jpeg';
-import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
 import truncateText from '../UI/truncate';
-import { Share2, Bookmark, Video } from 'react-feather';
-import Avatar from '../Avatar/Avatar';
 import AuthorFooter from '../AuthorFooter/AuthorFooter';
 import styles from './Jumbotron.module.css';
 
