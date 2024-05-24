@@ -28,7 +28,7 @@ export default function threeCards() {
         },
         {
             recipeName: "Fudge waffles with ice cream and chocolate sauce",
-            _id: '664e404cb4513dfa42a75ee9',
+            _id: '664e404cb4513dfa42a75ecb',
             thumbnail: Img4,
             duration: '30 Minutes',
             level: 'Super Easy'
