@@ -4,7 +4,7 @@ import {Link, useLocation } from 'react-router-dom';
 import { ThumbsUp, Clock } from 'react-feather';
 import services from '../../util/services'
 import {recipesActions} from '../../store/allRecipesSlice'
-import '../../public/css/allRecipe.css'
+import './allRecipe.css'
 import './resultList.css';
 import PaginationControlled from '../CustomPagination/CustomPaginations';
 

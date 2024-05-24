@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
 import truncateText from '../UI/truncate';
 import { Share2, Bookmark, Video } from 'react-feather';
-import Avatar from '../Avatar/avatar';
+import Avatar from '../Avatar/Avatar';
 import AuthorFooter from '../AuthorFooter/AuthorFooter';
 import styles from './Jumbotron.module.css';
 

@@ -6,7 +6,7 @@ import Img10 from '../../public/images/recentRecipes/img10.jpeg'
 import Img11 from '../../public/images/recentRecipes/img11.jpeg'
 import Img12 from '../../public/images/recentRecipes/img12.jpeg'
 import Img13 from '../../public/images/recentRecipes/img13.jpeg'
-import '../../public/css/author.css'
+import './author.css'
 import parser from 'html-react-parser';
 
 

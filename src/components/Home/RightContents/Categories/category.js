@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import Cat1 from '../../../public/images/category/cat1.png'
-import Cat2 from '../../../public/images/category/cat2.png'
-import Cat3 from '../../../public/images/category/cat3.png'
-import Cat4 from '../../../public/images/category/cat4.png'
-import Cat5 from '../../../public/images/category/cat5.png'
-import Cat6 from '../../../public/images/category/cat6.png'
+import Cat1 from '../../../../public/images/category/cat1.png'
+import Cat2 from '../../../../public/images/category/cat2.png'
+import Cat3 from '../../../../public/images/category/cat3.png'
+import Cat4 from '../../../../public/images/category/cat4.png'
+import Cat5 from '../../../../public/images/category/cat5.png'
+import Cat6 from '../../../../public/images/category/cat6.png'
 
 export default function category() {
 

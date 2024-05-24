@@ -82,10 +82,11 @@ const Dashboard = () => {
     setOpen(!open);
   };
 
+  console.log(user)
   const avatarContainer = () => <Box sx={{mt: 2, mb: 3}}>
   <Avatar
     alt={'Text'}
-    src={user.avatar}
+    src={user?.avatar}
     sx={{
       width: open ? 70 : 50,
       height: open ? 70 : 50,
@@ -97,8 +98,8 @@ const Dashboard = () => {
       setHeader('Profile Settings')
     }}
   />
-  <Typography variant='body2' sx={{display : open  ? 'block' : 'none', textAlign: 'center', mt: -0.2}}>{user.firstName}</Typography>
-  <Typography variant='body2' sx={{display : open ? 'block' : 'none', textAlign: 'center', mt: -0.5}}>{user.lastName}</Typography>
+  <Typography variant='body2' sx={{display : open  ? 'block' : 'none', textAlign: 'center', mt: -0.2}}>{user?.firstName}</Typography>
+  <Typography variant='body2' sx={{display : open ? 'block' : 'none', textAlign: 'center', mt: -0.5}}>{user?.lastName}</Typography>
 </Box>
 
   return (

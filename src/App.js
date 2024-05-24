@@ -12,13 +12,13 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { userActions } from './store/userSlice';
 import { useJsApiLoader } from '@react-google-maps/api';
 
-import Home from './pages/home';
+import Home from './pages/Home/home';
 import AllRecipe from './pages/Recipes/AllRecipes/allRecipes';
-import Author from './pages/author';
-import Forum from './pages/forum';
-import Signup from './pages/signup';
-import LoginUser from './pages/login';
-import CompleteRegistration from './pages/completeRegistrationForm';
+import Author from './pages/Author/author';
+import Forum from './pages/Forum/forum';
+import Signup from './pages/SignUp/signup';
+import LoginUser from './pages/Login/login';
+import CompleteRegistration from './pages/Registeration/completeRegistrationForm';
 
 import SingleRecipe from './pages/Recipes/SingleRecipe/singleRecipe';
 
