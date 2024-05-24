@@ -1,9 +1,10 @@
 import React,{useState} from 'react'
 import moment from 'moment';
 import {useSelector} from 'react-redux'
-import Avatar from '../../../Avatar/Avatar'
+// import Avatar from '../../../Avatar/Avatar'
 import ReactStars from "react-rating-stars-component";
 import './reviewList.css'
+import Avatar from '../../../Avatar/Avatar';
 
 export default function ReviewList() {
     const recipe = useSelector(state => state.recipesData.singleRecipe)
