@@ -14,21 +14,21 @@ export default function threeCards() {
     const showCase = [
         {
             recipeName: "40 Mother’s Day Breakfast and Brunch Recipes",
-            _id: '64ab7469f86e56f5d7278684',
+            _id: '664e404cb4513dfa42a75f07',
             thumbnail: Img2,
             duration: '30 Minutes',
             level: 'Super Easy'
         },
         {
             recipeName: "Slow cooker apple cinnamon oatmeal pot",
-            _id: '64ab7469f86e56f5d7278683',
+            _id: '664e404cb4513dfa42a75ee9',
             thumbnail: Img3,
             duration: '30 Minutes',
             level: 'Super Easy'
         },
         {
             recipeName: "Fudge waffles with ice cream and chocolate sauce",
-            _id: '64ab7469f86e56f5d7278682',
+            _id: '664e404cb4513dfa42a75ecb',
             thumbnail: Img4,
             duration: '30 Minutes',
             level: 'Super Easy'
@@ -71,7 +71,7 @@ export default function threeCards() {
                                 <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
                                 <Link to={{
                                         pathname: `/recipe` ,
-                                        // search: `?q=${("40 mother’s day breakfast and brunch recipes").replaceAll(" ", "-")}`,
+                                        search: `?q=${("40 mother’s day breakfast and brunch recipes").replaceAll(" ", "-")}`,
                                     }}
                                     state={{recipeId: el._id}}
                                     style={{color: '#1e8aff'}}>Read More</Link>

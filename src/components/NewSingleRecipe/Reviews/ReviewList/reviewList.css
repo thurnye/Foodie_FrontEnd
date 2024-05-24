@@ -1,0 +1,92 @@
+
+.reviewLists {
+    /* border: 1px solid rgba(0,0,0,.125); */
+}
+.reviewLists .review-list-item{
+    margin-top: 2vh;
+}
+.scrollspy-example {
+    position: relative;
+    overflow: auto;
+    height: 150vh;
+}
+::-webkit-scrollbar {
+    width: 7px;
+    height: 17px;
+}
+::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+/* global scroll */
+::-webkit-scrollbar-thumb {
+    background: #343a40;
+    border: 0px none #ffffff;
+    border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #343a40;
+}
+::-webkit-scrollbar-thumb:active {
+    background: #343a40;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+}
+::-webkit-scrollbar-track:hover {
+    background: transparent;
+}
+::-webkit-scrollbar-track:active {
+    background: transparent;
+}
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+/* review Scroll */
+.reviewLists::-webkit-scrollbar {
+    width: 5px;
+    height: 7px;
+}
+.reviewLists::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+.reviewLists::-webkit-scrollbar-thumb {
+    background: #fee86d;
+    border: 0px none #ffffff;
+    border-radius: 0px;
+}
+.reviewLists::-webkit-scrollbar-thumb:hover {
+    background: #fee86d;
+}
+.reviewLists::-webkit-scrollbar-thumb:active {
+    background: #fee86d;
+}
+.reviewLists::-webkit-scrollbar-track {
+    background: transparent;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+}
+.reviewLists::-webkit-scrollbar-track:hover {
+    background: transparent;
+}
+.reviewLists::-webkit-scrollbar-track:active {
+    background: transparent;
+}
+.reviewLists::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+.review{
+    /* border: 2px dotted red; */
+    border: 1px solid rgba(0,0,0,.125);
+    margin-bottom: 20px;
+}
+.reviewComment{
+    /* border: 1px solid rgba(0,0,0,.125); */
+    /* padding: 0; */
+    margin-top: -15px;
+}

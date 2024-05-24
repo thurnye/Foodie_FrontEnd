@@ -89,7 +89,7 @@ const CreateEvent = ({isLoaded, active, edit, id}) => {
   const handleBackClick = () => {
     setCurrentFormStep(0);
     setEventForm(defaultForm);
-    navigate(`/eventbrit/events-feeds`);
+    navigate(`/account/events-feeds`);
   }
 
   return(

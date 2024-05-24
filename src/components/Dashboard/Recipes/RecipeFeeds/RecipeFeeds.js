@@ -155,7 +155,7 @@ const RecipeFeeds = () => {
                 }}
               >
                 <Typography gutterBottom sx={{ mx: 3 }}>
-                  <Link to='/eventbrit/create-recipe'>Create Recipe</Link>
+                  <Link to='/account/create-recipe'>Create Recipe</Link>
                 </Typography>
               </Box>
             </Grid>
@@ -179,7 +179,7 @@ const RecipeFeeds = () => {
                       variant='text'
                       disabled={selectedRecipeId !== undefined ? false : true}
                       onClick={() =>
-                        navigate('/eventbrit/create-recipe', {
+                        navigate('/account/create-recipe', {
                           state: { edit: false, id: selectedRecipeId },
                         })
                       }

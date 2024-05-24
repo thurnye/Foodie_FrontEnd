@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import { FormHelperText } from '@mui/material';
-import { FormContainer, Input, SelectInput, AmountInput, TextArea } from '../FormContainer/FormContainer';
+import { FormContainer, Input, SelectInput, AmountInput, TextArea } from '../../../../Forms/FormContainer/FormContainer';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';

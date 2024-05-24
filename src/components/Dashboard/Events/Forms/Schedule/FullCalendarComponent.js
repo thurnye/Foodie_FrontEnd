@@ -4,7 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { Box, Dialog, Grid, DialogTitle, DialogContent, DialogActions, TextField, Button, Typography } from '@mui/material';
-import FormDirection from '../FormDirection/FormDirection';
+import FormDirection from '../../../../Forms/FormDirection/FormDirection';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
