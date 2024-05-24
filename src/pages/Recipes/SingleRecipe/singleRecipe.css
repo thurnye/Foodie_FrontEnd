@@ -3,6 +3,7 @@
 }
 .about-me-avatar .image-content img{
     width: 120px;
+    height: 120px;
     border-radius: 50%;
     text-align: center;
     margin-bottom: 3vh;

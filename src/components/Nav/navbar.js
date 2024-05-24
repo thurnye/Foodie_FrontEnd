@@ -42,11 +42,11 @@ function Header(){
         path: '/all-recipes',
         active: false
     },
-    {
-        name: 'Forum',
-        path: '/forum',
-        active: false,
-    },
+    // {
+    //     name: 'Forum',
+    //     path: '/forum',
+    //     active: false,
+    // },
     {
         name: 'Events',
         path: '/events',

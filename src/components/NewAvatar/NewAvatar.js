@@ -2,19 +2,29 @@ import React from 'react';
 import styles from './NewAvatar.module.css';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
+import { useNavigate } from 'react-router';
 
+const NewAvatar = ({ title, image, subHeader, id }) => {
+  const navigate = useNavigate();
 
-const NewAvatar = ({title, image, subHeader}) => (
-  <div className={styles.NewAvatar}>
-    <CardHeader
-        avatar={
-          <Avatar alt={title} src={image}/>
+  return (
+    <div className={styles.NewAvatar}>
+      <CardHeader
+        sx={{
+          cursor: 'pointer'
+        }}
+        onClick={() =>
+          id &&
+          navigate(`/author`, {
+            state: { authorId: id },
+          })
         }
+        avatar={<Avatar alt={title} src={image} />}
         title={title}
         subheader={subHeader ? subHeader : ''}
       />
-  </div>
-);
-
+    </div>
+  );
+};
 
 export default NewAvatar;

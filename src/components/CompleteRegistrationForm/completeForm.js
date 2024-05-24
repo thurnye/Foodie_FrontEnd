@@ -12,15 +12,19 @@ import Loading from '../Loading/Loading';
 import { decodeJWToken } from '../../util/commons';
 import { ErrorMessage } from '@hookform/error-message';
 import CompTextEditor from '../CompTextEditor/CompTextEditor';
+import AboutMe from './AboutMe/AboutMe';
+import { Container } from '@mui/material';
+import SocialMediaPlatformForm from './SocialMediaPlatform/SocialMediaPlatformForm';
 
 export default function CompleteForm() {
   const dispatch = useDispatch();
 
   const author = useSelector((state) => state.userLog?.user?.user);
   const [user, setUser] = useState();
+  const [aboutMe, setAboutMe] = useState();
+  const [platformData, setPlatformData] = useState([]);
   const [loading, setLoading] = useState(true);
   const {
-    control,
     register,
     handleSubmit,
     formState: { errors },
@@ -28,16 +32,22 @@ export default function CompleteForm() {
 
   useEffect(() => {
     if (author) {
+      const { aboutMe, avatar, socialMediaPlatform } = author;
       setUser(author);
+      setAboutMe({ aboutMe, avatar });
+      setPlatformData(socialMediaPlatform);
       setLoading(false);
     }
   }, [author]);
 
   const onSubmit = async (data) => {
     try {
-      console.log(data);
-      const result = await services.postEdit(user._id, data);
-      console.log(result);
+      const details = {
+        ...data,
+        ...aboutMe,
+        socialMediaPlatform: platformData,
+      };
+      const result = await services.postEdit(user._id, details);
       let token = result.data;
       localStorage.setItem('token', token);
       const userDoc = decodeJWToken(token);
@@ -48,7 +58,7 @@ export default function CompleteForm() {
           user: userDoc,
         })
       );
-      //   redirect("/");
+      // redirect("/");
     } catch (err) {
       console.log(err);
     }
@@ -61,216 +71,146 @@ export default function CompleteForm() {
         <div className='userForm'>
           <form noValidate onSubmit={handleSubmit(onSubmit)}>
             <div className='form'>
-              <div className='received-data'>
-                <div className='row row-cols-1 row-cols-md-4 g-4'>
-                  <div className='col form-fields'>
-                    <label
-                      htmlFor='exampleInputFirstName'
-                      className='form-label'
-                    >
-                      First Name
-                    </label>
-                    <input
-                      type='text'
-                      className='form-control'
-                      id='exampleInputFirstName'
-                      aria-invalid={errors.firstName ? 'true' : 'false'}
-                      {...register('firstName', {
-                        required: 'required',
-                        pattern: {
-                          value: /^[A-Za-z]+$/i,
-                          message: 'first name required',
-                        },
-                      })}
-                      defaultValue={user.firstName}
-                    />
-                    {errors.firstName && (
-                      <span role='alert'>{errors.firstName.message}</span>
-                    )}
-                  </div>
-                  <div className='col form-fields'>
-                    <label
-                      htmlFor='exampleInputLastName'
-                      className='form-label'
-                    >
-                      Last Name
-                    </label>
-                    <input
-                      type='text'
-                      className='form-control'
-                      id='exampleInputLastName'
-                      aria-invalid={errors.lastName ? 'true' : 'false'}
-                      {...register('lastName', {
-                        required: 'required',
-                        pattern: {
-                          value: /^[A-Za-z]+$/i,
-                          message: 'first name required',
-                        },
-                      })}
-                      defaultValue={user.lastName}
-                    />
-                    {errors.lastName && (
-                      <span role='alert'>{errors.lastName.message}</span>
-                    )}
-                  </div>
-                  <div className='col form-fields'>
-                    <label htmlFor='exampleInputEmail1' className='form-label'>
-                      Email
-                    </label>
-                    <input
-                      type='email'
-                      className='form-control'
-                      id='exampleInputEmail1'
-                      aria-invalid={errors.email ? 'true' : 'false'}
-                      {...register('email', {
-                        required: 'required',
-                        pattern: {
-                          value: /\S+@\S+\.\S+/,
-                          message: 'Please enter a valid email',
-                        },
-                      })}
-                      defaultValue={user.email}
-                    />
-                    {errors.email && (
-                      <span role='alert'>{errors.email.message}</span>
-                    )}
-                  </div>
-                  <div className='col form-fields'>
-                    <label
-                      htmlFor='exampleInputLocation'
-                      className='form-label'
-                    >
-                      City,Country
-                    </label>
-                    <input
-                      type='text'
-                      className='form-control'
-                      id='exampleInputLocation'
-                      {...register('location')}
-                    />
-                  </div>
-                </div>
-              </div>
-              <hr></hr>
-              {/* Social Media and Slogan */}
-              <div className='card mb-3'>
-                <div className='row g-0'>
-                  {/* SLOGAN */}
-                  <div className='col-md-4'>
-                    <fieldset className='fieldset'>
-                      <legend className='legend'>Slogan / Motto</legend>
-                      <textarea
+              <Container>
+                <div className='received-data'>
+                  <div className='row row-cols-1 row-cols-md-4 g-4'>
+                    <div className='col form-fields'>
+                      <label
+                        htmlFor='exampleInputFirstName'
+                        className='form-label'
+                      >
+                        First Name
+                      </label>
+                      <input
+                        type='text'
                         className='form-control'
-                        id='exampleFormControlAboutMe'
-                        rows='3'
-                        {...register('slogan')}
-                        maxLength='120'
-                        placeholder='maximum characters 120'
-                      ></textarea>
-                    </fieldset>
-                  </div>
-                  <div className='col-md-8'>
-                    {/* Social Media */}
-                    <div className='data-social-media'>
-                      <fieldset className='fieldset'>
-                        <legend className='legend'>Social Media Links</legend>
-                        <div className='row row-cols-2 row-cols-md-4 g-4'>
-                          <div className='col form-fields'>
-                            <label
-                              htmlFor='exampleInputFacebook'
-                              className='form-label'
-                            >
-                              Facebook
-                            </label>
-                            <input
-                              type='url'
-                              className='form-control'
-                              id='exampleInputFacebook'
-                              {...register('facebook')}
-                            />
-                          </div>
-                          <div className='col form-fields'>
-                            <label
-                              htmlFor='exampleInputTwitter'
-                              className='form-label'
-                            >
-                              Twitter
-                            </label>
-                            <input
-                              type='url'
-                              className='form-control'
-                              id='exampleInputTwitter'
-                              {...register('twitter')}
-                            />
-                          </div>
-                          <div className='col form-fields'>
-                            <label
-                              htmlFor='exampleInputLinkedIn'
-                              className='form-label'
-                            >
-                              LinkedIn
-                            </label>
-                            <input
-                              type='url'
-                              className='form-control'
-                              id='exampleInputLinkedIn'
-                              {...register('linkedIn')}
-                            />
-                          </div>
-                          <div className='col form-fields'>
-                            <label
-                              htmlFor='exampleInputPinterest'
-                              className='form-label'
-                            >
-                              Pinterest
-                            </label>
-                            <input
-                              type='url'
-                              className='form-control'
-                              id='exampleInputPinterest'
-                              {...register('pinterest')}
-                            />
-                          </div>
-                        </div>
-                      </fieldset>
+                        id='exampleInputFirstName'
+                        aria-invalid={errors.firstName ? 'true' : 'false'}
+                        {...register('firstName', {
+                          required: 'required',
+                          pattern: {
+                            value: /^[A-Za-z]+$/i,
+                            message: 'first name required',
+                          },
+                        })}
+                        defaultValue={user.firstName}
+                      />
+                      {errors.firstName && (
+                        <span role='alert'>{errors.firstName.message}</span>
+                      )}
+                    </div>
+                    <div className='col form-fields'>
+                      <label
+                        htmlFor='exampleInputLastName'
+                        className='form-label'
+                      >
+                        Last Name
+                      </label>
+                      <input
+                        type='text'
+                        className='form-control'
+                        id='exampleInputLastName'
+                        aria-invalid={errors.lastName ? 'true' : 'false'}
+                        {...register('lastName', {
+                          required: 'required',
+                          pattern: {
+                            value: /^[A-Za-z]+$/i,
+                            message: 'first name required',
+                          },
+                        })}
+                        defaultValue={user.lastName}
+                      />
+                      {errors.lastName && (
+                        <span role='alert'>{errors.lastName.message}</span>
+                      )}
+                    </div>
+                    <div className='col form-fields'>
+                      <label
+                        htmlFor='exampleInputEmail1'
+                        className='form-label'
+                      >
+                        Email
+                      </label>
+                      <input
+                        type='email'
+                        className='form-control'
+                        id='exampleInputEmail1'
+                        aria-invalid={errors.email ? 'true' : 'false'}
+                        {...register('email', {
+                          required: 'required',
+                          pattern: {
+                            value: /\S+@\S+\.\S+/,
+                            message: 'Please enter a valid email',
+                          },
+                        })}
+                        defaultValue={user.email}
+                      />
+                      {errors.email && (
+                        <span role='alert'>{errors.email.message}</span>
+                      )}
+                    </div>
+                    <div className='col form-fields'>
+                      <label
+                        htmlFor='exampleInputLocation'
+                        className='form-label'
+                      >
+                        City, Country
+                      </label>
+                      <input
+                        type='text'
+                        className='form-control'
+                        id='exampleInputLocation'
+                        {...register('location')}
+                        defaultValue={user.location}
+                      />
                     </div>
                   </div>
                 </div>
-              </div>
-
+              </Container>
               <hr></hr>
-              {/* BIO */}
-              {console.log(user.aboutMe)}
-              <div className='card mb-3 userInformation'>
-                <Controller
-                  name='aboutMe'
-                  control={control}
-                  rules={{
-                    required: 'This field is required',
-                  }}
-                  defaultValue={user?.aboutMe}
-                  render={({ field }) => (
-                    <CompTextEditor
-                      setEditorData={(htmlValue) => field.onChange(htmlValue)}
-                      show={true}
-                      placeholder='We want to know about you, your recipe sources, and whats your inspiration, etc...'
-                      content={field.value}
-                      className={`form-control`}
-                    />
-                  )}
-                />
-                {errors.aboutMe && (
-                  <span className='text-danger'>
-                    <ErrorMessage
-                      errors={errors}
-                      name='aboutMe'
-                      className='text-danger'
-                    />
-                  </span>
-                )}
+
+              {/* Social Media and Slogan */}
+              <Container>
+                <div className=' mb-3'>
+                  <div className='row g-0'>
+                    {/* SLOGAN */}
+                    <legend className='legend'>Slogan / Motto</legend>
+                    <div className='col-md-8 mb-4 card'>
+                      <fieldset className='fieldset'>
+                        <textarea
+                          className='form-control'
+                          id='exampleFormControlAboutMe'
+                          rows='3'
+                          {...register('slogan')}
+                          maxLength='120'
+                          placeholder='maximum characters 120'
+                          defaultValue={user.slogan}
+                        ></textarea>
+                      </fieldset>
+                    </div>
+
+                    {/* Social Media */}
+                  </div>
+                </div>
+              </Container>
+            </div>
+            <SocialMediaPlatformForm
+              setData={setPlatformData}
+              defaultValues={platformData}
+            />
+
+            <hr></hr>
+
+            <AboutMe setData={setAboutMe} defaultValues={aboutMe} />
+
+            <Container>
+              <div className=' mb-3 userInformation'>
                 <div className='row g-0'>
-                  <div className='col-md-6'>
-                    <div className='getForm'>
+                  <div className='col-12'>
+                    <div className='getForm' style={{
+                      width: '100%',
+                      textAlign: 'end'
+                    }}>
                       <input
                         type='submit'
                         className='btn btn-dark btn-block submit-user-info'
@@ -279,8 +219,9 @@ export default function CompleteForm() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Container>
           </form>
+
         </div>
       )}
     </>
