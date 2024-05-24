@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 // import Avatar from '../../public/images/imgPlaceholder.jpeg'
 import { useSelector } from 'react-redux';
-import Avatar from '../Avatar/Avatar';
 import Signature from '../../public/images/signature.png';
 
 export default function AboutMe() {

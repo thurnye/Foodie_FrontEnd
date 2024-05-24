@@ -1,7 +1,7 @@
 import React from 'react'
 import {useSelector} from 'react-redux'
 import moment from 'moment';
-import Avatar from '../Avatar/avatar'
+import Avatar from '../Avatar/Avatar'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Share() {
