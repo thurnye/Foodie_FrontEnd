@@ -32,11 +32,11 @@ const appNav = [
     path: '/all-recipes',
     active: false,
   },
-  {
-    name: 'Forum',
-    path: '/forum',
-    active: false,
-  },
+  // {
+  //   name: 'Forum',
+  //   path: '/forum',
+  //   active: false,
+  // },
   {
     name: 'Events',
     path: '/events',
@@ -150,6 +150,9 @@ function AccountMenu() {
                 <MenuItem onClick={handleClose}>Manage account</MenuItem>
                 <MenuItem onClick={handleClose}>
                   <Link to={'/account'}>Dashboard</Link>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <Link to={'/forum'}>Forum</Link>
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleClose}>
