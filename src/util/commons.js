@@ -274,7 +274,7 @@ export const filterSortSchedule = (schedule) => {
     const filteredSchedule = schedule.filter(item => new Date(item.end) > currentDate);
     const sortedSchedule = filteredSchedule.sort((a, b) => new Date(a.start) - new Date(b.start));
 
-    console.log('date',getDateShort(new Date(sortedSchedule[0].start)), 'Time', getLocalTime(new Date(sortedSchedule[0].start)))
+    console.log('date',getDateShort(new Date(sortedSchedule[0]?.start)), 'Time', getLocalTime(new Date(sortedSchedule[0]?.start)))
     // Log the sorted schedule
     return sortedSchedule;
   }

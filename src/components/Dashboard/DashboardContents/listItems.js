@@ -43,17 +43,8 @@ const MainListItems = ({ header, setHeader }) => {
           <ListItemText primary='Recipes' />
         </ListItemButton>
       </Link>
-
-      {/* <ListItemButton>
-      <ListItemIcon>
-        <Link to="">
-          <NotificationsActiveIcon />
-        </Link>
-      </ListItemIcon>
-      <ListItemText primary="Notification" />
-    </ListItemButton> */}
      <Link to='saves-and-bookmarks'>
-      <ListItemButton>
+      <ListItemButton onClick={() => setHeader('Saves and BookMarks')}>
         <ListItemIcon>
           <BookmarkAddedIcon />
         </ListItemIcon>

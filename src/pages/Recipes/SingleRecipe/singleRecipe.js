@@ -1,18 +1,18 @@
 import React, {useState, useEffect} from 'react';	
-import services from '../util/services'	
+import services from '../../../util/services'	
 import {useDispatch} from 'react-redux'	
-import {recipesActions} from '../store/allRecipesSlice'	
-import AppAdvert from '../components/Home/recentRecipe/appAdvert'	
-import NewsLetter from '../components/Home/recentRecipe/newsLetter'	
-import LatestRecipesList from '../components/Home/recentRecipe/latestRecipesList'	
-import Category from '../components/Home/recentRecipe/category'	
-import AboutMe from '../components/SingleRecipe/aboutMe'	
-import FoodsAd from '../components/SingleRecipe/foodAd'	
-import '../public/css/singleRecipe.css'	
-import Reviews from '../components/SingleRecipe/reviewList';	
+import {recipesActions} from '../../../store/allRecipesSlice'	
+import AppAdvert from '../../../components/Home/recentRecipe/appAdvert'	
+import NewsLetter from '../../../components/Home/recentRecipe/newsLetter'	
+import LatestRecipesList from '../../../components/Home/recentRecipe/latestRecipesList'	
+import Category from '../../../components/Home/recentRecipe/category'	
+import AboutMe from '../../../components/SingleRecipe/aboutMe'	
+import FoodsAd from '../../../components/SingleRecipe/foodAd'	
+import './singleRecipe.css'	
+import Reviews from '../../../components/SingleRecipe/reviewList';	
 
 import { useLocation } from 'react-router-dom';	
-import NewSingleRecipe from '../components/NewSingleRecipe/NewSingleRecipe';	
+import NewSingleRecipe from '../../../components/NewSingleRecipe/NewSingleRecipe';	
 
 
 export default function SingleMeal() {	

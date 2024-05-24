@@ -41,6 +41,8 @@ export default function Preview({edit, isPublish}) {
     }))
   },[eventForm, isPublish]);
 
+  console.log(eventForm)
+
   return (
     <React.Fragment>
       <Button variant="text" onClick={handleClickOpen} sx={{textTransform: 'none'}}>
@@ -72,7 +74,7 @@ export default function Preview({edit, isPublish}) {
         </AppBar>
         <Box>
             {/* <SingleEvent isPreview={true} data={data}/> */}
-            <SingleEvent isPreview={true} />
+            <SingleEvent isPreview={true} event={eventForm} />
         </Box>
       </Dialog>
     </React.Fragment>
