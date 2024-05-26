@@ -8,7 +8,8 @@ import Typography from '@mui/material/Typography';
 import { Document, Page } from 'react-pdf';
 import { pdfjs } from 'react-pdf';
 import { useState } from 'react';
-import "react-pdf/dist/esm/Page/TextLayer.css";
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+import ProgressiveStepper from './ProgressiveStepper';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   'pdfjs-dist/build/pdf.worker.min.js',
@@ -19,7 +20,7 @@ const CookBookPreview = ({ pdf }) => {
   const handleError = (error) => {
     console.error('Error loading PDF:', error);
   };
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber] = useState(2);
   const [numPages, setNumPages] = useState();
   function onDocumentLoadSuccess({ numPages }) {
     setNumPages(numPages);
@@ -49,11 +50,22 @@ const CookBookPreview = ({ pdf }) => {
                 onLoadError={handleError}
                 onLoadSuccess={onDocumentLoadSuccess}
               >
-                <Page pageNumber={pageNumber} renderAnnotationLayer={false} renderTextLayer={false}/>
+                <Page
+                  pageNumber={pageNumber}
+                  renderAnnotationLayer={false}
+                  renderTextLayer={false}
+                />
               </Document>
             )}
           </CardContent>
         </Card>
+        <Box>
+          <ProgressiveStepper
+            currentPage={pageNumber}
+            totalPage={numPages}
+            setPageNumber={setPageNumber}
+          />
+        </Box>
       </Container>
     </div>
   );
