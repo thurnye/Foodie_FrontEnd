@@ -59,11 +59,15 @@ class StuffDataService {
     return http.post(`/recipe/removeRecipe/${id}`);
   }
 
-  //generate CookBook
-  generateCookBook(userId, data) {
+  //generate pdf -server
+  generateCookBookPDF(userId, data) {
     return http.post(`/recipe/generateBook/${userId}`, data, {
       responseType: 'blob'
     })
+  }
+  //generate CookBook - frontend
+  generateCookBook(userId, data) {
+    return http.post(`/recipe/generateCookBook/${userId}`, data)
   }
 
   // =====================Reviews===============================

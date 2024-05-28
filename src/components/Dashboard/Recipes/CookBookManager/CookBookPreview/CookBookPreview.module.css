@@ -1,1 +1,13 @@
-.CookBookPreview {}
+.CookBookPreview {
+    .pdfContainer{
+        border: 2px dotted black;
+        /* width: 400px; */
+        /* width: fit-content; */
+        width: 99%;
+        margin: auto;
+        overflow-x: scroll;
+    }
+    canvas {
+        width: 100% !important
+    }
+}

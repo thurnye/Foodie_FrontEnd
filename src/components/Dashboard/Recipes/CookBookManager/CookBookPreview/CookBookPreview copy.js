@@ -1,19 +1,30 @@
-import React, { useState } from 'react';
-import { Container, Box, Card, CardContent, Typography, Button } from '@mui/material';
-import { Document, Page, pdfjs } from 'react-pdf';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
+import React from 'react';
 import styles from './CookBookPreview.module.css';
+import { Container } from '@mui/material';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
+import { Document, Page } from 'react-pdf';
+import { pdfjs } from 'react-pdf';
+import { useState } from 'react';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 import ProgressiveStepper from './ProgressiveStepper';
 
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.js',
+  import.meta.url
+).toString();
 
-const CookBookPreview = ({ pdfUrl, handleDownload }) => {
-  const [pageNumber, setPageNumber] = useState(1);
-  const [numPages, setNumPages] = useState(null);
-
-  const onDocumentLoadSuccess = ({ numPages }) => {
-    setNumPages(numPages);
+const CookBookPreview = ({ pdf }) => {
+  const handleError = (error) => {
+    console.error('Error loading PDF:', error);
   };
+  const [pageNumber, setPageNumber] = useState(2);
+  const [numPages, setNumPages] = useState();
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
 
   return (
     <div className={styles.CookBookPreview}>
@@ -24,22 +35,26 @@ const CookBookPreview = ({ pdfUrl, handleDownload }) => {
             overflowY: 'auto',
           }}
         >
-          <CardContent sx={{ background: '#cecece' }}>
+          <CardContent sx={{background: '#cecece'}}>
             <Typography gutterBottom variant='h5' component='div'>
               PDF Preview
             </Typography>
-            <Button onClick={handleDownload}>Download</Button>
+            
             {numPages && (
               <p>
                 Page {pageNumber} of {numPages}
               </p>
             )}
-            <Box sx={{ background: 'white' }}>
-              {pdfUrl && (
+            <Box sx={{
+              background: 'white'
+            }}>
+              {pdf && (
                 <Document
-                  file={pdfUrl}
+                  file={pdf}
+                  onLoadError={handleError}
                   onLoadSuccess={onDocumentLoadSuccess}
                   className={styles.pdfContainer}
+                  
                 >
                   <Page
                     pageNumber={pageNumber}
@@ -48,6 +63,7 @@ const CookBookPreview = ({ pdfUrl, handleDownload }) => {
                   />
                 </Document>
               )}
+
             </Box>
           </CardContent>
         </Card>
