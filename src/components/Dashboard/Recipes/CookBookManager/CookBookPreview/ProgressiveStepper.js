@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
-export default function ProgressiveStepper({currentPage, totalPage, setPageNumber}) {
+export default function ProgressiveStepper({currentPage, totalPage, setPageNumber, sx}) {
   const theme = useTheme();
 
   const handleNext = () => {
@@ -23,7 +23,9 @@ export default function ProgressiveStepper({currentPage, totalPage, setPageNumbe
       steps={totalPage + 1}
       position="static"
       activeStep={currentPage}
-      sx={{ flexGrow: 1 }}
+      sx={{ flexGrow: 1, 
+        background: 'none'
+      }}
       nextButton={
         <Button size="small" onClick={handleNext} disabled={currentPage === totalPage}>
           Next

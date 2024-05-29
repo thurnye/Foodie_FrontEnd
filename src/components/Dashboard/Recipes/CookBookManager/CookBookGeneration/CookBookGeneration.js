@@ -16,7 +16,8 @@ const CookBookGeneration = () => {
   const [recipeIds, setRecipeIds] = useState([]);
   const [pdfUrl, setPdfUrl] = useState(null);
   const [blob, setBlob] = useState(null);
-  
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState()
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -47,22 +48,35 @@ const CookBookGeneration = () => {
 
   const handleGenerateCookBook = async () => {
     try {
-      const response = await services.generateCookBookPDF(user.user._id, {
-        recipeIds,
-        name: 'Testing Recipe Book Generation',
-        coverPage: "https://t4.ftcdn.net/jpg/03/96/95/05/360_F_396950567_PiXdbB4IUgco6CwjLhzekVgUSumsOdne.jpg",
-        description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,."
-      });
+      if(recipeIds.length !== 0){
+        setPdfUrl(null);
+        setLoading(!loading);
+        setError(null)
+        const response = await services.generateCookBookPDF(user.user._id, {
+          recipeIds,
+          name: 'Testing Recipe Book Generation',
+          coverPage: "https://t4.ftcdn.net/jpg/03/96/95/05/360_F_396950567_PiXdbB4IUgco6CwjLhzekVgUSumsOdne.jpg",
+          description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,."
+        });
+  
+        if (response.status === 200) {
+          const pdfBlob = response.data;
+          setBlob(pdfBlob)
+          const pdfUrl = URL.createObjectURL(pdfBlob);
+          setPdfUrl(pdfUrl);
+          setLoading(!loading)
+          setError(null)
+        } else {
+          setError('Failed to fetch PDF');
+          setLoading(!loading)
+        }
 
-      if (response.status === 200) {
-        const pdfBlob = response.data;
-        setBlob(pdfBlob)
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        setPdfUrl(pdfUrl);
-      } else {
-        console.error('Failed to fetch PDF');
+      }else{
+        setError('Recipe needed for cook book generation!.');
       }
     } catch (error) {
+      setLoading(!loading)
+      setError('Something Went Wrong!.')
       console.log(error);
     }
   };
@@ -125,7 +139,7 @@ const CookBookGeneration = () => {
               </Box>
             </Grid>
             <Grid item xs={4} sm={8} md={8}>
-              <CookBookPreview pdfUrl={pdfUrl} handleDownload={downloadPDF}/>
+              <CookBookPreview pdfUrl={pdfUrl} handleDownload={downloadPDF} loading={loading} error={error}/>
             </Grid>
           </Grid>
         </Box>
