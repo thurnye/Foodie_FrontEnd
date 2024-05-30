@@ -8,8 +8,9 @@ import Checkbox from '@mui/material/Checkbox';
 import Box from '@mui/material/Box';
 import CardMedia from '@mui/material/CardMedia';
 import {getRandomInt} from '../../../../../util/commons'
+import { useEffect } from 'react';
 
-export default function GenerationRecipeList({ listItems, setRecipeIds }) {
+export default function GenerationRecipeList({ listItems, setRecipeIds, recipeIds }) {
   const [checked, setChecked] = React.useState([]);
 
   const handleToggle = (value) => () => {
@@ -25,6 +26,8 @@ export default function GenerationRecipeList({ listItems, setRecipeIds }) {
     setChecked(newChecked);
     setRecipeIds(newChecked);
   };
+
+  useEffect(() => setChecked(recipeIds), [recipeIds])
 
   return (
     <Box>

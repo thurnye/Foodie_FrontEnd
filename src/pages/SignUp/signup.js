@@ -1,7 +1,7 @@
 import React from 'react';
 import jwt_decode from 'jwt-decode';
 import { useForm } from 'react-hook-form';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import services from '../../util/services';
 import { userActions } from '../../store/userSlice';
@@ -10,7 +10,7 @@ import { decodeJWToken } from '../../util/commons';
 
 export default function Signup() {
   const dispatch = useDispatch();
-  //  const history = useHistory();
+   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -32,7 +32,7 @@ export default function Signup() {
           user: userDoc,
         })
       );
-      redirect('/new-account');
+      navigate('/');
     } catch (err) {
       console.log(err);
     }

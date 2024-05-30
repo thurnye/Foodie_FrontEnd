@@ -104,6 +104,17 @@ class StuffDataService {
     return http.post(`/event/${id}`);
   }
 
+
+  // =======================Other Services==========================
+  getAutoComplete(data) {
+    return http.post(`/autoComplete`, data);
+  }
+
+
+
+
+
+
   // ------------------------------------
 
   findOne(id) {
@@ -125,6 +136,8 @@ class StuffDataService {
   findByTitle(title) {
     return http.get(`/api?title=${title}`);
   }
+  
+  
 }
 
 export default new StuffDataService();
