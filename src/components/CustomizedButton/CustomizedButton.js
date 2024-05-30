@@ -14,7 +14,7 @@ const ColorButton = styled(Button)(({ theme, backgroundColor }) => ({
   },
 }));
 
-export default function CustomizedButton({sx, label, variant, backgroundColor, endIcon, onClick, fullWidth, height, width, startIcon }) {
+export default function CustomizedButton({disabled, sx, label, variant, backgroundColor, endIcon, onClick, fullWidth, height, width, startIcon }) {
   return (
         <ColorButton 
           variant={variant}
@@ -26,6 +26,7 @@ export default function CustomizedButton({sx, label, variant, backgroundColor, e
           height={height}
           width={width}
           sx={sx}
+          disabled={disabled}
           >
           {label}
         </ColorButton>

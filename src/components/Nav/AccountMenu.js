@@ -62,6 +62,7 @@ function AccountMenu() {
     let token = localStorage.getItem('token');
     if (token) {
       localStorage.removeItem('token');
+      handleClose()
       redirect('/login');
     }
   };
@@ -98,89 +99,84 @@ function AccountMenu() {
                 </Box>
               ))}
             </Box>
-
-            <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title='Account settings'>
-                <IconButton
-                  onClick={handleClick}
-                  size='small'
-                  sx={{ ml: 2 }}
-                  aria-controls={open ? 'account-menu' : undefined}
-                  aria-haspopup='true'
-                  aria-expanded={open ? 'true' : undefined}
+            {!user ? (
+              <>
+                <Link to={'/login'}>Login / Signup</Link>
+              </>
+            ) : (
+              <Box sx={{ flexGrow: 0 }}>
+                <Tooltip title='Account settings'>
+                  <IconButton
+                    onClick={handleClick}
+                    size='small'
+                    sx={{ ml: 2 }}
+                    aria-controls={open ? 'account-menu' : undefined}
+                    aria-haspopup='true'
+                    aria-expanded={open ? 'true' : undefined}
+                  >
+                    <Avatar alt='Test Test' src='/static/images/avatar/2.jpg' />
+                  </IconButton>
+                </Tooltip>
+                <Menu
+                  anchorEl={anchorEl}
+                  id='account-menu'
+                  open={open}
+                  onClose={handleClose}
+                  onClick={handleClose}
+                  PaperProps={{
+                    elevation: 0,
+                    sx: {
+                      overflow: 'visible',
+                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                      mt: 1.5,
+                      '& .MuiAvatar-root': {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                      },
+                      '&::before': {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: 'background.paper',
+                        transform: 'translateY(-50%) rotate(45deg)',
+                        zIndex: 0,
+                      },
+                    },
+                  }}
+                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                 >
-                  <Avatar alt='Test Test' src='/static/images/avatar/2.jpg' />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                anchorEl={anchorEl}
-                id='account-menu'
-                open={open}
-                onClose={handleClose}
-                onClick={handleClose}
-                PaperProps={{
-                  elevation: 0,
-                  sx: {
-                    overflow: 'visible',
-                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                    mt: 1.5,
-                    '& .MuiAvatar-root': {
-                      width: 32,
-                      height: 32,
-                      ml: -0.5,
-                      mr: 1,
-                    },
-                    '&::before': {
-                      content: '""',
-                      display: 'block',
-                      position: 'absolute',
-                      top: 0,
-                      right: 14,
-                      width: 10,
-                      height: 10,
-                      bgcolor: 'background.paper',
-                      transform: 'translateY(-50%) rotate(45deg)',
-                      zIndex: 0,
-                    },
-                  },
-                }}
-                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-              >
-                <MenuItem onClick={handleClose}>Manage account</MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Link to={'/account'}>Dashboard</Link>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Link to={'/forum'}>Forum</Link>
-                </MenuItem>
-                <Divider />
-                <MenuItem onClick={handleClose}>
-                  <Link to={'/account/profile'}>
-                    <ListItemIcon>
-                      <Settings fontSize='small' />
-                    </ListItemIcon>
-                    Settings
-                  </Link>
-                </MenuItem>
-                {user ? (
+                  <MenuItem onClick={handleClose}>Manage account</MenuItem>
                   <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <Logout fontSize='small' />
-                    </ListItemIcon>
-                    Logout
+                    <Link to={'/account'}>Dashboard</Link>
                   </MenuItem>
-                ) : (
                   <MenuItem onClick={handleClose}>
-                    <ListItemIcon>
-                      <Login fontSize='small' />
-                    </ListItemIcon>
-
-                    <Link to={'/login'}>Login / Signup</Link>
+                    <Link to={'/forum'}>Forum</Link>
                   </MenuItem>
-                )}
-              </Menu>
-            </Box>
+                  <Divider />
+                  <MenuItem onClick={handleClose}>
+                    <Link to={'/account/profile'}>
+                      <ListItemIcon>
+                        <Settings fontSize='small' />
+                      </ListItemIcon>
+                      Settings
+                    </Link>
+                  </MenuItem>
+                    <MenuItem onClick={logoutHandler}>
+                      <ListItemIcon>
+                        <Logout fontSize='small' />
+                      </ListItemIcon>
+                      Logout
+                    </MenuItem>
+                </Menu>
+              </Box>
+            )}
           </Toolbar>
         </Container>
       </AppBar>

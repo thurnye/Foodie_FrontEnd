@@ -40,6 +40,8 @@ import CreateRecipe from './components/Dashboard/Recipes/CreateRecipe/CreateReci
 import Notification from './components/Dashboard/Notification/Notification';
 import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks';
 import AccountDashboard from './components/Dashboard/DashboardContents/AccountDashboard/AccountDashboard';
+import CookBook from './pages/CookBook/CookBook';
+import CookBookGeneration from './components/Dashboard/Recipes/CookBookManager/CookBookGeneration/CookBookGeneration';
 
 library.add(fab, fas, far);
 
@@ -110,8 +112,10 @@ function App() {
 
             {/* Recipes */}
             <Route path='recipe-feeds' element={<RecipeFeeds />} />
-            <Route path='create-recipe' element={<CreateRecipe />} />
+            <Route path='recipe/create-recipe' element={<CreateRecipe />} />
             <Route path='edit-recipe' element={<EditRecipe />} />
+            <Route path='recipe/cook-book' element={<CookBook />} />
+            <Route path='recipe/cook-book/generate' element={<CookBookGeneration/>} />
 
             {/* Notifications */}
             <Route path='notification' element={<Notification />} />

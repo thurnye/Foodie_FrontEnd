@@ -59,6 +59,17 @@ class StuffDataService {
     return http.post(`/recipe/removeRecipe/${id}`);
   }
 
+  //generate pdf -server
+  generateCookBookPDF(userId, data) {
+    return http.post(`/recipe/generateBook/${userId}`, data, {
+      responseType: 'blob'
+    })
+  }
+  //generate CookBook - frontend
+  generateCookBook(userId, data) {
+    return http.post(`/recipe/generateCookBook/${userId}`, data)
+  }
+
   // =====================Reviews===============================
 
   // create experience comments
@@ -93,6 +104,17 @@ class StuffDataService {
     return http.post(`/event/${id}`);
   }
 
+
+  // =======================Other Services==========================
+  getAutoComplete(data) {
+    return http.post(`/autoComplete`, data);
+  }
+
+
+
+
+
+
   // ------------------------------------
 
   findOne(id) {
@@ -114,6 +136,8 @@ class StuffDataService {
   findByTitle(title) {
     return http.get(`/api?title=${title}`);
   }
+  
+  
 }
 
 export default new StuffDataService();

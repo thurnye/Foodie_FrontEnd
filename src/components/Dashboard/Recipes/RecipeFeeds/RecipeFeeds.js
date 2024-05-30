@@ -155,7 +155,10 @@ const RecipeFeeds = () => {
                 }}
               >
                 <Typography gutterBottom sx={{ mx: 3 }}>
-                  <Link to='/account/create-recipe'>Create Recipe</Link>
+                  <Link to='/account/recipe/cook-book'>Cook Book</Link>
+                </Typography>
+                <Typography gutterBottom sx={{ mx: 3 }}>
+                  <Link to='/account/recipe/create-recipe'>Create Recipe</Link>
                 </Typography>
               </Box>
             </Grid>

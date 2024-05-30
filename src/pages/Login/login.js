@@ -1,7 +1,7 @@
 import React from 'react';
 import jwt_decode from 'jwt-decode';
 import { useForm } from 'react-hook-form';
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import services from '../../util/services';
 import Nav from 'react-bootstrap/Nav';
@@ -11,6 +11,7 @@ import { decodeJWToken } from '../../util/commons';
 
 export default function LogInUser() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
@@ -32,7 +33,7 @@ export default function LogInUser() {
           user: userDoc,
         })
       );
-      redirect('/');
+      navigate('/');
     } catch (err) {
       console.log({ err });
     }

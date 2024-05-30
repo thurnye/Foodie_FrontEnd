@@ -82,7 +82,6 @@ const Dashboard = () => {
     setOpen(!open);
   };
 
-  console.log(user)
   const avatarContainer = () => <Box sx={{mt: 2, mb: 3}}>
   <Avatar
     alt={'Text'}
