@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-const ModalDialog = ({setOpen, open, children, title}) => {
+const ModalDialog = ({setOpen, open, children, title, size, fullScreen}) => {
   // const [open, setOpen] = React.useState(false);
 
   // const handleClickOpen = () => {
@@ -22,6 +22,8 @@ const ModalDialog = ({setOpen, open, children, title}) => {
   <div className={styles.ModalDialog}>
     <Dialog
         open={open}
+        size={size}
+        fullScreen={fullScreen}
         onClose={() => setOpen(!open)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"

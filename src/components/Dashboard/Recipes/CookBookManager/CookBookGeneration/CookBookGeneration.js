@@ -13,6 +13,7 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import IconButton from '@mui/material/IconButton';
 import ModalDialog from '../../../../ModalDialog/ModalDialog';
 import DialogActions from '@mui/material/DialogActions';
+import { getRandomInt } from '../../../../../util/commons';
 
 const CookBookGeneration = () => {
   const [recipeList, setRecipeList] = useState([]);
@@ -26,6 +27,36 @@ const CookBookGeneration = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [error, setError] = useState();
+  const [windowWidthSize, setWindowWidthSize] = useState(window.innerWidth);
+  const withThreshold = 900;
+  const [isMobile, setIsMobile] = useState(false);
+  console.log();
+
+  // State to store window dimensions
+
+  // Update window size on resize
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidthSize(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (windowWidthSize < withThreshold) {
+      setIsMobile(true);
+    }else{
+      setIsMobile(false);
+      setOpen(false)
+    }
+  },[windowWidthSize])
+
+  console.log(windowWidthSize, open, isMobile)
+
 
   useEffect(() => {
     const fetchTodos = async () => {
@@ -138,20 +169,23 @@ const CookBookGeneration = () => {
               backgroundColor={'#fee86d'}
               id='demo-customized-button'
               disableElevation
-              onClick={handleGenerateCookBook}
-              disabled={recipeIds.length > 0 ? false: true}
+              onClick={() => {
+                handleGenerateCookBook();
+                isMobile && setOpen(true)
+              }}
+              disabled={recipeIds.length > 0 ? false : true}
               sx={{
                 fontSize: 15,
                 borderRadius: 1,
                 height: 30,
                 fontWeight: 700,
                 textTransform: 'none',
-                marginRight: { xs: 4, md: 'initial' }
+                marginRight: { xs: 4, md: 'initial' },
               }}
             />
             <CustomizedButton
               variant='contained'
-              label={'View Cook Book'}
+              label={'Preview Cook Book'}
               backgroundColor={'#fee86d'}
               id='demo-customized-button'
               disableElevation
@@ -162,7 +196,7 @@ const CookBookGeneration = () => {
                 height: 30,
                 fontWeight: 700,
                 textTransform: 'none',
-                display: pdfUrl ? 'block': 'none'
+                display: isMobile ? 'block' : 'none',
               }}
             />
           </Box>
@@ -191,7 +225,7 @@ const CookBookGeneration = () => {
                     columns={{ xs: 4, sm: 12, md: 12 }}
                   >
                     {recipeList.map((recipe, index) => (
-                      <Grid item xs={2} sm={4} md={4} key={recipe._id}>
+                      <Grid item xs={2} sm={4} md={4} key={getRandomInt()}>
                         <Box sx={{ flexGrow: 1 }}>
                           <Box
                             sx={{ position: 'relative' }}
@@ -236,33 +270,35 @@ const CookBookGeneration = () => {
                     ))}
                   </Grid>
                 </Box>
-                <ModalDialog setOpen={setOpen} open={open}>
-                  <Box>
-                    <CookBookPreview
-                      pdfUrl={pdfUrl}
-                      handleDownload={downloadPDF}
-                      loading={loading}
-                      error={error}
-                    />
-                  </Box>
-                  <DialogActions>
-                    <CustomizedButton
-                      variant='contained'
-                      label={'Close Preview'}
-                      backgroundColor={'#fee86d'}
-                      id='demo-customized-button'
-                      disableElevation
-                      onClick={() => setOpen(!open)}
-                      sx={{
-                        fontSize: 15,
-                        borderRadius: 1,
-                        height: 30,
-                        fontWeight: 700,
-                        textTransform: 'none',
-                      }}
-                    />
-                  </DialogActions>
-                </ModalDialog>
+                {isMobile && open && (
+                  <ModalDialog setOpen={setOpen} open={open} fullScreen={true}>
+                    <Box>
+                      <CookBookPreview
+                        pdfUrl={pdfUrl}
+                        handleDownload={downloadPDF}
+                        loading={loading}
+                        error={error}
+                      />
+                    </Box>
+                    <DialogActions>
+                      <CustomizedButton
+                        variant='contained'
+                        label={'Close Preview'}
+                        backgroundColor={'#fee86d'}
+                        id='demo-customized-button'
+                        disableElevation
+                        onClick={() => setOpen(!open)}
+                        sx={{
+                          fontSize: 15,
+                          borderRadius: 1,
+                          height: 30,
+                          fontWeight: 700,
+                          textTransform: 'none',
+                        }}
+                      />
+                    </DialogActions>
+                  </ModalDialog>
+                )}
               </Box>
 
               {/* large Screen */}
@@ -284,7 +320,13 @@ const CookBookGeneration = () => {
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={4} sm={8} md={8}>
+            <Grid
+              item
+              xs={4}
+              sm={8}
+              md={8}
+              sx={{ display: { xs: 'none', md: 'block' } }}
+            >
               <CookBookPreview
                 pdfUrl={pdfUrl}
                 handleDownload={downloadPDF}

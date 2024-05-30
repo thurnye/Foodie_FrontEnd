@@ -56,7 +56,7 @@ const CookBookPreview = ({ pdfUrl, handleDownload, loading, error }) => {
               <Box
                 sx={{
                   background: 'white',
-                  height: { xs: 'initial', md: '59vh' },
+                  height: { xs: pdfUrl ? 'initial' : '89vh', md: '59vh' },
                   width: { xs: pdfUrl ? '180vw' : 'initial', md: 'initial' },
                   overflowY: 'auto',
                 }}
@@ -79,7 +79,7 @@ const CookBookPreview = ({ pdfUrl, handleDownload, loading, error }) => {
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      height: { xs: '10vh', md: '59vh' },
+                      height: { xs: '89vh', md: '59vh' },
                     }}
                   >
                     <Box color='text.secondary'>
