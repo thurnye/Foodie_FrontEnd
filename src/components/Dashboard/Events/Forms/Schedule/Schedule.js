@@ -9,7 +9,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import FullCalendarComponent from './FullCalendarComponent';
 
-const Schedule = ({edit, updateEvent}) => {
+const Schedule = () => {
   const { eventForm, setEventForm } = useAddEventFormContext();
   const [data, setData] = useState();
   const [proceed, setProceed] = useState(false);
@@ -24,7 +24,6 @@ const Schedule = ({edit, updateEvent}) => {
       }
       console.log('Schedule:', data)
       setEventForm(updatedData);
-      edit && updateEvent(updatedData);
     }
   }, [data])
 
@@ -61,7 +60,6 @@ const Schedule = ({edit, updateEvent}) => {
           <FullCalendarComponent
             setData={setData} 
             defaultDates={eventForm.schedule} 
-            edit={edit}
           />
         </Box>
       }

@@ -23,9 +23,9 @@ import {
 import { useMetaDataHook } from '../../../../metaData';
 import FormDirection from '../../../../Forms/FormDirection/FormDirection';
 import DateRangePicker from '../../../../DateRangePicker/DateRangePicker';
-import { getDateShort, mergeTimeToDate } from '../../../../../util/commons';
+import { getDateShort } from '../../../../../util/commons';
 
-const BasicForm = ({ isLoaded, setData, defaultValues, edit }) => {
+const BasicForm = ({ isLoaded, setData, defaultValues }) => {
   const metaData = useMetaDataHook();
   const { tagsOptions } = metaData;
   const [locationValue, setLocationValue] = React.useState(
@@ -56,6 +56,8 @@ const BasicForm = ({ isLoaded, setData, defaultValues, edit }) => {
       setProceed(true);
     }
   };
+
+  console.log(defaultValues)
 
   // Adding the date range date fo single date
   const handleDateChange = (dt) => {
@@ -108,10 +110,7 @@ const BasicForm = ({ isLoaded, setData, defaultValues, edit }) => {
                 <Typography variant='caption' display='block' gutterBottom>
                   This profile describes a unique organizer and shows all of the
                   events on one page.
-                  <Link
-                    to={'/account/organizer'}
-                    style={{ color: '#3E64FF' }}
-                  >
+                  <Link to={'/account/organizer'} style={{ color: '#3E64FF' }}>
                     View Organizer Info
                   </Link>
                 </Typography>
@@ -341,19 +340,7 @@ const BasicForm = ({ isLoaded, setData, defaultValues, edit }) => {
             </Box>
           </div>
         </Box>
-        {edit ? (
-          <Box sx={{ textAlign: 'end', mt: 3 }}>
-            <Button
-              variant='contained'
-              // onClick={onSubmit}
-              type='submit'
-            >
-              Save Section
-            </Button>
-          </Box>
-        ) : (
-          <FormDirection onSubmit={onSubmit} proceed={proceed} />
-        )}
+        <FormDirection onSubmit={onSubmit} proceed={proceed} />
       </FormContainer>
     </Container>
   );

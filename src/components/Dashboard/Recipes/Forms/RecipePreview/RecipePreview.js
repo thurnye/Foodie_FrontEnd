@@ -1,30 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styles from './RecipePreview.module.css';
+import { useNavigate } from 'react-router';
 import { useAddRecipeFormContext } from '../../../../../store/recipeStateContext';
 import NewSingleRecipe from '../../../../NewSingleRecipe/NewSingleRecipe';
 import { Box } from '@mui/material';
 import CustomizedButton from '../../../../CustomizedButton/CustomizedButton';
 import services from '../../../../../util/services';
 import { useSelector } from 'react-redux';
+import RequestFeedback from '../../../../RequestFeedback/RequestFeedback';
 
 const RecipePreview = () => {
+  let navigate = useNavigate();
   const { recipeForm } = useAddRecipeFormContext();
   const user = useSelector((state) => state.userLog?.user?.user);
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [recipeId, setRecipeId] = useState('');
 
   const handlePostRecipe = async () => {
     try {
-      await services.postRecipe(user._id, recipeForm);
+      setIsError(false);
+      setSaved(false);
+      setLoading(true);
+      setOpen(true);
+      const res = await services.postRecipe(user._id, recipeForm);
+      if (res.status) {
+        setLoading(false);
+        setSaved(true);
+        setRecipeId(res.data)
+      }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      setSaved(false);
+      setIsError(true);
+      console.log(error)
+    }
+  };
+  const handleViewLive = () => {
+    if(recipeId){
+      console.log(recipeId)
+      navigate("/recipe", { state:  {recipeId} })
     }
   };
 
-  console.log('recipeForm::', recipeForm);
-
   return (
     <div className={styles.RecipePreview}>
-      {/* <RecipePreview setData={setData} 
-      defaultValues={recipeForm.directions}/> */}
       <Box sx={{ textAlign: 'end', mb: 4 }}>
         <CustomizedButton
           variant='contained'
@@ -56,6 +78,18 @@ const RecipePreview = () => {
             height: 40,
             fontWeight: 700,
           }}
+        />
+      </Box>
+
+      <Box>
+        <RequestFeedback
+          open={open}
+          setOpen={setOpen}
+          loading={loading}
+          isError={isError}
+          saved={saved}
+          handleError={handlePostRecipe}
+          handleSuccess={handleViewLive}
         />
       </Box>
     </div>

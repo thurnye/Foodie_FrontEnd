@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import FormDirection from '../../../../Forms/FormDirection/FormDirection';
+import { useNavigate } from 'react-router';
 import styles from './Publish.module.css';
 import { useAddEventFormContext } from '../../../../../store/formStateContext';
 import services from '../../../../../util/services';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -17,17 +16,17 @@ import {
   currencyFormat,
   getTotals,
   getAllDatesInRange,
-  getDateShort,
-  getLocalTime,
   getTimeZone,
   filterSortSchedule,
   getLocalDateString,
 } from '../../../../../util/commons';
 import Preview from './Preview';
+import CustomizedButton from '../../../../CustomizedButton/CustomizedButton';
+import RequestFeedback from '../../../../RequestFeedback/RequestFeedback';
 
-const Publish = ({ edit }) => {
-  const [proceed, setProceed] = useState(false);
+const Publish = () => {
   const user = useSelector((state) => state.userLog?.user?.user);
+  let navigate = useNavigate();
   const { eventForm, setSaveResultStatus } = useAddEventFormContext();
   const coverImage = eventForm.details.images[0]?.imgPath;
   const title = eventForm.basicInfo?.eventTitle;
@@ -36,6 +35,13 @@ const Publish = ({ edit }) => {
     eventForm.tickets.sections,
     'capacity'
   );
+  const [eventId, setEventId] = useState()
+
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [saved, setSaved] = useState(false);
+
   const currentDate = new Date();
 
   const getTotalPrice = (tickets) => {
@@ -70,12 +76,6 @@ const Publish = ({ edit }) => {
         gutterBottom
         color={sortedSchedule[1] ? '' : 'error'}
       >
-        {/* {
-      sortedSchedule[1] ? 
-      ` ${getDateShort(sortedSchedule[1])} at ${getLocalTime(sortedSchedule[1])} ${getTimeZone(sortedSchedule[1])}` 
-      : 
-      ` ${getDateShort(allDateRange[0])} at ${getLocalTime(allDateRange[0])} ${getTimeZone(allDateRange[0])}`
-      } */}
         {`${getLocalDateString(
           filterSortSchedule(eventForm?.schedule)[0].start
         )} ${getTimeZone()}`}
@@ -85,20 +85,41 @@ const Publish = ({ edit }) => {
 
   const handleSubmit = async () => {
     try {
+      setIsError(false);
+      setSaved(false);
+      setLoading(true);
+      setOpen(true);
       const data = {
         userId: user._id,
         eventForm,
       };
       const result = await services.postEvent(data);
-      console.log(result);
       setSaveResultStatus(result.status);
-      setProceed(true);
+      if (result.status) {
+        setEventId(result.data.event._id)
+        setLoading(false);
+        setSaved(true);
+      }
     } catch (error) {
       setSaveResultStatus(error.status);
       console.log(error);
+      setLoading(false);
+      setSaved(false);
+      setIsError(true);
     }
-    //sent to the backend here
   };
+
+  const handleViewLiveEvent = () => {
+    console.log({eventId})
+    if(eventId){
+      const formattedEventTitle = eventForm.basicInfo.eventTitle
+        .toLocaleLowerCase()
+        .replaceAll(' ', '-');
+      navigate(`/event?title=${formattedEventTitle}`, {
+        state: { edit: false, eventId },
+      })
+    }
+  }
 
   return (
     <div className={styles.Publish}>
@@ -205,11 +226,26 @@ const Publish = ({ edit }) => {
                       <Box
                         sx={{
                           borderTop: '2px solid #F8F7FA',
-                          textAlign: 'center',
                           pt: 3,
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
                         }}
                       >
                         <Preview data={eventForm} isPublish={true} />
+                        <CustomizedButton
+                          variant='text'
+                          label={'Publish'}
+                          id='demo-customized-button'
+                          disableElevation
+                          onClick={() => handleSubmit()}
+                          sx={{
+                            fontSize: { xs: 15, md: 18 },
+                            borderRadius: 0,
+                            height: 40,
+                            fontWeight: 700,
+                          }}
+                        />
                       </Box>
                     </Box>
                   </Box>
@@ -218,10 +254,16 @@ const Publish = ({ edit }) => {
             </Box>
           </Paper>
         </Box>
+        <RequestFeedback
+          open={open}
+          setOpen={setOpen}
+          loading={loading}
+          isError={isError}
+          saved={saved}
+          handleError={handleSubmit}
+          handleSuccess={handleViewLiveEvent}
+        />
       </Box>
-      {!edit && (
-        <FormDirection onSubmit={() => handleSubmit()} proceed={proceed} />
-      )}
     </div>
   );
 };

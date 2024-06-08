@@ -17,7 +17,7 @@ import { MdExpandMore } from 'react-icons/md';
 import SwipeableCarousel from './SwipeableCarousel';
 import ImageLayout from './ImageLayout';
 
-const DetailsForm = ({ setData, defaultValues, defaultTitle, edit }) => {
+const DetailsForm = ({ setData, defaultValues, defaultTitle }) => {
   const [proceed, setProceed] = useState(false);
   const [about, setAbout] = useState(defaultValues.about);
   const [faqs, setFaqs] = useState(defaultValues.faqs);
@@ -315,16 +315,7 @@ const DetailsForm = ({ setData, defaultValues, defaultTitle, edit }) => {
           </Box>
         )}
       </Box>
-
-      {edit ? (
-        <Box sx={{ textAlign: 'end', mt: 3 }}>
-          <Button variant='contained' type='submit' onClick={onSubmit}>
-            Save Section
-          </Button>
-        </Box>
-      ) : (
         <FormDirection onSubmit={onSubmit} proceed={proceed} />
-      )}
     </div>
   );
 };
