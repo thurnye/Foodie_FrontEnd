@@ -49,8 +49,8 @@ export default function category() {
                                                         <Link to={{
                                                             pathname: `/all-recipes` ,
                                                             search: `?q=${(el.name).toLocaleLowerCase().replaceAll(" ", "-")}`,
-                                                            state: {category: el.name},
                                                         }}
+                                                        state={{category: el.name}}
                                                         > 
                                                             <img className="card-img-top hvr-bob" src={el.img} alt="Popular"/> 
                                                             </Link>
