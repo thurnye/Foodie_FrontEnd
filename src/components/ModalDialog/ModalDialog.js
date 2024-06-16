@@ -24,7 +24,6 @@ const ModalDialog = ({setOpen, open, children, title, size, fullScreen}) => {
         open={open}
         size={size}
         fullScreen={fullScreen}
-        onClose={() => setOpen(!open)}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

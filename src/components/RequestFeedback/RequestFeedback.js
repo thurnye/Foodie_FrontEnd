@@ -27,6 +27,7 @@ export default function RequestFeedback({
   handleError,
   handleSuccess,
   handleCancel,
+  showCancel=true
 }) {
 
   return (
