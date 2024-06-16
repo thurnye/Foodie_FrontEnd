@@ -73,7 +73,6 @@ export default function Preview({edit, isPublish}) {
           </Toolbar>
         </AppBar>
         <Box>
-            {/* <SingleEvent isPreview={true} data={data}/> */}
             <SingleEvent isPreview={true} event={eventForm} />
         </Box>
       </Dialog>

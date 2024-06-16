@@ -11,16 +11,12 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import services from '../../../../util/services';
-import { eventsActions } from '../../../../store/eventSlice';
 import AlertDialog from '../../../AlertDialog/AlertDialog';
 import { PiTrashThin } from 'react-icons/pi';
 import DataGridTable from '../../../DataGridTable/DataGridTable';
 import { getDateShort } from '../../../../util/commons';
 import CardMedia from '@mui/material/CardMedia';
-import {
-  AddRecipeFormContext,
-  defaultForm,
-} from '../../../../store/recipeStateContext';
+
 
 const columns = [
   { field: 'id', headerName: '', width: 80 },
@@ -89,7 +85,6 @@ const RecipeFeeds = () => {
   const [selectedRecipeId, setSelectedRecipeId] = useState();
   const [recipes, setRecipes] = useState([]);
   const [previewEvent, setPreviewEvent] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
   const [counts, setCounts] = useState(10);
   const [isDelete, setIsDelete] = useState(false);
   const [paginationModel, setPaginationModel] = React.useState({
@@ -98,7 +93,6 @@ const RecipeFeeds = () => {
   });
   const [rows, setRows] = useState([]);
   const [message, setMessage] = useState();
-  const [recipeForm, setRecipeForm] = useState();
 
   const fetchRecipes = async (query, userId) => {
     try {
@@ -182,7 +176,7 @@ const RecipeFeeds = () => {
                       variant='text'
                       disabled={selectedRecipeId !== undefined ? false : true}
                       onClick={() =>
-                        navigate('/account/create-recipe', {
+                        navigate('/account/recipe/create-recipe', {
                           state: { edit: false, id: selectedRecipeId },
                         })
                       }

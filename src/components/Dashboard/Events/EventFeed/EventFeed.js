@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import services from '../../../../util/services';
-import { eventsActions } from '../../../../store/eventSlice';
-import Preview from '../Forms/Publish/Preview'
+// import { eventsActions } from '../../../../store/eventSlice';
+// import Preview from '../Forms/Publish/Preview'
 import AlertDialog from '../../../AlertDialog/AlertDialog';
 import { PiTrashThin } from "react-icons/pi";
 import { getAllDatesInRange, getDateShort } from '../../../../util/commons';
@@ -80,12 +80,12 @@ const getRows = (data) => {
 
 const EventFeed = () => {
   let navigate = useNavigate();
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const user = useSelector(state => state.userLog.user);
   const [selectedEventId, setSelectedEventId] = useState();
   const [events, setEvents] = useState([]);
-  const [previewEvent, setPreviewEvent] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1)
+  // const [previewEvent, setPreviewEvent] = useState(false);
+  // const [currentPage, setCurrentPage] = useState(1)
   const [counts, setCounts] = useState(10);
   const [isDelete, setIsDelete] = useState(false)
   const [paginationModel, setPaginationModel] = React.useState({
@@ -98,6 +98,7 @@ const EventFeed = () => {
   const fetchEvents = async (query, userId) => {
     try {
         const allEvents = await services.getUserEvents(userId, query);
+        console.log(allEvents.data.events)
         setEvents(allEvents.data.events);
         setCounts(allEvents.data.count);
     } catch (err) {
@@ -123,17 +124,17 @@ useEffect(() => {
   }, [user, paginationModel.page, paginationModel.pageSize]);
 
   // Add the data to redux for preview
-  useEffect(() => {
-    if(selectedEventId){
-      setPreviewEvent(false)
-      console.log({selectedEventId, events})
-      const previewData = events.find((el) => el._id === selectedEventId);
-      dispatch(eventsActions.getSingleEvent({
-          data: previewData
-      }))
-      setPreviewEvent(true)
-    }
-  },[selectedEventId])
+  // useEffect(() => {
+  //   if(selectedEventId){
+  //     setPreviewEvent(false)
+  //     console.log({selectedEventId, events})
+  //     const previewData = events.find((el) => el._id === selectedEventId);
+  //     dispatch(eventsActions.getSingleEvent({
+  //         data: previewData
+  //     }))
+  //     setPreviewEvent(true)
+  //   }
+  // },[selectedEventId])
 
   const handleSectionDelete = async () => {
     console.log(selectedEventId)
@@ -142,7 +143,7 @@ useEffect(() => {
       console.log(response.data.deleted)
       if(response.data.deleted){
         setEvents(events.filter((el) => el._id !== selectedEventId))
-        setPreviewEvent(false)
+        // setPreviewEvent(false)
       }
   } catch (err) {
       console.log(err);
@@ -189,15 +190,15 @@ useEffect(() => {
                 <Button 
                   variant="text" 
                   disabled={selectedEventId !== undefined ? false : true}
-                  onClick={() =>   navigate("/account/edit-event", { state: { edit: false, id:  selectedEventId} })}
+                  onClick={() =>   navigate("/account/create-event", { state: { edit: true, id:  selectedEventId} })}
                   sx={{textTransform: 'none'}} 
                 >
                   Edit
                 </Button>
-                {previewEvent ? <Preview data={previewEvent} edit={true}/> 
+                {/* {previewEvent ? <Preview data={previewEvent} edit={true}/> 
                   : 
                   <Button  variant="text" disabled={true} sx={{textTransform: 'none'}}> Preview </Button>
-                }
+                } */}
               </Stack>
             </Box>
             {/* <EventList/> */}

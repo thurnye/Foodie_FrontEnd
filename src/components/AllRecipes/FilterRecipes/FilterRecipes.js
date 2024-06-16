@@ -71,7 +71,7 @@ const FilterRecipes = (props) => {
                       className="form-check-input "
                       type="checkbox"
                       name={el}
-                      {...register('options')}
+                      {...register('categories')}
                       defaultValue={el}
                     />
                     <label className="form-check-label text-muted" htmlFor="flexCheckChecked">

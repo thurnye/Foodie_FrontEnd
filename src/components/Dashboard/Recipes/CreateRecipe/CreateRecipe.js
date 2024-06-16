@@ -87,9 +87,7 @@ useEffect(() => {
       case 0:
         return <BasicRecipeInfo/>
       case 1:
-        return <>
-          <RecipeDetails/>
-        </> 
+        return <RecipeDetails/>
       case 2:
         return <RecipeNutritionalFacts/>
       case 3:
