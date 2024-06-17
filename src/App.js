@@ -15,7 +15,11 @@ import { useJsApiLoader } from '@react-google-maps/api';
 import Home from './pages/Home/home';
 import AllRecipe from './pages/Recipes/AllRecipes/allRecipes';
 import Author from './pages/Author/author';
-import Forum from './pages/Forum/forum';
+
+
+import Forum from './pages/Forum/SingleForum';
+import Forums from './pages/Forum/Forums';
+
 import Signup from './pages/SignUp/signup';
 import LoginUser from './pages/Login/login';
 import CompleteRegistration from './pages/Registeration/completeRegistrationForm';
@@ -42,6 +46,9 @@ import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks
 import AccountDashboard from './components/Dashboard/DashboardContents/AccountDashboard/AccountDashboard';
 import CookBook from './pages/CookBook/CookBook';
 import CookBookGeneration from './components/Dashboard/Recipes/CookBookManager/CookBookGeneration/CookBookGeneration';
+
+
+
 
 library.add(fab, fas, far);
 
@@ -72,6 +79,7 @@ function App() {
 
   // get the loggedIn User
   const user = useSelector((state) => state.userLog.user);
+  
 
   return (
     <React.Fragment>
@@ -90,7 +98,10 @@ function App() {
           <Route path='/events' element={<Events />} />
           <Route path='/event' element={<SingleEventContainer />} />
           <Route path='/all-recipes' element={<AllRecipe />} />
+
+          <Route path='/forums' element={<Forums />} />
           <Route path='/forum' element={<Forum />} />
+
           <Route path='/author' element={<Author />} />
           <Route path='/test' element={<FeatureTesting />} />
 
