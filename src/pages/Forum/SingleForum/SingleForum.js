@@ -25,11 +25,11 @@ import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback
 
 const groupActions = {
   pending: 'pending',
-  groupExit: 'group exist'
-}
+  groupExit: 'exit',
+};
 
 const SingleForum = () => {
-  const user = useSelector((state) => state.userLog.user?.user); 
+  const user = useSelector((state) => state.userLog.user?.user);
   const location = useLocation();
   const navigate = useNavigate();
   const forumId = location.state?.forumId;
@@ -47,7 +47,7 @@ const SingleForum = () => {
   const [saved, setSaved] = useState(false);
   const [showCancel, setShowCancel] = useState(false);
   const [message, setMessage] = useState('');
-
+  const [savingMessage, setSavingMessage] = useState('');
 
   const fetchForumGroups = async (query) => {
     try {
@@ -58,8 +58,8 @@ const SingleForum = () => {
       const result = await services.getGroups(query);
       setGroupRooms(result.data.groupRooms);
       setCount(result.data.count);
-      console.log(result.data)
-      setLoading(false)
+      console.log(result.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
       console.log('ERROR:::', error);
@@ -74,7 +74,9 @@ const SingleForum = () => {
   };
 
   useEffect(() => {
-    user && forumId && fetchForumGroups({ currentPage, perPage, forumId, userId: user._id });
+    user &&
+      forumId &&
+      fetchForumGroups({ currentPage, perPage, forumId, userId: user._id });
   }, [currentPage, forumId, perPage, user]);
 
   useEffect(() => {
@@ -87,23 +89,43 @@ const SingleForum = () => {
   useEffect(() => {}, [newGroup]);
 
   const handleJoinOrLeaveGroup = async (groupId) => {
-    try{
-      const data = {userId: user._id, groupId}
-      console.log(data)
+    try {
+      setIsError(false);
+      setSaved(false);
+      setShowCancel(false);
+      setReqLoading(false);
+      setOpen(!open);
+      setMessage('');
+      setOpen(!open);
+      setSavingMessage('Sending Request');
+      const data = { userId: user._id, groupId };
+      console.log(data);
       const result = await services.postGroupRequest(data);
-      console.log(result)
+      console.log(result);
       const group = groupRooms.find((el) => el._id === groupId);
 
-      if(result.data === groupActions.pending){
+      if (result.data === groupActions.pending) {
         group.isPendingMember = true;
+        setSaved(true);
+        setMessage('Request To Join Group Sent');
       }
-      if(result.data === groupActions.groupExit){
+      if (result.data === groupActions.groupExit) {
         group.isMember = false;
+        setSaved(true);
+        setMessage('Successfully Existed Group');
       }
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.error(error);
+      setReqLoading(false);
+      console.log('ERROR:::', error);
+      const errMsg = error.response.data;
+      setMessage(errMsg);
+      setShowCancel(false);
+      setSaved(false);
+      setIsError(true);
+      setOpen(!open);
     }
-  }
+  };
 
   return (
     <div className={styles.SingleForum}>
@@ -235,34 +257,41 @@ const SingleForum = () => {
                             </Box>
                           </Grid>
                           <Grid item xs={4} sm={4} md={4}>
-                            <Box
-                              sx={{
-                                textAlign: 'end',
-                                width: '100%',
-                                height: '100%',
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                alignItems: 'flex-end',
-                                py: 1,
-                              }}
-                            >
-                              <CustomizedButton
-                                variant='text'
-                                label={ el.isPendingMember ? 'Request Pending' :
-                                  el.isMember ? "Leave Group" : 'Join Group'}
-                                id='join-group-button'
-                                disableElevation
-                                onClick={() => handleJoinOrLeaveGroup(el._id)}
-                                disabled={el.isPendingMember}
+                            {user._id !== el.startedBy._id && (
+                              <Box
                                 sx={{
-                                  fontSize: 12,
-                                  borderRadius: 0,
-                                  textTransform: 'none',
-                                  textWrap:'nowrap',
-                                  mr: el.isPendingMember ? 3 : ''
+                                  textAlign: 'end',
+                                  width: '100%',
+                                  height: '100%',
+                                  display: 'flex',
+                                  justifyContent: 'flex-start',
+                                  alignItems: 'flex-end',
+                                  py: 1,
                                 }}
-                              />
-                            </Box>
+                              >
+                                <CustomizedButton
+                                  variant='text'
+                                  label={
+                                    el.isPendingMember
+                                      ? 'Request Pending'
+                                      : el.isMember
+                                      ? 'Leave Group'
+                                      : 'Join Group'
+                                  }
+                                  id='join-group-button'
+                                  disableElevation
+                                  onClick={() => handleJoinOrLeaveGroup(el._id)}
+                                  disabled={el.isPendingMember}
+                                  sx={{
+                                    fontSize: 12,
+                                    borderRadius: 0,
+                                    textTransform: 'none',
+                                    textWrap: 'nowrap',
+                                    mr: el.isPendingMember ? 3 : '',
+                                  }}
+                                />
+                              </Box>
+                            )}
                           </Grid>
                         </Grid>
                       </Box>
@@ -310,6 +339,7 @@ const SingleForum = () => {
         {loading && <>Loading...</>}
       </Container>
       <RequestFeedback
+        savingMessage={savingMessage}
         successMessage={message}
         errorMessage={message}
         open={open}
@@ -322,7 +352,6 @@ const SingleForum = () => {
         errorBtnLabel={'close'}
         handleSuccess={() => {
           setOpen(!open);
-          navigate('/');
         }}
         successBtnLabel={'close'}
       />

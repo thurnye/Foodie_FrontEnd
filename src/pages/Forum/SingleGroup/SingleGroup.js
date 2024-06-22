@@ -8,7 +8,11 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import { getDateShortWithoutWeek, getRandomInt, truncateTextLong } from '../../../util/commons';
+import {
+  getDateShortWithoutWeek,
+  getRandomInt,
+  truncateTextLong,
+} from '../../../util/commons';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -26,8 +30,6 @@ import CreatePanelDiscussion from '../CreatePanelDiscussion/CreatePanelDiscussio
 import BackNavigation from '../../../components/BackNavigation/BackNavigation';
 import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
 
-
-
 const SingleGroup = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -42,16 +44,14 @@ const SingleGroup = () => {
   const [groupInfo, setGroupInfo] = useState(null);
   const [groupDiscussionPanels, setGroupDiscussionPanels] = useState([]);
 
+  // FeedBack States
+  const [open, setOpen] = useState(false);
+  const [reqLoading, setReqLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [showCancel, setShowCancel] = useState(false);
+  const [message, setMessage] = useState('');
 
-   // FeedBack States
-   const [open, setOpen] = useState(false);
-   const [reqLoading, setReqLoading] = useState(false);
-   const [isError, setIsError] = useState(false);
-   const [saved, setSaved] = useState(false);
-   const [showCancel, setShowCancel] = useState(false);
-   const [message, setMessage] = useState('');
-
-   
   const fetchGroups = async (groupId) => {
     try {
       setIsError(false);
@@ -80,7 +80,7 @@ const SingleGroup = () => {
       const result = await services.getGroupDiscussionPanels(query);
       setGroupDiscussionPanels(result.data.groupPanels);
       setCount(result.data.count);
-      setLoadingPanels(false)
+      setLoadingPanels(false);
     } catch (error) {
       console.log(error);
       const errMsg = error.response.data;
@@ -93,7 +93,7 @@ const SingleGroup = () => {
   };
 
   useEffect(() => {
-    groupId &&  fetchGroupPanels({ currentPage, perPage, groupId });
+    groupId && fetchGroupPanels({ currentPage, perPage, groupId });
   }, [currentPage, groupId, perPage]);
 
   useEffect(() => {
@@ -106,7 +106,7 @@ const SingleGroup = () => {
     groupId && fetchGroups(groupId);
   }, [groupId]);
 
-  const getParsedHtml =  (text) =>  parser(text)
+  const getParsedHtml = (text) => parser(text);
 
   return (
     <div className={styles.SingleGroup}>
@@ -161,7 +161,11 @@ const SingleGroup = () => {
                             >
                               <CardHeader
                                 avatar={
-                                  <Avatar sx={{}} src={panel.startedBy.avatar} alt={`${panel.startedBy.firstName}`}/>
+                                  <Avatar
+                                    sx={{}}
+                                    src={panel.startedBy.avatar}
+                                    alt={`${panel.startedBy.firstName}`}
+                                  />
                                 }
                                 title={`${panel.startedBy.firstName} ${panel.startedBy.lastName}`}
                                 sx={{ color: 'text.secondary' }}
@@ -184,7 +188,9 @@ const SingleGroup = () => {
                                 variant='caption'
                                 color='text.secondary'
                               >
-                                <i>{getDateShortWithoutWeek(panel.createdAt)}</i>
+                                <i>
+                                  {getDateShortWithoutWeek(panel.createdAt)}
+                                </i>
                               </Typography>
                             </Box>
                           </Grid>
@@ -199,7 +205,8 @@ const SingleGroup = () => {
                             color='text.secondary'
                             gutterBottom
                           >
-                            {panel.panel && truncateTextLong(parser(panel.panel), 70)}
+                            {panel.panel &&
+                              truncateTextLong(parser(panel.panel), 70)}
                           </Typography>
                         </CardContent>
                       </Box>
@@ -264,7 +271,8 @@ const SingleGroup = () => {
                                   color='text.secondary'
                                   gutterBottom
                                 >
-                                  {panel.membersInPanels > 0 && panel.membersInPanels}
+                                  {panel.membersInPanels > 0 &&
+                                    panel.membersInPanels}
                                 </Typography>
                               </Box>
                             </Box>
@@ -277,6 +285,19 @@ const SingleGroup = () => {
                   </Link>
                 </Grid>
               ))}
+              {!loading && groupDiscussionPanels.length === 0 && (
+                <Card sx={{ maxWidth: 350, m: 'auto' }}>
+                  <CardContent>
+                    <Typography
+                      variant='body1'
+                      sx={{ textAlign: 'center' }}
+                      color='text.secondary'
+                    >
+                      No discussion in the group yet!.
+                    </Typography>
+                  </CardContent>
+                </Card>
+              )}
             </Grid>
           </Box>
         </Box>
@@ -316,7 +337,10 @@ const SingleGroup = () => {
                                 height: '100%',
                               }}
                             >
-                              <Avatar src={panel.startedBy.avatar} alt={panel.startedBy.firstName} />
+                              <Avatar
+                                src={panel.startedBy.avatar}
+                                alt={panel.startedBy.firstName}
+                              />
                               <Typography
                                 variant='body2'
                                 color='text.secondary'
@@ -339,7 +363,8 @@ const SingleGroup = () => {
                               color='text.secondary'
                               gutterBottom
                             >
-                              {panel.panel && truncateTextLong((parser(panel.panel)), 70)}
+                              {panel.panel &&
+                                truncateTextLong(parser(panel.panel), 70)}
                             </Typography>
                           </Box>
                         </Grid>
@@ -398,7 +423,8 @@ const SingleGroup = () => {
                               color='text.secondary'
                               gutterBottom
                             >
-                              {panel.membersInPanels > 0 && panel.membersInPanels}
+                              {panel.membersInPanels > 0 &&
+                                panel.membersInPanels}
                             </Typography>
                           </Box>
                         </Box>
@@ -410,6 +436,19 @@ const SingleGroup = () => {
                       </Box>
                     </Card>
                   ))}
+                  {!loading && groupDiscussionPanels.length === 0 && (
+                    <Card sx={{ boxShadow:'none' }}>
+                      <CardContent>
+                        <Typography
+                          variant='h5'
+                          sx={{ textAlign: 'center' }}
+                          color='text.secondary'
+                        >
+                          No discussion in the group yet!.
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  )}
                 </Box>
               </Box>
             </Grid>
@@ -419,80 +458,86 @@ const SingleGroup = () => {
                   <Box>
                     <CardContent>
                       <Box>
-                        <Typography variant='body2'>Pending Join Group Request</Typography>
+                        <Typography variant='body2'>
+                          Pending Join Group Request
+                        </Typography>
                         <Box
                           sx={{ my: 3, maxHeight: '30vh', overflow: 'auto' }}
                         >
                           {!loading &&
                             groupInfo?.pendingGroupMembers.length < 1 && (
-                              <Box sx={{p: 2, bgcolor: '#fafafa'}}>
-                                    <Typography
-                                      sx={{ fontSize: 14, textAlign:'center', p: 3 }}
-                                      color='text.secondary'
-                                      gutterBottom
-                                    >
-                                      No Pending Request
-                                    </Typography>
+                              <Box sx={{ p: 2, bgcolor: '#fafafa' }}>
+                                <Typography
+                                  sx={{
+                                    fontSize: 14,
+                                    textAlign: 'center',
+                                    p: 3,
+                                  }}
+                                  color='text.secondary'
+                                  gutterBottom
+                                >
+                                  No Pending Request
+                                </Typography>
                               </Box>
                             )}
-                            {!loading &&
+                          {!loading &&
                             groupInfo?.pendingGroupMembers.length > 0 && (
-                            <List
-                              dense
-                              sx={{
-                                width: '100%',
-                                maxWidth: 360,
-                                bgcolor: '#fafafa',
-                                p: 1,
-                              }}
-                            >
-                              {groupInfo?.pendingGroupMembers.map(
-                                (pendingMember, i) => {
-                                  // const labelId = `checkbox-list-secondary-label-${value}`;
-                                  return (
-                                    <>
-                                      <ListItem
-                                        key={pendingMember._id}
-                                        secondaryAction={
-                                          <CustomizedButton
-                                            variant='text'
-                                            label={'Approve'}
-                                            id='join-group-button'
-                                            disableElevation
-                                            onClick={() => ''}
-                                            sx={{
-                                              fontSize: 12,
-                                              borderRadius: 0,
-                                              textTransform: 'none',
-                                              textWrap: 'nowrap',
-                                              ml: 1,
-                                              mr: -2,
+                              <List
+                                dense
+                                sx={{
+                                  width: '100%',
+                                  maxWidth: 360,
+                                  bgcolor: '#fafafa',
+                                  p: 1,
+                                }}
+                              >
+                                {groupInfo?.pendingGroupMembers.map(
+                                  (pendingMember, i) => {
+                                    // const labelId = `checkbox-list-secondary-label-${value}`;
+                                    return (
+                                      <>
+                                        <ListItem
+                                          key={pendingMember._id}
+                                          secondaryAction={
+                                            <CustomizedButton
+                                              variant='text'
+                                              label={'Approve'}
+                                              id='join-group-button'
+                                              disableElevation
+                                              onClick={() => ''}
+                                              sx={{
+                                                fontSize: 12,
+                                                borderRadius: 0,
+                                                textTransform: 'none',
+                                                textWrap: 'nowrap',
+                                                ml: 1,
+                                                mr: -2,
+                                              }}
+                                            />
+                                          }
+                                          disablePadding
+                                        >
+                                          <ListItemAvatar>
+                                            <Avatar
+                                              alt={`${pendingMember.firstName}`}
+                                              src={pendingMember.avatar}
+                                              sx={{ width: 30, height: 30 }}
+                                            />
+                                          </ListItemAvatar>
+                                          <ListItemText
+                                            id={getRandomInt()}
+                                            primary={`${pendingMember.firstName} ${pendingMember.lastName}`}
+                                            primaryTypographyProps={{
+                                              sx: { width: '60%', ml: -2 },
                                             }}
                                           />
-                                        }
-                                        disablePadding
-                                      >
-                                        <ListItemAvatar>
-                                          <Avatar
-                                            alt={`${pendingMember.firstName}`}
-                                            src={pendingMember.avatar}
-                                            sx={{ width: 30, height: 30 }}
-                                          />
-                                        </ListItemAvatar>
-                                        <ListItemText
-                                          id={getRandomInt()}
-                                          primary={`${pendingMember.firstName} ${pendingMember.lastName}`}
-                                          primaryTypographyProps={{
-                                            sx: { width: '60%', ml: -2 },
-                                          }}
-                                        />
-                                      </ListItem>
-                                      <Divider sx={{ my: 0.5 }} />
-                                    </>
-                                  );
-                                }
-                              )}
-                            </List>
+                                        </ListItem>
+                                        <Divider sx={{ my: 0.5 }} />
+                                      </>
+                                    );
+                                  }
+                                )}
+                              </List>
                             )}
                         </Box>
                       </Box>
@@ -503,18 +548,17 @@ const SingleGroup = () => {
                         <Box
                           sx={{ my: 3, maxHeight: '30vh', overflow: 'auto' }}
                         >
-                          {!loading &&
-                            groupInfo?.groupMembers.length < 1 && (
-                              <Box sx={{p: 2, bgcolor: '#fafafa'}}>
-                                    <Typography
-                                      sx={{ fontSize: 14, textAlign:'center', p: 3 }}
-                                      color='text.secondary'
-                                      gutterBottom
-                                    >
-                                      No Member
-                                    </Typography>
-                              </Box>
-                            )}
+                          {!loading && groupInfo?.groupMembers.length < 1 && (
+                            <Box sx={{ p: 2, bgcolor: '#fafafa' }}>
+                              <Typography
+                                sx={{ fontSize: 14, textAlign: 'center', p: 3 }}
+                                color='text.secondary'
+                                gutterBottom
+                              >
+                                No Member
+                              </Typography>
+                            </Box>
+                          )}
                           <List
                             dense
                             sx={{
@@ -608,7 +652,6 @@ const SingleGroup = () => {
         errorBtnLabel={'close'}
         handleSuccess={() => {
           setOpen(!open);
-          navigate('/');
         }}
         successBtnLabel={'close'}
       />
