@@ -109,6 +109,7 @@ export default function RequestFeedback({
               height: 30,
               fontWeight: 700,
               textTransform: 'none',
+              display: showCancel ? '' : 'none'
             }}
           />
           <CustomizedButton

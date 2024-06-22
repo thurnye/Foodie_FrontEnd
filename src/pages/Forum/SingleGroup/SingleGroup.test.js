@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Forum from './Forum';
+import SingleGroup from './SingleGroup';
 
 it('It should mount', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Forum />, div);
+  ReactDOM.render(<SingleGroup />, div);
   ReactDOM.unmountComponentAtNode(div);
 });

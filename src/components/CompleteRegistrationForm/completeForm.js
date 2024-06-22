@@ -46,8 +46,9 @@ export default function CompleteForm() {
         ...data,
         ...aboutMe,
         socialMediaPlatform: platformData,
+        userId: user._id
       };
-      const result = await services.postEdit(user._id, details);
+      const result = await services.postEditUser(details);
       let token = result.data;
       localStorage.setItem('token', token);
       const userDoc = decodeJWToken(token);

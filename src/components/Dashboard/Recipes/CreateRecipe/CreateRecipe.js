@@ -12,9 +12,8 @@ import RecipeDirections from '../Forms/RecipeDirections/RecipeDirections';
 import RecipePreview from '../Forms/RecipePreview/RecipePreview';
 import {getRandomInt} from '../../../../util/commons'
 import { AddRecipeFormContext, defaultForm } from '../../../../store/recipeStateContext';
-import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import Button from '@mui/material/Button';
 import services from '../../../../util/services';
+import BackNavigation from '../../../BackNavigation/BackNavigation';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -111,9 +110,7 @@ useEffect(() => {
   <div className={styles.CreateRecipe}>
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Box sx={{my: 2}}>
-          <Button variant="text" startIcon={<KeyboardBackspaceIcon/>} onClick={handleBackClick}>
-          Back
-        </Button>
+        <BackNavigation variant="text" label={'Back'} onClick={handleBackClick}/>
       </Box>
     <AddRecipeFormContext.Provider 
       value={{

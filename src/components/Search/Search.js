@@ -4,73 +4,25 @@ import styles from './Search.module.css';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Autocomplete from '@mui/material/Autocomplete';
-import { getRandomInt } from '../../util/commons';
 import CustomizedButton from '../CustomizedButton/CustomizedButton';
-import services from '../../util/services';
 import { CircularProgress } from '@mui/material';
 
 const Search = ({data}) => {
   const [searchedQuery, setSearchedQuery] = useState('');
-  // const [loading, setLoading] = useState(false);
-  // const [data, setData] = useState([]);
   const [options, setOptions] = useState([])
   const [open, setOpen] = React.useState(false);
   const loading = open && options.length === 0;
 
 
-  // const fetchAutoComplete = async () => {
-  //   try {
-  //     // setLoading(true)
-  //     const res = await services.getAutoComplete({
-  //       section: ['recipe'],
-  //     });
-  //     console.log(res.data);
-  //     // setOptions(res.data)
-      
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
-
-  // React.useEffect(() => {
-  //   let active = true;
-
-  //   if (!loading) {
-  //     return undefined;
-  //   }
-
-  //   (async () => {
-  //     // await sleep(1e3); // For demo purposes.
-
-  //     if (active) {
-  //       // if(data && data.length){
-  //       //       setOptions(data.map((el) => ({title: el.title})))
-  //       //       // setLoading(false)
-  //       //     }
-  //       // fetchAutoComplete()
-  //     }
-  //   })();
-
-  //   return () => {
-  //     active = false;
-  //   };
-  // }, [loading, data]);
-
   React.useEffect(() => {
-    if (!open) {
+    if (!open && data.length < 0) {
       setOptions([]);
     }
-  }, [open]);
-
-
-  // useEffect(() => {
-  //   fetchAutoComplete()
-  // },[])
+  }, [open, data]);
 
   useEffect(() => {
     if(data.length){
       setOptions(data.map((el) => ({title: el.title})))
-      // setLoading(false)
     }else{
       setOptions([]);
     }
@@ -87,7 +39,6 @@ const Search = ({data}) => {
           my: 3,
           display: 'flex',
           mr: 10,
-          // width: {xs: '100%', sm:'90%', md: '70%'},
           margin: 'auto',
         }}
       >

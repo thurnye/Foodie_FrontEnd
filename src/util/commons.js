@@ -81,6 +81,25 @@ export const getDateShort = (dt) => {
     return dateString;
 
 }
+// Output example: "Thu, Sep 8, 2023"
+export const getDateShortWithoutWeek = (dt) => {
+    const systemLocale = navigator.language;
+    const date = new Date(dt); 
+
+    // Specify the desired locale and options
+    const locale = systemLocale; // French (France)
+    const options = {
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric',
+    };
+
+    // Format the date as a string with the specified locale and options
+    const dateString = date.toLocaleDateString(locale, options);
+
+    return dateString;
+
+}
 
 // Output example: "8:00AM"
 export const getLocalTime = (date) => {
@@ -308,3 +327,19 @@ export const findMinimumPriceOrFreeTicket = (sections) => {
     return `from ${currencyFormat.format(minimumPrice)}`;
   }
 };
+
+
+// truncate by words
+export const truncateTextLong = (text, wordLimit) => {
+  console.log(text)
+  if(!text){
+    return ''
+  }
+
+  // const words = text.split(' ');
+  // if (words.length > wordLimit) {
+  //   return words.slice(0, wordLimit).join(' ') + '...';
+  // }
+  return text;
+}
+

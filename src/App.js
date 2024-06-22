@@ -16,12 +16,8 @@ import Home from './pages/Home/home';
 import AllRecipe from './pages/Recipes/AllRecipes/allRecipes';
 import Author from './pages/Author/author';
 
-
-import Forum from './pages/Forum/SingleForum';
-import Forums from './pages/Forum/Forums';
-
-import Signup from './pages/SignUp/signup';
-import LoginUser from './pages/Login/login';
+// import Signup from './pages/SignUp/signup';
+// import LoginUser from './pages/Login/login';
 import CompleteRegistration from './pages/Registeration/completeRegistrationForm';
 
 import SingleRecipe from './pages/Recipes/SingleRecipe/singleRecipe';
@@ -43,12 +39,17 @@ import EditRecipe from './components/Dashboard/Recipes/EditRecipe/EditRecipe';
 import CreateRecipe from './components/Dashboard/Recipes/CreateRecipe/CreateRecipe';
 import Notification from './components/Dashboard/Notification/Notification';
 import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks';
-import AccountDashboard from './components/Dashboard/DashboardContents/AccountDashboard/AccountDashboard';
 import CookBook from './pages/CookBook/CookBook';
 import CookBookGeneration from './components/Dashboard/Recipes/CookBookManager/CookBookGeneration/CookBookGeneration';
 
-
-
+import AllForums from './pages/Forum/AllForums/AllForums';
+import SingleForum from './pages/Forum/SingleForum/SingleForum';
+import SingleGroup from './pages/Forum/SingleGroup/SingleGroup';
+import ForumComponent from './pages/Forum/ForumComponent/ForumComponent';
+import Dashboard from './components/Dashboard/DashboardContents/Dashboard';
+import SignUp from './pages/Auth/SignUp/SignUp';
+import Login from './pages/Auth/Login/Login';
+import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
 
 library.add(fab, fas, far);
 
@@ -79,7 +80,6 @@ function App() {
 
   // get the loggedIn User
   const user = useSelector((state) => state.userLog.user);
-  
 
   return (
     <React.Fragment>
@@ -88,8 +88,9 @@ function App() {
         <AccountMenu />
         <Routes>
           <Route path='/' exact element={<Home />} />
-          {!user && <Route path='/signup' element={<Signup />} />}
-          {!user && <Route path='/login' element={<LoginUser />} />}
+          {!user && <Route path='/signup' element={<SignUp />} />}
+          {!user && <Route path='/login' element={<Login />} />}
+          {!user && <Route path='/forgotPassword' element={<ForgotPassword />} />}
           {user && (
             <Route path='/new-account' element={<CompleteRegistration />} />
           )}
@@ -98,15 +99,22 @@ function App() {
           <Route path='/events' element={<Events />} />
           <Route path='/event' element={<SingleEventContainer />} />
           <Route path='/all-recipes' element={<AllRecipe />} />
-
-          <Route path='/forums' element={<Forums />} />
-          <Route path='/forum' element={<Forum />} />
-
           <Route path='/author' element={<Author />} />
           <Route path='/test' element={<FeatureTesting />} />
 
+          {/* Forum */}
+          <Route path='forums' element={<ForumComponent/>}>
+            <Route path='all' element={<AllForums />} />
+            <Route path='forum/:id' element={<SingleForum />} />
+          <Route path='forum/group' element={<SingleGroup />} />
+            
+            <Route index element={<Navigate to='all' />}></Route>
+          </Route>
+
+
+
           {/* Dashboard */}
-          <Route path='account' element={<AccountDashboard />}>
+          <Route path='account' element={<Dashboard />}>
             <Route path='dashboard' element={<DashBoardContent />} />
 
             {/* Events */}
@@ -126,7 +134,10 @@ function App() {
             <Route path='recipe/create-recipe' element={<CreateRecipe />} />
             <Route path='edit-recipe' element={<EditRecipe />} />
             <Route path='recipe/cook-book' element={<CookBook />} />
-            <Route path='recipe/cook-book/generate' element={<CookBookGeneration/>} />
+            <Route
+              path='recipe/cook-book/generate'
+              element={<CookBookGeneration />}
+            />
 
             {/* Notifications */}
             <Route path='notification' element={<Notification />} />
@@ -135,7 +146,7 @@ function App() {
             <Route path='saves-and-bookmarks' element={<SavedBookmarks />} />
 
             {/* Profile */}
-            <Route path='profile' element={<CompleteRegistration />} />
+            {/* <Route path='profile' element={<CompleteRegistration />} /> */}
             <Route index element={<Navigate to='dashboard' />}></Route>
           </Route>
         </Routes>

@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import AccountDashboard from './AccountDashboard';
+import Google from './Google';
 
 it('It should mount', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<AccountDashboard />, div);
+  ReactDOM.render(<Google />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
