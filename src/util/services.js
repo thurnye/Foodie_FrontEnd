@@ -143,6 +143,11 @@ class StuffDataService {
     return http.get(`/group/${groupId}`)
   }
 
+  // Approve Group Join Request
+  postApproveRequest(data){
+    return http.post(`/group/approve`, data)
+  }
+
   // ======================= DISCUSSION PANEL==========================
   postGroupDiscussionPanel(data){
     return http.post(`/panel`, data)

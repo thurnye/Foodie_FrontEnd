@@ -14,12 +14,12 @@ import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import services from '../../../util/services';
 import { getDateShortWithoutWeek } from '../../../util/commons';
-import CustomizedButton from '../../../components/CustomizedButton/CustomizedButton';
 import PaginationNav from '../../../components/PaginationNav/PaginationNav';
 import BackNavigation from '../../../components/BackNavigation/BackNavigation';
 import CreateGroup from '../CreateGroup/CreateGroup';
 import { useSelector } from 'react-redux';
 import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
+import GroupRequest from '../../../components/GroupRequest/GroupRequest';
 
 // const socket = io(baseUrl);
 
@@ -88,44 +88,21 @@ const SingleForum = () => {
 
   useEffect(() => {}, [newGroup]);
 
-  const handleJoinOrLeaveGroup = async (groupId) => {
-    try {
-      setIsError(false);
-      setSaved(false);
-      setShowCancel(false);
-      setReqLoading(false);
-      setOpen(!open);
-      setMessage('');
-      setOpen(!open);
-      setSavingMessage('Sending Request');
-      const data = { userId: user._id, groupId };
-      console.log(data);
-      const result = await services.postGroupRequest(data);
-      console.log(result);
-      const group = groupRooms.find((el) => el._id === groupId);
 
-      if (result.data === groupActions.pending) {
-        group.isPendingMember = true;
-        setSaved(true);
-        setMessage('Request To Join Group Sent');
-      }
-      if (result.data === groupActions.groupExit) {
-        group.isMember = false;
-        setSaved(true);
-        setMessage('Successfully Existed Group');
-      }
-    } catch (error) {
-      console.error(error);
-      setReqLoading(false);
-      console.log('ERROR:::', error);
-      const errMsg = error.response.data;
-      setMessage(errMsg);
-      setShowCancel(false);
-      setSaved(false);
-      setIsError(true);
-      setOpen(!open);
-    }
+  const handleGroupActions = (action, groupId) => {
+    setGroupRooms((prevGroupRooms) =>
+      prevGroupRooms.map((group) =>
+        group._id === groupId
+          ? {
+              ...group,
+              isPendingMember: action === groupActions.pending ? true : group.isPendingMember,
+              isMember: action === groupActions.groupExit ? false : group.isMember,
+            }
+          : group
+      )
+    );
   };
+
 
   return (
     <div className={styles.SingleForum}>
@@ -163,7 +140,8 @@ const SingleForum = () => {
                     >
                       <Link
                         to={{
-                          pathname: `/forums/forum/group`,
+                          pathname: `/forums/forum/group`
+                          // pathname: el.isMember ? `/forums/forum/group` : '',
                         }}
                         state={{ groupId: el._id, forumId }}
                       >
@@ -269,26 +247,11 @@ const SingleForum = () => {
                                   py: 1,
                                 }}
                               >
-                                <CustomizedButton
-                                  variant='text'
-                                  label={
-                                    el.isPendingMember
-                                      ? 'Request Pending'
-                                      : el.isMember
-                                      ? 'Leave Group'
-                                      : 'Join Group'
-                                  }
-                                  id='join-group-button'
-                                  disableElevation
-                                  onClick={() => handleJoinOrLeaveGroup(el._id)}
-                                  disabled={el.isPendingMember}
-                                  sx={{
-                                    fontSize: 12,
-                                    borderRadius: 0,
-                                    textTransform: 'none',
-                                    textWrap: 'nowrap',
-                                    mr: el.isPendingMember ? 3 : '',
-                                  }}
+                                <GroupRequest
+                                  groupId={el._id}
+                                  isPendingMember={el.isPendingMember}
+                                  isMember={el.isMember}
+                                  action={handleGroupActions}
                                 />
                               </Box>
                             )}

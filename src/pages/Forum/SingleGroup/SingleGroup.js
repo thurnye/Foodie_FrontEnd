@@ -29,6 +29,8 @@ import PaginationNav from '../../../components/PaginationNav/PaginationNav';
 import CreatePanelDiscussion from '../CreatePanelDiscussion/CreatePanelDiscussion';
 import BackNavigation from '../../../components/BackNavigation/BackNavigation';
 import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
+import GroupRequest from '../../../components/GroupRequest/GroupRequest';
+
 
 const SingleGroup = () => {
   const location = useLocation();
@@ -59,6 +61,7 @@ const SingleGroup = () => {
       setMessage('');
       setShowCancel(false);
       const result = await services.getGroup(groupId);
+      console.log(result.data)
       setGroupInfo(result.data);
       setLoading(false);
     } catch (error) {
@@ -71,6 +74,38 @@ const SingleGroup = () => {
       setOpen(!open);
     }
   };
+
+  const approveRequest = async (userId) => {
+    try {
+      setIsError(false);
+      setSaved(false);
+      setMessage('');
+      setShowCancel(false);
+      const result = await services.postApproveRequest({groupId, userId, forumId: groupInfo.forumId});
+      console.log(result.data)
+      if (result.data === 'confirm') {
+        const find = groupInfo.pendingGroupMembers.find(el => el._id.toString() === userId.toString());
+        if (find) {
+          setGroupInfo(prev => ({
+            ...prev,
+            groupMembers: [find, ...prev.groupMembers], 
+            pendingGroupMembers: prev.pendingGroupMembers.filter(el => el._id.toString() !== userId.toString()), 
+          }));
+        }
+      }
+      // setGroupInfo(result.data);
+      setLoading(false);
+    } catch (error) {
+      const errMsg = error.response.data;
+      console.log(error.response.data);
+      setMessage(errMsg);
+      setShowCancel(false);
+      setSaved(false);
+      setIsError(true);
+      setOpen(!open);
+    }
+  };
+
   const fetchGroupPanels = async (query) => {
     try {
       setIsError(false);
@@ -105,8 +140,6 @@ const SingleGroup = () => {
   useEffect(() => {
     groupId && fetchGroups(groupId);
   }, [groupId]);
-
-  const getParsedHtml = (text) => parser(text);
 
   return (
     <div className={styles.SingleGroup}>
@@ -437,7 +470,7 @@ const SingleGroup = () => {
                     </Card>
                   ))}
                   {!loading && groupDiscussionPanels.length === 0 && (
-                    <Card sx={{ boxShadow:'none' }}>
+                    <Card sx={{ boxShadow: 'none' }}>
                       <CardContent>
                         <Typography
                           variant='h5'
@@ -458,6 +491,18 @@ const SingleGroup = () => {
                   <Box>
                     <CardContent>
                       <Box>
+                        <Box sx={{ textAlign: 'end' }}>
+                          <GroupRequest
+                            groupId={groupId}
+                            isPendingMember={false}
+                            isMember={true}
+                            action={() =>
+                              navigate(`/forums/forum/${forumId},`, {
+                                state: { forumId },
+                              })
+                            }
+                          />
+                        </Box>
                         <Typography variant='body2'>
                           Pending Join Group Request
                         </Typography>
@@ -504,7 +549,7 @@ const SingleGroup = () => {
                                               label={'Approve'}
                                               id='join-group-button'
                                               disableElevation
-                                              onClick={() => ''}
+                                              onClick={() => approveRequest(pendingMember._id)}
                                               sx={{
                                                 fontSize: 12,
                                                 borderRadius: 0,

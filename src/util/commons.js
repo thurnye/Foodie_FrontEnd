@@ -331,7 +331,7 @@ export const findMinimumPriceOrFreeTicket = (sections) => {
 
 // truncate by words
 export const truncateTextLong = (text, wordLimit) => {
-  console.log(text)
+  // console.log(text)
   if(!text){
     return ''
   }
