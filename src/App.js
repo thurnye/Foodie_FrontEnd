@@ -16,8 +16,7 @@ import Home from './pages/Home/home';
 import AllRecipe from './pages/Recipes/AllRecipes/allRecipes';
 import Author from './pages/Author/author';
 
-// import Signup from './pages/SignUp/signup';
-// import LoginUser from './pages/Login/login';
+
 import CompleteRegistration from './pages/Registeration/completeRegistrationForm';
 
 import SingleRecipe from './pages/Recipes/SingleRecipe/singleRecipe';
@@ -44,12 +43,14 @@ import CookBookGeneration from './components/Dashboard/Recipes/CookBookManager/C
 
 import AllForums from './pages/Forum/AllForums/AllForums';
 import SingleForum from './pages/Forum/SingleForum/SingleForum';
-import SingleGroup from './pages/Forum/SingleGroup/SingleGroup';
 import ForumComponent from './pages/Forum/ForumComponent/ForumComponent';
 import Dashboard from './components/Dashboard/DashboardContents/Dashboard';
 import SignUp from './pages/Auth/SignUp/SignUp';
 import Login from './pages/Auth/Login/Login';
 import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
+import GroupChat from './pages/Forum/GroupChat/GroupChat';
+import SingleGroupContainer from './pages/Forum/SingleGroupContainer/SingleGroupContainer';
+import GroupDiscussions from './pages/Forum/GroupDiscussions/GroupDiscussions';
 
 library.add(fab, fas, far);
 
@@ -90,7 +91,9 @@ function App() {
           <Route path='/' exact element={<Home />} />
           {!user && <Route path='/signup' element={<SignUp />} />}
           {!user && <Route path='/login' element={<Login />} />}
-          {!user && <Route path='/forgotPassword' element={<ForgotPassword />} />}
+          {!user && (
+            <Route path='/forgotPassword' element={<ForgotPassword />} />
+          )}
           {user && (
             <Route path='/new-account' element={<CompleteRegistration />} />
           )}
@@ -103,15 +106,22 @@ function App() {
           <Route path='/test' element={<FeatureTesting />} />
 
           {/* Forum */}
-          <Route path='forums' element={<ForumComponent/>}>
+          <Route path='forums' element={<ForumComponent />}>
             <Route path='all' element={<AllForums />} />
             <Route path='forum/:id' element={<SingleForum />} />
-          <Route path='forum/group' element={<SingleGroup />} />
+            {/* <Route path='forum/group' element={<SingleGroup />} />
+            <Route path='group/chat' element={<GroupChat />} /> */}
+
+            <Route path='forum' element={<SingleGroupContainer />}>
+              <Route path='group' element={<GroupDiscussions />} />
+              <Route path='group/chat' element={<GroupChat />} />
+
+            {/* <Route index element={<Navigate to='group' />}></Route> */}
+            </Route>
             
+
             <Route index element={<Navigate to='all' />}></Route>
           </Route>
-
-
 
           {/* Dashboard */}
           <Route path='account' element={<Dashboard />}>

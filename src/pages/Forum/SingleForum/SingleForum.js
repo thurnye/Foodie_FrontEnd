@@ -8,8 +8,6 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-// import io from 'socket.io-client';
-// import { baseUrl } from '../../../util/http-commons';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import services from '../../../util/services';
@@ -21,7 +19,6 @@ import { useSelector } from 'react-redux';
 import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
 import GroupRequest from '../../../components/GroupRequest/GroupRequest';
 
-// const socket = io(baseUrl);
 
 const groupActions = {
   pending: 'pending',
@@ -88,21 +85,21 @@ const SingleForum = () => {
 
   useEffect(() => {}, [newGroup]);
 
-
   const handleGroupActions = (action, groupId) => {
     setGroupRooms((prevGroupRooms) =>
       prevGroupRooms.map((group) =>
         group._id === groupId
           ? {
               ...group,
-              isPendingMember: action === groupActions.pending ? true : group.isPendingMember,
-              isMember: action === groupActions.groupExit ? false : group.isMember,
+              isPendingMember:
+                action === groupActions.pending ? true : group.isPendingMember,
+              isMember:
+                action === groupActions.groupExit ? false : group.isMember,
             }
           : group
       )
     );
   };
-
 
   return (
     <div className={styles.SingleForum}>
@@ -140,8 +137,7 @@ const SingleForum = () => {
                     >
                       <Link
                         to={{
-                          pathname: `/forums/forum/group`
-                          // pathname: el.isMember ? `/forums/forum/group` : '',
+                          pathname: el.isMember ? `/forums/forum/group` : '',
                         }}
                         state={{ groupId: el._id, forumId }}
                       >

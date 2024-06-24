@@ -12,7 +12,7 @@
       "withTest": true
     },
     "pages": {
-      "path": "src/pages/",
+      "path": "src/pages/Forum",
       "withLazy": false,
       "withStory": false,
       "withStyle": true,
