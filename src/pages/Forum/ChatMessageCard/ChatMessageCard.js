@@ -8,8 +8,7 @@ import { useSelector } from 'react-redux';
 
 const ChatMessageCard = ({ chat }) => {
   const user = useSelector((state) => state.userLog.user?.user);
-
-  const isUserChat = chat.sender._id.toString() === user._id;
+  const isUserChat = chat.sender?._id === user._id;
 
   return (
     <Card

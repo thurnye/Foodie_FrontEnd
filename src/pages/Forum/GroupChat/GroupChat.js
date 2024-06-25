@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './GroupChat.module.css';
-import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
 import SendIcon from '@mui/icons-material/Send';
 import ChatMessageCard from '../ChatMessageCard/ChatMessageCard';
-import { getRandomInt } from '../../../util/commons';
 import { useLocation } from 'react-router';
 import io from 'socket.io-client';
 import { useSelector } from 'react-redux';
@@ -21,25 +19,43 @@ const GroupChat = () => {
   const [message, setMessage] = useState('');
   const [groupMessages, setGroupMessages] = useState([]);
   const user = useSelector((state) => state.userLog.user?.user);
+  const [typingUser, setTypingUser] = useState(null);
 
   useEffect(() => {
-    socket.emit('join group', panelId);
+    if (panelId) {
+      socket.emit('join group', panelId);
 
-    socket.on('group chat history', (chatHistory) => {
-      console.log('chatHistory::', chatHistory);
-      setGroupMessages(chatHistory);
-    });
+      socket.on('group chat history', (chatHistory) => {
+        console.log('chatHistory::', chatHistory);
+        setGroupMessages(chatHistory);
+      });
 
-    socket.on('message', (message) => {
-      console.log('Message::', message);
-      setGroupMessages((messages) => [...messages, message]);
-    });
+      socket.on('message', (message) => {
+        console.log('Message::', message);
+        setGroupMessages((messages) => [...messages, message]);
+      });
+
+      socket.on('typing', ({ currentTypingUser }) => {
+        if (currentTypingUser._id === user._id) return; // Skip showing typing indicator for self
+        setTypingUser(`${currentTypingUser.firstName} ${currentTypingUser.lastName}`);
+        setTimeout(() => {
+          setTypingUser(null); // Clear typing indicator after some time
+        }, 20000); // Adjust timing as needed
+      });
+
+      return () => {
+        socket.off('group chat history');
+        socket.off('message');
+        socket.off('typing');
+      };
+    }
   }, [panelId]);
 
   const handleSendMessage = () => {
     if (message) {
       socket.emit('sendMessage', { panelId, sender: user._id, message });
       setMessage('');
+      setTypingUser(null)
     }
   };
 
@@ -62,11 +78,18 @@ const GroupChat = () => {
             overflowY: 'auto',
           }}
         >
-          {groupMessages.map((chat) => (
-            <React.Fragment key={getRandomInt()}>
-              <ChatMessageCard chat={chat} />
-            </React.Fragment>
+          {groupMessages.map((chat, index) => (
+            <ChatMessageCard key={index} chat={chat} />
           ))}
+        </Box>
+        <Box sx={{
+          background: '#f6f6f6',
+        }}>
+          {typingUser && (
+            <Typography variant='caption' sx={{ ml: 0.5 }} color="text.secondary">
+              <i>{typingUser} is typing...</i>
+            </Typography>
+          )}
         </Box>
         <Box sx={{ height: 70, border: '1px solid #f6f6f6' }}>
           <Box
@@ -86,6 +109,11 @@ const GroupChat = () => {
               value={message}
               onChange={(event) => {
                 setMessage(event.target.value);
+                event.target.value.trim() &&
+                  socket.emit('typing', { 
+                    panelId, 
+                    user
+                  });
               }}
             />
             <IconButton
@@ -93,7 +121,6 @@ const GroupChat = () => {
               aria-label='openDrawer drawer'
               edge='end'
               onClick={() => handleSendMessage()}
-              sx={{}}
             >
               <SendIcon
                 sx={{
