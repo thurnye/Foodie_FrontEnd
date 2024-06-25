@@ -28,9 +28,9 @@ const perPage= 12;
 
 const GroupDiscussions = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const groupId = location.state?.groupId;
   const forumId = location.state?.forumId;
+  const navigate = useNavigate();
   const [newGroupPanel, setNewGroupPanel] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [count, setCount] = useState(0);
@@ -82,12 +82,13 @@ const GroupDiscussions = () => {
 
   return (
     <div className={styles.GroupDiscussions}>
-      <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
+      <Container maxWidth='lg' sx={{ mt: '-9px', mb: 4 }}>
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            mb: 3
           }}
         >
           <BackNavigation

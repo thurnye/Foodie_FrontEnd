@@ -20,14 +20,13 @@ const AllForums = () => {
   const [perPage, setPerPage] = useState(12);
   const [count, setCount] = useState(0);
 
-   // FeedBack States
-   const [open, setOpen] = useState(false);
-   const [reqLoading, setReqLoading] = useState(false);
-   const [isError, setIsError] = useState(false);
-   const [saved, setSaved] = useState(false);
-   const [showCancel, setShowCancel] = useState(false);
-   const [message, setMessage] = useState('');
-
+  // FeedBack States
+  const [open, setOpen] = useState(false);
+  const [reqLoading, setReqLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [showCancel, setShowCancel] = useState(false);
+  const [message, setMessage] = useState('');
 
   const fetchForums = async (query) => {
     try {
@@ -39,11 +38,12 @@ const AllForums = () => {
       const result = await services.getForums(query);
       setForums(result.data.groupRooms);
       setCount(result.data.count);
-      console.log(result.data)
+      console.log(result.data);
     } catch (error) {
       console.log('ERROR:::', error);
-      const errMsg = error.response.data;
-      console.log(error.response.data);
+      const errMsg = error?.response?.data
+        ? error.response.data
+        : 'Something Went Wrong!';
       setMessage(errMsg);
       setShowCancel(false);
       setSaved(false);
@@ -51,8 +51,6 @@ const AllForums = () => {
       setOpen(!open);
     }
   };
-
-
 
   useEffect(() => {
     fetchForums({ currentPage, perPage });

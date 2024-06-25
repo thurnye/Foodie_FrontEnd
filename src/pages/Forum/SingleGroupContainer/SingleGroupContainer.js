@@ -28,7 +28,7 @@ const Main = styled('main', {
     duration: theme.transitions.duration.leavingScreen,
   }),
   marginRight: isXs ? -drawerWidth : -drawerWidth,
-  overFlowX: 'hidden',
+  // overFlowX: 'hidden',
   ...(openDrawer && {
     transition: theme.transitions.create('margin', {
       easing: theme.transitions.easing.easeOut,
@@ -81,7 +81,6 @@ export default function SingleGroupContainer() {
   };
 
   React.useEffect(() => {
-    console.log(isXs);
     if (!isXs) {
       // large screen
       setOpenDrawer(true);
@@ -98,9 +97,11 @@ export default function SingleGroupContainer() {
         <AppBar
           position='absolute'
           openDrawer={openDrawer}
-          sx={{ background: 'none', boxShadow: 'none', color: '#a4a4a4' }}
+          sx={{ 
+            background: 'none', 
+            boxShadow: 'none', color: '#a4a4a4' }}
         >
-          <Toolbar>
+          <Toolbar sx={{minHeight: 20}}>
             <Typography
               noWrap
               sx={{ flexGrow: 1 }}
@@ -116,10 +117,23 @@ export default function SingleGroupContainer() {
               <MenuIcon />
             </IconButton>
           </Toolbar>
+          {/* <Box sx={{flexGrow: 1, border: '2px dotted red',}}>
+            <IconButton
+                color='inherit'
+                aria-label='openDrawer drawer'
+                edge='end'
+                onClick={handleDrawerOpenDrawer}
+                sx={{ ...(openDrawer && { display: 'none' }) }}
+              >
+                <MenuIcon />
+              </IconButton>
+
+          </Box> */}
         </AppBar>
         <Main openDrawer={openDrawer} isXs={isXs}>
-          {/* <DrawerHeader /> */}
-          <Outlet />
+          <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
+              <Outlet />
+          </Container>
         </Main>
         <Drawer
           sx={{

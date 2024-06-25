@@ -193,4 +193,4 @@ class StuffDataService {
   
 }
 
-export default new StuffDataService();
+export default new StuffDataService()

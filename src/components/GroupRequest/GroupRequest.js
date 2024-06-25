@@ -28,10 +28,6 @@ const GroupRequest = ({
   const [message, setMessage] = useState('');
   const [savingMessage, setSavingMessage] = useState('');
 
-  
-console.log(isPendingMember)
-
-  
 
   const handleJoinOrLeaveGroup = async () => {
     try {
