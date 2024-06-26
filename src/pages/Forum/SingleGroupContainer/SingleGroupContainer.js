@@ -37,6 +37,7 @@ const Main = styled('main', {
     marginRight: 0,
   }),
   position: 'relative',
+  zIndex: 10,
 }));
 
 const AppBar = styled(MuiAppBar, {
@@ -117,24 +118,13 @@ export default function SingleGroupContainer() {
               <MenuIcon />
             </IconButton>
           </Toolbar>
-          {/* <Box sx={{flexGrow: 1, border: '2px dotted red',}}>
-            <IconButton
-                color='inherit'
-                aria-label='openDrawer drawer'
-                edge='end'
-                onClick={handleDrawerOpenDrawer}
-                sx={{ ...(openDrawer && { display: 'none' }) }}
-              >
-                <MenuIcon />
-              </IconButton>
-
-          </Box> */}
         </AppBar>
         <Main openDrawer={openDrawer} isXs={isXs}>
           <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
               <Outlet />
           </Container>
         </Main>
+        
         <Drawer
           sx={{
             width: drawerWidth,

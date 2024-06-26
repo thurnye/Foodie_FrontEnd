@@ -234,7 +234,7 @@ export default function GroupInfo() {
                               disableElevation
                               startIcon={user._id !== member._id ? <ChatBubbleOutlineIcon /> : <></>}
                               onClick={() => navigate(`/forums/forum/chat`, {
-                                state: { receiverId: member._id, userId: user._id },
+                                state: { receiver: member, userId: user._id },
                               })}
                               sx={{
                                 fontSize: 12,
