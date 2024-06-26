@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import CardHeader from '@mui/material/CardHeader';
 import { useSelector } from 'react-redux';
 
-const ChatMessageCard = ({ chat }) => {
+const ChatMessageCard = ({ chat, isSingle }) => {
   const user = useSelector((state) => state.userLog.user?.user);
   const isUserChat = chat.sender?._id === user._id;
 
@@ -47,30 +47,32 @@ const ChatMessageCard = ({ chat }) => {
           {chat.message}
         </Typography>
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: isUserChat ? 'flex-end' : 'flex-start',
-        }}
-      >
-        <CardHeader
+      {!isSingle && (
+        <Box
           sx={{
-            p: 0.5,
+            display: 'flex',
+            justifyContent: isUserChat ? 'flex-end' : 'flex-start',
           }}
-          avatar={
-            <Avatar
-              alt={`${chat.sender.firstName}`}
-              src={chat.sender.avatar}
-              sx={{ width: 15, height: 15 }}
-            />
-          }
-          title={`${chat.sender.firstName} ${chat.sender.lastName}`}
-          titleTypographyProps={{
-            variant: 'subtitle2',
-            sx: { fontSize: 12, ml: '-10px' },
-          }}
-        />
-      </Box>
+        >
+          <CardHeader
+            sx={{
+              p: 0.5,
+            }}
+            avatar={
+              <Avatar
+                alt={`${chat.sender.firstName}`}
+                src={chat.sender.avatar}
+                sx={{ width: 15, height: 15 }}
+              />
+            }
+            title={`${chat.sender.firstName} ${chat.sender.lastName}`}
+            titleTypographyProps={{
+              variant: 'subtitle2',
+              sx: { fontSize: 12, ml: '-10px' },
+            }}
+          />
+        </Box>
+      )}
     </Card>
   );
 };

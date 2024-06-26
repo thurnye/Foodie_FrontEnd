@@ -51,6 +51,7 @@ import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
 import GroupChat from './pages/Forum/GroupChat/GroupChat';
 import SingleGroupContainer from './pages/Forum/SingleGroupContainer/SingleGroupContainer';
 import GroupDiscussions from './pages/Forum/GroupDiscussions/GroupDiscussions';
+import SingleChat from './pages/Forum/SingleChat/SingleChat';
 
 library.add(fab, fas, far);
 
@@ -115,6 +116,7 @@ function App() {
             <Route path='forum' element={<SingleGroupContainer />}>
               <Route path='group' element={<GroupDiscussions />} />
               <Route path='group/chat' element={<GroupChat />} />
+              <Route path='chat' element={<SingleChat />} />
 
             {/* <Route index element={<Navigate to='group' />}></Route> */}
             </Route>

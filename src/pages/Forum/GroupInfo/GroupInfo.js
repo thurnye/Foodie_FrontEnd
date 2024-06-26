@@ -18,12 +18,16 @@ import CustomizedButton from '../../../components/CustomizedButton/CustomizedBut
 import GroupRequest from '../../../components/GroupRequest/GroupRequest';
 import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
 import services from '../../../util/services';
+import { useSelector } from 'react-redux';
 
 export default function GroupInfo() {
   const navigate = useNavigate();
   const location = useLocation();
   const groupId = location.state?.groupId;
   const [groupInfo, setGroupInfo] = useState(null);
+  const user = useSelector((state) => state.userLog.user?.user);
+
+
   // FeedBack States
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
@@ -228,8 +232,10 @@ export default function GroupInfo() {
                               variant='text'
                               id='join-group-button'
                               disableElevation
-                              startIcon={<ChatBubbleOutlineIcon />}
-                              onClick={() => ''}
+                              startIcon={user._id !== member._id ? <ChatBubbleOutlineIcon /> : <></>}
+                              onClick={() => navigate(`/forums/forum/chat`, {
+                                state: { receiverId: member._id, userId: user._id },
+                              })}
                               sx={{
                                 fontSize: 12,
                                 borderRadius: 0,
@@ -251,7 +257,7 @@ export default function GroupInfo() {
                           </ListItemAvatar>
                           <ListItemText
                             id={getRandomInt()}
-                            primary={`${member.firstName} ${member.lastName}`}
+                            primary={user._id === member._id ? 'You' : `${member.firstName} ${member.lastName}`}
                             primaryTypographyProps={{
                               sx: { width: '60%', ml: -2 },
                             }}

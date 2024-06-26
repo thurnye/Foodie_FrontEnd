@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styles from './GroupChat.module.css';
+import styles from './SingleChat.module.css';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -12,55 +12,72 @@ import { useSelector } from 'react-redux';
 
 const socket = io('http://localhost:8670/');
 
-const GroupChat = () => {
+const SingleChat = () => {
   const location = useLocation();
-  const panelId = location.state?.panelId;
-
+  const receiverId = location.state?.receiverId;
   const [message, setMessage] = useState('');
-  const [groupMessages, setGroupMessages] = useState([]);
+  const [messages, setMessages] = useState([]);
   const user = useSelector((state) => state.userLog.user?.user);
   const [typingUser, setTypingUser] = useState(null);
+  const [roomId, setRoomId] = useState(null);
+
 
   useEffect(() => {
-    if (panelId) {
-      socket.emit('join group', panelId);
-
-      socket.on('group chat history', (chatHistory) => {
-        console.log('chatHistory::', chatHistory);
-        setGroupMessages(chatHistory);
+    if (user) {
+      console.log(user)
+      socket.emit('joinChatRoom', { userId: user._id, receiverId });
+  
+      socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
+        setRoomId(roomId);  // Update roomId state here
+        setMessages(chatHistory);
       });
-
-      socket.on('message', (message) => {
-        console.log('Message::', message);
-        setGroupMessages((messages) => [...messages, message]);
+  
+      socket.on('newChat', (chat) => {
+        const existingMessage = messages.find(msg => msg._id === chat._id);
+        if (!existingMessage) {
+          setMessages(prevMessages => [...prevMessages, chat]);
+        }
       });
-
+  
+      socket.on('error', (error) => {
+        console.error(error.message);
+      });
+  
       socket.on('typing', ({ currentTypingUser }) => {
         if (currentTypingUser._id === user._id) return;
-        setTypingUser(`${currentTypingUser.firstName} ${currentTypingUser.lastName}`);
+        setTypingUser(
+          `${currentTypingUser.firstName} ${currentTypingUser.lastName}`
+        );
         setTimeout(() => {
-          setTypingUser(null); 
-        }, 20000); 
+          setTypingUser(null);
+        }, 20000);
       });
-
+  
       return () => {
-        socket.off('group chat history');
-        socket.off('message');
+        socket.off('joinedChatRoom');
+        socket.off('newChat');
+        socket.off('error');
         socket.off('typing');
       };
     }
-  }, [panelId]);
+  }, [user]); 
+  
 
   const handleSendMessage = () => {
     if (message) {
-      socket.emit('sendMessage', { panelId, sender: user._id, message });
+      socket.emit('sendChat', {
+        roomId,
+        sender: user._id,
+        receiverId,
+        message,
+      });
       setMessage('');
-      setTypingUser(null)
+      setTypingUser(null);
     }
   };
 
   return (
-    <div className={styles.GroupChat}>
+    <div className={styles.SingleChat}>
       <Box
         sx={{
           height: '70vh',
@@ -78,15 +95,21 @@ const GroupChat = () => {
             overflowY: 'auto',
           }}
         >
-          {groupMessages.map((chat, index) => (
-            <ChatMessageCard key={index} chat={chat} />
+          {messages.map((chat, index) => (
+            <ChatMessageCard key={index} chat={chat} isSingle={true}/>
           ))}
         </Box>
-        <Box sx={{
-          background: '#f6f6f6',
-        }}>
+        <Box
+          sx={{
+            background: '#f6f6f6',
+          }}
+        >
           {typingUser && (
-            <Typography variant='caption' sx={{ ml: 0.5 }} color="text.secondary">
+            <Typography
+              variant='caption'
+              sx={{ ml: 0.5 }}
+              color='text.secondary'
+            >
               <i>{typingUser} is typing...</i>
             </Typography>
           )}
@@ -110,9 +133,9 @@ const GroupChat = () => {
               onChange={(event) => {
                 setMessage(event.target.value);
                 event.target.value.trim() &&
-                  socket.emit('typing', { 
-                    panelId, 
-                    user
+                  socket.emit('typing', {
+                    panelId: roomId,
+                    user,
                   });
               }}
             />
@@ -137,4 +160,4 @@ const GroupChat = () => {
   );
 };
 
-export default GroupChat;
+export default SingleChat;
