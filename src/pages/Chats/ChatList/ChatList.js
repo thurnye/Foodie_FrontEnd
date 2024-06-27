@@ -21,22 +21,25 @@ const ChatList = ({ setSelected, selected }) => {
         
         {lists.map((item) => (
           <ListItem alignItems='flex-start' key={item.chatRoomId} sx={{mb: -2}}>
-            <ListItemButton onClick={() => setSelected({...item.otherUser, chatRoomId:item.chatRoomId})}>
+            <ListItemButton 
+            onClick={() => setSelected(item)}>
               <ListItemAvatar>
                 <Avatar
-                  alt={item.otherUser.firstName}
-                  src={item.otherUser.avatar}
+                  alt={item.type === 'singleChat' ? item.otherUser.firstName : item.groupName}
+                  src={item.type === 'singleChat' ? item.otherUser.avatar : item.groupName}
                   sx={{ width: 30, height: 30 }}
                 />
               </ListItemAvatar>
               <ListItemText
-                primary={`${item.otherUser.firstName} ${item.otherUser.lastName}`}
+                primary={
+                  item.type === 'singleChat' ? `${item.otherUser.firstName} ${item.otherUser.lastName}` : `${item.groupName}`
+                }
                 sx={{
                   '& .MuiTypography-root': {
                     fontSize: 13,
                     ml: -2.5,
                     color:
-                      selected?._id === item.otherUser._id
+                      selected?.chatRoomId === item.chatRoomId
                         ? '#1976d2'
                         : 'text.secondary',
                   },

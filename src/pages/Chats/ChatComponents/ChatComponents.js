@@ -13,12 +13,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import PrivateChat from '../PrivateChat/PrivateChat';
@@ -104,9 +98,9 @@ const ChatComponents = () => {
     if (user) {
       socket.emit('chatList', { userId: user._id });
 
-      socket.on('allChatsLists', ({ chatLists }) => {
-        console.log(chatLists);
-        dispatch(chatsActions.getChatsList(chatLists));
+      socket.on('allChatsLists', ({ chatLists, groupList, allList }) => {
+        console.log('allList::', allList);
+        dispatch(chatsActions.getChatsList(allList));
       });
 
       socket.on('error', (error) => {

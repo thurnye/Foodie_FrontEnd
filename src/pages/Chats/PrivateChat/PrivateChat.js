@@ -152,7 +152,7 @@ const PrivateChat = ({selected}) => {
                     <VideoCallIcon />
                   </IconButton>
                 }
-                title={`${receiver?.firstName} ${receiver?.lastName}`}
+                title={receiver.type === 'singleChat' ? `${receiver.otherUser.firstName} ${receiver.otherUser.lastName}` : `${receiver.groupName}`}
                 subheader={typingUser ? `typing...` : ''}
                 titleTypographyProps={{
                   ml: -1.25,
