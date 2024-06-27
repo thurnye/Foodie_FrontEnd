@@ -162,6 +162,9 @@ function AccountMenu() {
                   <MenuItem onClick={handleClose}>
                     <Link to={'/forums'}>Forum</Link>
                   </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to={'/chats'}>Chats</Link>
+                  </MenuItem>
                   <Divider />
                   <MenuItem onClick={handleClose}>
                     <Link to={'/account'}>
