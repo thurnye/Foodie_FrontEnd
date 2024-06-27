@@ -53,6 +53,10 @@ import SingleGroupContainer from './pages/Forum/SingleGroupContainer/SingleGroup
 import GroupDiscussions from './pages/Forum/GroupDiscussions/GroupDiscussions';
 import SingleChat from './pages/Forum/SingleChat/SingleChat';
 
+import ChatComponents from './pages/Chats/ChatComponents/ChatComponents';
+
+
+
 library.add(fab, fas, far);
 
 const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
@@ -110,20 +114,17 @@ function App() {
           <Route path='forums' element={<ForumComponent />}>
             <Route path='all' element={<AllForums />} />
             <Route path='forum/:id' element={<SingleForum />} />
-            {/* <Route path='forum/group' element={<SingleGroup />} />
-            <Route path='group/chat' element={<GroupChat />} /> */}
-
             <Route path='forum' element={<SingleGroupContainer />}>
               <Route path='group' element={<GroupDiscussions />} />
               <Route path='group/chat' element={<GroupChat />} />
               <Route path='chat' element={<SingleChat />} />
-
-            {/* <Route index element={<Navigate to='group' />}></Route> */}
             </Route>
-            
-
             <Route index element={<Navigate to='all' />}></Route>
           </Route>
+
+          <Route path='/chats' element={<ChatComponents />} />
+
+          
 
           {/* Dashboard */}
           <Route path='account' element={<Dashboard />}>

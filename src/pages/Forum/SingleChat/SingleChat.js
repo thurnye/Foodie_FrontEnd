@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
-import ChatMessageCard from '../ChatMessageCard/ChatMessageCard';
+import ChatMessageCard from '../../../components/ChatMessageCard/ChatMessageCard';
 import { useLocation } from 'react-router';
 import io from 'socket.io-client';
 import { useSelector } from 'react-redux';
