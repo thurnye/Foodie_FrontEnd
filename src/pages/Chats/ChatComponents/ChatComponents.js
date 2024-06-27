@@ -25,11 +25,13 @@ import PrivateChat from '../PrivateChat/PrivateChat';
 import io from 'socket.io-client';
 import ChatList from '../ChatList/ChatList';
 import { useSelector } from 'react-redux';
-import {useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { chatsActions } from '../../../store/chatSlice';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import Tooltip from '@mui/material/Tooltip';
+import CreateGroup from '../../../components/CreateGroup/CreateGroup';
 
 const socket = io('http://localhost:8670/');
-
 
 const drawerWidth = 240;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -76,18 +78,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
+  justifyContent: { xs: 'space-between', md: 'flex-end' },
 }));
 
 const ChatComponents = () => {
   const theme = useTheme();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const isXs = useMediaQuery(theme.breakpoints.down('md'));
   const user = useSelector((state) => state.userLog.user?.user);
   const [open, setOpen] = useState(false);
-  const [roomId, setRoomId] = useState()
-  const [groupRoomId, setGroupRoomId] = useState()
-  const [selected, setSelected] = useState(null)
+  const [roomId, setRoomId] = useState();
+  const [groupRoomId, setGroupRoomId] = useState();
+  const [selected, setSelected] = useState(null);
+  const [newGroup, setNewGroup] = useState(null);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -102,26 +105,20 @@ const ChatComponents = () => {
       socket.emit('chatList', { userId: user._id });
 
       socket.on('allChatsLists', ({ chatLists }) => {
-        console.log(chatLists)
-      dispatch(
-        chatsActions.getChatsList(chatLists)
-      )
+        console.log(chatLists);
+        dispatch(chatsActions.getChatsList(chatLists));
       });
-
-
 
       socket.on('error', (error) => {
         console.error(error.message);
       });
 
-      
       return () => {
         socket.off('allChatsLists');
         socket.off('error');
       };
     }
   }, [user, dispatch]);
-
 
   useEffect(() => {
     if (!isXs) {
@@ -143,15 +140,17 @@ const ChatComponents = () => {
         <CssBaseline />
         <AppBar position='absolute' open={open}>
           <Toolbar>
-            <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              onClick={handleDrawerOpen}
-              edge='start'
-              sx={{ mr: 2, ...(open && { display: 'none' }) }}
-            >
-              <ViewListIcon />
-            </IconButton>
+            <Tooltip title='Create Group'>
+              <IconButton
+                color='inherit'
+                aria-label='open drawer'
+                onClick={handleDrawerOpen}
+                edge='start'
+                sx={{ mr: 2, ...(open && { display: 'none' }) }}
+              >
+                <ViewListIcon />
+              </IconButton>
+            </Tooltip>
             <Typography variant='h6' noWrap component='div'>
               Persistent drawer
             </Typography>
@@ -173,7 +172,10 @@ const ChatComponents = () => {
           anchor='left'
           open={open}
         >
-          <DrawerHeader>
+          <DrawerHeader
+            sx={{ justifyContent: { xs: 'space-between', md: 'flex-end' } }}
+          >
+            <CreateGroup setNewGroup={setNewGroup} showIcon={true} isPrivate={true}/>
             <IconButton
               onClick={handleDrawerClose}
               sx={{ display: { xs: 'block', md: 'none' } }}
@@ -186,12 +188,12 @@ const ChatComponents = () => {
             </IconButton>
           </DrawerHeader>
           <Divider />
-          <ChatList selected={selected} setSelected={setSelected}/>
+          <ChatList selected={selected} setSelected={setSelected} />
         </Drawer>
 
         <Main open={open}>
           <DrawerHeader />
-          <PrivateChat selected={selected}/>
+          <PrivateChat selected={selected} />
         </Main>
       </Box>
     </Container>

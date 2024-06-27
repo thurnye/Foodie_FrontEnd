@@ -1,27 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import styles from './CreateGroup.module.css';
-import CustomizedButton from '../../../components/CustomizedButton/CustomizedButton';
 import Box from '@mui/material/Box';
-import ModalDialog from '../../../components/ModalDialog/ModalDialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
-// import io from 'socket.io-client';
-// import { baseUrl } from '../../../util/http-commons';
 import { useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
-import services from '../../../util/services';
-import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
+import CustomizedButton from '../CustomizedButton/CustomizedButton';
+import ModalDialog from '../ModalDialog/ModalDialog';
+import RequestFeedback from '../RequestFeedback/RequestFeedback';
+import services from '../../util/services';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
-// const socket = io(baseUrl);
-// console.log(baseUrl);
-
-const CreateGroup = ({ setNewGroup }) => {
+const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
   const location = useLocation();
   const forumId = location.state?.forumId;
-  const [open, setOpen] = useState(false);
   const [groupName, setGroupName] = useState('');
+  const [groupDescription, setGroupDescription] = useState('');
   const user = useSelector((state) => state.userLog.user?.user);
+  const [open, setOpen] = useState(false);
 
   // FeedBack States
   const [reqOpen, setReqOpen] = useState(false);
@@ -31,32 +30,17 @@ const CreateGroup = ({ setNewGroup }) => {
   const [showCancel, setShowCancel] = useState(false);
   const [message, setMessage] = useState('');
 
-  // useEffect(() => {
-  //   console.log('Client-side socket ID:', socket.id);
-
-  //   // Listen for savedGroupRoom response
-  //   socket.on('savedGroupRoom', (data) => {
-  //     console.log('Received savedGroupRoom:', data);
-  //     setNewGroup(data);
-  //   });
-
-  //   return () => {
-  //     // Cleanup on unmount
-  //     socket.disconnect();
-  //   };
-  // }, [setNewGroup]);
-
   const handleSave = async () => {
     try {
+      let res;
       if (groupName) {
         const data = {
           groupName,
           forumId,
           startedBy: user._id,
           groupMembers: [user._id],
+          groupDescription,
         };
-        // console.log('Emitting createGroup:', data);
-        // socket.emit('createGroup', data);
         setIsError(false);
         setSaved(false);
         setShowCancel(false);
@@ -64,7 +48,12 @@ const CreateGroup = ({ setNewGroup }) => {
         setReqOpen(!reqOpen);
         setMessage('');
         setOpen(!open);
-        const res = await services.postGroup(data);
+        if (isPrivate) {
+          res = await services.postPrivateGroup(data);
+        }
+        if (!isPrivate) {
+          res = await services.postGroup(data);
+        }
         setNewGroup(res.data);
         setGroupName('');
         setReqLoading(false);
@@ -86,40 +75,60 @@ const CreateGroup = ({ setNewGroup }) => {
 
   return (
     <Box className={styles.CreateGroup}>
-      <CustomizedButton
-        variant='text'
-        label={'Create Group'}
-        id='demo-customized-button'
-        aria-controls={open ? 'demo-customized-menu' : undefined}
-        aria-haspopup='true'
-        aria-expanded={open ? 'true' : undefined}
-        disableElevation
-        onClick={() => setOpen(!open)}
-        sx={{
-          fontSize: { xs: 15, md: 18 },
-          borderRadius: 0,
-          height: 40,
-          textTransform: 'none',
-        }}
-      />
+      {showIcon && (
+        <IconButton
+          onClick={() => setOpen(!open)}
+          aria-label='open drawer'
+          edge='start'
+          sx={{ mx: 2 }}
+        >
+          <GroupAddIcon />
+        </IconButton>
+      )}
+      {showButton && (
+        <CustomizedButton
+          variant='text'
+          label={'Create Group'}
+          id='demo-customized-button'
+          aria-controls={open ? 'demo-customized-menu' : undefined}
+          aria-haspopup='true'
+          aria-expanded={open ? 'true' : undefined}
+          disableElevation
+          onClick={() => setOpen(!open)}
+          sx={{
+            fontSize: { xs: 15, md: 18 },
+            borderRadius: 0,
+            height: 40,
+            textTransform: 'none',
+          }}
+        />
+      )}
       <ModalDialog
         setOpen={setOpen}
         open={open}
         title={'Create A Group'}
-        size={'md'}
+        size={'lg'}
       >
-        <DialogContent>
+        <TextField
+          size='small'
+          fullWidth={true}
+          id='outlined-controlled'
+          value={groupName}
+          onChange={(event) => {
+            setGroupName(event.target.value);
+          }}
+          sx={{ width: isPrivate ? '100%': '30vw', mb: 3 }}
+        />
+        {isPrivate && (
           <TextField
             size='small'
+            id='outlined-multiline-flexible'
+            placeholder='Group Description'
+            multiline
             fullWidth={true}
-            id='outlined-controlled'
-            value={groupName}
-            onChange={(event) => {
-              setGroupName(event.target.value);
-            }}
-            sx={{ width: '30vw' }}
+            rows={4}
           />
-        </DialogContent>
+        )}
         <DialogActions>
           <CustomizedButton
             variant='text'

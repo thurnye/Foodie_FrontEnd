@@ -128,24 +128,30 @@ class StuffDataService {
   postGroup(data) {
     return http.post(`/group`, data);
   }
-
+  
   getGroups(data) {
     return http.post(`/groups`, data);
   }
-
+  
   // Join or Leave Group
   postGroupRequest(data){
     return http.post('/group/request', data)
   }
-
+  
   // Get Single Group
   getGroup(groupId){
     return http.get(`/group/${groupId}`)
   }
-
+  
   // Approve Group Join Request
   postApproveRequest(data){
     return http.post(`/group/approve`, data)
+  }
+  
+  //private group
+  postPrivateGroup(data){
+    return http.post(`/group/private`, data);
+
   }
 
   // ======================= DISCUSSION PANEL==========================

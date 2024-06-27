@@ -14,10 +14,10 @@ import services from '../../../util/services';
 import { getDateShortWithoutWeek } from '../../../util/commons';
 import PaginationNav from '../../../components/PaginationNav/PaginationNav';
 import BackNavigation from '../../../components/BackNavigation/BackNavigation';
-import CreateGroup from '../CreateGroup/CreateGroup';
 import { useSelector } from 'react-redux';
 import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
 import GroupRequest from '../../../components/GroupRequest/GroupRequest';
+import CreateGroup from '../../../components/CreateGroup/CreateGroup';
 
 
 const groupActions = {
@@ -117,7 +117,7 @@ const SingleForum = () => {
             onClick={() => navigate(`/forums`)}
           />
 
-          <CreateGroup setNewGroup={setNewGroup} />
+          <CreateGroup setNewGroup={setNewGroup} showButton={true} isPrivate={false}/>
         </Box>
         {!loading && groupRooms.length > 0 && (
           <>
