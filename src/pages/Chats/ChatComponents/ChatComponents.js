@@ -24,6 +24,16 @@ import { chatsActions } from '../../../store/chatSlice';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Tooltip from '@mui/material/Tooltip';
 import CreateGroup from '../../../components/CreateGroup/CreateGroup';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import ImageIcon from '@mui/icons-material/Image';
+import VideoCallIcon from '@mui/icons-material/VideoCall';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import AddGroupMember from './AddGroupMember';
 
 const socket = io('http://localhost:8670/');
 
@@ -81,10 +91,14 @@ const ChatComponents = () => {
   const isXs = useMediaQuery(theme.breakpoints.down('md'));
   const user = useSelector((state) => state.userLog.user?.user);
   const [open, setOpen] = useState(false);
+  const [openModal, setOpenModal] = useState(true);
   const [roomId, setRoomId] = useState();
   const [groupRoomId, setGroupRoomId] = useState();
   const [selected, setSelected] = useState(null);
   const [newGroup, setNewGroup] = useState(null);
+  const [typingUser, setTypingUser] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const openMenu = Boolean(anchorEl);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -124,6 +138,7 @@ const ChatComponents = () => {
     }
   }, [isXs]);
 
+
   return (
     <Container
       maxWidth='lg'
@@ -145,9 +160,93 @@ const ChatComponents = () => {
                 <ViewListIcon />
               </IconButton>
             </Tooltip>
-            <Typography variant='h6' noWrap component='div'>
-              Persistent drawer
-            </Typography>
+            {selected && (
+              <>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Card
+                    sx={{
+                      border: 'none',
+                      boxShadow: 'none',
+                    }}
+                  >
+                    <CardHeader
+                      avatar={
+                        <Avatar
+                          alt={`${selected.firstName}`}
+                          src={selected.avatar}
+                          sx={{ width: 30, height: 30 }}
+                        />
+                      }
+                      action={
+                        <>
+                          <IconButton
+                            aria-label='more'
+                            id='long-button'
+                            aria-controls={openMenu ? 'long-menu' : undefined}
+                            aria-expanded={openMenu ? 'true' : undefined}
+                            aria-haspopup='true'
+                            onClick={(event) =>
+                              selected.type !== 'singleChat' && setAnchorEl(event.currentTarget)
+                            }
+                          >
+                            <MoreVertIcon />
+                          </IconButton>
+                          <Menu
+                            id='basic-menu'
+                            anchorEl={anchorEl}
+                            open={openMenu}
+                            onClose={() => setAnchorEl(null)}
+                            MenuListProps={{
+                              'aria-labelledby': 'basic-button',
+                            }}
+                          >
+                            <MenuItem onClick={() => setAnchorEl(null)}>
+                             Group info
+                            </MenuItem>
+                              <MenuItem onClick={() => {
+                                setOpenModal(true)
+                                setAnchorEl(null)
+                                }}>
+                                Add Member
+                              </MenuItem>
+                          </Menu>
+                        </>
+                      }
+                      title={
+                        selected.type === 'singleChat'
+                          ? `${selected.otherUser.firstName} ${selected.otherUser.lastName}`
+                          : `${selected.groupName}`
+                      }
+                      subheader={typingUser ? `typing...` : ''}
+                      titleTypographyProps={{
+                        ml: -1.25,
+                      }}
+                      subheaderTypographyProps={{
+                        fontSize: '10px',
+                        fontStyle: 'italic',
+                        ml: -1.25,
+                      }}
+                      sx={{
+                        px: 1,
+                        py: 0.125,
+                        pt: 0.5,
+                      }}
+                    />
+                  </Card>
+                </Box>
+                <Tooltip title='video call'>
+                  <IconButton
+                    color='inherit'
+                    aria-label='open video window'
+                    onClick={() => ''}
+                    edge='start'
+                    sx={{ ml: 2 }}
+                  >
+                    <VideoCallIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
           </Toolbar>
         </AppBar>
 
@@ -169,7 +268,11 @@ const ChatComponents = () => {
           <DrawerHeader
             sx={{ justifyContent: { xs: 'space-between', md: 'flex-end' } }}
           >
-            <CreateGroup setNewGroup={setNewGroup} showIcon={true} isPrivate={true}/>
+            <CreateGroup
+              setNewGroup={setNewGroup}
+              showIcon={true}
+              isPrivate={true}
+            />
             <IconButton
               onClick={handleDrawerClose}
               sx={{ display: { xs: 'block', md: 'none' } }}
@@ -187,7 +290,8 @@ const ChatComponents = () => {
 
         <Main open={open}>
           <DrawerHeader />
-          <PrivateChat selected={selected} />
+          <PrivateChat selected={selected} setTypingUser={setTypingUser} />
+          <AddGroupMember open={openModal} setOpen={setOpenModal}/>
         </Main>
       </Box>
     </Container>
