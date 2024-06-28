@@ -14,7 +14,6 @@ const ChatList = ({ setSelected, selected }) => {
   const lists = useSelector((state) => state.chatData.chatLists);
 
 
-
   return (
     <div className={styles.ChatList}>
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>

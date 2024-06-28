@@ -53,20 +53,32 @@ const PrivateChat = ({selected}) => {
 
   useEffect(() => {
     if (user) {
-      socket.emit('joinChatRoom', { userId: user._id, receiverId, roomId});
 
-      socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
-        console.log('joinedChatRoom',chatHistory)
-        setRoomId(roomId);
-        setMessages(chatHistory);
-      });
-
-      socket.on('newChat', (chat) => {
-        const existingMessage = messages.find((msg) => msg._id === chat._id);
-        if (!existingMessage) {
-          setMessages((prevMessages) => [...prevMessages, chat]);
-        }
-      });
+      // if(receiver?.type === 'singleChat'){
+        socket.emit('joinChatRoom', { userId: user._id, receiverId, roomId});
+  
+        socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
+          console.log('joinedChatRoom',chatHistory)
+          setRoomId(roomId);
+          setMessages(chatHistory);
+        });
+  
+        socket.on('newChat', (chat) => {
+          const existingMessage = messages.find((msg) => msg._id === chat._id);
+          if (!existingMessage) {
+            setMessages((prevMessages) => [...prevMessages, chat]);
+          }
+        });
+      // }else{
+        // groupChat
+        socket.emit('joinPrivateGroup', {roomId, type: receiver?.type});
+        
+        socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
+          console.log('joinedChatRoom',chatHistory)
+          setRoomId(roomId);
+          setMessages(chatHistory);
+        });
+      // }
 
       socket.on('error', (error) => {
         console.error(error.message);
@@ -101,12 +113,19 @@ const PrivateChat = ({selected}) => {
 
   const handleSendMessage = () => {
     if (message) {
-      socket.emit('sendChat', {
+      const data = {
         roomId,
         sender: user._id,
         receiverId,
         message,
-      });
+      }
+      if(receiver.type === 'groupChat'){
+        socket.emit('sendPrivateGroupMessage', data);
+      }
+      if(receiver.type === 'singleChat'){
+        socket.emit('sendChat', data);
+
+      }
       setMessage('');
       setTypingUser(null);
     }
@@ -181,7 +200,7 @@ const PrivateChat = ({selected}) => {
             }}
           >
             {messages.map((chat, index) => (
-              <ChatMessageCard key={index} chat={chat} isSingle={true} />
+              <ChatMessageCard key={index} chat={chat} isSingle={receiver?.type === 'singleChat' ? true : false} />
             ))}
           </Box>
           <Box sx={{ height: 70, border: '1px solid #f6f6f6' }}>
