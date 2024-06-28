@@ -39,11 +39,7 @@ const VisuallyHiddenInput = styled('input')({
 
 const PrivateChat = ({selected}) => {
   console.log({selected})
-  // const location = useLocation();
-  // const receiver = location.state?.receiver;
-  // const receiver = dummyData;
-  // const receiverId = receiver?._id;
-  const [receiver, setReceiver] = useState()
+  const [receiver, setReceiver] = useState(null)
   const [receiverId, setReceiverId] = useState('')
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
@@ -53,8 +49,6 @@ const PrivateChat = ({selected}) => {
 
   useEffect(() => {
     if (user) {
-
-      // if(receiver?.type === 'singleChat'){
         socket.emit('joinChatRoom', { userId: user._id, receiverId, roomId});
   
         socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
@@ -69,16 +63,10 @@ const PrivateChat = ({selected}) => {
             setMessages((prevMessages) => [...prevMessages, chat]);
           }
         });
-      // }else{
+
         // groupChat
         socket.emit('joinPrivateGroup', {roomId, type: receiver?.type});
         
-        socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
-          console.log('joinedChatRoom',chatHistory)
-          setRoomId(roomId);
-          setMessages(chatHistory);
-        });
-      // }
 
       socket.on('error', (error) => {
         console.error(error.message);
@@ -110,6 +98,8 @@ const PrivateChat = ({selected}) => {
       setRoomId(selected.chatRoomId)
     }
   },[selected])
+
+  console.log({receiver})
 
   const handleSendMessage = () => {
     if (message) {
