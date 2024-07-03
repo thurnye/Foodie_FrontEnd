@@ -30,6 +30,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AddGroupMember from './AddGroupMember';
 import VideoContainer from '../VideoContainer/VideoContainer'
+import VideoCall from '../VideoChat/SampleVideoCall';
 
 const socket = io('http://localhost:8670/');
 
@@ -287,11 +288,12 @@ const ChatComponents = () => {
 
         <Main open={open}>
           <DrawerHeader />
-          <VideoContainer 
+          {/* <VideoContainer 
             open={openVideoModal} 
             setOpen={setOpenVideoModal}
             selected={selected}
-          />
+          /> */}
+          <VideoCall roomId={selected?.chatRoomId}/>
           <PrivateChat selected={selected} setTypingUser={setTypingUser} />
           <AddGroupMember open={openModal} setOpen={setOpenModal}/>
         </Main>

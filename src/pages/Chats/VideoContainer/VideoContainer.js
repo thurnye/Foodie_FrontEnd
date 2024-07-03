@@ -69,7 +69,7 @@ const VideoContainer = ({ open, setOpen, selected }) => {
             setCallAccepted={setCallAccepted}
             callAccepted={callAccepted}
           />
-        </ModalDialog>
+         </ModalDialog>
       )}
     </Box>
   );
