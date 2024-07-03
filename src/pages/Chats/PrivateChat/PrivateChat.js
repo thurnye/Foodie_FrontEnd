@@ -38,7 +38,6 @@ const VisuallyHiddenInput = styled('input')({
 
 
 const PrivateChat = ({selected}) => {
-  console.log({selected})
   const [receiver, setReceiver] = useState(null)
   const [receiverId, setReceiverId] = useState('')
   const [message, setMessage] = useState('');
