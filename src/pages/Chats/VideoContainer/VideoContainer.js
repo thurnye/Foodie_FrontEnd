@@ -53,23 +53,34 @@ const VideoContainer = ({ open, setOpen, selected }) => {
       </Box>
       )}
       {selected?.type === 'singleChat' && (
-        <ModalDialog
+        <VideoChat
+          roomId={selected.chatRoomId}
           setOpen={setOpen}
           open={open}
-          fullScreen={false}
-          size={'xl'}
-        >
-          <VideoChat
-            roomId={selected.chatRoomId}
-            setOpen={setOpen}
-            open={open}
-            answerCall={answerCall}
-            // receivingCall={receivingCall}
-            setReceivingCall={setReceivingCall}
-            setCallAccepted={setCallAccepted}
-            callAccepted={callAccepted}
-          />
-         </ModalDialog>
+          answerCall={answerCall}
+          // receivingCall={receivingCall}
+          setReceivingCall={setReceivingCall}
+          setCallAccepted={setCallAccepted}
+          callAccepted={callAccepted}
+          recipientId={selected?._id}
+        />
+        // <ModalDialog
+        //   setOpen={setOpen}
+        //   open={open}
+        //   fullScreen={false}
+        //   size={'xl'}
+        // >
+        //   <VideoChat
+        //     roomId={selected.chatRoomId}
+        //     setOpen={setOpen}
+        //     open={open}
+        //     answerCall={answerCall}
+        //     // receivingCall={receivingCall}
+        //     setReceivingCall={setReceivingCall}
+        //     setCallAccepted={setCallAccepted}
+        //     callAccepted={callAccepted}
+        //   />
+        // </ModalDialog>
       )}
     </Box>
   );
