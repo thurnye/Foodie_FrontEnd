@@ -7,8 +7,6 @@ import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -21,20 +19,17 @@ import ChatList from '../ChatList/ChatList';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { chatsActions } from '../../../store/chatSlice';
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Tooltip from '@mui/material/Tooltip';
 import CreateGroup from '../../../components/CreateGroup/CreateGroup';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import ImageIcon from '@mui/icons-material/Image';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AddGroupMember from './AddGroupMember';
-import VideoChat from '../VideoChat/VideoChat';
+import VideoContainer from '../VideoContainer/VideoContainer'
 
 const socket = io('http://localhost:8670/');
 
@@ -93,6 +88,7 @@ const ChatComponents = () => {
   const user = useSelector((state) => state.userLog.user?.user);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
+  const [openVideoModal, setOpenVideoModal] = useState(false);
   const [roomId, setRoomId] = useState();
   const [groupRoomId, setGroupRoomId] = useState();
   const [selected, setSelected] = useState(null);
@@ -239,7 +235,7 @@ const ChatComponents = () => {
                   <IconButton
                     color='inherit'
                     aria-label='open video window'
-                    onClick={() => ''}
+                    onClick={() => setOpenVideoModal(true)}
                     edge='start'
                     sx={{ ml: 2 }}
                   >
@@ -291,8 +287,12 @@ const ChatComponents = () => {
 
         <Main open={open}>
           <DrawerHeader />
-          <VideoChat roomId={selected?.chatRoomId}/>
-          {/* <PrivateChat selected={selected} setTypingUser={setTypingUser} /> */}
+          <VideoContainer 
+            open={openVideoModal} 
+            setOpen={setOpenVideoModal}
+            selected={selected}
+          />
+          <PrivateChat selected={selected} setTypingUser={setTypingUser} />
           <AddGroupMember open={openModal} setOpen={setOpenModal}/>
         </Main>
       </Box>
