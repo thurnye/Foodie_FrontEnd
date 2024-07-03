@@ -61,7 +61,6 @@ function VideoChat({ roomId }) {
     }, []);
 
     const callUser = (id) => {
-        console.log("ID::", id);
         const peer = new Peer({
             initiator: true,
             trickle: false,
@@ -81,6 +80,10 @@ function VideoChat({ roomId }) {
         socket.on("callAccepted", (signal) => {
             setCallAccepted(true);
             peer.signal(signal);
+        });
+        socket.on("callEnded", () => {
+            setCallEnded(true);
+            connectionRef.current && connectionRef.current.destroy();
         });
 
         connectionRef.current = peer;
@@ -107,11 +110,21 @@ function VideoChat({ roomId }) {
     const leaveCall = () => {
         setCallEnded(true);
         connectionRef.current.destroy();
+        socket.emit("leaveCall", { to: caller });
     }
 
     return (
         <div className={styles.VideoChat}>
-            <h1 style={{ textAlign: "center" }}>Zoomish</h1>
+            <Box>
+                    {receivingCall && !callAccepted ? (
+                        <Box className={styles.caller}>
+                            <Typography variant="h4">{name} is calling...</Typography>
+                            <Button variant="contained" color="primary" onClick={answerCall}>
+                                Answer
+                            </Button>
+                        </Box>
+                    ) : null}
+                </Box>
             <Box className={styles.container}>
                 <Box className={styles.videoContainer}>
                     <Box className="video">
@@ -158,16 +171,7 @@ function VideoChat({ roomId }) {
                         {idToCall}
                     </Box>
                 </Box>
-                <Box>
-                    {receivingCall && !callAccepted ? (
-                        <Box className={styles.caller}>
-                            <Typography variant="h4">{name} is calling...</Typography>
-                            <Button variant="contained" color="primary" onClick={answerCall}>
-                                Answer
-                            </Button>
-                        </Box>
-                    ) : null}
-                </Box>
+                
             </Box>
         </div>
     )
