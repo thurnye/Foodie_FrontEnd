@@ -34,6 +34,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AddGroupMember from './AddGroupMember';
+import VideoChat from '../VideoChat/VideoChat';
 
 const socket = io('http://localhost:8670/');
 
@@ -91,7 +92,7 @@ const ChatComponents = () => {
   const isXs = useMediaQuery(theme.breakpoints.down('md'));
   const user = useSelector((state) => state.userLog.user?.user);
   const [open, setOpen] = useState(false);
-  const [openModal, setOpenModal] = useState(true);
+  const [openModal, setOpenModal] = useState(false);
   const [roomId, setRoomId] = useState();
   const [groupRoomId, setGroupRoomId] = useState();
   const [selected, setSelected] = useState(null);
@@ -290,7 +291,8 @@ const ChatComponents = () => {
 
         <Main open={open}>
           <DrawerHeader />
-          <PrivateChat selected={selected} setTypingUser={setTypingUser} />
+          <VideoChat roomId={selected?.chatRoomId}/>
+          {/* <PrivateChat selected={selected} setTypingUser={setTypingUser} /> */}
           <AddGroupMember open={openModal} setOpen={setOpenModal}/>
         </Main>
       </Box>

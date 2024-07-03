@@ -52,7 +52,7 @@ const PrivateChat = ({selected}) => {
         socket.emit('joinChatRoom', { userId: user._id, receiverId, roomId});
   
         socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
-          console.log('joinedChatRoom',chatHistory)
+          // console.log('joinedChatRoom',chatHistory)
           setRoomId(roomId);
           setMessages(chatHistory);
         });
@@ -99,7 +99,7 @@ const PrivateChat = ({selected}) => {
     }
   },[selected])
 
-  console.log({receiver})
+  // console.log({receiver})
 
   const handleSendMessage = () => {
     if (message) {
