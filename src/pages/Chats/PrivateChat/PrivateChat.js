@@ -2,25 +2,20 @@ import React, { useState, useEffect } from 'react';
 import styles from './PrivateChat.module.css';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
-import { useLocation } from 'react-router';
 import io from 'socket.io-client';
 import { useSelector } from 'react-redux';
-import VideoCallIcon from '@mui/icons-material/VideoCall';
-import FilledInput from '@mui/material/FilledInput';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl from '@mui/material/FormControl';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import ImageIcon from '@mui/icons-material/Image';
 import ChatMessageCard from '../../../components/ChatMessageCard/ChatMessageCard';
+import DialogActions from '@mui/material/DialogActions';
+import ModalDialog from '../../../components/ModalDialog/ModalDialog';
+import CustomizedButton from '../../../components/CustomizedButton/CustomizedButton';
+import ChatImage from '../ChatImage/ChatImage';
 
 const socket = io('http://localhost:8670/');
 
@@ -38,7 +33,6 @@ const VisuallyHiddenInput = styled('input')({
 
 
 const PrivateChat = ({selected}) => {
-  console.log({selected})
   const [receiver, setReceiver] = useState(null)
   const [receiverId, setReceiverId] = useState('')
   const [message, setMessage] = useState('');
@@ -46,6 +40,9 @@ const PrivateChat = ({selected}) => {
   const user = useSelector((state) => state.userLog.user?.user);
   const [typingUser, setTypingUser] = useState(null);
   const [roomId, setRoomId] = useState(null);
+  const [open, setOpen] = useState(false)
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
 
   useEffect(() => {
     if (user) {
@@ -55,9 +52,11 @@ const PrivateChat = ({selected}) => {
           // console.log('joinedChatRoom',chatHistory)
           setRoomId(roomId);
           setMessages(chatHistory);
+          console.log(chatHistory);
         });
   
         socket.on('newChat', (chat) => {
+          console.log("CHAT",chat)
           const existingMessage = messages.find((msg) => msg._id === chat._id);
           if (!existingMessage) {
             setMessages((prevMessages) => [...prevMessages, chat]);
@@ -121,6 +120,25 @@ const PrivateChat = ({selected}) => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+        setImage(file);
+        setOpen(!open)
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setImagePreview('');
+      setImage(null);
+    }
+  };
+
+
+  
+
   return (
     <div className={styles.PrivateChat}>
       
@@ -136,57 +154,11 @@ const PrivateChat = ({selected}) => {
         {receiver && <>
           <Box
             sx={{
-              position: 'absolute',
-              top: 0,
-              width: '100%',
-              height: 50,
-            }}
-          >
-            <Card
-              sx={{
-                border: 'none',
-                boxShadow: 'none',
-              }}
-            >
-              <CardHeader
-                avatar={
-                  <Avatar
-                    alt={`${receiver.firstName}`}
-                    src={receiver.avatar}
-                    sx={{ width: 30, height: 30 }}
-                  />
-                }
-                action={
-                  <IconButton aria-label='settings'>
-                    <VideoCallIcon />
-                  </IconButton>
-                }
-                title={receiver.type === 'singleChat' ? `${receiver.otherUser.firstName} ${receiver.otherUser.lastName}` : `${receiver.groupName}`}
-                subheader={typingUser ? `typing...` : ''}
-                titleTypographyProps={{
-                  ml: -1.25,
-                }}
-                subheaderTypographyProps={{
-                  fontSize: '10px',
-                  fontStyle: 'italic',
-                  ml: -1.25,
-                }}
-                sx={{
-                  px: 1,
-                  py: 0.125,
-                  pt: 0.5,
-                }}
-              />
-            </Card>
-          </Box>
-          <Box
-            sx={{
               flexGrow: 1,
               height: '100%',
               p: 2,
               background: '#f6f6f6',
               overflowY: 'auto',
-              mt: '50px',
             }}
           >
             {messages.map((chat, index) => (
@@ -218,13 +190,6 @@ const PrivateChat = ({selected}) => {
                   }}
                   endAdornment={
                     <InputAdornment position='end' sx={{ width: 50 }}>
-                      {/* <IconButton
-                        aria-label='toggle password visibility'
-                        onClick={() => ''}
-                        edge='end'
-                      >
-                        <VideoCallIcon />
-                      </IconButton> */}
                       <Button
                         component='label'
                         role={undefined}
@@ -238,7 +203,7 @@ const PrivateChat = ({selected}) => {
                         }}
                         startIcon={<ImageIcon color='text.secondary' />}
                       >
-                        <VisuallyHiddenInput type='file' />
+                        <VisuallyHiddenInput type='file'  onChange={handleImageChange}/>
                       </Button>
                     </InputAdornment>
                   }
@@ -263,6 +228,18 @@ const PrivateChat = ({selected}) => {
           </Box>
         </>}
       </Box>
+      <ChatImage 
+        open={open} 
+        setOpen={setOpen} 
+        imagePreview={imagePreview} 
+        image={image}
+        setImage={setImage}
+        setImagePreview={setImagePreview}
+        socket={socket}
+        roomId={roomId}
+        userId={user?._id}
+        receiverId={receiverId}
+      />
     </div>
   );
 };

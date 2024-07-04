@@ -29,7 +29,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AddGroupMember from './AddGroupMember';
-import VideoContainer from '../VideoContainer/VideoContainer'
+// import VideoContainer from '../VideoContainer/VideoContainer' do not delete
 
 const socket = io('http://localhost:8670/');
 
@@ -231,7 +231,8 @@ const ChatComponents = () => {
                     />
                   </Card>
                 </Box>
-                <Tooltip title='video call'>
+                {/* Do not delete */}
+                {/* <Tooltip title='video call'>
                   <IconButton
                     color='inherit'
                     aria-label='open video window'
@@ -241,7 +242,7 @@ const ChatComponents = () => {
                   >
                     <VideoCallIcon />
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
               </>
             )}
           </Toolbar>
@@ -287,11 +288,11 @@ const ChatComponents = () => {
 
         <Main open={open}>
           <DrawerHeader />
-          <VideoContainer 
+          {/* <VideoContainer 
             open={openVideoModal} 
             setOpen={setOpenVideoModal}
             selected={selected}
-          />
+          /> */}
           <PrivateChat selected={selected} setTypingUser={setTypingUser} />
           <AddGroupMember open={openModal} setOpen={setOpenModal}/>
         </Main>

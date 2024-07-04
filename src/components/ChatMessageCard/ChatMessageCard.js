@@ -32,20 +32,29 @@ const ChatMessageCard = ({ chat, isSingle }) => {
           alignItems: isUserChat ? 'flex-end' : 'flex-start',
         }}
       >
-        <Typography
-          variant='body2'
-          sx={{
-            px: 3,
-            py: 1.5,
-            backgroundColor: !isUserChat ? '#e0f7fa' : '#ffffff',
-            textAlign: 'start',
-            wordWrap: 'break-word',
-            whiteSpace: 'pre-wrap',
-            overflowWrap: 'break-word',
-          }}
-        >
-          {chat.message}
-        </Typography>
+        {chat.image && <>
+              <img
+               src={`data:${chat.image.contentType};base64,${chat.image.data}`}
+                alt={chat.image.name}
+                style={{ width: '200px' }}
+              />
+        </>}
+        {chat.message && <>
+          <Typography
+            variant='body2'
+            sx={{
+              px: 3,
+              py: 1.5,
+              backgroundColor: !isUserChat ? '#e0f7fa' : '#ffffff',
+              textAlign: 'start',
+              wordWrap: 'break-word',
+              whiteSpace: 'pre-wrap',
+              overflowWrap: 'break-word',
+            }}
+          >
+            {chat.message}
+          </Typography>
+        </>}
       </Box>
       {!isSingle && (
         <Box
