@@ -101,7 +101,7 @@ const PrivateChat = ({selected}) => {
   // console.log({receiver})
 
   const handleSendMessage = () => {
-    if (message) {
+    if (message.trim()) {
       const data = {
         roomId,
         sender: user._id,
@@ -239,6 +239,7 @@ const PrivateChat = ({selected}) => {
         roomId={roomId}
         userId={user?._id}
         receiverId={receiverId}
+        chatType={selected?.type}
       />
     </div>
   );

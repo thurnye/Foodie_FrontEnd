@@ -5,21 +5,30 @@ import ModalDialog from '../../../components/ModalDialog/ModalDialog';
 import CustomizedButton from '../../../components/CustomizedButton/CustomizedButton';
 
 
-const ChatImage = ({open, setOpen, image, imagePreview, setImage, setImagePreview, socket, roomId, userId, receiverId}) => {
+const ChatImage = ({open, setOpen, image, imagePreview, setImage, setImagePreview, socket, roomId, userId, receiverId, chatType}) => {
+  console.log(chatType)
 
   const handleSendImage = () => {
     if (image) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const arrayBuffer = reader.result;
-        socket.emit('sendImage', {
+        const data = {
           roomId,
           sender: userId,
           receiverId,
           image: arrayBuffer,
           imageName: image.name,
           imageType: image.type,
-        });
+          chatType
+        }
+        if(chatType === 'singleChat'){
+          socket.emit('sendImage', data);
+        }
+        if(chatType === 'groupChat'){
+          console.log('sending group image')
+          socket.emit('sendPrivateGroupImage', data);
+        }
         setOpen(!open)
         setImage(null);
         setImagePreview('');
@@ -37,7 +46,7 @@ const ChatImage = ({open, setOpen, image, imagePreview, setImage, setImagePrevie
     <ModalDialog open={open} setOpen={setOpen}>
       {imagePreview && (
         <div>
-          <img src={imagePreview} alt="Preview"  />
+          <img src={imagePreview} alt="Preview"  style={{width: '250px'}}/>
         </div>
       )}
       <DialogActions>

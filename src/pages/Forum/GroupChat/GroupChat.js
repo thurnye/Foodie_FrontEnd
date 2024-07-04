@@ -52,7 +52,7 @@ const GroupChat = () => {
   }, [panelId]);
 
   const handleSendMessage = () => {
-    if (message) {
+    if (message.trim()) {
       socket.emit('sendMessage', { panelId, sender: user._id, message });
       setMessage('');
       setTypingUser(null)
