@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import CardHeader from '@mui/material/CardHeader';
 import { useSelector } from 'react-redux';
+import parser from 'html-react-parser';
 
 const ChatMessageCard = ({ chat, isSingle }) => {
   const user = useSelector((state) => state.userLog.user?.user);
@@ -52,7 +53,7 @@ const ChatMessageCard = ({ chat, isSingle }) => {
               overflowWrap: 'break-word',
             }}
           >
-            {chat.message}
+            {parser(chat.message)}
           </Typography>
         </>}
       </Box>

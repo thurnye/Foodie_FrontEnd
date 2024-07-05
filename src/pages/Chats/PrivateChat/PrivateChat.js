@@ -41,9 +41,6 @@ const PrivateChat = ({selected, setTypingUser}) => {
 
   const messagesEndRef = useRef(null);
 
-
-  // the receiverId is actually the chatId not the actual receiverId
-
   useEffect(() => {
     if (user) {
       socket.emit('joinChatRoom', { userId: user._id, receiverId, roomId });

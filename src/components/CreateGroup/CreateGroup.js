@@ -14,6 +14,12 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import { chatsActions } from '../../store/chatSlice';
+import Unsplash from '../Unsplash/Unsplash';
+import { convertToBase64 } from '../../util/commons';
+import {Stack} from '@mui/material';
+import FileUpload from '../FileUpload/FileUpload';
+import Avatar from '@mui/material/Avatar';
+
 
 const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
   const location = useLocation();
@@ -24,6 +30,8 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
   const [open, setOpen] = useState(false);
+  const [groupAvatar, setGroupAvatar] = useState('');
+  const [openUnsplash, setOpenUnsplash] = React.useState(false);
 
   // FeedBack States
   const [reqOpen, setReqOpen] = useState(false);
@@ -39,6 +47,7 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
       if (groupName) {
         const data = {
           groupName,
+          groupAvatar,
           forumId,
           startedBy: user._id,
           groupMembers: [user._id],
@@ -57,19 +66,19 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
         if (!isPrivate) {
           res = await services.postGroup(data);
         }
-        if(res.data){
-          if(isPrivate){
+        if (res.data) {
+          if (isPrivate) {
             const lists = [...constPrivateList];
-            lists.unshift({...res.data, type:'groupChat'})
+            lists.unshift({ ...res.data, type: 'groupChat' });
             dispatch(chatsActions.getChatsList(lists));
-          }else{
+          } else {
             setNewGroup(res.data);
           }
           setGroupName('');
           setReqLoading(false);
           setSaved(true);
           setMessage('Group Created Successfully');
-
+          setGroupAvatar('')
         }
       }
     } catch (error) {
@@ -77,11 +86,12 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
       setReqLoading(false);
       console.log('ERROR:::', error);
       const errMsg = error.response.data;
-      setMessage(errMsg? errMsg : 'Something Went Wrong');
+      setMessage(errMsg ? errMsg : 'Something Went Wrong');
       setShowCancel(false);
       setSaved(false);
       setIsError(true);
       setReqOpen(!reqOpen);
+      
     }
   };
 
@@ -103,7 +113,6 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
           label={'Create Group'}
           id='demo-customized-button'
           aria-controls={open ? 'demo-customized-menu' : undefined}
-          aria-haspopup='true'
           aria-expanded={open ? 'true' : undefined}
           disableElevation
           onClick={() => setOpen(!open)}
@@ -121,6 +130,45 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
         title={'Create A Group'}
         size={'lg'}
       >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            mb: 2
+          }}
+        >
+          <Box>
+            <Avatar alt={``} src={groupAvatar} sx={{ width: 130, height: 130 }} />
+          </Box>
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            }}>
+            <Stack spacing={2} direction='row'>
+              <FileUpload
+                multiple={false}
+                getFile={async (files) => {
+                  console.log('FILES:::', files);
+                  const imgAvatar = await convertToBase64(files);
+                  setGroupAvatar(imgAvatar);
+                }}
+              />
+              <Unsplash
+                multi={false}
+                open={openUnsplash}
+                setOpen={setOpenUnsplash}
+                setSelectedImages={(images) => {
+                  setGroupAvatar(images[0]);
+                }}
+                selectedImages={[groupAvatar]}
+                showButton={true}
+              />
+            </Stack>
+          </Box>
+        </Box>
         <TextField
           size='small'
           fullWidth={true}
@@ -129,7 +177,8 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
           onChange={(event) => {
             setGroupName(event.target.value);
           }}
-          sx={{ width: isPrivate ? '100%': '30vw', mb: 3 }}
+          sx={{ width: isPrivate ? '100%' : '30vw', mb: 3 }}
+          placeholder='Group Name'
         />
         {isPrivate && (
           <TextField
@@ -139,6 +188,7 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
             multiline
             fullWidth={true}
             rows={4}
+            onChange={(e) => setGroupDescription(e.target.value)}
           />
         )}
         <DialogActions>
@@ -147,12 +197,13 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
             label={'Cancel'}
             id='demo-customized-button'
             aria-controls={open ? 'demo-customized-menu' : undefined}
-            aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
             disableElevation
             onClick={() => {
               setOpen(!open);
               setGroupName('');
+              setGroupAvatar('')
+              setGroupDescription('')
             }}
             sx={{
               fontSize: { xs: 15, md: 18 },
@@ -166,7 +217,6 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
             label={'Create'}
             id='demo-customized-button'
             aria-controls={open ? 'demo-customized-menu' : undefined}
-            aria-haspopup='true'
             aria-expanded={open ? 'true' : undefined}
             disableElevation
             onClick={handleSave}

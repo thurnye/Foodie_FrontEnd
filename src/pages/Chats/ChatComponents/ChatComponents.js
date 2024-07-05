@@ -31,6 +31,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AddGroupMember from './AddGroupMember';
 import PrivateGroupInfo from '../privateGroupInfo/privateGroupInfo';
 // import VideoContainer from '../VideoContainer/VideoContainer' do not delete
+import groupAvatarPlaceholder from '../../../public/images/placeholders/group.png'
 
 const socket = io('http://localhost:8670/');
 
@@ -87,14 +88,20 @@ const ChatComponents = () => {
   const dispatch = useDispatch();
   const isXs = useMediaQuery(theme.breakpoints.down('md'));
   const user = useSelector((state) => state.userLog.user?.user);
-  const selected = useSelector((state) => state.chatData.activeChat);
+  const activeChat = useSelector((state) => state.chatData.activeChat);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const [openGroupInfo, setOpenGroupInfo] = useState(false);
-  // const [selected, setSelected] = useState(null);
+  const [selected, setSelected] = useState(null);
   const [typingUser, setTypingUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
+
+  useEffect(() => {
+    if(activeChat){
+      setSelected(activeChat)
+    }
+  }, [activeChat])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -135,8 +142,6 @@ const ChatComponents = () => {
   }, [isXs]);
 
 
-  console.log("selected::", selected)
-
 
   return (
     <Container
@@ -171,9 +176,9 @@ const ChatComponents = () => {
                     <CardHeader
                       avatar={
                         <Avatar
-                          alt={`${selected.firstName}`}
-                          src={selected.avatar}
-                          sx={{ width: 30, height: 30 }}
+                        alt={selected.type === 'singleChat' ? selected.otherUser.firstName : selected.groupName}
+                        src={selected.type === 'singleChat' ? selected.otherUser.avatar : selected.groupAvatar ? selected.groupAvatar : groupAvatarPlaceholder}
+                        sx={{ width: 30, height: 30 }}
                         />
                       }
                       action={
@@ -287,10 +292,7 @@ const ChatComponents = () => {
             </IconButton>
           </DrawerHeader>
           <Divider />
-          <ChatList 
-          // selected={selected} 
-          // setSelected={setSelected} 
-          />
+          <ChatList/>
         </Drawer>
 
         <Main open={open}>
@@ -303,7 +305,7 @@ const ChatComponents = () => {
           /> */}
           <PrivateChat selected={selected} setTypingUser={setTypingUser} />
           <AddGroupMember open={openModal} setOpen={setOpenModal}/>
-          <PrivateGroupInfo open={openGroupInfo} setOpen={setOpenGroupInfo} selected={selected}/>
+          <PrivateGroupInfo open={openGroupInfo} setOpen={setOpenGroupInfo} selected={selected} setSelected={setSelected}/>
         </Main>
       </Box>
     </Container>
