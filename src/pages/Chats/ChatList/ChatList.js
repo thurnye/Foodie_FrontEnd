@@ -7,11 +7,17 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import Avatar from '@mui/material/Avatar';
-import Typography from '@mui/material/Typography';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { chatsActions } from '../../../store/chatSlice';
 
 const ChatList = ({ setSelected, selected }) => {
   const lists = useSelector((state) => state.chatData.chatLists);
+  const active = useSelector((state) => state.chatData.activeChat);
+  const dispatch = useDispatch();
+
+  const handleSelected = (activeChat) => {
+    dispatch(chatsActions.getActiveChat(activeChat));
+  }
 
   return (
     <div className={styles.ChatList}>
@@ -20,7 +26,10 @@ const ChatList = ({ setSelected, selected }) => {
         {lists.map((item) => (
           <ListItem alignItems='flex-start' key={item.chatRoomId} sx={{mb: -2}}>
             <ListItemButton 
-            onClick={() => setSelected(item)}>
+            onClick={() => {
+              // setSelected(item)
+              handleSelected(item)
+              }}>
               <ListItemAvatar>
                 <Avatar
                   alt={item.type === 'singleChat' ? item.otherUser.firstName : item.groupName}
@@ -37,7 +46,8 @@ const ChatList = ({ setSelected, selected }) => {
                     fontSize: 13,
                     ml: -2.5,
                     color:
-                      selected?.chatRoomId === item.chatRoomId
+                      // selected?.chatRoomId === item.chatRoomId
+                      active?.randomId=== item.randomId
                         ? '#1976d2'
                         : 'text.secondary',
                   },

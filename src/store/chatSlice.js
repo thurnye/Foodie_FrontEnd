@@ -4,7 +4,8 @@ import  {createSlice} from '@reduxjs/toolkit'
 const chats = {
     chatLists: [],
     groupMembers:[],
-    pendingMembers:[]
+    pendingMembers:[],
+    activeChat: null,
 }
 
 const chatsSlice = createSlice({
@@ -13,8 +14,10 @@ const chatsSlice = createSlice({
     reducers: {
         // all all chats from the database
        getChatsList(state, action){
-        console.log(action)
            state.chatLists = action.payload;
+       },
+       getActiveChat(state, action){
+           state.activeChat = action.payload;
        },
        getGroupMembers(state, action){
            state.groupMembers = action.payload.data;

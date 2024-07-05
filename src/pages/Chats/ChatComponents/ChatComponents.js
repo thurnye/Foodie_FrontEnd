@@ -24,11 +24,12 @@ import CreateGroup from '../../../components/CreateGroup/CreateGroup';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
-import VideoCallIcon from '@mui/icons-material/VideoCall';
+// import VideoCallIcon from '@mui/icons-material/VideoCall';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import AddGroupMember from './AddGroupMember';
+import PrivateGroupInfo from '../privateGroupInfo/privateGroupInfo';
 // import VideoContainer from '../VideoContainer/VideoContainer' do not delete
 
 const socket = io('http://localhost:8670/');
@@ -86,13 +87,11 @@ const ChatComponents = () => {
   const dispatch = useDispatch();
   const isXs = useMediaQuery(theme.breakpoints.down('md'));
   const user = useSelector((state) => state.userLog.user?.user);
+  const selected = useSelector((state) => state.chatData.activeChat);
   const [open, setOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
-  const [openVideoModal, setOpenVideoModal] = useState(false);
-  const [roomId, setRoomId] = useState();
-  const [groupRoomId, setGroupRoomId] = useState();
-  const [selected, setSelected] = useState(null);
-  const [newGroup, setNewGroup] = useState(null);
+  const [openGroupInfo, setOpenGroupInfo] = useState(false);
+  // const [selected, setSelected] = useState(null);
   const [typingUser, setTypingUser] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const openMenu = Boolean(anchorEl);
@@ -134,6 +133,9 @@ const ChatComponents = () => {
       setOpen(false);
     }
   }, [isXs]);
+
+
+  console.log("selected::", selected)
 
 
   return (
@@ -197,7 +199,10 @@ const ChatComponents = () => {
                               'aria-labelledby': 'basic-button',
                             }}
                           >
-                            <MenuItem onClick={() => setAnchorEl(null)}>
+                            <MenuItem onClick={() => {
+                              setAnchorEl(null)
+                              setOpenGroupInfo(true)
+                              }}>
                              Group info
                             </MenuItem>
                               <MenuItem onClick={() => {
@@ -267,7 +272,6 @@ const ChatComponents = () => {
             sx={{ justifyContent: { xs: 'space-between', md: 'flex-end' } }}
           >
             <CreateGroup
-              setNewGroup={setNewGroup}
               showIcon={true}
               isPrivate={true}
             />
@@ -283,7 +287,10 @@ const ChatComponents = () => {
             </IconButton>
           </DrawerHeader>
           <Divider />
-          <ChatList selected={selected} setSelected={setSelected} />
+          <ChatList 
+          // selected={selected} 
+          // setSelected={setSelected} 
+          />
         </Drawer>
 
         <Main open={open}>
@@ -296,6 +303,7 @@ const ChatComponents = () => {
           /> */}
           <PrivateChat selected={selected} setTypingUser={setTypingUser} />
           <AddGroupMember open={openModal} setOpen={setOpenModal}/>
+          <PrivateGroupInfo open={openGroupInfo} setOpen={setOpenGroupInfo} selected={selected}/>
         </Main>
       </Box>
     </Container>

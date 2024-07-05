@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import TextField from '@mui/material/TextField';
 import { useLocation } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomizedButton from '../CustomizedButton/CustomizedButton';
 import ModalDialog from '../ModalDialog/ModalDialog';
 import RequestFeedback from '../RequestFeedback/RequestFeedback';
@@ -13,13 +13,16 @@ import services from '../../util/services';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
+import { chatsActions } from '../../store/chatSlice';
 
 const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const constPrivateList = useSelector((state) => state.chatData.chatLists);
+  const user = useSelector((state) => state.userLog.user?.user);
   const forumId = location.state?.forumId;
   const [groupName, setGroupName] = useState('');
   const [groupDescription, setGroupDescription] = useState('');
-  const user = useSelector((state) => state.userLog.user?.user);
   const [open, setOpen] = useState(false);
 
   // FeedBack States
@@ -54,18 +57,27 @@ const CreateGroup = ({ setNewGroup, showIcon, showButton, isPrivate }) => {
         if (!isPrivate) {
           res = await services.postGroup(data);
         }
-        setNewGroup(res.data);
-        setGroupName('');
-        setReqLoading(false);
-        setSaved(true);
-        setMessage('Group Created Successfully');
+        if(res.data){
+          if(isPrivate){
+            const lists = [...constPrivateList];
+            lists.unshift({...res.data, type:'groupChat'})
+            dispatch(chatsActions.getChatsList(lists));
+          }else{
+            setNewGroup(res.data);
+          }
+          setGroupName('');
+          setReqLoading(false);
+          setSaved(true);
+          setMessage('Group Created Successfully');
+
+        }
       }
     } catch (error) {
       console.error(error);
       setReqLoading(false);
       console.log('ERROR:::', error);
       const errMsg = error.response.data;
-      setMessage(errMsg);
+      setMessage(errMsg? errMsg : 'Something Went Wrong');
       setShowCancel(false);
       setSaved(false);
       setIsError(true);

@@ -30,7 +30,7 @@ function AddGroupMember({ open, setOpen }) {
         setOpen={setOpen}
         open={open}
         title={'Add Group Member'}
-        size={'lg'}
+        size={'sm'}
       >
         <DialogContent>
           <TextField
@@ -43,7 +43,7 @@ function AddGroupMember({ open, setOpen }) {
             onChange={(event) => {
               setEmail(event.target.value);
             }}
-            // sx={{ width: '40vw' }}
+            // sx={{ maxWidth: 350 }}
           />
         </DialogContent>
         <DialogActions>

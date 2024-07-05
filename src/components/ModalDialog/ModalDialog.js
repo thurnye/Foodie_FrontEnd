@@ -4,27 +4,15 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-const ModalDialog = ({setOpen, open, children, title, size, fullScreen}) => {
-
-
-  return(
-  <div className={styles.ModalDialog}>
-    <Dialog
-        open={open}
-        size={size}
-        fullScreen={fullScreen}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        {title && <DialogTitle id="alert-dialog-title">
-          {title}
-        </DialogTitle>}
-        <DialogContent>
-          {children}
-        </DialogContent>
+const ModalDialog = ({ setOpen, open, children, title, size, fullScreen }) => {
+  return (
+    <div className={styles.ModalDialog}>
+      <Dialog fullWidth={fullScreen} maxWidth={size ? size : 'sm'} open={open}>
+        {title && <DialogTitle id='alert-dialog-title'>{title}</DialogTitle>}
+        <DialogContent>{children}</DialogContent>
       </Dialog>
-  </div>
-)};
-
+    </div>
+  );
+};
 
 export default ModalDialog;

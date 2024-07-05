@@ -6,8 +6,7 @@ import CustomizedButton from '../../../components/CustomizedButton/CustomizedBut
 
 
 const ChatImage = ({open, setOpen, image, imagePreview, setImage, setImagePreview, socket, roomId, userId, receiverId, chatType}) => {
-  console.log(chatType)
-
+  
   const handleSendImage = () => {
     if (image) {
       const reader = new FileReader();

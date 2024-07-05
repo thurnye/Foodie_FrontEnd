@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from './PrivateChat.module.css';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -12,9 +12,6 @@ import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import ImageIcon from '@mui/icons-material/Image';
 import ChatMessageCard from '../../../components/ChatMessageCard/ChatMessageCard';
-import DialogActions from '@mui/material/DialogActions';
-import ModalDialog from '../../../components/ModalDialog/ModalDialog';
-import CustomizedButton from '../../../components/CustomizedButton/CustomizedButton';
 import ChatImage from '../ChatImage/ChatImage';
 
 const socket = io('http://localhost:8670/');
@@ -31,41 +28,40 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-
-const PrivateChat = ({selected}) => {
-  const [receiver, setReceiver] = useState(null)
-  const [receiverId, setReceiverId] = useState('')
+const PrivateChat = ({selected, setTypingUser}) => {
+  const [receiver, setReceiver] = useState(null);
+  const [receiverId, setReceiverId] = useState('');
   const [message, setMessage] = useState('');
   const [messages, setMessages] = useState([]);
   const user = useSelector((state) => state.userLog.user?.user);
-  const [typingUser, setTypingUser] = useState(null);
   const [roomId, setRoomId] = useState(null);
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState('');
 
+  const messagesEndRef = useRef(null);
+
+
+  // the receiverId is actually the chatId not the actual receiverId
+
   useEffect(() => {
     if (user) {
-        socket.emit('joinChatRoom', { userId: user._id, receiverId, roomId});
-  
-        socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
-          // console.log('joinedChatRoom',chatHistory)
-          setRoomId(roomId);
-          setMessages(chatHistory);
-          console.log(chatHistory);
-        });
-  
-        socket.on('newChat', (chat) => {
-          console.log("CHAT",chat)
-          const existingMessage = messages.find((msg) => msg._id === chat._id);
-          if (!existingMessage) {
-            setMessages((prevMessages) => [...prevMessages, chat]);
-          }
-        });
+      socket.emit('joinChatRoom', { userId: user._id, receiverId, roomId });
 
-        // groupChat
-        socket.emit('joinPrivateGroup', {roomId, type: receiver?.type});
-        
+      socket.on('joinedChatRoom', ({ roomId, chatHistory }) => {
+        setRoomId(roomId);
+        setMessages(chatHistory);
+      });
+
+      socket.on('newChat', (chat) => {
+        const existingMessage = messages.find((msg) => msg._id === chat._id);
+        if (!existingMessage) {
+          setMessages((prevMessages) => [...prevMessages, chat]);
+        }
+      });
+
+      // groupChat
+      socket.emit('joinPrivateGroup', { roomId, type: receiver?.type });
 
       socket.on('error', (error) => {
         console.error(error.message);
@@ -78,7 +74,7 @@ const PrivateChat = ({selected}) => {
         );
         setTimeout(() => {
           setTypingUser(null);
-        }, 20000);
+        }, 10000);
       });
 
       return () => {
@@ -91,14 +87,18 @@ const PrivateChat = ({selected}) => {
   }, [receiverId, user]);
 
   useEffect(() => {
-    if(selected){
-      setReceiver(selected)
-      setReceiverId(selected._id);
-      setRoomId(selected.chatRoomId)
+    if (selected) {
+      setReceiver(selected);
+      setReceiverId(selected.type === 'singleChat' ? selected.otherUser._id : selected._id);
+      setRoomId(selected.chatRoomId);
     }
-  },[selected])
+  }, [selected]);
 
-  // console.log({receiver})
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
 
   const handleSendMessage = () => {
     if (message.trim()) {
@@ -107,13 +107,12 @@ const PrivateChat = ({selected}) => {
         sender: user._id,
         receiverId,
         message,
-      }
-      if(receiver.type === 'groupChat'){
+      };
+      if (receiver.type === 'groupChat') {
         socket.emit('sendPrivateGroupMessage', data);
       }
-      if(receiver.type === 'singleChat'){
+      if (receiver.type === 'singleChat') {
         socket.emit('sendChat', data);
-
       }
       setMessage('');
       setTypingUser(null);
@@ -127,7 +126,7 @@ const PrivateChat = ({selected}) => {
       reader.onloadend = () => {
         setImagePreview(reader.result);
         setImage(file);
-        setOpen(!open)
+        setOpen(!open);
       };
       reader.readAsDataURL(file);
     } else {
@@ -136,12 +135,8 @@ const PrivateChat = ({selected}) => {
     }
   };
 
-
-  
-
   return (
     <div className={styles.PrivateChat}>
-      
       <Box
         sx={{
           height: '70vh',
@@ -151,87 +146,94 @@ const PrivateChat = ({selected}) => {
           position: 'relative',
         }}
       >
-        {receiver && <>
-          <Box
-            sx={{
-              flexGrow: 1,
-              height: '100%',
-              p: 2,
-              background: '#f6f6f6',
-              overflowY: 'auto',
-            }}
-          >
-            {messages.map((chat, index) => (
-              <ChatMessageCard key={index} chat={chat} isSingle={receiver?.type === 'singleChat' ? true : false} />
-            ))}
-          </Box>
-          <Box sx={{ height: 70, border: '1px solid #f6f6f6' }}>
+        {receiver && (
+          <>
             <Box
               sx={{
-                display: 'flex',
-                width: '100%',
+                flexGrow: 1,
+                height: '100%',
                 p: 2,
+                background: '#f6f6f6',
+                overflowY: 'auto',
               }}
             >
-              <FormControl sx={{ m: 1, flexGrow: 1 }} variant='outlined'>
-                <OutlinedInput
-                  id='outlined-adornment-password'
-                  type={'text'}
-                  size='small'
-                  fullWidth
-                  value={message}
-                  onChange={(event) => {
-                    setMessage(event.target.value);
-                    event.target.value.trim() &&
-                      socket.emit('typing', {
-                        panelId: roomId,
-                        user,
-                      });
-                  }}
-                  endAdornment={
-                    <InputAdornment position='end' sx={{ width: 50 }}>
-                      <Button
-                        component='label'
-                        role={undefined}
-                        variant='text'
-                        tabIndex={-1}
-                        sx={{
-                          color: 'text.secondary',
-                          width: 50,
-                          minWidth: 'initial',
-                          p: 0.625,
-                        }}
-                        startIcon={<ImageIcon color='text.secondary' />}
-                      >
-                        <VisuallyHiddenInput type='file'  onChange={handleImageChange}/>
-                      </Button>
-                    </InputAdornment>
-                  }
-                  sx={{ pr: 0 }}
+              {messages.map((chat, index) => (
+                <ChatMessageCard
+                  key={index}
+                  chat={chat}
+                  isSingle={receiver?.type === 'singleChat'}
                 />
-              </FormControl>
-              <IconButton
-                color='text.secondary'
-                aria-label='openDrawer drawer'
-                edge='end'
-                onClick={() => handleSendMessage()}
-              >
-                <SendIcon
-                  sx={{
-                    color: '#77839b',
-                    transform: 'rotate(319deg)',
-                    mt: -1,
-                  }}
-                />
-              </IconButton>
+              ))}
+              <div ref={messagesEndRef} />
             </Box>
-          </Box>
-        </>}
+            <Box sx={{ height: 70, border: '1px solid #f6f6f6' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  width: '100%',
+                  p: 2,
+                }}
+              >
+                <FormControl sx={{ m: 1, flexGrow: 1 }} variant='outlined'>
+                  <OutlinedInput
+                    id='outlined-adornment-password'
+                    type={'text'}
+                    size='small'
+                    fullWidth
+                    value={message}
+                    onChange={(event) => {
+                      setMessage(event.target.value);
+                      event.target.value.trim() &&
+                        socket.emit('typing', {
+                          panelId: roomId,
+                          user,
+                        });
+                    }}
+                    endAdornment={
+                      <InputAdornment position='end' sx={{ width: 50 }}>
+                        <Button
+                          component='label'
+                          role={undefined}
+                          variant='text'
+                          tabIndex={-1}
+                          sx={{
+                            color: 'text.secondary',
+                            width: 50,
+                            minWidth: 'initial',
+                            p: 0.625,
+                          }}
+                          startIcon={<ImageIcon color='text.secondary' />}
+                        >
+                          <VisuallyHiddenInput type='file' onChange={handleImageChange} />
+                        </Button>
+                      </InputAdornment>
+                    }
+                    sx={{ pr: 0 }}
+                  />
+                </FormControl>
+                <IconButton
+                  color='text.secondary'
+                  aria-label='openDrawer drawer'
+                  edge='end'
+                  onClick={() => handleSendMessage()}
+                >
+                  <SendIcon
+                    sx={{
+                      color: '#77839b',
+                      transform: 'rotate(319deg)',
+                      mt: -1,
+                    }}
+                  />
+                </IconButton>
+              </Box>
+            </Box>
+          </>
+        )}
       </Box>
-      <ChatImage 
-        open={open} 
-        setOpen={setOpen} 
-        imagePreview={imagePreview} 
+      <ChatImage
+        open={open}
+        setOpen={setOpen}
+        imagePreview={imagePreview}
         image={image}
         setImage={setImage}
         setImagePreview={setImagePreview}
