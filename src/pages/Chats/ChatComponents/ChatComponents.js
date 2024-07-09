@@ -14,7 +14,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import PrivateChat from '../PrivateChat/PrivateChat';
-import io from 'socket.io-client';
+
 import ChatList from '../ChatList/ChatList';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
@@ -32,8 +32,9 @@ import AddGroupMember from './AddGroupMember';
 import PrivateGroupInfo from '../privateGroupInfo/privateGroupInfo';
 // import VideoContainer from '../VideoContainer/VideoContainer' do not delete
 import groupAvatarPlaceholder from '../../../public/images/placeholders/group.png'
+import socket from '../../../util/socket';
 
-const socket = io('http://localhost:8670/');
+
 
 const drawerWidth = 240;
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
@@ -304,7 +305,7 @@ const ChatComponents = () => {
             selected={selected}
           /> */}
           <PrivateChat selected={selected} setTypingUser={setTypingUser} />
-          <AddGroupMember open={openModal} setOpen={setOpenModal}/>
+          <AddGroupMember open={openModal} setOpen={setOpenModal} groupId={selected?._id}/>
           <PrivateGroupInfo open={openGroupInfo} setOpen={setOpenGroupInfo} selected={selected} setSelected={setSelected}/>
         </Main>
       </Box>

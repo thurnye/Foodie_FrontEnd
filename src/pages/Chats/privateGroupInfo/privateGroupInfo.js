@@ -21,9 +21,9 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import CustomizedButton from '../../../components/CustomizedButton/CustomizedButton';
 import ImageUploadOptions from '../../../components/ImageUploadOptions/ImageUploadOptions';
 import groupAvatarPlaceholder from '../../../public/images/placeholders/group.png';
+import socket from '../../../util/socket';
 
-import io from 'socket.io-client';
-const socket = io('http://localhost:8670/');
+
 
 const PrivateGroupInfo = ({ setSelected, selected, open, setOpen }) => {
   const dispatch = useDispatch();
@@ -275,7 +275,7 @@ const PrivateGroupInfo = ({ setSelected, selected, open, setOpen }) => {
               <CloseIcon />
             </IconButton>
           </Box>
-          <Box sx={{ width: '60vw', m: 'auto' }}>
+          <Box sx={{ width: {xs:'60vw', xl: 900}, m: 'auto' }}>
             <Box sx={{ p: 2, position: 'relative' }}>
               {edit.includes('desc') ? (
                 <>
@@ -291,7 +291,7 @@ const PrivateGroupInfo = ({ setSelected, selected, open, setOpen }) => {
                   />
                 </>
               ) : (
-                <>
+                <Box>
                   <DialogContentText
                     id='alert-dialog-description'
                     sx={{ pt: 2 }}
@@ -299,7 +299,7 @@ const PrivateGroupInfo = ({ setSelected, selected, open, setOpen }) => {
                     {groupDescription}
                   </DialogContentText>
                   {editButton('desc')}
-                </>
+                </Box>
               )}
               {edit.length > 0 && saveButton()}
             </Box>

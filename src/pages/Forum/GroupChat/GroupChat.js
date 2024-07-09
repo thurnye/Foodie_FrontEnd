@@ -7,10 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 import ChatMessageCard from '../../../components/ChatMessageCard/ChatMessageCard';
 import { useLocation } from 'react-router';
-import io from 'socket.io-client';
 import { useSelector } from 'react-redux';
+import socket from '../../../util/socket';
 
-const socket = io('http://localhost:8670/');
+
 
 const GroupChat = () => {
   const location = useLocation();

@@ -1,4 +1,6 @@
 import io from 'socket.io-client';
-import baseUrl from './http-commons'
+import {baseUrl} from './http-commons'
 
-export const socket = io(baseUrl);
+const socket = io(baseUrl);
+
+export default socket;

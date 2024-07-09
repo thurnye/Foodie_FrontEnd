@@ -1,22 +1,52 @@
 import React, { useState } from 'react';
 import ModalDialog from '../../../components/ModalDialog/ModalDialog';
 import CustomizedButton from '../../../components/CustomizedButton/CustomizedButton';
-import { DialogActions, DialogContent } from '@mui/material';
+import { DialogActions } from '@mui/material';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import { useDispatch, useSelector } from 'react-redux';
+import { chatsActions } from '../../../store/chatSlice';
+import socket from '../../../util/socket';
 
-function AddGroupMember({ open, setOpen }) {
+
+
+
+function AddGroupMember({ open, setOpen, groupId }) {
   const [email, setEmail] = useState('');
+  const dispatch = useDispatch();
+  const chatList = useSelector((state) => state.chatData.chatLists);
+  const activeChat = useSelector((state) => state.chatData.activeChat);
 
   const handleSave = async () => {
     try {
       if (email) {
         const data = {
           email,
+          groupId,
         };
         console.log(data);
-        // const res = await services.postForum(data);
-        // setNewForum(res.data);
+        socket.emit('addToPrivateGroup', data);
+        socket.on('newMemberAdded', (newMembers) => {
+          const lists = chatList.map((item) => {
+            if (item._id === groupId) {
+              // Update the group members
+              return {
+                ...item,
+                groupMembers: newMembers,
+              };
+            } else {
+              return item;
+            }
+          });
+          
+        
+          // Assuming you have a dispatch or a state update function to update the chat list
+          dispatch(chatsActions.getChatsList(lists));
+          dispatch(chatsActions.getActiveChat({
+            ...activeChat,
+            groupMembers: newMembers
+          }));
+        });
       }
       setOpen(!open);
     } catch (error) {
@@ -30,9 +60,9 @@ function AddGroupMember({ open, setOpen }) {
         setOpen={setOpen}
         open={open}
         title={'Add Group Member'}
-        size={'sm'}
+        size={'md'}
       >
-        <DialogContent>
+        <Box >
           <TextField
             label='Email'
             variant='standard'
@@ -45,7 +75,7 @@ function AddGroupMember({ open, setOpen }) {
             }}
             // sx={{ maxWidth: 350 }}
           />
-        </DialogContent>
+        </Box>
         <DialogActions>
           <CustomizedButton
             variant='text'
@@ -68,7 +98,7 @@ function AddGroupMember({ open, setOpen }) {
           />
           <CustomizedButton
             variant='text'
-            label={'Create'}
+            label={'Add Member'}
             id='demo-customized-button'
             aria-controls={open ? 'demo-customized-menu' : undefined}
             aria-haspopup='true'

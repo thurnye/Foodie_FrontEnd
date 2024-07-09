@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
-import io from 'socket.io-client';
 import { useSelector } from 'react-redux';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -13,8 +12,9 @@ import Button from '@mui/material/Button';
 import ImageIcon from '@mui/icons-material/Image';
 import ChatMessageCard from '../../../components/ChatMessageCard/ChatMessageCard';
 import ChatImage from '../ChatImage/ChatImage';
+import socket from '../../../util/socket';
 
-const socket = io('http://localhost:8670/');
+
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',

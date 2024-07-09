@@ -8,7 +8,6 @@ import IconButton from '@mui/material/IconButton';
 import SendIcon from '@mui/icons-material/Send';
 import ChatMessageCard from '../../../components/ChatMessageCard/ChatMessageCard';
 import { useLocation } from 'react-router';
-import io from 'socket.io-client';
 import { useSelector } from 'react-redux';
 import VideoCallIcon from '@mui/icons-material/VideoCall';
 import FilledInput from '@mui/material/FilledInput';
@@ -21,8 +20,8 @@ import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import ImageIcon from '@mui/icons-material/Image';
+import socket from '../../../util/socket';
 
-const socket = io('http://localhost:8670/');
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
