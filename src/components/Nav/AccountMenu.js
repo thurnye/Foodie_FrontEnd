@@ -20,6 +20,7 @@ import { Login } from '@mui/icons-material';
 import { userActions } from '../../store/userSlice';
 import Logo from '../../public/images/logo.png';
 import SwipeableMenuDrawer from './SwipeableMenuDrawer';
+import useAppNavigate from '../../util/useAppNavigation';
 
 const appNav = [
   {
@@ -46,6 +47,7 @@ const appNav = [
 
 function AccountMenu() {
   const dispatch = useDispatch();
+  const navigate = useAppNavigate();
   const user = useSelector((state) => state.userLog.user);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -63,7 +65,8 @@ function AccountMenu() {
     if (token) {
       localStorage.removeItem('token');
       handleClose()
-      redirect('/login');
+      // redirect to '/login' here
+      navigate('/login');
     }
   };
 
@@ -157,11 +160,14 @@ function AccountMenu() {
                     <Link to={'/account'}>Dashboard</Link>
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
-                    <Link to={'/forum'}>Forum</Link>
+                    <Link to={'/forums'}>Forum</Link>
+                  </MenuItem>
+                  <MenuItem onClick={handleClose}>
+                    <Link to={'/chats'}>Chats</Link>
                   </MenuItem>
                   <Divider />
                   <MenuItem onClick={handleClose}>
-                    <Link to={'/account/profile'}>
+                    <Link to={'/account'}>
                       <ListItemIcon>
                         <Settings fontSize='small' />
                       </ListItemIcon>

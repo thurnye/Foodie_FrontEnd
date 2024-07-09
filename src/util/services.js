@@ -9,13 +9,23 @@ class StuffDataService {
   }
 
   // update user
-  postEdit(id, data) {
-    return http.post(`/user/edit/${id}`, data);
+  postEditUser(data) {
+    return http.post(`/user/edit/`, data);
   }
 
   // login
   postLogin(data) {
     return http.post(`/user/login`, data);
+  }
+
+  // google login/signup
+  postGoogleLogin(data) {
+    return http.post(`/user/google/login`, data);
+  }
+  
+  // forgotten password 
+  postForgottenPassword(data) {
+    return http.post(`/user/forgottenPassword/login`, data);
   }
 
   // get one user by id
@@ -105,6 +115,55 @@ class StuffDataService {
   }
 
 
+  // =======================Forum Room==========================
+  postForum(data) {
+    return http.post(`/forum`, data);
+  }
+  getForums(data) {
+    return http.post(`/forums`, data);
+  }
+
+
+  // =======================Group Room==========================
+  postGroup(data) {
+    return http.post(`/group`, data);
+  }
+  
+  getGroups(data) {
+    return http.post(`/groups`, data);
+  }
+  
+  // Join or Leave Group
+  postGroupRequest(data){
+    return http.post('/group/request', data)
+  }
+  
+  // Get Single Group
+  getGroup(groupId){
+    return http.get(`/group/${groupId}`)
+  }
+  
+  // Approve Group Join Request
+  postApproveRequest(data){
+    return http.post(`/group/approve`, data)
+  }
+  
+  //private group
+  postPrivateGroup(data){
+    return http.post(`/group/private`, data);
+
+  }
+
+  // ======================= DISCUSSION PANEL==========================
+  postGroupDiscussionPanel(data){
+    return http.post(`/panel`, data)
+  }
+  getGroupDiscussionPanels(data){
+    return http.post(`/panel/discussions`, data)
+  }
+
+
+
   // =======================Other Services==========================
   getAutoComplete(data) {
     return http.post(`/autoComplete`, data);
@@ -140,4 +199,4 @@ class StuffDataService {
   
 }
 
-export default new StuffDataService();
+export default new StuffDataService()

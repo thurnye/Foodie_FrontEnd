@@ -31,8 +31,23 @@ const CookBookGeneration = () => {
   const withThreshold = 900;
   const [isMobile, setIsMobile] = useState(false);
   console.log();
+  const [options, setOptions] = useState([])
 
-  // State to store window dimensions
+
+  const fetchAutoComplete = async () => {
+    try {
+      // setLoading(true)
+      const res = await services.getAutoComplete({
+        section: ['recipe'],
+      });
+      console.log(res.data);
+      setOptions(res.data)
+      
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
 
   // Update window size on resize
   useEffect(() => {
@@ -75,6 +90,7 @@ const CookBookGeneration = () => {
         console.log(e);
       }
     };
+    fetchAutoComplete()
 
     user?.user?._id && fetchTodos();
   }, [currentPage, perPage, user]);
@@ -160,7 +176,7 @@ const CookBookGeneration = () => {
       <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
         <Box sx={{ mb: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
-            <Search />
+            <Search data={options} />
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 5 }}>
             <CustomizedButton

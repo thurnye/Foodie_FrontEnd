@@ -15,9 +15,8 @@ import { useJsApiLoader } from '@react-google-maps/api';
 import Home from './pages/Home/home';
 import AllRecipe from './pages/Recipes/AllRecipes/allRecipes';
 import Author from './pages/Author/author';
-import Forum from './pages/Forum/forum';
-import Signup from './pages/SignUp/signup';
-import LoginUser from './pages/Login/login';
+
+
 import CompleteRegistration from './pages/Registeration/completeRegistrationForm';
 
 import SingleRecipe from './pages/Recipes/SingleRecipe/singleRecipe';
@@ -39,9 +38,24 @@ import EditRecipe from './components/Dashboard/Recipes/EditRecipe/EditRecipe';
 import CreateRecipe from './components/Dashboard/Recipes/CreateRecipe/CreateRecipe';
 import Notification from './components/Dashboard/Notification/Notification';
 import SavedBookmarks from './components/Dashboard/SavedBookmarks/SavedBookmarks';
-import AccountDashboard from './components/Dashboard/DashboardContents/AccountDashboard/AccountDashboard';
 import CookBook from './pages/CookBook/CookBook';
 import CookBookGeneration from './components/Dashboard/Recipes/CookBookManager/CookBookGeneration/CookBookGeneration';
+
+import AllForums from './pages/Forum/AllForums/AllForums';
+import SingleForum from './pages/Forum/SingleForum/SingleForum';
+import ForumComponent from './pages/Forum/ForumComponent/ForumComponent';
+import Dashboard from './components/Dashboard/DashboardContents/Dashboard';
+import SignUp from './pages/Auth/SignUp/SignUp';
+import Login from './pages/Auth/Login/Login';
+import ForgotPassword from './pages/Auth/ForgotPassword/ForgotPassword';
+import GroupChat from './pages/Forum/GroupChat/GroupChat';
+import SingleGroupContainer from './pages/Forum/SingleGroupContainer/SingleGroupContainer';
+import GroupDiscussions from './pages/Forum/GroupDiscussions/GroupDiscussions';
+import SingleChat from './pages/Forum/SingleChat/SingleChat';
+
+import ChatComponents from './pages/Chats/ChatComponents/ChatComponents';
+
+
 
 library.add(fab, fas, far);
 
@@ -80,8 +94,11 @@ function App() {
         <AccountMenu />
         <Routes>
           <Route path='/' exact element={<Home />} />
-          {!user && <Route path='/signup' element={<Signup />} />}
-          {!user && <Route path='/login' element={<LoginUser />} />}
+          {!user && <Route path='/signup' element={<SignUp />} />}
+          {!user && <Route path='/login' element={<Login />} />}
+          {!user && (
+            <Route path='/forgotPassword' element={<ForgotPassword />} />
+          )}
           {user && (
             <Route path='/new-account' element={<CompleteRegistration />} />
           )}
@@ -90,12 +107,27 @@ function App() {
           <Route path='/events' element={<Events />} />
           <Route path='/event' element={<SingleEventContainer />} />
           <Route path='/all-recipes' element={<AllRecipe />} />
-          <Route path='/forum' element={<Forum />} />
           <Route path='/author' element={<Author />} />
           <Route path='/test' element={<FeatureTesting />} />
 
+          {/* Forum */}
+          <Route path='forums' element={<ForumComponent />}>
+            <Route path='all' element={<AllForums />} />
+            <Route path='forum/:id' element={<SingleForum />} />
+            <Route path='forum' element={<SingleGroupContainer />}>
+              <Route path='group' element={<GroupDiscussions />} />
+              <Route path='group/chat' element={<GroupChat />} />
+              <Route path='chat' element={<SingleChat />} />
+            </Route>
+            <Route index element={<Navigate to='all' />}></Route>
+          </Route>
+
+          <Route path='/chats' element={<ChatComponents />} />
+
+          
+
           {/* Dashboard */}
-          <Route path='account' element={<AccountDashboard />}>
+          <Route path='account' element={<Dashboard />}>
             <Route path='dashboard' element={<DashBoardContent />} />
 
             {/* Events */}
@@ -115,7 +147,10 @@ function App() {
             <Route path='recipe/create-recipe' element={<CreateRecipe />} />
             <Route path='edit-recipe' element={<EditRecipe />} />
             <Route path='recipe/cook-book' element={<CookBook />} />
-            <Route path='recipe/cook-book/generate' element={<CookBookGeneration/>} />
+            <Route
+              path='recipe/cook-book/generate'
+              element={<CookBookGeneration />}
+            />
 
             {/* Notifications */}
             <Route path='notification' element={<Notification />} />
@@ -124,7 +159,7 @@ function App() {
             <Route path='saves-and-bookmarks' element={<SavedBookmarks />} />
 
             {/* Profile */}
-            <Route path='profile' element={<CompleteRegistration />} />
+            {/* <Route path='profile' element={<CompleteRegistration />} /> */}
             <Route index element={<Navigate to='dashboard' />}></Route>
           </Route>
         </Routes>

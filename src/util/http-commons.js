@@ -1,10 +1,11 @@
 import axios from "axios";
 
 // prod
-const baseUrl  = "https://foodie-zqad.onrender.com/";
+export const baseUrl  = "https://foodie-zqad.onrender.com/";
 
 // dev
-// const baseUrl  = "http://localhost:8670/";
+// export const baseUrl  = "http://localhost:8670/";
+
 
 
 export default axios.create({
@@ -14,3 +15,5 @@ export default axios.create({
 
   }
 });
+
+

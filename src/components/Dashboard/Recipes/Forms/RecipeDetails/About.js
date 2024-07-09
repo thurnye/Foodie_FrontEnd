@@ -46,8 +46,7 @@ const About = ({setAbout, about, setActiveSection}) => {
     const [openUnsplash, setOpenUnsplash] = React.useState(false);
     const [unsplashImages, setUnsplashImages] = React.useState([]);
 
-    console.log({about})
-    console.log(openUnsplash)
+
 
 
 
