@@ -2,7 +2,10 @@ import  {createSlice} from '@reduxjs/toolkit'
 
 
 const allRecipes = {
-    recipes: null,
+    recipes: {
+        recipes: [],
+        count: 0
+    },
     usersRecipes: null,
     singleRecipe: null,
 }
@@ -13,7 +16,11 @@ const allRecipesSlice = createSlice({
     reducers: {
         // all all recipes from the database
        getAllRecipes(state, action){
-           state.recipes = action.payload.data;
+        console.log('ACTIONS', action)
+        state.recipes = {
+            recipes: action.payload.recipes, // update recipes array
+            count: action.payload.count,    // update count
+          };
        },
        getAllUsersRecipes(state, action){
            state.usersRecipes = action.payload.data;

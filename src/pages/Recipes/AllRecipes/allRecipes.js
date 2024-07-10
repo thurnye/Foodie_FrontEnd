@@ -6,6 +6,7 @@ import FilterRecipes from '../../../components/AllRecipes/FilterRecipes/FilterRe
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { Filter } from 'react-feather';
 import styles from './allRecipes.module.css'
+import RecipesContainer from '../../RecipePage/RecipesContainer/RecipesContainer';
 
 export default function AllRecipes() {
     const [filters, setFilters] = useState();
@@ -16,6 +17,8 @@ export default function AllRecipes() {
 
     return (
       <div className={styles.AllRecipes}>
+
+        <RecipesContainer/>
         <section className={styles.AllRecipesContainer}>
             <div className="container">
             <div className="card mb-3">

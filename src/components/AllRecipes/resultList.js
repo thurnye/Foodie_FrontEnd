@@ -54,8 +54,8 @@ export default function ResultList(props) {
       allCategories.push(category);
     }
     let uniqueCategory = [...new Set(allCategories)];
-    const filter = { ...filters, category: uniqueCategory };
-    fetchFilteredRecipes({ filter, currentPage, skip });
+    const filter = { ...filters, categories: uniqueCategory };
+    // fetchFilteredRecipes({ filter, currentPage, skip });
   }, [currentPage, category, filters]);
 
   useEffect(() => {
