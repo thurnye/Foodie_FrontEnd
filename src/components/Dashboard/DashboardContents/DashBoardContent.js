@@ -10,6 +10,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import LocalFarmersLocations from '../../LocalFarmers/LocalFarmersLocations/LocalFarmersLocations';
 
 const bull = (
   <Box
@@ -43,7 +44,7 @@ const card = (
     </CardActions>
   </React.Fragment>
 );
-const DashBoardContent = () => {
+const DashBoardContent = ({isLoaded}) => {
   return (
     <div>
       <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
@@ -167,12 +168,10 @@ const DashBoardContent = () => {
                       color='text.secondary'
                       gutterBottom
                     >
-                      Local Farmers' Market Locator: Integrate a tool that helps users find nearby farmers' markets to source fresh ingredients locally.
+                      Find nearby farmers' markets to source fresh ingredients locally.
                     </Typography>
+                    <LocalFarmersLocations isLoaded={isLoaded}/>
                   </CardContent>
-                  <CardActions>
-                    <Button size='small'>Learn More</Button>
-                  </CardActions>
                 </Card>
               </Box>
             </Grid>

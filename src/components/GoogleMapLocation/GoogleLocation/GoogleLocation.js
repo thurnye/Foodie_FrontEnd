@@ -29,6 +29,7 @@ const GoogleLocation = ({ isLoaded, setValue, defaultValue, label, fieldName, co
         coordinates,
         formattedAddress
       };
+      console.log(location)
       setValue(fieldName, location);
     }
   }

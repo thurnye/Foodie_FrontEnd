@@ -13,7 +13,6 @@ import { userActions } from './store/userSlice';
 import { useJsApiLoader } from '@react-google-maps/api';
 
 import Home from './pages/Home/home';
-import AllRecipe from './pages/Recipes/AllRecipes/allRecipes';
 import Author from './pages/Author/author';
 
 
@@ -107,7 +106,6 @@ function App() {
           <Route path='/recipe' element={<SingleRecipe />} />
           <Route path='/events' element={<Events />} />
           <Route path='/event' element={<SingleEventContainer />} />
-          {/* <Route path='/all-recipes' element={<AllRecipe />} /> */}
           <Route path='/all-recipes' element={<RecipesContainer />} />
           <Route path='/author' element={<Author />} />
           <Route path='/test' element={<FeatureTesting />} />
@@ -130,7 +128,7 @@ function App() {
 
           {/* Dashboard */}
           <Route path='account' element={<Dashboard />}>
-            <Route path='dashboard' element={<DashBoardContent />} />
+            <Route path='dashboard' element={<DashBoardContent isLoaded={isLoaded}/>} />
 
             {/* Events */}
             <Route path='events-feeds' element={<EventFeed />} />
