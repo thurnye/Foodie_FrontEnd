@@ -12,7 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import ViewListIcon from '@mui/icons-material/ViewList';
 import Tooltip from '@mui/material/Tooltip';
 import FilterRecipe from '../FilterRecipe/FilterRecipe'
 import Recipes from '../Recipes/Recipes';
@@ -106,7 +105,7 @@ const RecipesContainer = () => {
     >
       <Box sx={{ display: 'flex', position: 'relative', overflowX: 'hidden' }}>
         <CssBaseline />
-        <AppBar position='absolute' open={open}>
+        <AppBar position='absolute' open={open} sx={{background: '#f5f5f5', boxShadow:'none'}}>
           <Toolbar id="back-to-top-anchor">
             <Tooltip title='Create Group'>
               <IconButton

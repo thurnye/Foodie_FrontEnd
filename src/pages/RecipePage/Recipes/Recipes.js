@@ -9,6 +9,7 @@ import { recipesActions } from '../../../store/allRecipesSlice';
 import { useLocation } from 'react-router';
 import PaginationNav from '../../../components/PaginationNav/PaginationNav';
 import BackToTop from '../../../components/BackToTop/BackToTop';
+import { Typography } from '@mui/material';
 
 const Recipes = ({ filter }) => {
   const dispatch = useDispatch();
@@ -45,21 +46,34 @@ const Recipes = ({ filter }) => {
   }, [filter]);
 
   useEffect(() => {
-    fetchFilteredRecipes({ filter, currentPage, skip });
+    if (category) {
+      const allCategories = filter?.categories || [];
+      allCategories.push(category);
+      const uniqueCategories = [...new Set([...allCategories, category])];
+
+      const filterData = {
+        ...filter,
+        isFilter: true,
+        categories: uniqueCategories,
+      };
+      fetchFilteredRecipes({ filter: filterData, currentPage, skip });
+    } else {
+      fetchFilteredRecipes({ filter, currentPage, skip });
+    }
   }, [filter, currentPage, category]);
 
   return (
-    <Box >
+    <Box>
       <Box
         className={styles.Recipes}
         component={'div'}
         sx={{
           height: 'fit-content',
           maxHeight: 'calc(100% - 2vh)',
+          minHeight: 500,
           overflow: 'auto',
           px: 2,
         }}
-        
       >
         <Box sx={{ flexGrow: 1 }}>
           <Grid
@@ -67,17 +81,44 @@ const Recipes = ({ filter }) => {
             spacing={{ xs: 3, md: 3 }}
             columns={{ xs: 12, sm: 12, md: 12 }}
           >
-            {recipes &&
-              Array.isArray(recipes) && // ensure recipes is defined and an array
+            {loading ? (
+              <Grid item xs={12}>
+              <Box sx={{
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}>
+                <Typography variant="body2">
+                  Loading...
+                </Typography>
+              </Box>
+            </Grid>
+            ) : recipes.length > 0 ? (
+              Array.isArray(recipes) &&
               recipes.map((recipe) => (
                 <Grid item xs={6} sm={4} md={4} key={recipe._id}>
                   <RecipesCard recipe={recipe} />
                 </Grid>
-              ))}
+              ))
+            ) : (
+              <Grid item xs={12}>
+                <Box sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                  <Typography variant="body2">
+                    No Recipe Found!
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
           </Grid>
         </Box>
       </Box>
-      {count && (
+      {count !== 0 && (
         <Box>
           <PaginationNav
             page={currentPage}
@@ -86,7 +127,7 @@ const Recipes = ({ filter }) => {
           />
         </Box>
       )}
-      <BackToTop/>
+      <BackToTop />
     </Box>
   );
 };
