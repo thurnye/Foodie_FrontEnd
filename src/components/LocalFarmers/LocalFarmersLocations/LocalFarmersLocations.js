@@ -4,21 +4,10 @@ import { Box } from '@mui/material';
 import KeyWordMap from '../../GoogleMapLocation/GoogleMap/KeyWordMap';
 
 const LocalFarmersLocations = ({isLoaded}) => {
-  const [location, setLocation] = useState(
-//     {
-//     "name": "Toronto",
-//     "url": "https://maps.google.com/?q=Toronto,+ON,+Canada&ftid=0x89d4cb90d7c63ba5:0x323555502ab4c477",
-//     "coordinates": {
-//         "lat": 43.653226,
-//         "lng": -79.3831843
-//     },
-//     "formattedAddress": "Toronto, ON, Canada"
-// }
-);
+  const [location, setLocation] = useState();
   const [error, setError] = useState(null);
 
   const handleSuccess = (position) => {
-    console.log(position)
     const { latitude, longitude } = position.coords;
     const coordinates = {
       lat: latitude,
@@ -43,8 +32,7 @@ const LocalFarmersLocations = ({isLoaded}) => {
     getUserLocation();
   }, []);
 
-  console.log(location)
-  
+
   return (
   <div className={styles.LocalFarmersLocations}>
     <Box>

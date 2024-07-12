@@ -159,7 +159,6 @@ const DashBoardContent = ({isLoaded}) => {
             </Grid>
             <Grid item xs={12} sm={12} md={12}>
               <Box sx={{}}>
-                {/* Location of local farmers */}
                 <Typography variant='h5' gutterBottom>Location of Local Farmers</Typography>
                 <Card variant='outlined'>
                   <CardContent>
