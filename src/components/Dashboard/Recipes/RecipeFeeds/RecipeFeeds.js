@@ -105,6 +105,9 @@ const RecipeFeeds = () => {
     }
   };
 
+  console.log(paginationModel)
+  console.log(`Recipes for page ${paginationModel.page}::`, recipes)
+
   useEffect(() => {
     setRows(getRows(recipes));
   }, [recipes]);
@@ -113,7 +116,7 @@ const RecipeFeeds = () => {
     if (user && paginationModel) {
       // Check if both user and paginationModel exist
       const filter = {
-        currentPage: paginationModel.page,
+        currentPage: paginationModel.page + 1,
         perPage: paginationModel.pageSize,
       };
       user.user._id && fetchRecipes(filter, user.user._id);

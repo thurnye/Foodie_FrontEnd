@@ -116,7 +116,7 @@ useEffect(() => {
             keywordSearch: '',
             activeComp: 'myEvent', //only get user's event
             timeFrame: {starts: '', ends: ''},
-            currentPage: paginationModel.page,
+            currentPage: paginationModel.page + 1,
             perPage: paginationModel.pageSize
         };
         user.user._id && fetchEvents(filter, user.user._id);

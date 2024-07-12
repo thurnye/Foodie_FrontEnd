@@ -126,7 +126,7 @@ const PrivateGroupInfo = ({ setSelected, selected, open, setOpen }) => {
       socket.emit('updatePrivateGroupInfo', data);
 
       socket.on('privateGroupInfoUpdated', (updatedGroup) => {
-        console.log({ updatedGroup });
+
         const lists = chatList.map((item) =>
           item._id === updatedGroup._id ? updatedGroup : item
         );

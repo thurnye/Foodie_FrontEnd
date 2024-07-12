@@ -37,7 +37,7 @@ class StuffDataService {
 
   // post recipe -> create and update
   postRecipe(userId, data) {
-    return http.post(`/recipe/${userId}`, data);
+    return http.post(`/recipe/add/${userId}`, data);
   }
   // get user recipes
   getUserRecipes(id, data) {
@@ -45,13 +45,13 @@ class StuffDataService {
   }
 
   // get all recipes
-  find(data) {
-    return http.post('/recipes', data);
+  getAllRecipes(data) {
+    return http.post('/recipe', data);
   }
 
   // get all recipes by query
   findQuery(data) {
-    return http.post('/recipes/query', data);
+    return http.post('/recipe/query', data);
   }
 
   // get one recipe by id
@@ -120,7 +120,7 @@ class StuffDataService {
     return http.post(`/forum`, data);
   }
   getForums(data) {
-    return http.post(`/forums`, data);
+    return http.post(`/forum/all`, data);
   }
 
 
@@ -130,7 +130,7 @@ class StuffDataService {
   }
   
   getGroups(data) {
-    return http.post(`/groups`, data);
+    return http.post(`/group/all`, data);
   }
   
   // Join or Leave Group

@@ -54,6 +54,7 @@ import GroupDiscussions from './pages/Forum/GroupDiscussions/GroupDiscussions';
 import SingleChat from './pages/Forum/SingleChat/SingleChat';
 
 import ChatComponents from './pages/Chats/ChatComponents/ChatComponents';
+import RecipesContainer from './pages/RecipePage/RecipesContainer/RecipesContainer';
 
 
 
@@ -106,7 +107,8 @@ function App() {
           <Route path='/recipe' element={<SingleRecipe />} />
           <Route path='/events' element={<Events />} />
           <Route path='/event' element={<SingleEventContainer />} />
-          <Route path='/all-recipes' element={<AllRecipe />} />
+          {/* <Route path='/all-recipes' element={<AllRecipe />} /> */}
+          <Route path='/all-recipes' element={<RecipesContainer />} />
           <Route path='/author' element={<Author />} />
           <Route path='/test' element={<FeatureTesting />} />
 
