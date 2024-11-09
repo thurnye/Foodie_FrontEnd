@@ -10,6 +10,7 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import UpComingEvents from './UpComingEvents/UpComingEvents';
 
 const bull = (
   <Box
@@ -87,11 +88,12 @@ const DashBoardContent = () => {
               </Box>
             </Grid>
 
-
             {/* Featured Chefs and Bloggers */}
             <Grid item xs={12} sm={12} md={6}>
               <Box sx={{}}>
-                <Typography variant='h5' gutterBottom>Featured Chefs and Bloggers</Typography>
+                <Typography variant='h5' gutterBottom>
+                  Featured Chefs and Bloggers
+                </Typography>
                 <Card variant='outlined'>
                   <CardContent>
                     <Typography
@@ -99,7 +101,9 @@ const DashBoardContent = () => {
                       color='text.secondary'
                       gutterBottom
                     >
-                     Featured Chefs and Bloggers: Introduce users to guest chefs or food bloggers by featuring their profiles and recipes on the dashboard.
+                      Featured Chefs and Bloggers: Introduce users to guest
+                      chefs or food bloggers by featuring their profiles and
+                      recipes on the dashboard.
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -108,34 +112,37 @@ const DashBoardContent = () => {
                 </Card>
               </Box>
             </Grid>
-
 
             {/* Upcoming Events */}
             <Grid item xs={12} sm={12} md={6}>
               <Box sx={{}}>
-                <Typography variant='h5' gutterBottom>UpComing Events</Typography>
+                <Typography variant='h5' gutterBottom>
+                  UpComing Events
+                </Typography>
+                <Box></Box>
                 <Card variant='outlined'>
                   <CardContent>
-                    <Typography
+                    <UpComingEvents />
+                    {/* <Typography
                       sx={{ fontSize: 14 }}
                       color='text.secondary'
                       gutterBottom
                     >
-                      Display a calendar of upcoming cooking events, food festivals, or culinary workshops in the user's region or online.
-                    </Typography>
+                      Display a calendar of upcoming cooking events, food
+                      festivals, or culinary workshops in the user's region or
+                      online.
+                    </Typography> */}
                   </CardContent>
-                  <CardActions>
-                    <Button size='small'>Learn More</Button>
-                  </CardActions>
                 </Card>
               </Box>
             </Grid>
 
-
             {/* Most Viewed / Most Rated */}
             <Grid item xs={12} sm={12} md={12}>
               <Box sx={{}}>
-                <Typography variant='h5' gutterBottom>Most Viewed / most Rated</Typography>
+                <Typography variant='h5' gutterBottom>
+                  Most Viewed / most Rated
+                </Typography>
                 <Card variant='outlined'>
                   <CardContent>
                     <Typography
@@ -146,8 +153,12 @@ const DashBoardContent = () => {
                       toggle between each:
                     </Typography>
                     <Typography variant='body2'>
-                      -show most viewed recipe and also most rated top 5 each <br/>
-                      -User Reviews and Ratings: Allow users to rate and review recipes they have tried. Display these ratings and reviews to help others in the community make better-informed decisions about which recipes to try.
+                      -show most viewed recipe and also most rated top 5 each{' '}
+                      <br />
+                      -User Reviews and Ratings: Allow users to rate and review
+                      recipes they have tried. Display these ratings and reviews
+                      to help others in the community make better-informed
+                      decisions about which recipes to try.
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -159,7 +170,9 @@ const DashBoardContent = () => {
             <Grid item xs={12} sm={12} md={12}>
               <Box sx={{}}>
                 {/* Location of local farmers */}
-                <Typography variant='h5' gutterBottom>Location of Local Farmers</Typography>
+                <Typography variant='h5' gutterBottom>
+                  Location of Local Farmers
+                </Typography>
                 <Card variant='outlined'>
                   <CardContent>
                     <Typography
@@ -167,7 +180,9 @@ const DashBoardContent = () => {
                       color='text.secondary'
                       gutterBottom
                     >
-                      Local Farmers' Market Locator: Integrate a tool that helps users find nearby farmers' markets to source fresh ingredients locally.
+                      Local Farmers' Market Locator: Integrate a tool that helps
+                      users find nearby farmers' markets to source fresh
+                      ingredients locally.
                     </Typography>
                   </CardContent>
                   <CardActions>
