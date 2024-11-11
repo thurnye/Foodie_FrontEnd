@@ -11,6 +11,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import UpComingEvents from './UpComingEvents/UpComingEvents';
+import FeaturedChefsAndBloggers from './FeaturedChefsAndBloggers/FeaturedChefsAndBloggers';
 
 const bull = (
   <Box
@@ -96,7 +97,8 @@ const DashBoardContent = () => {
                 </Typography>
                 <Card variant='outlined'>
                   <CardContent>
-                    <Typography
+                    <FeaturedChefsAndBloggers />
+                    {/* <Typography
                       sx={{ fontSize: 14 }}
                       color='text.secondary'
                       gutterBottom
@@ -104,11 +106,8 @@ const DashBoardContent = () => {
                       Featured Chefs and Bloggers: Introduce users to guest
                       chefs or food bloggers by featuring their profiles and
                       recipes on the dashboard.
-                    </Typography>
+                    </Typography> */}
                   </CardContent>
-                  <CardActions>
-                    <Button size='small'>Learn More</Button>
-                  </CardActions>
                 </Card>
               </Box>
             </Grid>
