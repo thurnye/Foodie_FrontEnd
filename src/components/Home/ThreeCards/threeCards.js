@@ -61,7 +61,7 @@ export default function threeCards() {
                             <div className="card-body">
                                 <h5 className="card-title">
                                 <Link to={{
-                                        pathname: `/recipe` ,
+                                        pathname: `/recipe/${el._id}` ,
                                         // search: `?q=${(el.recipeName).toLocaleLowerCase().replaceAll(" ", "-")}`,
                                     }}
                                     state={{recipeId: el._id}}
@@ -70,13 +70,17 @@ export default function threeCards() {
 
                                 <p className="card-text ">{truncateText('Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi.Lorem ipsum dolor sit amet, consectetuipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqut enim ad mi')} 
                                 <Link to={{
-                                        pathname: `/recipe` ,
+                                        pathname: `/recipe/${el._id}`,
                                         search: `?q=${("40 mother’s day breakfast and brunch recipes").replaceAll(" ", "-")}`,
                                     }}
                                     state={{recipeId: el._id}}
                                     style={{color: '#1e8aff'}}>Read More</Link>
                                 </p>
-                                <AuthorFooter/>
+                                <AuthorFooter
+                                    thumbnail={el.thumbnail}
+                                    recipeName={el.recipeName}
+                                    recipeId={el._id}
+                                />
                             </div>
 
                         </div>

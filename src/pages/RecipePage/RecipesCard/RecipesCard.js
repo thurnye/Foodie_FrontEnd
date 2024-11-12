@@ -16,7 +16,7 @@ const RecipesCard = ({ recipe }) => {
     <Box className={styles.RecipesCard}>
       <Link
         to={{
-          pathname: `/recipe`,
+          pathname: `/recipe/${recipe._id}`,
           search: `?q=${recipe.basicInfo.recipeName
             .toLocaleLowerCase()
             .replaceAll(' ', '-')}`,

@@ -77,7 +77,7 @@ const UpComingEvents = () => {
                   pr: 2,
                   height: 48,
                 }}
-                key={evt.id}
+                key={getRandomInt()}
               >
                 <ListItemText
                   primary={dayWithSuffix}

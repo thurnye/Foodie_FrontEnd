@@ -1,16 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import Avatar from '../../public/images/imgPlaceholder.jpeg'
 import { useSelector } from 'react-redux';
 import Signature from '../../public/images/signature.png';
 
 export default function AboutMe() {
   const recipe = useSelector((state) => state.recipesData.singleRecipe);
 
-  // if(recipe){
-      console.log(recipe)
-  //     console.log(recipe.author.firstName)
-  // }
   return (
     <>
       <div className='category-container  mb-3 '>

@@ -21,7 +21,7 @@ const DirectionStepper = ({methods}) => {
           {methods.map((methods, index) => {
             const { step } = methods;
             return (
-            <Step key={step.label} expanded={true} active={true} >
+            <Step key={getRandomInt()} expanded={true} active={true} >
               {step.map((el) =>  <React.Fragment key={getRandomInt()}>
                  { el.type === 'title' &&  <StepLabel>{el.value}</StepLabel> }
                   <StepContent sx={{height: 'auto'}}>

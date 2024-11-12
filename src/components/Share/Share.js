@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Share.module.css';
 import {
   EmailIcon,
@@ -7,343 +7,180 @@ import {
   FacebookMessengerIcon,
   FacebookMessengerShareButton,
   FacebookShareButton,
-  FacebookShareCount,
-  GabIcon,
-  GabShareButton,
-  HatenaIcon,
-  HatenaShareButton,
-  HatenaShareCount,
-  InstapaperIcon,
-  InstapaperShareButton,
-  LineIcon,
-  LineShareButton,
   LinkedinIcon,
   LinkedinShareButton,
-  LivejournalIcon,
-  LivejournalShareButton,
-  MailruIcon,
-  MailruShareButton,
-  OKIcon,
-  OKShareButton,
-  OKShareCount,
   PinterestIcon,
   PinterestShareButton,
-  PinterestShareCount,
-  PocketIcon,
-  PocketShareButton,
   RedditIcon,
   RedditShareButton,
-  RedditShareCount,
   TelegramIcon,
   TelegramShareButton,
   TumblrIcon,
   TumblrShareButton,
-  TumblrShareCount,
+  XIcon,
   TwitterShareButton,
-  ViberIcon,
-  ViberShareButton,
-  VKIcon,
-  VKShareButton,
-  VKShareCount,
-  WeiboIcon,
-  WeiboShareButton,
   WhatsappIcon,
   WhatsappShareButton,
-  WorkplaceIcon,
-  WorkplaceShareButton,
-  XIcon,
 } from 'react-share';
+import ShareIcon from '@mui/icons-material/Share';
+import { Box } from '@mui/material';
+import Popper from '@mui/material/Popper';
+import Fade from '@mui/material/Fade';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
 
-// import exampleImage from "./assets/react.svg";
+const Share = ({avatar, title, shareUrl}) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const [placement, setPlacement] = React.useState();
 
-const Share = () => {
-  const shareUrl = 'http://github.com';
-  const title = 'GitHub';
-  const exampleImage = '';
+  const handleClick = (newPlacement) => (event) => {
+    setAnchorEl(event.currentTarget);
+    setOpen((prev) => placement !== newPlacement || !prev);
+    setPlacement(newPlacement);
+  };
+
+
+  // Close Popper when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (anchorEl && !anchorEl.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    if (open) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    // Clean up the event listener when the component unmounts or `open` changes
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [open, anchorEl]);
 
   return (
-    <div className={styles.Share}>
-      <div className='Demo__container'>
-        <div className='Demo__some-network'>
-          <FacebookShareButton
-            url={shareUrl}
-            className='Demo__some-network__share-button'
-          >
-            <FacebookIcon size={32} round />
-          </FacebookShareButton>
+    <Box className={styles.Share}>
+      <Box>
+        <Popper
+          sx={{ zIndex: 1200 }}
+          open={open}
+          anchorEl={anchorEl}
+          placement={placement}
+          transition
+        >
+          {({ TransitionProps }) => (
+            <Fade {...TransitionProps} timeout={350}>
+              <Paper sx={{ width: 100 }}>
+                <Box
+                  className='Demo__container'
+                  sx={{
+                    py: 3,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <Box sx={{ p: 1 }}>
+                    <FacebookShareButton url={shareUrl}>
+                      <FacebookIcon size={32} round />
+                    </FacebookShareButton>
+                  </Box>
 
-          <div>
-            <FacebookShareCount
-              url={shareUrl}
-              className='Demo__some-network__share-count'
-            >
-              {(count) => count}
-            </FacebookShareCount>
-          </div>
-        </div>
+                  <Box sx={{ p: 1 }}>
+                    <FacebookMessengerShareButton
+                      url={shareUrl}
+                      appId='521270401588372'
+                    >
+                      <FacebookMessengerIcon size={32} round />
+                    </FacebookMessengerShareButton>
+                  </Box>
 
-        <div className='Demo__some-network'>
-          <FacebookMessengerShareButton
-            url={shareUrl}
-            appId='521270401588372'
-            className='Demo__some-network__share-button'
-          >
-            <FacebookMessengerIcon size={32} round />
-          </FacebookMessengerShareButton>
-        </div>
+                  <Box sx={{ p: 1 }}>
+                    <TwitterShareButton url={shareUrl} title={title}>
+                      <XIcon size={32} round />
+                    </TwitterShareButton>
+                  </Box>
 
-        <div className='Demo__some-network'>
-          <TwitterShareButton
-            url={shareUrl}
-            title={title}
-            className='Demo__some-network__share-button'
-          >
-            <XIcon size={32} round />
-          </TwitterShareButton>
-        </div>
+                  <Box sx={{ p: 1 }}>
+                    <TelegramShareButton url={shareUrl} title={title}>
+                      <TelegramIcon size={32} round />
+                    </TelegramShareButton>
+                  </Box>
 
-        <div className='Demo__some-network'>
-          <TelegramShareButton
-            url={shareUrl}
-            title={title}
-            className='Demo__some-network__share-button'
-          >
-            <TelegramIcon size={32} round />
-          </TelegramShareButton>
-        </div>
+                  <Box sx={{ p: 1 }}>
+                    <WhatsappShareButton
+                      url={shareUrl}
+                      title={title}
+                      separator=':: '
+                    >
+                      <WhatsappIcon size={32} round />
+                    </WhatsappShareButton>
+                  </Box>
 
-        <div className='Demo__some-network'>
-          <WhatsappShareButton
-            url={shareUrl}
-            title={title}
-            separator=':: '
-            className='Demo__some-network__share-button'
-          >
-            <WhatsappIcon size={32} round />
-          </WhatsappShareButton>
-        </div>
+                  <Box sx={{ p: 1 }}>
+                    <LinkedinShareButton url={shareUrl}>
+                      <LinkedinIcon size={32} round />
+                    </LinkedinShareButton>
+                  </Box>
 
-        <div className='Demo__some-network'>
-          <LinkedinShareButton
-            url={shareUrl}
-            className='Demo__some-network__share-button'
-          >
-            <LinkedinIcon size={32} round />
-          </LinkedinShareButton>
-        </div>
+                  <Box sx={{ p: 1 }}>
+                    <PinterestShareButton
+                      url={String(window.location)}
+                      media={`${String(window.location)}/${avatar}`}
+                    >
+                      <PinterestIcon size={32} round />
+                    </PinterestShareButton>
+                  </Box>
 
-        <div className='Demo__some-network'>
-          <PinterestShareButton
-            url={String(window.location)}
-            media={`${String(window.location)}/${exampleImage}`}
-            className='Demo__some-network__share-button'
-          >
-            <PinterestIcon size={32} round />
-          </PinterestShareButton>
+                  <Box sx={{ p: 1 }}>
+                    <RedditShareButton
+                      url={shareUrl}
+                      title={title}
+                      windowWidth={660}
+                      windowHeight={460}
+                    >
+                      <RedditIcon size={32} round />
+                    </RedditShareButton>
+                  </Box>
 
-          <div>
-            <PinterestShareCount
-              url={shareUrl}
-              className='Demo__some-network__share-count'
+                  <Box sx={{ p: 1 }}>
+                    <TumblrShareButton url={shareUrl} title={title}>
+                      <TumblrIcon size={32} round />
+                    </TumblrShareButton>
+                  </Box>
+
+                  <Box sx={{ p: 1 }}>
+                    <EmailShareButton
+                      url={shareUrl}
+                      subject={title}
+                      body='body'
+                    >
+                      <EmailIcon size={32} round />
+                    </EmailShareButton>
+                  </Box>
+                </Box>
+              </Paper>
+            </Fade>
+          )}
+        </Popper>
+
+        <Box>
+          <IconButton onClick={handleClick('right')}>
+            <ShareIcon
+              sx={{
+                // color: '#e60023',
+                cursor: 'pointer',
+              }}
+              aria-label='share'
             />
-          </div>
-        </div>
-
-        <div className='Demo__some-network'>
-          <VKShareButton
-            url={shareUrl}
-            image={`${String(window.location)}/${exampleImage}`}
-            className='Demo__some-network__share-button'
-          >
-            <VKIcon size={32} round />
-          </VKShareButton>
-
-          <div>
-            <VKShareCount
-              url={shareUrl}
-              className='Demo__some-network__share-count'
-            />
-          </div>
-        </div>
-
-        <div className='Demo__some-network'>
-          <OKShareButton
-            url={shareUrl}
-            image={`${String(window.location)}/${exampleImage}`}
-            className='Demo__some-network__share-button'
-          >
-            <OKIcon size={32} round />
-          </OKShareButton>
-
-          <div>
-            <OKShareCount
-              url={shareUrl}
-              className='Demo__some-network__share-count'
-            />
-          </div>
-        </div>
-
-        <div className='Demo__some-network'>
-          <RedditShareButton
-            url={shareUrl}
-            title={title}
-            windowWidth={660}
-            windowHeight={460}
-            className='Demo__some-network__share-button'
-          >
-            <RedditIcon size={32} round />
-          </RedditShareButton>
-
-          <div>
-            <RedditShareCount
-              url={shareUrl}
-              className='Demo__some-network__share-count'
-            />
-          </div>
-        </div>
-
-        <div className='Demo__some-network'>
-          <GabShareButton
-            url={shareUrl}
-            title={title}
-            windowWidth={660}
-            windowHeight={640}
-            className='Demo__some-network__share-button'
-          >
-            <GabIcon size={32} round />
-          </GabShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <TumblrShareButton
-            url={shareUrl}
-            title={title}
-            className='Demo__some-network__share-button'
-          >
-            <TumblrIcon size={32} round />
-          </TumblrShareButton>
-
-          <div>
-            <TumblrShareCount
-              url={shareUrl}
-              className='Demo__some-network__share-count'
-            />
-          </div>
-        </div>
-
-        <div className='Demo__some-network'>
-          <LivejournalShareButton
-            url={shareUrl}
-            title={title}
-            description={shareUrl}
-            className='Demo__some-network__share-button'
-          >
-            <LivejournalIcon size={32} round />
-          </LivejournalShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <MailruShareButton
-            url={shareUrl}
-            title={title}
-            className='Demo__some-network__share-button'
-          >
-            <MailruIcon size={32} round />
-          </MailruShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <EmailShareButton
-            url={shareUrl}
-            subject={title}
-            body='body'
-            className='Demo__some-network__share-button'
-          >
-            <EmailIcon size={32} round />
-          </EmailShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <ViberShareButton
-            url={shareUrl}
-            title={title}
-            className='Demo__some-network__share-button'
-          >
-            <ViberIcon size={32} round />
-          </ViberShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <WorkplaceShareButton
-            url={shareUrl}
-            quote={title}
-            className='Demo__some-network__share-button'
-          >
-            <WorkplaceIcon size={32} round />
-          </WorkplaceShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <LineShareButton
-            url={shareUrl}
-            title={title}
-            className='Demo__some-network__share-button'
-          >
-            <LineIcon size={32} round />
-          </LineShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <WeiboShareButton
-            url={shareUrl}
-            title={title}
-            image={`${String(window.location)}/${exampleImage}`}
-            className='Demo__some-network__share-button'
-          >
-            <WeiboIcon size={32} round />
-          </WeiboShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <PocketShareButton
-            url={shareUrl}
-            title={title}
-            className='Demo__some-network__share-button'
-          >
-            <PocketIcon size={32} round />
-          </PocketShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <InstapaperShareButton
-            url={shareUrl}
-            title={title}
-            className='Demo__some-network__share-button'
-          >
-            <InstapaperIcon size={32} round />
-          </InstapaperShareButton>
-        </div>
-
-        <div className='Demo__some-network'>
-          <HatenaShareButton
-            url={shareUrl}
-            title={title}
-            windowWidth={660}
-            windowHeight={460}
-            className='Demo__some-network__share-button'
-          >
-            <HatenaIcon size={32} round />
-          </HatenaShareButton>
-
-          <div>
-            <HatenaShareCount
-              url={shareUrl}
-              className='Demo__some-network__share-count'
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+          </IconButton>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 

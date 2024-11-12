@@ -9,14 +9,12 @@ import Category from '../../../components/Home/RightContents/Categories/category
 import AboutMe from '../../../components/SingleRecipe/aboutMe';
 import FoodsAd from '../../../components/SingleRecipe/foodAd';
 import './singleRecipe.css';
-
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import NewSingleRecipe from '../../../components/NewSingleRecipe/NewSingleRecipe';
 import ReviewList from '../../../components/NewSingleRecipe/Reviews/ReviewList/ReviewList';
 
 export default function SingleMeal() {
-  const location = useLocation();
-  const recipeId = location.state?.recipeId;
+  const { recipeId } = useParams();
   const dispatch = useDispatch();
   const [recipe, setRecipe] = useState(null);
 
@@ -37,31 +35,31 @@ export default function SingleMeal() {
   }, [recipeId, dispatch]);
 
   return (
-    <section className=''>
-      <div className=' container'>
-        <div className='card mb-3'>
-          <div className='row '>
-            {recipe && (
-              <>
-                <div className='col-md-8 ' style={{ marginBottom: '5vh' }}>
-                  <h1>{recipe.recipeName}</h1>
-                  <NewSingleRecipe recipe={recipe} />
-                </div>
-                <div className='col-md-4 '>
-                  <AppAdvert />
-                  <AboutMe />
-                  <FoodsAd />
-                  <NewsLetter />
-                  <LatestRecipesList />
-                  <Category />
-                  <ReviewList />
-                </div>
-              </>
-            )}
-            {!recipe && <h1>Loading</h1>}
+      <section className=''>
+        <div className=' container'>
+          <div className='card mb-3'>
+            <div className='row '>
+              {recipe && (
+                <>
+                  <div className='col-md-8 ' style={{ marginBottom: '5vh' }}>
+                    <h1>{recipe.recipeName}</h1>
+                    <NewSingleRecipe recipe={recipe} />
+                  </div>
+                  <div className='col-md-4 '>
+                    <AppAdvert />
+                    <AboutMe />
+                    <FoodsAd />
+                    <NewsLetter />
+                    <LatestRecipesList />
+                    <Category />
+                    <ReviewList />
+                  </div>
+                </>
+              )}
+              {!recipe && <h1>Loading</h1>}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
   );
 }

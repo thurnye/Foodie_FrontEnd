@@ -11,7 +11,8 @@ const NewAvatar = ({ title, image, subHeader, id }) => {
     <div className={styles.NewAvatar}>
       <CardHeader
         sx={{
-          cursor: 'pointer'
+          cursor: 'pointer',
+          width: 'fit-content'
         }}
         onClick={() =>
           id &&
