@@ -20,7 +20,7 @@ export default function homeJumbotron() {
                   <h5 className='card-title'>
                     <Link
                       to={{
-                        pathname: `/recipe`,
+                        pathname: `/recipe/664e404cb4513dfa42a767cc`,
                         search: `?q=${'mixed berry pie with fresh fruits'.replaceAll(
                           ' ',
                           '-'
@@ -39,7 +39,7 @@ export default function homeJumbotron() {
                     )}
                     <Link
                       to={{
-                        pathname: `/recipe`,
+                        pathname: `/recipe/664e404cb4513dfa42a767cc`,
                         search: `?q=${'mixed berry pie with fresh fruits'
                           .toLowerCase()
                           .replaceAll(' ', '-')}`,
@@ -50,7 +50,11 @@ export default function homeJumbotron() {
                       Read More
                     </Link>
                   </p>
-                  <AuthorFooter />
+                  <AuthorFooter
+                    thumbnail={Bg2}
+                    recipeName={'Mixed berry pie with fresh fruits'}
+                    recipeId={'664e404cb4513dfa42a767cc'}
+                  />
                 </div>
               </div>
             </div>

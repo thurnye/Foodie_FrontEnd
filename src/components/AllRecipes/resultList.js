@@ -123,7 +123,7 @@ export default function ResultList(props) {
                     <h5 className='card-title result-title'>
                       <Link
                         to={{
-                          pathname: `/recipe`,
+                          pathname: `/recipe/${el._id}`,
                           search: `?q=${el.basicInfo.recipeName
                             .toLocaleLowerCase()
                             .replaceAll(' ', '-')}`,

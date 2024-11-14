@@ -343,3 +343,36 @@ export const truncateTextLong = (text, wordLimit) => {
   return text;
 }
 
+
+export function formatDateWithSuffix(dateString) {
+  const date = new Date(dateString);
+  const day = date.getDate();
+
+  // Determine the correct suffix for the day
+  const getDaySuffix = (day) => {
+    if (day % 100 >= 11 && day % 100 <= 13) return "th"; // Special case for 11th, 12th, and 13th
+    switch (day % 10) {
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
+    }
+  };
+
+  const dayWithSuffix = (
+    <span>
+      {day}
+      <sup>{getDaySuffix(day)}</sup>
+    </span>
+  );
+
+  // Format the month and year
+  const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(date);
+  const year = date.getFullYear();
+
+  return { dayWithSuffix, month, year };
+}

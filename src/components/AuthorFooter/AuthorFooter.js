@@ -1,9 +1,11 @@
 import React from 'react';
 import Avatar from '../Avatar/Avatar';
 import styles from './AuthorFooter.module.css';
-import { Share2, Bookmark } from 'react-feather';
+import { Bookmark } from 'react-feather';
+import Share from '../Share/Share';
+import { baseUrl } from '../../util/http-commons';
 
-const AuthorFooter = () => (
+const AuthorFooter = ({thumbnail, recipeName, recipeId}) => (
   <div className={styles.AuthorFooter}>
     <div className={`${styles.editor} d-flex `}>
       <div className={`${styles.contentAuthor}`}>
@@ -18,11 +20,11 @@ const AuthorFooter = () => (
         </p>
       </div>
       <div className={`${styles.contentShareIcon} d-flex`}>
-        <p className='share'>
-          <span className='card-icon'>
-            <Share2 strokeWidth='1' />{' '}
-          </span>
-        </p>
+         <Share
+          avatar={thumbnail}
+          title={recipeName}
+          shareUrl={`${baseUrl}/recipe/${recipeId}`}
+        />
 
         <p className='bookmark'>
           <span className='card-icon'>

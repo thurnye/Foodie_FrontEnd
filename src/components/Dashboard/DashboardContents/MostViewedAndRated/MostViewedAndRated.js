@@ -1,12 +1,6 @@
 import React from 'react';
-import LatestRecipesList from '../LatestRecipe/latestRecipesList';
-import Category from '../Categories/category';
-import NewsLetter from '../NewsLetter/newsLetter';
-import AppAdvert from '../AppAds/appAdvert';
-import MySocialMedia from '../SocialMedia/mySocialMedia';
-import Headings from '../../../UI/heading';
-import MealApp from '../../../../public/images/adverts/ad.jpeg';
-import UTube from '../../../../public/images/adverts/utube.png';
+import styles from './MostViewedAndRated.module.css';
+import DashboardRecipeCard from '../DashboardRecipeCard/DashboardRecipeCard';
 import Img6 from '../../../../public/images/recentRecipes/img6.jpeg';
 import Img7 from '../../../../public/images/recentRecipes/img7.jpeg';
 import Img8 from '../../../../public/images/recentRecipes/img8.jpeg';
@@ -15,9 +9,9 @@ import Img10 from '../../../../public/images/recentRecipes/img10.jpeg';
 import Img11 from '../../../../public/images/recentRecipes/img11.jpeg';
 import Img12 from '../../../../public/images/recentRecipes/img12.jpeg';
 import Img13 from '../../../../public/images/recentRecipes/img13.jpeg';
-import RecentRecipeList from '../../../RecentContainer/RecentRecipeList';
 
-const recent = [
+
+const recipes = [
   {
     recipeName: 'The best fluffy buttermilk pancakes with triple berry sauce',
     description:
@@ -106,33 +100,16 @@ const recent = [
     link: '/all-recipes',
     length: '0:30',
   },
-];
+]
 
-export default function recentRecipe() {
-  return (
-    <>
-      <section className='recent-recipe'>
-        <div className='container'>
-          <Headings title='Recent recipes' />
-        </div>
-        <div className='recipes container'>
-          <div className='card mb-3'>
-            <div className='row g-0'>
-              <div className='col-md-8 recipes-card-container'>
-                <RecentRecipeList recent={recent} />
-              </div>
-              <div className='col-md-4 '>
-                <Category />
-                <NewsLetter />
-                <LatestRecipesList />
-                <AppAdvert src={MealApp} title={'Meal App'} />
-                <MySocialMedia />
-                <AppAdvert src={UTube} title={'youtube'} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
+const MostViewedAndRated = () => {
+  
+  return(
+  <div className={styles.MostViewedAndRated}>
+    <DashboardRecipeCard recipes={recipes}/>
+  </div>
+)};
+
+
+
+export default MostViewedAndRated;

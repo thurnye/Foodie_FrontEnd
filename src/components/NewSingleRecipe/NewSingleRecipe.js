@@ -3,10 +3,6 @@ import styles from './NewSingleRecipe.module.css';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import NewAvatar from '../NewAvatar/NewAvatar';
-import { FaPinterestSquare } from 'react-icons/fa';
-import { FaLinkedin } from 'react-icons/fa';
-import { FaFacebookSquare } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6';
 import parser from 'html-react-parser';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -30,11 +26,12 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import { MdExpandMore } from 'react-icons/md';
+import Share from '../Share/Share';
+import { baseUrl } from '../../util/http-commons';
+import HelmentSEO from '../HelmentSEO/HelmentSEO';
 
 const NewSingleRecipe = ({ recipe }) => {
   const { basicInfo, details, nutritionalFacts, directions } = recipe;
-
-  console.log(recipe)
 
   const { recipeName, duration, level, serving, tags } = basicInfo;
 
@@ -43,89 +40,45 @@ const NewSingleRecipe = ({ recipe }) => {
 
   return (
     <Box className={styles.NewSingleRecipe}>
+      <HelmentSEO
+        title={recipeName}
+        description={''}
+        thumbnail={recipe.thumbnail}
+        name={recipeName}
+        type={'article'}
+        url={`${baseUrl}/recipe/${recipe.id}`}
+      />
       <Typography variant='h3' gutterBottom>
         {recipeName}
       </Typography>
       <Box
         sx={{
           display: 'flex',
-          justifyContent: { xs: 'flex-start', md: 'space-between' },
-          alignItems: { xs: 'flex-start', md: 'center' },
-          flexDirection: { xs: 'column', md: 'row' },
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}
       >
-        <NewAvatar
-          title={recipe.author ? `${recipe?.author?.firstName} ${recipe?.author?.lastName}` : 'John Doe'}
-          image={recipe?.author?.avatar}
-          subHeader={recipe?.createdAt ? getDateShort(recipe?.createdAt) : getDateShort(new Date())}
-          id={recipe?.author?._id}
-        />
-
-        <Box
-          sx={{
-            width: { xs: '100%', md: 'initial' },
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-          }}
-        >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              background: '#4267B2',
-              mr: 1,
-              padding: '3px',
-            }}
-          >
-            <FaFacebookSquare color='white' />
-            <Typography variant='caption' display='block' color='white'>
-              Facebook
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              mr: 1,
-              padding: '3px',
-              background: 'black',
-            }}
-          >
-            <FaXTwitter color='white' />
-            <Typography variant='caption' display='block' color='black'>
-              X-twitter
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              mr: 1,
-              padding: '3px',
-              background: '#2867B2',
-            }}
-          >
-            <FaLinkedin color='white' />
-            <Typography variant='caption' display='block' color='white'>
-              LinkedIn
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              mr: 1,
-              padding: '3px',
-              background: '#E60023',
-            }}
-          >
-            <FaPinterestSquare color='white' />
-            <Typography variant='caption' display='block' color='white'>
-              Pinterest
-            </Typography>
-          </Box>
+        <Box sx={{ flexGrow: 1 }}>
+          <NewAvatar
+            title={
+              recipe.author
+                ? `${recipe?.author?.firstName} ${recipe?.author?.lastName}`
+                : 'John Doe'
+            }
+            image={recipe?.author?.avatar}
+            subHeader={
+              recipe?.createdAt
+                ? getDateShort(recipe?.createdAt)
+                : getDateShort(new Date())
+            }
+            id={recipe?.author?._id}
+          />
         </Box>
+        <Share
+          avatar={thumbnail}
+          title={recipeName}
+          shareUrl={window.location.href}
+        />
       </Box>
 
       <Box
@@ -182,9 +135,7 @@ const NewSingleRecipe = ({ recipe }) => {
         <Box>
           {about?.map((el, i) => (
             <Box sx={{ width: '100%', my: 2 }} key={getRandomInt()}>
-              {el.type === 'text' && (
-                <Typography>{parser(el.value)}</Typography>
-              )}
+              {el.type === 'text' && parser(el.value)}
               {el.type === 'image' && (
                 <Box sx={{ maxWidth: 650, m: 'auto' }}>
                   <Box sx={{ mb: 3 }}>
@@ -284,7 +235,7 @@ const NewSingleRecipe = ({ recipe }) => {
             mt: 5,
             display: 'flex',
             flexWrap: 'wrap',
-            alignItems: 'center'
+            alignItems: 'center',
           }}
         >
           <Typography sx={{ mr: 1, mb: 1 }}>Tags:</Typography>

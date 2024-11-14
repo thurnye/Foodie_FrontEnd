@@ -115,7 +115,7 @@ export default function Welcome({ author }) {
                       <h6 className='card-recipeName'>
                         <Link
                           to={{
-                            pathname: `/recipe`,
+                            pathname: `/recipe/${recipe._id}`,
                             search: `?q=${recipe.recipeName
                               .toLocaleLowerCase()
                               .replaceAll(' ', '-')}`,

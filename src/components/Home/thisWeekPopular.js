@@ -112,7 +112,7 @@ export default function thisWeekPopular() {
                     <h6 className='card-title popular-week-title '>
                       <Link
                         to={{
-                          pathname: `/recipe`,
+                          pathname: `/recipe/${el._id}`,
                           search: `?q=${el.query.replaceAll(
                             ' ',
                             '-'
