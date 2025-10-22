@@ -21,6 +21,7 @@ import { userActions } from '../../store/userSlice';
 import Logo from '../../public/images/logo.png';
 import SwipeableMenuDrawer from './SwipeableMenuDrawer';
 import useAppNavigate from '../../util/useAppNavigation';
+import { useAppSelector } from '../../app/hooks/app.hooks';
 
 const appNav = [
   {
@@ -48,7 +49,8 @@ const appNav = [
 function AccountMenu() {
   const dispatch = useDispatch();
   const navigate = useAppNavigate();
-  const user = useSelector((state) => state.userLog.user);
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
+  console.log('user from account menu:::', user);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -69,6 +71,8 @@ function AccountMenu() {
       navigate('/login');
     }
   };
+
+  console.log('isAuthenticated:::', isAuthenticated);
 
   return (
     <Container maxWidth='xl'>
@@ -102,7 +106,7 @@ function AccountMenu() {
                 </Box>
               ))}
             </Box>
-            {!user ? (
+            {!isAuthenticated ? (
               <>
                 <Link to={'/login'}>Login / Signup</Link>
               </>

@@ -1,101 +1,89 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import styles from './Login.module.css';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Box,
+  Grid,
+  Typography,
+  Container,
+} from '@mui/material';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import Container from '@mui/material/Container';
+
+import { useForm, SubmitHandler } from 'react-hook-form';
+
 import services from '../../../util/services';
 import { userActions } from '../../../store/userSlice';
 import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
-import { Divider } from '@mui/material';
-import Google from '../Google/Google';
 import { decodeJWToken } from '../../../util/commons';
+import { isValidEmail } from '../../../shared/utils/security.utils';
+import { loginUser } from '../redux/slice/asyncThunkServices';
+import { useAppDispatch } from '../../../app/hooks/app.hooks';
+import { AUTH_ERROR_MESSAGES } from '../constants/auth.constants';
+import Google from '../services/Google';
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant='body2'
-      color='text.secondary'
-      align='center'
-      {...props}
-    >
-      {'Copyright © '}
-      <Link color='inherit' href='https://mui.com/'>
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
+interface ILoginFormInputs {
+  email: string;
+  password: string;
 }
 
 const defaultTheme = createTheme();
 
-// password: Password123!
-const Login = () => {
-  const dispatch = useDispatch();
+const Login: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [data, setData] = useState();
 
-  // FeedBack States
-  const [open, setOpen] = useState(false);
-  const [reqLoading, setReqLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [showCancel, setShowCancel] = useState(false);
-  const [message, setMessage] = useState('');
+  // RHF form setup
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+  } = useForm<ILoginFormInputs>({
+    mode: 'onTouched',
+    defaultValues: {
+      email: 'testprogram404@gmail.com',
+      password: 'Password123!',
+    },
+  });
 
-  const handleSubmit = async (event) => {
+  
+
+  const onSubmit: SubmitHandler<ILoginFormInputs> = async (data) => {
+    // basic validation
+    if (!isValidEmail(data.email)) {
+      setError('email', { message: 'Please enter a valid email address' });
+      return;
+    }
+    if (data.password.length < 6) {
+      setError('password', {
+        message: 'Password must be at least 6 characters',
+      });
+      return;
+    }
+
     try {
-      event.preventDefault();
-      setIsError(false);
-      setSaved(false);
-      setReqLoading(true);
-      setOpen(true);
-      setMessage('');
-      setShowCancel(false);
-
-      const data = new FormData(event.currentTarget);
-      const loginData = {
-        email: data.get('email'),
-        password: data.get('password'),
-      };
-      const result = await services.postLogin(loginData);
-      let token = result.data;
-      localStorage.setItem('token', token);
-      const userDoc = decodeJWToken(token);
-      dispatch(
-        userActions.login({
-          user: userDoc,
-        })
-      );
-      setReqLoading(false);
+      await dispatch(
+        loginUser({ email: data.email, password: data.password })
+      ).unwrap();
       navigate('/');
-    } catch (error) {
-      console.log('ERROR:::', error);
-      const errMsg = error.response?.data;
-      setMessage(errMsg);
-      setReqLoading(false);
-      setShowCancel(false);
-      setSaved(false);
-      setIsError(true);
-      setOpen(true);
+    } catch (err: any) {
+      console.log(err)
+      setError('root', {
+        message: err.message || AUTH_ERROR_MESSAGES.INVALID_CREDENTIALS,
+      });
     }
   };
 
   return (
-    <div className={styles.Login}>
+    <div>
       <ThemeProvider theme={defaultTheme}>
         <Container component='main' maxWidth='xs'>
           <CssBaseline />
@@ -113,46 +101,67 @@ const Login = () => {
             <Typography component='h1' variant='h5'>
               Sign in
             </Typography>
+
+            {/* RHF form */}
             <Box
               component='form'
-              onSubmit={handleSubmit}
               noValidate
+              onSubmit={handleSubmit(onSubmit)}
               sx={{ mt: 1 }}
             >
               <TextField
                 margin='normal'
-                required
                 fullWidth
                 id='email'
                 label='Email Address'
-                name='email'
                 autoComplete='email'
                 autoFocus
+                {...register('email', {
+                  required: 'Email is required',
+                  pattern: {
+                    value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                    message: 'Enter a valid email',
+                  },
+                })}
+                error={!!errors.email}
+                helperText={errors.email?.message}
               />
+
               <TextField
                 margin='normal'
-                required
                 fullWidth
-                name='password'
-                label='Password'
                 type='password'
                 id='password'
+                label='Password'
                 autoComplete='current-password'
+                {...register('password', {
+                  required: 'Password is required',
+                  minLength: {
+                    value: 6,
+                    message: 'Password must be at least 6 characters',
+                  },
+                })}
+                error={!!errors.password}
+                helperText={errors.password?.message}
               />
+
               <FormControlLabel
                 control={<Checkbox value='remember' color='primary' />}
                 label='Remember me'
               />
+
               <Button
                 type='submit'
                 fullWidth
                 variant='contained'
+                disabled={isSubmitting}
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                {isSubmitting ? 'Signing In...' : 'Sign In'}
               </Button>
-              {/* Sign up with Google */}
-              <Box sx={{mb:3}}>
+
+              {/* Sign in with Google */}
+              <Box sx={{ mb: 3 }}>
                 <Box
                   display='flex'
                   alignItems='center'
@@ -183,25 +192,38 @@ const Login = () => {
               </Grid>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 8, mb: 4 }} />
 
-          <RequestFeedback
+          <Typography
+            variant='body2'
+            color='text.secondary'
+            align='center'
+            sx={{ mt: 8, mb: 4 }}
+          >
+            {'Copyright © '}
+            <Link color='inherit' href='https://mui.com/'>
+              Your Website
+            </Link>{' '}
+            {new Date().getFullYear()}
+            {'.'}
+          </Typography>
+
+          {/* <RequestFeedback
             successMessage={message}
             errorMessage={message}
             open={open}
             setOpen={setOpen}
-            loading={reqLoading}
+            loading={isSubmitting}
             isError={isError}
             saved={saved}
             showCancel={showCancel}
             handleError={() => setOpen(!open)}
-            errorBtnLabel={'close'}
+            errorBtnLabel="Close"
             handleSuccess={() => {
               setOpen(!open);
               navigate('/all');
             }}
-            successBtnLabel={'close'}
-          />
+            successBtnLabel="Close"
+          /> */}
         </Container>
       </ThemeProvider>
     </div>
