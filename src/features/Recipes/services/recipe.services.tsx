@@ -1,37 +1,58 @@
 /**
  * Recipe API Service
- * - Create or update depending on ID
  */
 
 import { apiClient } from '../../../shared/services/apiClient.service';
-import { IRecipeData } from '../types/recipe.types';
+import { IRecipe, IRecipeQueryParams, IRecipeResponse } from '../types/recipe.types';
 
 class RecipeApi {
   /**
-   * Get all recipes
+   * Get all recipes with filtering and sorting
    */
-  async getRecipes(): Promise<IRecipeData[]> {
-    return apiClient.get<IRecipeData[]>('/recipe');
+  async getRecipes(params?: IRecipeQueryParams): Promise<IRecipeResponse> {
+    const axiosClient = apiClient.getClient();
+    const response = await axiosClient.post<any>('/recipe', params || {});
+
+    // Extract data and pagination from the API response
+    const recipes = response.data.data || [];
+    const pagination = response.data.pagination;
+
+    return {
+      success: true,
+      data: recipes,
+      pagination: pagination || undefined,
+    };
   }
 
   /**
-   * Save recipe — create if no ID, update if ID exists
+   * Get single recipe by ID
    */
-  async saveRecipe(data: IRecipeData): Promise<IRecipeData> {
-    if (data.id) {
-      // Update existing
-      return apiClient.put<IRecipeData>(`/recipe/${data.id}`, data);
-    } else {
-      // Create new
-      return apiClient.post<IRecipeData>('/recipe', data);
-    }
+  async getRecipeById(recipeId: string): Promise<IRecipe> {
+    const response = await apiClient.get<IRecipe>(`/recipe/${recipeId}`);
+    return response;
+  }
+
+  /**
+   * Create new recipe
+   */
+  async createRecipe(userId: string, data: any): Promise<IRecipe> {
+    const response = await apiClient.post<{ success: boolean; data: IRecipe }>(`/recipe/add/${userId}`, data);
+    return response.data;
+  }
+
+  /**
+   * Update existing recipe
+   */
+  async updateRecipe(recipeId: string, data: any): Promise<IRecipe> {
+    const response = await apiClient.post<{ success: boolean; data: IRecipe }>(`/recipe/${recipeId}`, data);
+    return response.data;
   }
 
   /**
    * Delete recipe
    */
   async deleteRecipe(recipeId: string): Promise<void> {
-    return apiClient.delete<void>(`/recipe/${recipeId}`);
+    await apiClient.delete<void>(`/recipe/${recipeId}`);
   }
 }
 

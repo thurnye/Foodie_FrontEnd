@@ -29,10 +29,6 @@ class AuthApiService {
       .getClient()
       .post<any>('/auth/login', credentials);
 
-    // console.log('[Auth API] Login response status:', axiosResponse.status);
-    // console.log('[Auth API] Login response headers:', axiosResponse.headers);
-    // console.log('[Auth API] Login response data:', axiosResponse.data);
-
     // Check for Set-Cookie header (even though we can't read HttpOnly cookies)
     const setCookieHeader = axiosResponse.headers['set-cookie'];
     // console.log('[Auth API] Set-Cookie header:', setCookieHeader);
@@ -41,7 +37,7 @@ class AuthApiService {
     const accessToken = axiosResponse.headers['x-access-token'];
 
     if (!accessToken) {
-      console.error('[Auth API] ❌ No access token in response headers!');
+      console.error('[Auth API]  No access token in response headers!');
       throw new Error('No access token received from server');
     }
 

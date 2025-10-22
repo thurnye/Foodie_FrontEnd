@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ApiClientError } from '../../../shared/types/api.types';
 import { RecipeApiService } from '../services/recipe.services';
-import { IRecipeData } from '../types/recipe.types';
+import { IRecipeQueryParams } from '../types/recipe.types';
 
 export const fetchRecipes = createAsyncThunk(
   'recipes/fetchRecipes',
-  async (_, { rejectWithValue }) => {
+  async (params: IRecipeQueryParams = {}, { rejectWithValue }) => {
     try {
-      return await RecipeApiService.getRecipes();
+      return await RecipeApiService.getRecipes(params);
     } catch (error) {
       const err =
         error instanceof ApiClientError
@@ -18,16 +18,16 @@ export const fetchRecipes = createAsyncThunk(
   }
 );
 
-export const saveRecipe = createAsyncThunk(
-  'recipes/saveRecipe',
-  async (data: IRecipeData, { rejectWithValue }) => {
+export const fetchRecipeById = createAsyncThunk(
+  'recipes/fetchRecipeById',
+  async (recipeId: string, { rejectWithValue }) => {
     try {
-      return await RecipeApiService.saveRecipe(data);
+      return await RecipeApiService.getRecipeById(recipeId);
     } catch (error) {
       const err =
         error instanceof ApiClientError
           ? error.message
-          : 'Failed to save recipes';
+          : 'Failed to fetch recipe';
       return rejectWithValue(err);
     }
   }
@@ -35,15 +35,15 @@ export const saveRecipe = createAsyncThunk(
 
 export const deleteRecipe = createAsyncThunk(
   'recipes/deleteRecipe',
-  async (recipesId: string, { rejectWithValue }) => {
+  async (recipeId: string, { rejectWithValue }) => {
     try {
-      await RecipeApiService.deleteRecipe(recipesId);
-      return recipesId;
+      await RecipeApiService.deleteRecipe(recipeId);
+      return recipeId;
     } catch (error) {
       const err =
         error instanceof ApiClientError
           ? error.message
-          : 'Failed to delete recipes';
+          : 'Failed to delete recipe';
       return rejectWithValue(err);
     }
   }

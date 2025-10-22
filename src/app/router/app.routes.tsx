@@ -5,7 +5,7 @@ import PublicRoute from './wrappers/PublicRoutes';
 import ProtectedRoute from './wrappers/ProtectedRoutes';
 import { authRoutes } from '../../features/auth/router/auth.routes';
 // import PageNotFound from '../pages/PageNotFound';
-// import { homeRoutes } from '../../features/home/router/home.router';
+import { homeRoutes } from '../../features/Home/router/home.router';
 // import { userRoutes } from '../../features/user/router/user.router';
 import { recipesRoutes } from '../../features/recipes/router/recipe.router';
 // import { donationsRoutes } from '../../features/donation/router/donation.router';
@@ -13,6 +13,10 @@ import { recipesRoutes } from '../../features/recipes/router/recipe.router';
 export default function AppRoutes() {
   const routes = useRoutes([
     ...authRoutes.map((route) => ({
+      ...route,
+      element: <PublicRoute>{route.element}</PublicRoute>,
+    })),
+    ...homeRoutes.map((route) => ({
       ...route,
       element: <PublicRoute>{route.element}</PublicRoute>,
     })),

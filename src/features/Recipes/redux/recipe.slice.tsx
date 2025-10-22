@@ -1,24 +1,31 @@
 /**
- * Recipes Redux Slice (Unified Create/Update)
+ * Recipes Redux Slice
  */
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { ApiClientError } from '../../../shared/types/api.types';
+import { createSlice } from '@reduxjs/toolkit';
 import { IRecipe } from '../types/recipe.types';
-import { deleteRecipe, fetchRecipes, saveRecipe } from './recipe.asyncThrunkService';
+import { deleteRecipe, fetchRecipeById, fetchRecipes } from './recipe.asyncThrunkService';
 
 interface IRecipesState {
   recipes: IRecipe[];
+  currentRecipe: IRecipe | null;
   loading: boolean;
   error: string | null;
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  } | null;
 }
 
 const initialState: IRecipesState = {
   recipes: [],
+  currentRecipe: null,
   loading: false,
   error: null,
+  pagination: null,
 };
-
 
 // --- Slice ---
 
@@ -28,6 +35,9 @@ const recipesSlice = createSlice({
   reducers: {
     clearError: (state) => {
       state.error = null;
+    },
+    clearCurrentRecipe: (state) => {
+      state.currentRecipe = null;
     },
   },
   extraReducers: (builder) => {
@@ -44,38 +54,23 @@ const recipesSlice = createSlice({
       .addCase(fetchRecipes.pending, startLoading)
       .addCase(fetchRecipes.fulfilled, (state, action) => {
         stopLoading(state);
-        state.recipes = action.payload.map((recipes) => ({
-          ...recipes,
-          id: recipes.id ?? '',
-        }));
+        console.log('Fetched Recipes:', action.payload);
+        state.recipes = action.payload?.data || [];
+        state.pagination = action.payload?.pagination || null;
       })
       .addCase(fetchRecipes.rejected, (state, action) => {
         stopLoading(state);
         state.error = action.payload as string;
       })
 
-      // Create or Update Recipe
-      .addCase(saveRecipe.pending, startLoading)
-      .addCase(saveRecipe.fulfilled, (state, action) => {
+      // Fetch Single Recipe
+      .addCase(fetchRecipeById.pending, startLoading)
+      .addCase(fetchRecipeById.fulfilled, (state, action) => {
         stopLoading(state);
-        const updatedRecipe = {
-          ...action.payload,
-          id: action.payload.id ?? '',
-        };
-
-        const index = state.recipes.findIndex(
-          (e) => e.id === updatedRecipe.id
-        );
-
-        if (index !== -1) {
-          // Update existing recipes
-          state.recipes[index] = updatedRecipe;
-        } else {
-          // Add new recipes
-          state.recipes.unshift(updatedRecipe);
-        }
+        console.log('Fetched Recipe By ID:', action.payload);
+        state.currentRecipe = action.payload;
       })
-      .addCase(saveRecipe.rejected, (state, action) => {
+      .addCase(fetchRecipeById.rejected, (state, action) => {
         stopLoading(state);
         state.error = action.payload as string;
       })
@@ -85,7 +80,7 @@ const recipesSlice = createSlice({
       .addCase(deleteRecipe.fulfilled, (state, action) => {
         stopLoading(state);
         state.recipes = state.recipes.filter(
-          (recipes) => recipes.id !== action.payload
+          (recipe) => recipe._id !== action.payload
         );
       })
       .addCase(deleteRecipe.rejected, (state, action) => {
@@ -95,5 +90,5 @@ const recipesSlice = createSlice({
   },
 });
 
-export const { clearError } = recipesSlice.actions;
+export const { clearError, clearCurrentRecipe } = recipesSlice.actions;
 export default recipesSlice.reducer;

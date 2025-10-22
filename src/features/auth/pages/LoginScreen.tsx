@@ -1,6 +1,5 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import {
   Avatar,
   Button,
@@ -18,11 +17,6 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
-
-import services from '../../../util/services';
-import { userActions } from '../../../store/userSlice';
-import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
-import { decodeJWToken } from '../../../util/commons';
 import { isValidEmail } from '../../../shared/utils/security.utils';
 import { loginUser } from '../redux/slice/asyncThunkServices';
 import { useAppDispatch } from '../../../app/hooks/app.hooks';

@@ -13,14 +13,14 @@ import Divider from '@mui/material/Divider';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import CardMedia from '@mui/material/CardMedia';
-import { Link, redirect } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import { getRandomInt } from '../../util/commons';
 import { useSelector, useDispatch } from 'react-redux';
 import { Login } from '@mui/icons-material';
 import { userActions } from '../../store/userSlice';
 import Logo from '../../public/images/logo.png';
 import SwipeableMenuDrawer from './SwipeableMenuDrawer';
-import useAppNavigate from '../../util/useAppNavigation';
+// import useAppNavigate from '../../util/useAppNavigation';
 import { useAppSelector } from '../../app/hooks/app.hooks';
 
 const appNav = [
@@ -48,7 +48,7 @@ const appNav = [
 
 function AccountMenu() {
   const dispatch = useDispatch();
-  const navigate = useAppNavigate();
+  const navigate = useNavigate();
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
   console.log('user from account menu:::', user);
 
@@ -76,6 +76,7 @@ function AccountMenu() {
 
   return (
     <Container maxWidth='xl'>
+      
       <AppBar
         position='static'
         sx={{
