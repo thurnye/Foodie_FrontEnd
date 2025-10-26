@@ -7,7 +7,18 @@ interface Props {
 }
 
 export default function ProtectedRoute({ children }: Props) {
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const { isAuthenticated, loading } = useAppSelector((state) => state.auth);
+
+  // Show loading state while auth is initializing
+  if (loading) {
+    return (
+      <div className='flex items-center justify-center min-h-screen'>
+        <div className='text-center'>
+          <div className='text-xl font-semibold'>Loading...</div>
+        </div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

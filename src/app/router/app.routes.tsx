@@ -12,16 +12,16 @@ import { homeRoutes } from '../../features/Home/router/home.router';
 
 export default function AppRoutes() {
   const routes = useRoutes([
+    // Public routes (auth pages - redirect to home if authenticated)
     ...authRoutes.map((route) => ({
       ...route,
       element: <PublicRoute>{route.element}</PublicRoute>,
     })),
 
-    // Protected routes
-    ...homeRoutes.map((route) => ({
-      ...route,
-      element: <ProtectedRoute>{route.element}</ProtectedRoute>,
-    })),
+    // Home route - accessible to everyone (no wrapper needed)
+    ...homeRoutes,
+
+    // Protected routes (require authentication)
     // ...userRoutes.map((route) => ({
     //   ...route,
     //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
