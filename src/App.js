@@ -9,9 +9,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import { userActions } from './store/userSlice';
 import { useJsApiLoader } from '@react-google-maps/api';
-import './public/css/hover.css';
+// import './public/css/hover.css';
 import './App.css';
 import AccountMenu from './components/Nav/AccountMenu';
 
@@ -55,7 +54,7 @@ import AccountMenu from './components/Nav/AccountMenu';
 // import ChatComponents from './pages/Chats/ChatComponents/ChatComponents';
 // import RecipesContainer from './pages/RecipePage/RecipesContainer/RecipesContainer';
 
-// import { HelmetProvider } from 'react-helmet-async';
+import { HelmetProvider } from 'react-helmet-async';
 import AppRoutes from './app/router/app.routes';
 import { useAppDispatch, useAppSelector } from './app/hooks/app.hooks';
 import { initializeAuth } from './features/auth/redux/slice/asyncThunkServices';
@@ -74,7 +73,7 @@ function App() {
   const isLoading = useAppSelector((state) => state.auth.loading);
   const [isInitialized, setIsInitialized] = React.useState(false);
   const initRef = React.useRef(false);
-
+  const helmetContext = {};
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: apiKey,
@@ -119,10 +118,12 @@ function App() {
     <React.Fragment>
       <BrowserRouter>
         {/* <NavBar/> */}
-        <AccountMenu />
-        <Suspense fallback={<div>Loading...</div>}>
-          <AppRoutes />
-        </Suspense>
+        <HelmetProvider context={helmetContext}>
+          <AccountMenu />
+          <Suspense fallback={<div>Loading...</div>}>
+            <AppRoutes />
+          </Suspense>
+        </HelmetProvider>
         {/* <Routes>
             <Route path='/' exact element={<Home />} />
             {!user && <Route path='/signup' element={<SignUp />} />}
@@ -137,7 +138,7 @@ function App() {
             <Route path='/recipe/:recipeId' element={<SingleRecipe />} />
             <Route path='/events' element={<Events />} />
             <Route path='/event' element={<SingleEventContainer />} />
-            <Route path='/all-recipes' element={<RecipesContainer />} />
+            <Route path='/recipes' element={<RecipesContainer />} />
             <Route path='/author' element={<Author />} />
             <Route path='/test' element={<FeatureTesting />} />
 

@@ -17,11 +17,12 @@ import { Link, redirect } from 'react-router-dom';
 import { getRandomInt } from '../../util/commons';
 import { useSelector, useDispatch } from 'react-redux';
 import { Login } from '@mui/icons-material';
-import { userActions } from '../../store/userSlice';
+// import { userActions } from '../../store/userSlice';
 import Logo from '../../public/images/logo.png';
 import SwipeableMenuDrawer from './SwipeableMenuDrawer';
 import useAppNavigate from '../../util/useAppNavigation';
 import { useAppSelector } from '../../app/hooks/app.hooks';
+import { logoutUser } from '../../features/auth/redux/slice/asyncThunkServices';
 
 const appNav = [
   {
@@ -31,7 +32,7 @@ const appNav = [
   },
   {
     name: 'Recipes',
-    path: '/all-recipes',
+    path: '/recipes',
     active: false,
   },
   // {
@@ -62,7 +63,7 @@ function AccountMenu() {
   };
   const logoutHandler = (e) => {
     e.preventDefault();
-    dispatch(userActions.logout());
+    dispatch(logoutUser);
     let token = localStorage.getItem('token');
     if (token) {
       localStorage.removeItem('token');

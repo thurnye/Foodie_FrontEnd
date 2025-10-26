@@ -7,7 +7,6 @@ import { recipesActions } from '../../store/allRecipesSlice';
 import './allRecipe.css';
 import './resultList.css';
 import { Box } from '@mui/material';
-import { getRandomInt } from '../../util/commons';
 
 export default function ResultList(props) {
   let location = useLocation();
@@ -28,25 +27,25 @@ export default function ResultList(props) {
     setSkip(0);
   }, [filters]);
 
-  const fetchFilteredRecipes = async (query) => {
-    if (isFetching.current) return;
-    isFetching.current = true;
+  // const fetchFilteredRecipes = async (query) => {
+  //   if (isFetching.current) return;
+  //   isFetching.current = true;
 
-    try {
-      setLoading(true);
-      if(recipes.length !== count){
-          const result = await services.findQuery(query);
-          setAllRecipes(result);
-          setRecipes((prevRecipes) => [...prevRecipes, ...result.data.recipes]);
-          setCount(result.data.count)
-      }
-      setLoading(false);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      isFetching.current = false;
-    }
-  };
+  //   try {
+  //     setLoading(true);
+  //     // if(recipes.length !== count){
+  //     //     const result = await services.findQuery(query);
+  //     //     setAllRecipes(result);
+  //     //     setRecipes((prevRecipes) => [...prevRecipes, ...result.data.recipes]);
+  //     //     setCount(result.data.count)
+  //     // }
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   } finally {
+  //     isFetching.current = false;
+  //   }
+  // };
 
   useEffect(() => {
     const allCategories = filters?.categories ? filters.categories : [];
@@ -94,7 +93,7 @@ export default function ResultList(props) {
         <div className='row row-cols-2 row-cols-sm-2 row-cols-md-3 g-4'>
           {recipes?.map((el) => {
             return (
-              <div className='col result-item' key={getRandomInt()}>
+              <div className='col result-item' key={el._id}>
                 <div className='card'>
                   <img
                     src={el.details.thumbnail}

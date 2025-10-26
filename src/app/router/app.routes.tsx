@@ -5,9 +5,9 @@ import PublicRoute from './wrappers/PublicRoutes';
 import ProtectedRoute from './wrappers/ProtectedRoutes';
 import { authRoutes } from '../../features/auth/router/auth.routes';
 // import PageNotFound from '../pages/PageNotFound';
-// import { homeRoutes } from '../../features/home/router/home.router';
 // import { userRoutes } from '../../features/user/router/user.router';
-import { recipesRoutes } from '../../features/recipes/router/recipe.router';
+import { recipesRoutes } from '../../features/Recipe/router/recipe.router';
+import { homeRoutes } from '../../features/Home/router/home.router';
 // import { donationsRoutes } from '../../features/donation/router/donation.router';
 
 export default function AppRoutes() {
@@ -18,10 +18,10 @@ export default function AppRoutes() {
     })),
 
     // Protected routes
-    // ...homeRoutes.map((route) => ({
-    //   ...route,
-    //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
-    // })),
+    ...homeRoutes.map((route) => ({
+      ...route,
+      element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+    })),
     // ...userRoutes.map((route) => ({
     //   ...route,
     //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,

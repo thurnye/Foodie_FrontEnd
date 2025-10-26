@@ -83,17 +83,17 @@ const Recipes = ({ filter }) => {
           >
             {loading ? (
               <Grid item xs={12}>
-              <Box sx={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-              }}>
-                <Typography variant="body2">
-                  Loading...
-                </Typography>
-              </Box>
-            </Grid>
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant='body2'>Loading...</Typography>
+                </Box>
+              </Grid>
             ) : recipes.length > 0 ? (
               Array.isArray(recipes) &&
               recipes.map((recipe) => (
@@ -103,15 +103,15 @@ const Recipes = ({ filter }) => {
               ))
             ) : (
               <Grid item xs={12}>
-                <Box sx={{
-                  width: '100%',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center'
-                }}>
-                  <Typography variant="body2">
-                    No Recipe Found!
-                  </Typography>
+                <Box
+                  sx={{
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Typography variant='body2'>No Recipe Found!</Typography>
                 </Box>
               </Grid>
             )}

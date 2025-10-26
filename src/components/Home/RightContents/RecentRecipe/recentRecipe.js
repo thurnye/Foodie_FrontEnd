@@ -26,7 +26,7 @@ const recent = [
     thumbnail: Img6,
     level: 'Super Easy',
     isVideo: true,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -37,7 +37,7 @@ const recent = [
     thumbnail: Img7,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -48,7 +48,7 @@ const recent = [
     thumbnail: Img8,
     level: 'Super Easy',
     isVideo: true,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -59,7 +59,7 @@ const recent = [
     thumbnail: Img9,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -70,7 +70,7 @@ const recent = [
     thumbnail: Img10,
     level: 'Super Easy',
     isVideo: true,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -81,7 +81,7 @@ const recent = [
     thumbnail: Img11,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -92,7 +92,7 @@ const recent = [
     thumbnail: Img12,
     level: 'Super Easy',
     isVideo: true,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -103,7 +103,7 @@ const recent = [
     thumbnail: Img13,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
 ];

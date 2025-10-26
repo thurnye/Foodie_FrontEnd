@@ -10,7 +10,6 @@ import Img11 from '../../../../public/images/recentRecipes/img11.jpeg';
 import Img12 from '../../../../public/images/recentRecipes/img12.jpeg';
 import Img13 from '../../../../public/images/recentRecipes/img13.jpeg';
 
-
 const recipes = [
   {
     recipeName: 'The best fluffy buttermilk pancakes with triple berry sauce',
@@ -20,7 +19,7 @@ const recipes = [
     thumbnail: Img6,
     level: 'Super Easy',
     isVideo: true,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -31,7 +30,7 @@ const recipes = [
     thumbnail: Img7,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -42,7 +41,7 @@ const recipes = [
     thumbnail: Img8,
     level: 'Super Easy',
     isVideo: true,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -53,7 +52,7 @@ const recipes = [
     thumbnail: Img9,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -64,7 +63,7 @@ const recipes = [
     thumbnail: Img10,
     level: 'Super Easy',
     isVideo: true,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -75,7 +74,7 @@ const recipes = [
     thumbnail: Img11,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -86,7 +85,7 @@ const recipes = [
     thumbnail: Img12,
     level: 'Super Easy',
     isVideo: true,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
   {
@@ -97,19 +96,17 @@ const recipes = [
     thumbnail: Img13,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
-]
+];
 
 const MostViewedAndRated = () => {
-  
-  return(
-  <div className={styles.MostViewedAndRated}>
-    <DashboardRecipeCard recipes={recipes}/>
-  </div>
-)};
-
-
+  return (
+    <div className={styles.MostViewedAndRated}>
+      <DashboardRecipeCard recipes={recipes} />
+    </div>
+  );
+};
 
 export default MostViewedAndRated;

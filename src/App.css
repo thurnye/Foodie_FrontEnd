@@ -25,4 +25,6 @@ input[type=number]:focus,
 .tox .tox-statusbar__help-text {
   display: none !important
 }
-
+a{
+  text-decoration: none;
+}

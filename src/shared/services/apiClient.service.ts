@@ -7,7 +7,7 @@ import { ApiClientError, ErrorCode, ApiResponse } from '../types/api.types';
 import { sanitizeObject, redactSensitiveData } from '../utils/security.utils';
 import { getBotDetectionHeaders } from '../utils/botDetection.utils';
 
-const API_BASE_URL =
+export const API_BASE_URL =
   process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api';
 const API_TIMEOUT = 30000;
 
@@ -193,6 +193,11 @@ class ApiClient {
 
   async put<T>(url: string, data?: any, config?: any): Promise<T> {
     const response = await this.client.put<ApiResponse<T>>(url, data, config);
+    return response.data.data!;
+  }
+
+  async patch<T>(url: string, data?: any, config?: any): Promise<T> {
+    const response = await this.client.patch<ApiResponse<T>>(url, data, config);
     return response.data.data!;
   }
 

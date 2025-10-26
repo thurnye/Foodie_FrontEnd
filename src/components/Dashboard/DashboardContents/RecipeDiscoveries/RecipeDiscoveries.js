@@ -13,16 +13,18 @@ const recipe = [
     thumbnail: img7,
     level: 'Super Easy',
     isVideo: false,
-    link: '/all-recipes',
+    link: '/recipes',
     length: '0:30',
   },
 ];
 
-
 const RecipeDiscoveries = () => {
   return (
-    <Box className={styles.RecipeDiscoveries} sx={{height: 200, overflow: 'auto'}}>
-      <DashboardRecipeCard recipes={recipe} origin={"recipesDiscoveries"}/>
+    <Box
+      className={styles.RecipeDiscoveries}
+      sx={{ height: 200, overflow: 'auto' }}
+    >
+      <DashboardRecipeCard recipes={recipe} origin={'recipesDiscoveries'} />
     </Box>
   );
 };

@@ -246,7 +246,7 @@ button:active {
 }
 .getComment .btn{
     height: 60px;
-    background-color: black;
+    background-color: #000000;
 }
 .comment-heading .strokes{
     width: 61%;
