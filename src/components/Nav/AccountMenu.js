@@ -162,7 +162,7 @@ function AccountMenu() {
                 >
                   <MenuItem onClick={handleClose}>Manage account</MenuItem>
                   <MenuItem onClick={handleClose}>
-                    <Link to={'/account'}>Dashboard</Link>
+                    <Link to={'/dashboard'}>Dashboard</Link>
                   </MenuItem>
                   <MenuItem onClick={handleClose}>
                     <Link to={'/forums'}>Forum</Link>

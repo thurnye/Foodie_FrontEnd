@@ -1,14 +1,6 @@
-// import {
-//   IRecipe,
-//   IValueLabel,
-//   IRecipeAuthor,
-//   IContentBlock,
-//   IMethod,
-//   IIngredient,
-//   INutritionalFact,
-//   IFAQ,
-// } from '../types'; // adjust import path
-
+import Img2 from '../../../public/images/tier3/img2.jpeg';
+import Img3 from '../../../public/images/tier3/img3.jpeg';
+import Img4 from '../../../public/images/tier3/img4.jpeg';
 import Img6 from '../../../public/images/recentRecipes/img6.jpeg';
 import Img7 from '../../../public/images/recentRecipes/img7.jpeg';
 import Img8 from '../../../public/images/recentRecipes/img8.jpeg';
@@ -356,3 +348,175 @@ export const brandColors: Record<string, string> = {
   instagram: 'linear-gradient(45deg, #F58529, #DD2A7B, #8134AF, #515BD4)',
   pinterest: '#E60023',
 };
+
+
+export const featureRecipe: IRecipe[] = [
+  {
+    _id: '664e404cb4513dfa42a75f07',
+    basicInfo: {
+      recipeName: '40 Mother’s Day Breakfast and Brunch Recipes',
+      duration: { value: '30', label: '30 Minutes' },
+      level: { value: 'easy', label: 'Super Easy' },
+      serving: { value: '4', label: '4 Servings' },
+      tags: [{ value: 'brunch', label: 'Brunch' }],
+      categories: [{ value: 'breakfast', label: 'Breakfast' }],
+    },
+    details: {
+      thumbnail: Img2,
+      about: [
+        {
+          type: 'text',
+          value: `This Mother’s Day, treat mom to a breakfast spread that’s as warm and thoughtful as she is. 
+          Our curated collection of 40 breakfast and brunch recipes is designed to bring joy, flavor, and a touch 
+          of elegance to the table. From classic pancakes drizzled with maple syrup to savory egg bakes, 
+          fruit parfaits, and freshly baked pastries, there’s something for every palate. Each recipe has been tested 
+          for simplicity and taste, ensuring you can create a restaurant-quality brunch from the comfort of your home. 
+          Celebrate the morning with dishes that combine love, comfort, and flavor — making memories one bite at a time.`,
+        },
+      ],
+      faqs: [],
+    },
+    directions: {
+      methods: [
+        {
+          step: [
+            { type: 'title', value: 'Prepare Ingredients' },
+            { type: 'text', value: 'Gather all necessary ingredients for your brunch dishes.' },
+          ],
+        },
+      ],
+      ingredients: [
+        { name: 'Eggs', type: 'main' },
+        { name: 'Butter', type: 'main' },
+      ],
+    },
+    nutritionalFacts: [
+      { name: 'Calories', amount: '320', unit: 'kcal' },
+      { name: 'Protein', amount: '8', unit: 'g' },
+    ],
+    author: {
+      userId: 'author_1',
+      username: 'chef_jane',
+      firstName: 'Jane',
+      lastName: 'Doe',
+      avatar: '/images/authors/jane.png',
+      slogan: 'Cooking with love, one meal at a time.',
+    },
+    averageRating: 4.8,
+    totalReviews: 152,
+    createdAt: '2024-05-20T10:00:00Z',
+    updatedAt: '2024-06-01T12:00:00Z',
+  },
+  {
+    _id: '664e404cb4513dfa42a75ee9',
+    basicInfo: {
+      recipeName: 'Slow cooker apple cinnamon oatmeal pot',
+      duration: { value: '30', label: '30 Minutes' },
+      level: { value: 'easy', label: 'Super Easy' },
+      serving: { value: '3', label: '3 Servings' },
+      tags: [{ value: 'oatmeal', label: 'Oatmeal' }],
+      categories: [{ value: 'breakfast', label: 'Breakfast' }],
+    },
+    details: {
+      thumbnail: Img3,
+      about: [
+        {
+          type: 'text',
+          value: `Imagine waking up to the aroma of warm apples, sweet cinnamon, and hearty oats filling your kitchen. 
+          This slow cooker apple cinnamon oatmeal is the ultimate breakfast comfort food — rich, creamy, and naturally 
+          sweetened by the fruit itself. Designed for busy mornings, it cooks overnight to perfection, giving you a 
+          wholesome start without any stress. The combination of rolled oats, tender apple slices, and fragrant spices 
+          makes every spoonful feel like a cozy hug. Perfect for meal prep, family breakfasts, or chilly mornings when 
+          you need a little extra warmth, this dish brings the essence of fall to your table year-round.`,
+        },
+      ],
+      faqs: [],
+    },
+    directions: {
+      methods: [
+        {
+          step: [
+            { type: 'title', value: 'Cook in slow cooker' },
+            { type: 'text', value: 'Combine all ingredients and cook on low for 6 hours.' },
+          ],
+        },
+      ],
+      ingredients: [
+        { name: 'Rolled oats', type: 'main' },
+        { name: 'Apple slices', type: 'main' },
+      ],
+    },
+    nutritionalFacts: [
+      { name: 'Calories', amount: '250', unit: 'kcal' },
+      { name: 'Fiber', amount: '5', unit: 'g' },
+    ],
+    author: {
+      userId: 'author_2',
+      username: 'chef_mark',
+      firstName: 'Mark',
+      lastName: 'Johnson',
+      avatar: '/images/authors/mark.png',
+      slogan: 'Wholesome meals made simple.',
+    },
+    averageRating: 4.6,
+    totalReviews: 98,
+    createdAt: '2024-05-22T09:00:00Z',
+    updatedAt: '2024-06-01T12:00:00Z',
+  },
+  {
+    _id: '664e404cb4513dfa42a75ecb',
+    basicInfo: {
+      recipeName: 'Fudge waffles with ice cream and chocolate sauce',
+      duration: { value: '30', label: '30 Minutes' },
+      level: { value: 'easy', label: 'Super Easy' },
+      serving: { value: '2', label: '2 Servings' },
+      tags: [{ value: 'dessert', label: 'Dessert' }],
+      categories: [{ value: 'waffles', label: 'Waffles' }],
+    },
+    details: {
+      thumbnail: Img4,
+      about: [
+        {
+          type: 'text',
+          value: `For those who believe breakfast should sometimes taste like dessert, these fudge waffles are pure indulgence. 
+          Each bite offers a perfect balance between crispy edges and a rich, chocolatey interior that melts in your mouth. 
+          Served warm with a scoop of creamy vanilla ice cream and a drizzle of silky chocolate sauce, this recipe transforms 
+          ordinary mornings into something extraordinary. Perfect for weekend brunches, special celebrations, or just because 
+          you deserve it, these waffles are both simple to make and stunning to serve. Whether you’re treating loved ones or 
+          yourself, they’re guaranteed to turn any breakfast into a sweet, unforgettable experience.`,
+        },
+      ],
+      faqs: [],
+    },
+    directions: {
+      methods: [
+        {
+          step: [
+            { type: 'title', value: 'Make Waffles' },
+            { type: 'text', value: 'Prepare the batter and cook in a waffle maker until golden brown.' },
+          ],
+        },
+      ],
+      ingredients: [
+        { name: 'Flour', type: 'main' },
+        { name: 'Cocoa powder', type: 'main' },
+      ],
+    },
+    nutritionalFacts: [
+      { name: 'Calories', amount: '410', unit: 'kcal' },
+      { name: 'Carbs', amount: '55', unit: 'g' },
+    ],
+    author: {
+      userId: 'author_3',
+      username: 'chef_sophia',
+      firstName: 'Sophia',
+      lastName: 'Lee',
+      avatar: '/images/authors/sophia.png',
+      slogan: 'Sweet moments, one bite at a time.',
+    },
+    averageRating: 4.9,
+    totalReviews: 210,
+    createdAt: '2024-05-25T08:30:00Z',
+    updatedAt: '2024-06-01T12:00:00Z',
+  },
+];

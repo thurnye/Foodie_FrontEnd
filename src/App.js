@@ -58,6 +58,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import AppRoutes from './app/router/app.routes';
 import { useAppDispatch, useAppSelector } from './app/hooks/app.hooks';
 import { initializeAuth } from './features/auth/redux/slice/asyncThunkServices';
+import { Box, CircularProgress } from '@mui/material';
 
 library.add(fab, fas, far);
 
@@ -120,7 +121,30 @@ function App() {
         {/* <NavBar/> */}
         <HelmetProvider context={helmetContext}>
           <AccountMenu />
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '100vh',
+                  bgcolor: 'background.default',
+                  color: 'text.primary',
+                }}
+              >
+                <CircularProgress
+                  size={48}
+                  thickness={4}
+                  sx={{
+                    color: 'primary.main',
+                    mb: 2,
+                  }}
+                />
+              </Box>
+            }
+          >
             <AppRoutes />
           </Suspense>
         </HelmetProvider>

@@ -8,6 +8,7 @@ import { authRoutes } from '../../features/auth/router/auth.routes';
 // import { userRoutes } from '../../features/user/router/user.router';
 import { recipesRoutes } from '../../features/Recipe/router/recipe.router';
 import { homeRoutes } from '../../features/Home/router/home.router';
+import { dashboardRoutes } from '../../features/Dashboard/router/dashboard.router';
 // import { donationsRoutes } from '../../features/donation/router/donation.router';
 
 export default function AppRoutes() {
@@ -31,6 +32,10 @@ export default function AppRoutes() {
     //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
     // })),
     ...recipesRoutes.map((route) => ({
+      ...route,
+      element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+    })),
+    ...dashboardRoutes.map((route) => ({
       ...route,
       element: <ProtectedRoute>{route.element}</ProtectedRoute>,
     })),
