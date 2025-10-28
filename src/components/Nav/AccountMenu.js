@@ -61,14 +61,15 @@ function AccountMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const logoutHandler = (e) => {
+  const logoutHandler = async (e) => {
     e.preventDefault();
-    dispatch(logoutUser);
-    let token = localStorage.getItem('token');
-    if (token) {
-      localStorage.removeItem('token');
-      handleClose()
-      // redirect to '/login' here
+    handleClose();
+    try {
+      await dispatch(logoutUser()).unwrap();
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Still navigate to login even if logout API fails
       navigate('/login');
     }
   };

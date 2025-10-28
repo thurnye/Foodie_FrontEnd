@@ -54,6 +54,15 @@ class RecipeApi {
   async deleteRecipe(recipeId: string): Promise<void> {
     await apiClient.delete<void>(`/recipe/${recipeId}`);
   }
+
+  /**
+   * Get current user's recipes
+   * Backend will extract user ID from JWT token
+   */
+  async getMyRecipes(): Promise<IRecipe[]> {
+    const response = await apiClient.get<IRecipe[]>('/recipe/my-recipes');
+    return response;
+  }
 }
 
 export const RecipeApiService = new RecipeApi();

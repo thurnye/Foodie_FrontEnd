@@ -8,7 +8,6 @@ import RecipeViewTrend from '../components/Visualizations/RecipeViewTrend';
 import RecipesByCategory from '../components/Visualizations/RecipesByCategory';
 import Top5ByEngagement from '../components/Visualizations/Top5ByEngagement';
 import DeviceMetrics from '../components/Demography/DeviceMetrics';
-import VisitorsMetrics from '../components/Demography/VistorsMetrics';
 import DemographyMetrics from '../components/Demography/DemographMetrics';
 import DemographyMap from '../components/Demography/DemographyMap';
 import TopCountries from '../components/Demography/TopCountries';

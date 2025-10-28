@@ -21,6 +21,12 @@ const DashboardBookmarks = lazy(() =>
   import('../pages/DashboardBookmarks').then((m) => ({ default: m.default }))
 );
 
+
+const DashboardCreateRecipe = lazy(() =>
+  import('../pages/DashboardCreateRecipe').then((m) => ({ default: m.default }))
+);
+
+
 export const dashboardRoutes: RouteObject[] = [
   {
     path: '/dashboard',
@@ -37,6 +43,10 @@ export const dashboardRoutes: RouteObject[] = [
       {
         path: 'recipes',
         element: <DashboardRecipes />,
+      },
+      {
+        path: 'recipes/create',
+        element: <DashboardCreateRecipe />,
       },
       {
         path: 'bookmarks',

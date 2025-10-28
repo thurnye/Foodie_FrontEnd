@@ -31,7 +31,7 @@ const DashboardEvents: React.FC = () => {
 
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Paper sx={{ p: 3, textAlign: 'center', minHeight: 200 }}>
+          <Box sx={{ p: 3, textAlign: 'center', minHeight: 200 }}>
             <Typography variant="h6" color="text.secondary" gutterBottom>
               No events yet
             </Typography>
@@ -41,7 +41,7 @@ const DashboardEvents: React.FC = () => {
             <Button variant="outlined" startIcon={<AddIcon />}>
               Create Your First Event
             </Button>
-          </Paper>
+          </Box>
         </Grid>
       </Grid>
     </Box>
