@@ -38,7 +38,7 @@ const FAQs: React.FC<FAQsProps> = ({ setFaqs, faqs, setActiveSection }) => {
   };
 
   const items: SortableItemData[] = fields.map((item, index) => ({
-    id: getRandomNumber().toString(),
+    id: item.id,
     content: (
       <Box
         key={item.id}

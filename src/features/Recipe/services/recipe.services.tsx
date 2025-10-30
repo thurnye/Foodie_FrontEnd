@@ -33,18 +33,22 @@ class RecipeApi {
   }
 
   /**
-   * Create new recipe
+   * Create or update recipe (unified endpoint)
+   * User ID is automatically extracted from JWT token in backend
+   * If data contains _id, it updates; otherwise creates new recipe
    */
-  async createRecipe(userId: string, data: any): Promise<IRecipe> {
-    const response = await apiClient.post<{ success: boolean; data: IRecipe }>(`/recipe/add/${userId}`, data);
+  async createRecipe(data: any): Promise<IRecipe> {
+    const response = await apiClient.post<{ success: boolean; data: IRecipe }>('/recipe/add', data);
     return response.data;
   }
 
   /**
-   * Update existing recipe
+   * Update existing recipe (uses unified endpoint)
+   * Kept for backward compatibility
    */
   async updateRecipe(recipeId: string, data: any): Promise<IRecipe> {
-    const response = await apiClient.post<{ success: boolean; data: IRecipe }>(`/recipe/${recipeId}`, data);
+    const dataWithId = { ...data, _id: recipeId };
+    const response = await apiClient.post<{ success: boolean; data: IRecipe }>('/recipe/add', dataWithId);
     return response.data;
   }
 

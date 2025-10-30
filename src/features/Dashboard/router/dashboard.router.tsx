@@ -22,8 +22,11 @@ const DashboardBookmarks = lazy(() =>
 );
 
 
-const DashboardCreateRecipe = lazy(() =>
-  import('../pages/DashboardCreateRecipe').then((m) => ({ default: m.default }))
+const DashboardCreateEditRecipe = lazy(() =>
+  import('../pages/Dashboard_Create_Edit_Recipe').then((m) => ({ default: m.default }))
+);
+const DashboardRecipeCookBook = lazy(() =>
+  import('../pages/DashboardRecipeCookBook').then((m) => ({ default: m.default }))
 );
 
 
@@ -46,7 +49,15 @@ export const dashboardRoutes: RouteObject[] = [
       },
       {
         path: 'recipes/create',
-        element: <DashboardCreateRecipe />,
+        element: <DashboardCreateEditRecipe />,
+      },
+      {
+        path: 'recipes/edit/:id',
+        element: <DashboardCreateEditRecipe />,
+      },
+          {
+        path: 'recipes/cook-book',
+        element: <DashboardRecipeCookBook />,
       },
       {
         path: 'bookmarks',

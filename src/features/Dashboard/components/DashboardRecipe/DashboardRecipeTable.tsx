@@ -186,7 +186,7 @@ const DashboardRecipeTable: React.FC<DashboardRecipeTableProps> = ({ recipes }) 
                     variant='text'
                     disabled={!selectedRecipeId}
                     onClick={() =>
-                      navigate('/account/recipe/create-recipe', {
+                      navigate(`/dashboard/recipes/edit/${selectedRecipeId}`, {
                         state: { edit: true, id: selectedRecipeId },
                       })
                     }

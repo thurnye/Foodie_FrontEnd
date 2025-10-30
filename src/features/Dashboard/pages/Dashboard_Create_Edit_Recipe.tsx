@@ -4,6 +4,8 @@ import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+import Alert from '@mui/material/Alert';
 
 import BackNavigation from '../../../app/components/BackNavigation';
 import { IRecipeFormType } from '../types/dashboard_recipe.types';
@@ -17,6 +19,7 @@ import RecipeDetails from '../components/DashboardRecipeComponents/Forms/RecipeD
 import RecipeNutritionalFacts from '../components/DashboardRecipeComponents/Forms/RecipeNutritionalFacts/RecipeNutritionalFacts';
 import RecipeDirections from '../components/DashboardRecipeComponents/Forms/RecipeDirections/RecipeDirections';
 import RecipePreview from '../components/DashboardRecipeComponents/Forms/RecipePreview/RecipePreview';
+import { dashboardRecipeService } from '../services/dashboard.recipe.service';
 
 // TabPanel Props Interface
 interface TabPanelProps {
@@ -51,12 +54,14 @@ const a11yProps = (index: number) => ({
   'aria-controls': `vertical-tabpanel-${index}`,
 });
 
-const CreateRecipe: React.FC = () => {
+const CreateEditRecipe: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation() as Location & { state?: { id?: string } };
   const [currentFormStep, setCurrentFormStep] = useState<number>(0);
   const [recipeForm, setRecipeForm] = useState<IRecipeFormType>(defaultForm);
   const [saveResultStatus, setSaveResultStatus] = useState<number | string>(200);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const recipeId = location.state?.id;
 
   // Tab Change Handler
@@ -64,7 +69,46 @@ const CreateRecipe: React.FC = () => {
     setCurrentFormStep(newValue);
   };
 
-  // retrieve recipe by Id for editing
+  // Fetch recipe data for editing
+  useEffect(() => {
+    const fetchRecipeForEdit = async () => {
+      if (!recipeId) return; // No ID means create mode, not edit mode
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        const recipe = await dashboardRecipeService.getRecipeById(recipeId);
+
+        console.log('RECIPE::', recipe)
+
+        // Populate form with recipe data
+        setRecipeForm({
+          _id: recipe._id,
+          basicInfo: recipe.basicInfo,
+          details: recipe.details,
+          nutritionalFacts: recipe.nutritionalFacts || [],
+          directions: recipe.directions,
+        });
+
+        // Enable all form steps for editing
+        formSteps.forEach((step) => {
+          step.isDisabled = false;
+        });
+      } catch (err: any) {
+        console.error('Error fetching recipe for edit:', err);
+        setError(
+          err.response?.data?.message ||
+          err.message ||
+          'Failed to load recipe. Please try again.'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipeForEdit();
+  }, [recipeId]);
 
 
   // Render correct form based on step
@@ -103,6 +147,23 @@ const CreateRecipe: React.FC = () => {
             onClick={handleBackClick}
           />
         </Box>
+
+        {/* Loading State */}
+        {loading && (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '400px' }}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
+
+        {/* Form Content */}
+        {!loading && !error && (
 
         <AddRecipeFormContext.Provider
           value={{
@@ -184,9 +245,10 @@ const CreateRecipe: React.FC = () => {
             </Box>
           </Box>
         </AddRecipeFormContext.Provider>
+        )}
       </Container>
     </div>
   );
 };
 
-export default CreateRecipe;
+export default CreateEditRecipe;
