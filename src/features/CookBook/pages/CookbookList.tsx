@@ -33,7 +33,7 @@ import {
 } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
-import { setCurrentCookbook } from '../redux/cookbookSlice';
+import { setCurrentCookbook } from '../redux/cookbook.slice';
 import {
   ICookbook,
   CookbookStatus,

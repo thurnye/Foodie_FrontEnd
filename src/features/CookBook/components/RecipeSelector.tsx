@@ -19,7 +19,7 @@ import { Search } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
 import { fetchMyRecipes } from '../../Dashboard/redux/dashboard.asyncThunkService';
-import { toggleRecipeSelection } from '../redux/cookbookSlice';
+import { toggleRecipeSelection } from '../redux/cookbook.slice';
 import { IRecipe } from '../../Recipe/types/recipe.types';
 
 interface RecipeSelectorProps {
@@ -28,11 +28,17 @@ interface RecipeSelectorProps {
   onConfirm: (selectedIds: string[]) => void;
 }
 
-const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfirm }) => {
+const RecipeSelector: React.FC<RecipeSelectorProps> = ({
+  open,
+  onClose,
+  onConfirm,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
   const [searchQuery, setSearchQuery] = React.useState('');
 
-  const { myRecipes, recipesLoading } = useSelector((state: RootState) => state.dashboard);
+  const { myRecipes, recipesLoading } = useSelector(
+    (state: RootState) => state.dashboard
+  );
   const { selectedRecipes } = useSelector((state: RootState) => state.cookbook);
 
   useEffect(() => {
@@ -42,7 +48,9 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
   }, [open, dispatch]);
 
   const filteredRecipes = myRecipes.filter((recipe: IRecipe) =>
-    recipe.basicInfo.recipeName.toLowerCase().includes(searchQuery.toLowerCase())
+    recipe.basicInfo.recipeName
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
   );
 
   const handleToggle = (recipeId: string) => {
@@ -58,7 +66,7 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
     <Dialog
       open={open}
       onClose={onClose}
-      maxWidth="md"
+      maxWidth='md'
       fullWidth
       PaperProps={{
         sx: {
@@ -76,7 +84,7 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
         {/* Search */}
         <TextField
           fullWidth
-          placeholder="Search recipes..."
+          placeholder='Search recipes...'
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           InputProps={{
@@ -109,7 +117,9 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
                     sx={{
                       cursor: 'pointer',
                       backgroundColor: '#252525',
-                      border: isSelected ? '2px solid #3b82f6' : '2px solid transparent',
+                      border: isSelected
+                        ? '2px solid #3b82f6'
+                        : '2px solid transparent',
                       transition: 'all 0.2s',
                       '&:hover': {
                         borderColor: '#3b82f6',
@@ -120,8 +130,8 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
                   >
                     <Box sx={{ position: 'relative' }}>
                       <CardMedia
-                        component="img"
-                        height="140"
+                        component='img'
+                        height='140'
                         image={recipe.details.thumbnail}
                         alt={recipe.basicInfo.recipeName}
                       />
@@ -140,7 +150,7 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
                     </Box>
                     <CardContent sx={{ p: 2 }}>
                       <Typography
-                        variant="body2"
+                        variant='body2'
                         sx={{
                           fontWeight: 600,
                           overflow: 'hidden',
@@ -151,7 +161,7 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
                         {recipe.basicInfo.recipeName}
                       </Typography>
                       <Typography
-                        variant="caption"
+                        variant='caption'
                         sx={{ color: '#9ca3af', display: 'block', mt: 0.5 }}
                       >
                         {recipe.basicInfo.duration?.label || 'N/A'} •{' '}
@@ -173,7 +183,7 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
       </DialogContent>
 
       <DialogActions sx={{ p: 3, borderTop: '1px solid #2d2d2d' }}>
-        <Typography variant="body2" sx={{ mr: 'auto', color: '#9ca3af' }}>
+        <Typography variant='body2' sx={{ mr: 'auto', color: '#9ca3af' }}>
           {selectedRecipes.length} recipe(s) selected
         </Typography>
         <Button onClick={onClose} sx={{ color: '#9ca3af' }}>
@@ -181,7 +191,7 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({ open, onClose, onConfir
         </Button>
         <Button
           onClick={handleConfirm}
-          variant="contained"
+          variant='contained'
           disabled={selectedRecipes.length === 0}
           sx={{
             backgroundColor: '#3b82f6',

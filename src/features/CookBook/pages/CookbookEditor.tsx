@@ -23,13 +23,12 @@ import {
 } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
-import {
-  clearSelectedRecipes,
-} from '../redux/cookbookSlice';
+import { clearSelectedRecipes } from '../redux/cookbook.slice';
 import {
   fetchCookbookById,
   updateCookbook,
-  generateCookbook} from '../redux/cookbook.async.thunk';
+  generateCookbook,
+} from '../redux/cookbook.async.thunk';
 import EditorSidebar from '../components/EditorSidebar';
 import EditorToolbar from '../components/EditorToolbar';
 import RecipeSelector from '../components/RecipeSelector';
@@ -46,8 +45,10 @@ const CookbookEditor: React.FC = () => {
   const { currentCookbook, loading, error, selectedRecipes } = useSelector(
     (state: RootState) => state.cookbook
   );
-  const [selectedRecipeIds, setSelectedRecipeIds] = useState<string[]>([])
-  const [selectedSection, setSelectedSection] = useState<string | null>('cover');
+  const [selectedRecipeIds, setSelectedRecipeIds] = useState<string[]>([]);
+  const [selectedSection, setSelectedSection] = useState<string | null>(
+    'cover'
+  );
   const [editorContent, setEditorContent] = useState('');
   const [recipeSelectorOpen, setRecipeSelectorOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
@@ -138,7 +139,7 @@ const CookbookEditor: React.FC = () => {
     );
     const newRecipeIds = [...existingRecipeIds, ...recipeIds];
 
-    setSelectedRecipeIds(newRecipeIds)
+    setSelectedRecipeIds(newRecipeIds);
 
     dispatch(
       updateCookbook({
@@ -225,7 +226,7 @@ const CookbookEditor: React.FC = () => {
           backgroundColor: '#1e1e1e',
         }}
       >
-        <Alert severity="error" sx={{ maxWidth: 400 }}>
+        <Alert severity='error' sx={{ maxWidth: 400 }}>
           {error}
         </Alert>
       </Box>
@@ -244,7 +245,7 @@ const CookbookEditor: React.FC = () => {
     >
       {/* Top AppBar */}
       <AppBar
-        position="static"
+        position='static'
         sx={{
           backgroundColor: '#252525',
           borderBottom: '1px solid #2d2d2d',
@@ -259,14 +260,14 @@ const CookbookEditor: React.FC = () => {
             >
               <ArrowBack />
             </IconButton>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            <Typography variant='h6' sx={{ fontWeight: 600 }}>
               {currentCookbook?.title || 'Untitled Cookbook'}
             </Typography>
           </Box>
 
           <Box sx={{ display: 'flex', gap: 1 }}>
             <Button
-              variant="outlined"
+              variant='outlined'
               startIcon={<Settings />}
               onClick={() => setSettingsOpen(true)}
               sx={{
@@ -278,7 +279,7 @@ const CookbookEditor: React.FC = () => {
               Settings
             </Button>
             <Button
-              variant="outlined"
+              variant='outlined'
               startIcon={<Preview />}
               onClick={handlePreview}
               sx={{
@@ -290,7 +291,7 @@ const CookbookEditor: React.FC = () => {
               Preview
             </Button>
             <Button
-              variant="contained"
+              variant='contained'
               startIcon={isSaving ? <CircularProgress size={16} /> : <Save />}
               onClick={handleSave}
               disabled={isSaving}
@@ -302,7 +303,7 @@ const CookbookEditor: React.FC = () => {
               {isSaving ? 'Saving...' : 'Save'}
             </Button>
             <Button
-              variant="contained"
+              variant='contained'
               startIcon={
                 isGenerating ? <CircularProgress size={16} /> : <PictureAsPdf />
               }
@@ -347,10 +348,10 @@ const CookbookEditor: React.FC = () => {
           <EditorToolbar onFormat={handleFormat} />
 
           {/* Editor Content */}
-          <CookBookContents 
-          selectedSection={selectedSection}
-          currentCookbook={currentCookbook}
-          editorContents={editorContent}
+          <CookBookContents
+            selectedSection={selectedSection}
+            currentCookbook={currentCookbook}
+            editorContents={editorContent}
           />
         </Box>
       </Box>

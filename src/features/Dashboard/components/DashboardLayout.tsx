@@ -19,6 +19,7 @@ import {
   Dashboard as DashboardIcon,
   Event as EventIcon,
   Restaurant as RestaurantIcon,
+  AutoStories as BookIcon,
   Bookmark as BookmarkIcon,
   ChevronLeft as ChevronLeftIcon,
   Settings as SettingsIcon,
@@ -47,6 +48,11 @@ const navItems: NavItem[] = [
     title: 'Recipes',
     path: '/dashboard/recipes',
     icon: <RestaurantIcon />,
+  },
+  {
+    title: 'Cook Book',
+    path: '/dashboard/cook-book',
+    icon: <BookIcon />,
   },
   {
     title: 'Saves & Bookmarks',
