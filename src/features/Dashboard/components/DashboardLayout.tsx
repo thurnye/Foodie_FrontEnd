@@ -15,7 +15,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
   Dashboard as DashboardIcon,
   Event as EventIcon,
   Restaurant as RestaurantIcon,

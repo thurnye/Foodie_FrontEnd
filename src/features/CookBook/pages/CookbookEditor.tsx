@@ -50,6 +50,12 @@ const CookbookEditor: React.FC = () => {
     'cover'
   );
   const [editorContent, setEditorContent] = useState('');
+  const [pendingChanges, setPendingChanges] = useState<{
+    description?: string;
+    authorBio?: string;
+    notes?: string;
+  }>({});
+  const [recipeNotes, setRecipeNotes] = useState<Record<string, string>>({});
   const [recipeSelectorOpen, setRecipeSelectorOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
@@ -71,13 +77,34 @@ const CookbookEditor: React.FC = () => {
   // Update editor content when section changes
   useEffect(() => {
     if (selectedSection === 'cover') {
-      setEditorContent(currentCookbook?.description || '');
+      setEditorContent(pendingChanges.description || currentCookbook?.description || '');
     } else if (selectedSection === 'intro') {
-      setEditorContent(currentCookbook?.authorBio || '');
+      setEditorContent(pendingChanges.authorBio || currentCookbook?.authorBio || '');
     } else if (selectedSection === 'notes') {
-      setEditorContent('Add any additional notes here...');
+      setEditorContent(pendingChanges.notes || 'Add any additional notes here...');
+    } else if (selectedSection && selectedSection !== 'toc') {
+      // For recipe sections - the content will be generated in CookBookContents
+      // We just pass through any existing notes or empty string
+      setEditorContent(recipeNotes[selectedSection] || '');
     }
-  }, [selectedSection, currentCookbook]);
+  }, [selectedSection, currentCookbook, pendingChanges, recipeNotes]);
+
+  // Handle content change from editor
+  const handleContentChange = (content: string) => {
+    setEditorContent(content);
+
+    // Update pending changes based on selected section
+    if (selectedSection === 'cover') {
+      setPendingChanges(prev => ({ ...prev, description: content }));
+    } else if (selectedSection === 'intro') {
+      setPendingChanges(prev => ({ ...prev, authorBio: content }));
+    } else if (selectedSection === 'notes') {
+      setPendingChanges(prev => ({ ...prev, notes: content }));
+    } else if (selectedSection && selectedSection !== 'toc') {
+      // Store recipe edits by recipe ID
+      setRecipeNotes(prev => ({ ...prev, [selectedSection]: content }));
+    }
+  };
 
   const handleSave = async () => {
     if (!cookbookId || !currentCookbook) return;
@@ -86,16 +113,21 @@ const CookbookEditor: React.FC = () => {
     try {
       const updates: UpdateCookbookData = {
         title: currentCookbook.title,
-        description: currentCookbook.description,
+        description: pendingChanges.description || currentCookbook.description,
+        authorBio: pendingChanges.authorBio || currentCookbook.authorBio,
         recipes: currentCookbook.recipes.map((r) =>
           typeof r === 'string' ? r : r._id
         ),
       };
 
       await dispatch(updateCookbook({ cookbookId, data: updates })).unwrap();
+
+      // Clear pending changes after successful save
+      setPendingChanges({});
+
       setSnackbar({
         open: true,
-        message: 'Cookbook saved successfully',
+        message: 'Cookbook saved successfully. Note: Recipe edits are saved in the cookbook context only.',
         severity: 'success',
       });
     } catch (err: any) {
@@ -345,13 +377,14 @@ const CookbookEditor: React.FC = () => {
           }}
         >
           {/* Editor Toolbar */}
-          <EditorToolbar onFormat={handleFormat} />
+          {/* <EditorToolbar onFormat={handleFormat} /> */}
 
           {/* Editor Content */}
           <CookBookContents
             selectedSection={selectedSection}
             currentCookbook={currentCookbook}
             editorContents={editorContent}
+            onContentChange={handleContentChange}
           />
         </Box>
       </Box>
