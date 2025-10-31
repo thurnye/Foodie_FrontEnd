@@ -32,17 +32,20 @@ const CookBookContents: React.FC<ICookBookContents> = ({
         } else if (item.type === 'image') {
           // Handle single or multiple images
           if (Array.isArray(item.value)) {
-            return item.value
+            const images = item.value
               .map(
                 (imgUrl: string) =>
-                  `<div style="margin: 10px 0;">
-                    <img src="${imgUrl}" alt="${recipe.basicInfo.recipeName}" style="max-width: 100%; border-radius: 8px;" />
+                  `<div style="flex: 1; min-width: 200px; max-width: 48%;">
+                    <img src="${imgUrl}" alt="${recipe.basicInfo.recipeName}" style="width: 100%; height: auto; border-radius: 8px; object-fit: cover;" />
                   </div>`
               )
               .join('');
+            return `<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px auto; max-width: 100%;">
+              ${images}
+            </div>`;
           } else {
-            return `<div style="margin: 10px 0;">
-              <img src="${item.value}" alt="${recipe.basicInfo.recipeName}" style="max-width: 100%; border-radius: 8px;" />
+            return `<div style="display: flex; justify-content: center; margin: 20px auto; max-width: 600px;">
+              <img src="${item.value}" alt="${recipe.basicInfo.recipeName}" style="width: 100%; border-radius: 8px;" />
             </div>`;
           }
         }
@@ -62,17 +65,20 @@ const CookBookContents: React.FC<ICookBookContents> = ({
             } else if (stepItem.type === 'image') {
               // Handle single or multiple images
               if (Array.isArray(stepItem.value)) {
-                return stepItem.value
+                const images = stepItem.value
                   .map(
                     (imgUrl: string) =>
-                      `<div style="margin: 10px 0;">
-                        <img src="${imgUrl}" alt="Step ${methodIdx + 1}" style="max-width: 100%; border-radius: 8px;" />
+                      `<div style="flex: 1; min-width: 200px; max-width: 48%;">
+                        <img src="${imgUrl}" alt="Step ${methodIdx + 1}" style="width: 100%; height: auto; border-radius: 8px; object-fit: cover;" />
                       </div>`
                   )
                   .join('');
+                return `<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px auto; max-width: 100%;">
+                  ${images}
+                </div>`;
               } else {
-                return `<div style="margin: 10px 0;">
-                  <img src="${stepItem.value}" alt="Step ${methodIdx + 1}" style="max-width: 100%; border-radius: 8px;" />
+                return `<div style="display: flex; justify-content: center; margin: 20px auto; max-width: 600px;">
+                  <img src="${stepItem.value}" alt="Step ${methodIdx + 1}" style="width: 100%; border-radius: 8px;" />
                 </div>`;
               }
             }

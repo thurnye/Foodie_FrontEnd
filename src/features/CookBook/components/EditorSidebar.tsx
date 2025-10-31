@@ -29,6 +29,7 @@ interface EditorSidebarProps {
   onRecipeSelect: (recipeId: string) => void;
   onAddRecipe: () => void;
   onEditInfo: () => void;
+  isGenerating?: boolean;
 }
 
 const EditorSidebar: React.FC<EditorSidebarProps> = ({
@@ -38,6 +39,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
   onRecipeSelect,
   onAddRecipe,
   onEditInfo,
+  isGenerating = false,
 }) => {
   const [frontMatterOpen, setFrontMatterOpen] = React.useState(true);
   const [bodyMatterOpen, setBodyMatterOpen] = React.useState(true);
@@ -73,7 +75,13 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
         <IconButton
           size="small"
           onClick={onAddRecipe}
-          sx={{ color: '#3b82f6', '&:hover': { backgroundColor: '#2d2d2d' } }}
+          disabled={isGenerating}
+          sx={{
+            color: isGenerating ? '#6b7280' : '#3b82f6',
+            '&:hover': { backgroundColor: '#2d2d2d' },
+            '&.Mui-disabled': { color: '#6b7280' }
+          }}
+          title={isGenerating ? 'Cannot add recipes while generating' : 'Add recipes'}
         >
           <Add />
         </IconButton>

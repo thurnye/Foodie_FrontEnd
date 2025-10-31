@@ -68,6 +68,13 @@ const TextEditor: React.FC<ITextEditorProps> = ({
             'image media link table | ' +
             'code preview fullscreen | ' +
             'removeformat help',
+
+          // Undo/Redo configuration
+          custom_undo_redo_levels: 50, // Increase undo levels from default 10
+
+          // Keyboard shortcuts (Ctrl/Cmd+Z for undo, Ctrl/Cmd+Y or Ctrl/Cmd+Shift+Z for redo)
+          // These are enabled by default, just documenting
+
           // Image upload and handling
           image_advtab: true,
           image_uploadtab: true,

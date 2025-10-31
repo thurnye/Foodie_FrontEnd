@@ -62,7 +62,7 @@ const CookbookEditor: React.FC = () => {
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     message: string;
-    severity: 'success' | 'error' | 'info';
+    severity: 'success' | 'error' | 'info' | 'warning';
   }>({ open: false, message: '', severity: 'info' });
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -109,6 +109,16 @@ const CookbookEditor: React.FC = () => {
   const handleSave = async () => {
     if (!cookbookId || !currentCookbook) return;
 
+    // Check if cookbook is being generated
+    if (currentCookbook.status === 'generating') {
+      setSnackbar({
+        open: true,
+        message: 'Cannot update cookbook while it is being generated. Please wait for generation to complete.',
+        severity: 'warning',
+      });
+      return;
+    }
+
     setIsSaving(true);
     try {
       const updates: UpdateCookbookData = {
@@ -122,6 +132,9 @@ const CookbookEditor: React.FC = () => {
 
       await dispatch(updateCookbook({ cookbookId, data: updates })).unwrap();
 
+      // Refresh the cookbook to ensure all data is up-to-date
+      await dispatch(fetchCookbookById(cookbookId)).unwrap();
+
       // Clear pending changes after successful save
       setPendingChanges({});
 
@@ -131,9 +144,14 @@ const CookbookEditor: React.FC = () => {
         severity: 'success',
       });
     } catch (err: any) {
+      console.error('Save cookbook error:', err);
+      const errorMessage = typeof err === 'string'
+        ? err
+        : err?.message || err?.error || 'Failed to save cookbook';
+
       setSnackbar({
         open: true,
-        message: err || 'Failed to save cookbook',
+        message: errorMessage,
         severity: 'error',
       });
     } finally {
@@ -153,9 +171,14 @@ const CookbookEditor: React.FC = () => {
         severity: 'info',
       });
     } catch (err: any) {
+      console.error('Generate cookbook error:', err);
+      const errorMessage = typeof err === 'string'
+        ? err
+        : err?.message || err?.error || 'Failed to generate cookbook';
+
       setSnackbar({
         open: true,
-        message: err || 'Failed to generate cookbook',
+        message: errorMessage,
         severity: 'error',
       });
     } finally {
@@ -163,46 +186,98 @@ const CookbookEditor: React.FC = () => {
     }
   };
 
-  const handleAddRecipes = (recipeIds: string[]) => {
+  const handleAddRecipes = async (recipeIds: string[]) => {
     if (!cookbookId || !currentCookbook) return;
 
-    const existingRecipeIds = currentCookbook.recipes.map((r) =>
-      typeof r === 'string' ? r : r._id
-    );
-    const newRecipeIds = [...existingRecipeIds, ...recipeIds];
+    // Check if cookbook is being generated
+    if (currentCookbook.status === 'generating') {
+      setSnackbar({
+        open: true,
+        message: 'Cannot add recipes while cookbook is being generated. Please wait for generation to complete.',
+        severity: 'warning',
+      });
+      return;
+    }
 
-    setSelectedRecipeIds(newRecipeIds);
+    try {
+      const existingRecipeIds = currentCookbook.recipes.map((r) =>
+        typeof r === 'string' ? r : r._id
+      );
+      const newRecipeIds = [...existingRecipeIds, ...recipeIds];
 
-    dispatch(
-      updateCookbook({
-        cookbookId,
-        data: { recipes: newRecipeIds },
-      })
-    );
+      setSelectedRecipeIds(newRecipeIds);
 
-    dispatch(clearSelectedRecipes());
-    setSnackbar({
-      open: true,
-      message: `${recipeIds.length} recipe(s) added to cookbook`,
-      severity: 'success',
-    });
+      await dispatch(
+        updateCookbook({
+          cookbookId,
+          data: { recipes: newRecipeIds },
+        })
+      ).unwrap();
+
+      // Refresh the cookbook to get populated recipe data
+      await dispatch(fetchCookbookById(cookbookId)).unwrap();
+
+      dispatch(clearSelectedRecipes());
+      setSnackbar({
+        open: true,
+        message: `${recipeIds.length} recipe(s) added to cookbook`,
+        severity: 'success',
+      });
+    } catch (err: any) {
+      console.error('Add recipes error:', err);
+      const errorMessage = typeof err === 'string'
+        ? err
+        : err?.message || err?.error || 'Failed to add recipes';
+
+      setSnackbar({
+        open: true,
+        message: errorMessage,
+        severity: 'error',
+      });
+    }
   };
 
-  const handleSettingsSave = (settings: Partial<ICookbook>) => {
-    if (!cookbookId) return;
+  const handleSettingsSave = async (settings: Partial<ICookbook>) => {
+    if (!cookbookId || !currentCookbook) return;
 
-    dispatch(
-      updateCookbook({
-        cookbookId,
-        data: settings as UpdateCookbookData,
-      })
-    );
+    // Check if cookbook is being generated
+    if (currentCookbook.status === 'generating') {
+      setSnackbar({
+        open: true,
+        message: 'Cannot update settings while cookbook is being generated. Please wait for generation to complete.',
+        severity: 'warning',
+      });
+      return;
+    }
 
-    setSnackbar({
-      open: true,
-      message: 'Settings updated successfully',
-      severity: 'success',
-    });
+    try {
+      await dispatch(
+        updateCookbook({
+          cookbookId,
+          data: settings as UpdateCookbookData,
+        })
+      ).unwrap();
+
+      // Refresh the cookbook to ensure all data is up-to-date
+      await dispatch(fetchCookbookById(cookbookId)).unwrap();
+
+      setSnackbar({
+        open: true,
+        message: 'Settings updated successfully',
+        severity: 'success',
+      });
+    } catch (err: any) {
+      console.error('Update settings error:', err);
+      const errorMessage = typeof err === 'string'
+        ? err
+        : err?.message || err?.error || 'Failed to update settings';
+
+      setSnackbar({
+        open: true,
+        message: errorMessage,
+        severity: 'error',
+      });
+    }
   };
 
   // Todo
@@ -292,9 +367,17 @@ const CookbookEditor: React.FC = () => {
             >
               <ArrowBack />
             </IconButton>
-            <Typography variant='h6' sx={{ fontWeight: 600 }}>
-              {currentCookbook?.title || 'Untitled Cookbook'}
-            </Typography>
+            <Box>
+              <Typography variant='h6' sx={{ fontWeight: 600 }}>
+                {currentCookbook?.title || 'Untitled Cookbook'}
+              </Typography>
+              {currentCookbook?.status === 'generating' && (
+                <Typography variant='caption' sx={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  <CircularProgress size={12} sx={{ color: '#fbbf24' }} />
+                  Generating PDF... (Read-only mode)
+                </Typography>
+              )}
+            </Box>
           </Box>
 
           <Box sx={{ display: 'flex', gap: 1 }}>
@@ -326,7 +409,7 @@ const CookbookEditor: React.FC = () => {
               variant='contained'
               startIcon={isSaving ? <CircularProgress size={16} /> : <Save />}
               onClick={handleSave}
-              disabled={isSaving}
+              disabled={isSaving || currentCookbook?.status === 'generating'}
               sx={{
                 backgroundColor: '#3b82f6',
                 '&:hover': { backgroundColor: '#2563eb' },
@@ -365,6 +448,7 @@ const CookbookEditor: React.FC = () => {
           onRecipeSelect={setSelectedSection}
           onAddRecipe={() => setRecipeSelectorOpen(true)}
           onEditInfo={() => setSettingsOpen(true)}
+          isGenerating={currentCookbook?.status === 'generating'}
         />
 
         {/* Editor Area */}
