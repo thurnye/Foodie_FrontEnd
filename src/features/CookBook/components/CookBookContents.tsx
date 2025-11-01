@@ -261,6 +261,7 @@ const CookBookContents: React.FC<ICookBookContents> = ({
               defaultValue={localContent}
               height='100%'
               placeholder={getPlaceholder()}
+              layout={currentCookbook?.layout}
             />
           </Box>
         </Box>

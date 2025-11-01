@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import type { Editor as TinyMCEEditor } from 'tinymce';
+import { CookbookLayout } from '../../features/CookBook/types/cookbook.types';
 
 // Define component props
 interface ITextEditorProps {
@@ -8,6 +9,7 @@ interface ITextEditorProps {
   defaultValue?: string;
   height?: string | number;
   placeholder?: string;
+  layout?: CookbookLayout;
 }
 
 //  TinyMCE API key
@@ -17,7 +19,8 @@ const TextEditor: React.FC<ITextEditorProps> = ({
   getContents,
   defaultValue = '',
   height = '100%',
-  placeholder = 'Start typing...'
+  placeholder = 'Start typing...',
+  layout = CookbookLayout.SINGLE_COLUMN
 }) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
 
@@ -26,6 +29,50 @@ const TextEditor: React.FC<ITextEditorProps> = ({
   };
 
   console.log('TextEditor rendering with defaultValue:', defaultValue?.substring(0, 100));
+
+  // Generate layout-specific CSS
+  const getLayoutCSS = () => {
+    switch (layout) {
+      case CookbookLayout.TWO_COLUMN:
+        return `
+          .mce-content-body {
+            column-count: 2;
+            column-gap: 30px;
+            column-rule: 1px solid #3a3a3a;
+          }
+          .mce-content-body h1,
+          .mce-content-body h2 {
+            column-span: all;
+          }
+          .mce-content-body img {
+            max-width: 100%;
+            height: auto;
+          }
+        `;
+      case CookbookLayout.MAGAZINE:
+        return `
+          .mce-content-body {
+            column-count: 3;
+            column-gap: 20px;
+            column-rule: 1px solid #3a3a3a;
+          }
+          .mce-content-body h1 {
+            column-span: all;
+            font-size: 2em;
+          }
+          .mce-content-body h2 {
+            column-span: all;
+            font-size: 1.5em;
+          }
+          .mce-content-body img {
+            max-width: 100%;
+            height: auto;
+          }
+        `;
+      default: // SINGLE_COLUMN
+        return '';
+    }
+  };
 
   return (
     <>
@@ -163,6 +210,7 @@ const TextEditor: React.FC<ITextEditorProps> = ({
               border-radius: 4px;
               font-family: monospace;
             }
+            ${getLayoutCSS()}
           `,
 
           // Skin for dark mode

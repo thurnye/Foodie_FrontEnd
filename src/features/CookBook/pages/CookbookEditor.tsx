@@ -328,7 +328,12 @@ const CookbookEditor: React.FC = () => {
   };
 
   const handleSettingsSave = async (settings: Partial<ICookbook>) => {
-    if (!cookbookId || !currentCookbook) return;
+    console.log('CookbookEditor - handleSettingsSave called with:', settings);
+
+    if (!cookbookId || !currentCookbook) {
+      console.error('Missing cookbookId or currentCookbook');
+      return;
+    }
 
     // Check if cookbook is being generated
     if (currentCookbook.status === 'generating') {
@@ -341,16 +346,30 @@ const CookbookEditor: React.FC = () => {
     }
 
     try {
+      // Filter out empty strings - backend doesn't allow them
+      const cleanedSettings: UpdateCookbookData = {};
+
+      Object.entries(settings).forEach(([key, value]) => {
+        // Skip empty strings for optional fields
+        if (value === '' && ['coverImage', 'authorBio', 'authorImage', 'description'].includes(key)) {
+          return;
+        }
+        // Include all other values
+        cleanedSettings[key as keyof UpdateCookbookData] = value as any;
+      });
+
+      console.log('Dispatching updateCookbook with cleaned data:', { cookbookId, data: cleanedSettings });
       await dispatch(
         updateCookbook({
           cookbookId,
-          data: settings as UpdateCookbookData,
+          data: cleanedSettings,
         })
       ).unwrap();
 
       // Refresh the cookbook to ensure all data is up-to-date
       await dispatch(fetchCookbookById(cookbookId)).unwrap();
 
+      console.log('Settings updated and cookbook refreshed successfully');
       setSnackbar({
         open: true,
         message: 'Settings updated successfully',
@@ -358,6 +377,11 @@ const CookbookEditor: React.FC = () => {
       });
     } catch (err: any) {
       console.error('Update settings error:', err);
+      console.error('Error details:', {
+        message: err?.message,
+        error: err?.error,
+        full: err
+      });
       const errorMessage = typeof err === 'string'
         ? err
         : err?.message || err?.error || 'Failed to update settings';

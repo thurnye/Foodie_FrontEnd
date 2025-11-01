@@ -98,6 +98,7 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
   };
 
   const handleSave = () => {
+    console.log('CookbookSettings - Saving settings:', settings);
     onSave(settings);
     onClose();
   };
