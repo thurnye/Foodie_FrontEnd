@@ -20,6 +20,8 @@ import {
   Settings,
   MoreVert,
   ArrowBack,
+  ChevronLeft,
+  ChevronRight,
 } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
@@ -66,6 +68,7 @@ const CookbookEditor: React.FC = () => {
   }>({ open: false, message: '', severity: 'info' });
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [currentPageNumber, setCurrentPageNumber] = useState(1);
 
   // Fetch cookbook on mount
   useEffect(() => {
@@ -74,7 +77,43 @@ const CookbookEditor: React.FC = () => {
     }
   }, [cookbookId, dispatch]);
 
-  // Update editor content when section changes
+  // Calculate total pages and current page number
+  const calculatePageInfo = () => {
+    if (!currentCookbook) return { totalPages: 1, currentPage: 1 };
+
+    // Page structure:
+    // 1. Cover
+    // 2. Introduction
+    // 3. Table of Contents
+    // 4-N. Recipes (one page per recipe)
+    // N+1. Notes
+
+    const recipeCount = currentCookbook.recipes?.length || 0;
+    const totalPages = 3 + recipeCount + 1; // cover + intro + toc + recipes + notes
+
+    let currentPage = 1;
+    if (selectedSection === 'cover') {
+      currentPage = 1;
+    } else if (selectedSection === 'intro') {
+      currentPage = 2;
+    } else if (selectedSection === 'toc') {
+      currentPage = 3;
+    } else if (selectedSection === 'notes') {
+      currentPage = totalPages;
+    } else if (selectedSection && selectedSection !== 'toc') {
+      // It's a recipe - find its index
+      const recipeIndex = currentCookbook.recipes.findIndex((r) =>
+        typeof r === 'string' ? r === selectedSection : r._id === selectedSection
+      );
+      if (recipeIndex !== -1) {
+        currentPage = 4 + recipeIndex; // cover(1) + intro(2) + toc(3) + recipe position
+      }
+    }
+
+    return { totalPages, currentPage };
+  };
+
+  // Update editor content and page number when section changes
   useEffect(() => {
     if (selectedSection === 'cover') {
       setEditorContent(pendingChanges.description || currentCookbook?.description || '');
@@ -83,10 +122,16 @@ const CookbookEditor: React.FC = () => {
     } else if (selectedSection === 'notes') {
       setEditorContent(pendingChanges.notes || 'Add any additional notes here...');
     } else if (selectedSection && selectedSection !== 'toc') {
-      // For recipe sections - the content will be generated in CookBookContents
-      // We just pass through any existing notes or empty string
-      setEditorContent(recipeNotes[selectedSection] || '');
+      // For recipe sections - check if user has edited this recipe
+      // If there are edited notes, pass them; otherwise pass undefined
+      // to let CookBookContents generate the HTML from recipe data
+      const editedContent = recipeNotes[selectedSection];
+      setEditorContent(editedContent !== undefined ? editedContent : '');
     }
+
+    // Update page number
+    const { currentPage } = calculatePageInfo();
+    setCurrentPageNumber(currentPage);
   }, [selectedSection, currentCookbook, pendingChanges, recipeNotes]);
 
   // Handle content change from editor
@@ -103,6 +148,51 @@ const CookbookEditor: React.FC = () => {
     } else if (selectedSection && selectedSection !== 'toc') {
       // Store recipe edits by recipe ID
       setRecipeNotes(prev => ({ ...prev, [selectedSection]: content }));
+    }
+  };
+
+  // Navigate to previous page
+  const handlePreviousPage = () => {
+    if (!currentCookbook) return;
+
+    const { currentPage } = calculatePageInfo();
+    if (currentPage <= 1) return;
+
+    const targetPage = currentPage - 1;
+    navigateToPage(targetPage);
+  };
+
+  // Navigate to next page
+  const handleNextPage = () => {
+    if (!currentCookbook) return;
+
+    const { currentPage, totalPages } = calculatePageInfo();
+    if (currentPage >= totalPages) return;
+
+    const targetPage = currentPage + 1;
+    navigateToPage(targetPage);
+  };
+
+  // Navigate to a specific page number
+  const navigateToPage = (pageNumber: number) => {
+    if (!currentCookbook) return;
+
+    if (pageNumber === 1) {
+      setSelectedSection('cover');
+    } else if (pageNumber === 2) {
+      setSelectedSection('intro');
+    } else if (pageNumber === 3) {
+      setSelectedSection('toc');
+    } else if (pageNumber === calculatePageInfo().totalPages) {
+      setSelectedSection('notes');
+    } else {
+      // It's a recipe page
+      const recipeIndex = pageNumber - 4; // Subtract cover(1), intro(2), toc(3)
+      if (recipeIndex >= 0 && recipeIndex < currentCookbook.recipes.length) {
+        const recipe = currentCookbook.recipes[recipeIndex];
+        const recipeId = typeof recipe === 'string' ? recipe : recipe._id;
+        setSelectedSection(recipeId);
+      }
     }
   };
 
@@ -362,7 +452,7 @@ const CookbookEditor: React.FC = () => {
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <IconButton
-              onClick={() => navigate('/cookbook')}
+              onClick={() => navigate('/dashboard/cook-book')}
               sx={{ color: '#e0e0e0' }}
             >
               <ArrowBack />
@@ -464,12 +554,80 @@ const CookbookEditor: React.FC = () => {
           {/* <EditorToolbar onFormat={handleFormat} /> */}
 
           {/* Editor Content */}
-          <CookBookContents
-            selectedSection={selectedSection}
-            currentCookbook={currentCookbook}
-            editorContents={editorContent}
-            onContentChange={handleContentChange}
-          />
+          <Box sx={{ flex: 1, overflow: 'hidden' }}>
+            <CookBookContents
+              selectedSection={selectedSection}
+              currentCookbook={currentCookbook}
+              editorContents={editorContent}
+              onContentChange={handleContentChange}
+            />
+          </Box>
+
+          {/* Page Navigation Footer */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              px: 3,
+              py: 1.5,
+              backgroundColor: '#252525',
+              borderTop: '1px solid #2d2d2d',
+            }}
+          >
+            <IconButton
+              onClick={handlePreviousPage}
+              disabled={currentPageNumber <= 1}
+              sx={{
+                color: '#e0e0e0',
+                '&.Mui-disabled': { color: '#6b7280' },
+              }}
+            >
+              <ChevronLeft />
+            </IconButton>
+
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              <Typography
+                variant='body2'
+                sx={{ color: '#9ca3af', fontSize: '0.875rem' }}
+              >
+                Page
+              </Typography>
+              <Typography
+                variant='h6'
+                sx={{
+                  color: '#e0e0e0',
+                  fontWeight: 600,
+                  fontSize: '1rem',
+                }}
+              >
+                {currentPageNumber}
+              </Typography>
+              <Typography
+                variant='body2'
+                sx={{ color: '#6b7280', fontSize: '0.875rem' }}
+              >
+                of {calculatePageInfo().totalPages}
+              </Typography>
+            </Box>
+
+            <IconButton
+              onClick={handleNextPage}
+              disabled={currentPageNumber >= calculatePageInfo().totalPages}
+              sx={{
+                color: '#e0e0e0',
+                '&.Mui-disabled': { color: '#6b7280' },
+              }}
+            >
+              <ChevronRight />
+            </IconButton>
+          </Box>
         </Box>
       </Box>
 

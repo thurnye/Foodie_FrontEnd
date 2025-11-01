@@ -135,33 +135,44 @@ const CookBookContents: React.FC<ICookBookContents> = ({
     ['cover', 'intro', 'notes'].includes(selectedSection || '') ||
     isRecipeSection;
 
-  const [localContent, setLocalContent] = useState('');
-
-  // Update local content when editorContents or selectedSection changes
-  useEffect(() => {
-    console.log('CookBookContents - Section changed:', {
-      selectedSection,
-      isRecipeSection,
-      hasCurrentRecipe: !!currentRecipe,
-      editorContents,
-    });
-
-    // For recipe sections, generate HTML if no content exists
+  // Calculate content synchronously during render (not in useEffect)
+  // This ensures TextEditor gets the correct content on mount
+  const getDisplayContent = (): string => {
+    // For recipe sections, generate HTML from recipe data
     if (isRecipeSection && currentRecipe && typeof currentRecipe !== 'string') {
       const recipeHTML = getRecipeHTML(currentRecipe);
-      console.log(
-        'Generated recipe HTML for:',
-        currentRecipe.basicInfo.recipeName
-      );
-      setLocalContent(editorContents || recipeHTML);
-    } else {
-      console.log('Setting editor contents:', editorContents);
-      setLocalContent(editorContents);
+
+      // Use edited content if it exists and has been modified by user
+      const hasEditedContent = editorContents &&
+                               editorContents.trim() !== '' &&
+                               !editorContents.includes('Add any modifications, tips, or notes');
+
+      console.log('CookBookContents - Recipe section:', {
+        selectedSection,
+        recipeName: currentRecipe.basicInfo.recipeName,
+        recipeHTMLLength: recipeHTML.length,
+        editorContentsLength: editorContents?.length,
+        hasEditedContent,
+        willUseHTML: !hasEditedContent
+      });
+
+      return hasEditedContent ? editorContents : recipeHTML;
     }
-  }, [editorContents, selectedSection, isRecipeSection, currentRecipe]);
+
+    // For non-recipe sections
+    console.log('CookBookContents - Non-recipe section:', {
+      selectedSection,
+      isRecipeSection,
+      editorContentsLength: editorContents?.length
+    });
+
+    return editorContents || '';
+  };
+
+  const localContent = getDisplayContent();
 
   const handleContentChange = (content: string) => {
-    setLocalContent(content);
+    // Pass content change up to parent
     if (onContentChange) {
       onContentChange(content);
     }
@@ -190,7 +201,8 @@ const CookBookContents: React.FC<ICookBookContents> = ({
     <Box
       sx={{
         flex: 1,
-        overflow: 'auto',
+        height: '100%',
+        overflow: 'hidden',
         backgroundColor: '#1e1e1e',
         display: 'flex',
         flexDirection: 'column',
@@ -198,7 +210,7 @@ const CookBookContents: React.FC<ICookBookContents> = ({
     >
       {isEditableSection ? (
         // Render TextEditor for editable sections
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2, overflow: 'hidden' }}>
           {selectedSection === 'cover' && !isRecipeSection && (
             <Box sx={{ mb: 2 }}>
               <Typography
@@ -242,7 +254,7 @@ const CookBookContents: React.FC<ICookBookContents> = ({
             </Typography>
           )}
 
-          <Box sx={{ flex: 1, minHeight: 400 }}>
+          <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
             <TextEditor
               key={selectedSection} // Force re-render when section changes
               getContents={handleContentChange}
