@@ -48,12 +48,13 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
     <Box
       sx={{
         width: 280,
-        height: '100vh',
+        height: '100%',
         backgroundColor: '#1e1e1e',
         color: '#e0e0e0',
         display: 'flex',
         flexDirection: 'column',
         borderRight: '1px solid #2d2d2d',
+        overflow: 'hidden',
       }}
     >
       {/* Header */}

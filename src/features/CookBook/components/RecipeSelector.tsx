@@ -14,6 +14,8 @@ import {
   Typography,
   Grid,
   CircularProgress,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { Search } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,6 +36,8 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
   onConfirm,
 }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [searchQuery, setSearchQuery] = React.useState('');
 
   const { myRecipes, recipesLoading } = useSelector(
@@ -68,19 +72,26 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
       onClose={onClose}
       maxWidth='md'
       fullWidth
+      fullScreen={isMobile}
       PaperProps={{
         sx: {
           backgroundColor: '#1e1e1e',
           color: '#e0e0e0',
-          maxHeight: '80vh',
+          maxHeight: { xs: '100vh', sm: '80vh' },
         },
       }}
     >
-      <DialogTitle sx={{ borderBottom: '1px solid #2d2d2d' }}>
+      <DialogTitle
+        sx={{
+          borderBottom: '1px solid #2d2d2d',
+          fontSize: { xs: '1.125rem', sm: '1.25rem' },
+          p: { xs: 2, sm: 3 },
+        }}
+      >
         Select Recipes for Cookbook
       </DialogTitle>
 
-      <DialogContent sx={{ p: 3 }}>
+      <DialogContent sx={{ p: { xs: 2, sm: 3 } }}>
         {/* Search */}
         <TextField
           fullWidth
@@ -108,11 +119,11 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
             <CircularProgress />
           </Box>
         ) : (
-          <Grid container spacing={2}>
+          <Grid container spacing={{ xs: 1.5, sm: 2 }}>
             {filteredRecipes.map((recipe: IRecipe) => {
               const isSelected = selectedRecipes.includes(recipe._id);
               return (
-                <Grid item xs={12} sm={6} md={4} key={recipe._id}>
+                <Grid item xs={6} sm={6} md={4} key={recipe._id}>
                   <Card
                     sx={{
                       cursor: 'pointer',
@@ -123,7 +134,7 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
                       transition: 'all 0.2s',
                       '&:hover': {
                         borderColor: '#3b82f6',
-                        transform: 'translateY(-2px)',
+                        transform: { xs: 'none', sm: 'translateY(-2px)' },
                       },
                     }}
                     onClick={() => handleToggle(recipe._id)}
@@ -131,7 +142,7 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
                     <Box sx={{ position: 'relative' }}>
                       <CardMedia
                         component='img'
-                        height='140'
+                        sx={{ height: { xs: 120, sm: 140 } }}
                         image={recipe.details.thumbnail}
                         alt={recipe.basicInfo.recipeName}
                       />
@@ -148,11 +159,12 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
                         }}
                       />
                     </Box>
-                    <CardContent sx={{ p: 2 }}>
+                    <CardContent sx={{ p: { xs: 1, sm: 2 } }}>
                       <Typography
                         variant='body2'
                         sx={{
                           fontWeight: 600,
+                          fontSize: { xs: '0.75rem', sm: '0.875rem' },
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           whiteSpace: 'nowrap',
@@ -162,7 +174,11 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
                       </Typography>
                       <Typography
                         variant='caption'
-                        sx={{ color: '#9ca3af', display: 'block', mt: 0.5 }}
+                        sx={{
+                          color: '#9ca3af',
+                          display: { xs: 'none', sm: 'block' },
+                          mt: 0.5,
+                        }}
                       >
                         {recipe.basicInfo.duration?.label || 'N/A'} •{' '}
                         {recipe.basicInfo.level?.label || 'N/A'}
@@ -182,24 +198,53 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
         )}
       </DialogContent>
 
-      <DialogActions sx={{ p: 3, borderTop: '1px solid #2d2d2d' }}>
-        <Typography variant='body2' sx={{ mr: 'auto', color: '#9ca3af' }}>
-          {selectedRecipes.length} recipe(s) selected
-        </Typography>
-        <Button onClick={onClose} sx={{ color: '#9ca3af' }}>
-          Cancel
-        </Button>
-        <Button
-          onClick={handleConfirm}
-          variant='contained'
-          disabled={selectedRecipes.length === 0}
+      <DialogActions
+        sx={{
+          p: { xs: 2, sm: 3 },
+          borderTop: '1px solid #2d2d2d',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: { xs: 1, sm: 0 },
+        }}
+      >
+        <Typography
+          variant='body2'
           sx={{
-            backgroundColor: '#3b82f6',
-            '&:hover': { backgroundColor: '#2563eb' },
+            mr: { sm: 'auto' },
+            color: '#9ca3af',
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
           }}
         >
-          Add to Cookbook
-        </Button>
+          {selectedRecipes.length} recipe(s) selected
+        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 1,
+            width: { xs: '100%', sm: 'auto' },
+          }}
+        >
+          <Button
+            onClick={onClose}
+            sx={{
+              color: '#9ca3af',
+              flex: { xs: 1, sm: 0 },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleConfirm}
+            variant='contained'
+            disabled={selectedRecipes.length === 0}
+            sx={{
+              backgroundColor: '#3b82f6',
+              '&:hover': { backgroundColor: '#2563eb' },
+              flex: { xs: 1, sm: 0 },
+            }}
+          >
+            Add to Cookbook
+          </Button>
+        </Box>
       </DialogActions>
     </Dialog>
   );

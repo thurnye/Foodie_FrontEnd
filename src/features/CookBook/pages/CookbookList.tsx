@@ -178,22 +178,30 @@ const CookbookList: React.FC = () => {
         minHeight: '100vh',
         backgroundColor: '#1e1e1e',
         color: '#e0e0e0',
-        py: 4,
+        py: { xs: 2, sm: 3, md: 4 },
       }}
     >
-      <Container maxWidth='xl'>
+      <Container maxWidth='xl' sx={{ px: { xs: 2, sm: 3 } }}>
         {/* Header */}
         <Box
           sx={{
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center',
-            mb: 4,
+            alignItems: { xs: 'flex-start', sm: 'center' },
+            mb: { xs: 3, sm: 4 },
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: { xs: 2, sm: 0 },
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <MenuBook sx={{ fontSize: 40, color: '#3b82f6' }} />
-            <Typography variant='h4' sx={{ fontWeight: 700 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+            <MenuBook sx={{ fontSize: { xs: 32, sm: 40 }, color: '#3b82f6' }} />
+            <Typography
+              variant='h4'
+              sx={{
+                fontWeight: 700,
+                fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
+              }}
+            >
               My Cookbooks
             </Typography>
           </Box>
@@ -204,11 +212,17 @@ const CookbookList: React.FC = () => {
             sx={{
               backgroundColor: '#3b82f6',
               '&:hover': { backgroundColor: '#2563eb' },
-              px: 3,
-              py: 1.5,
+              px: { xs: 2, sm: 3 },
+              py: { xs: 1, sm: 1.5 },
+              width: { xs: '100%', sm: 'auto' },
             }}
           >
-            Create Cookbook
+            <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+              Create Cookbook
+            </Box>
+            <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
+              Create
+            </Box>
           </Button>
         </Box>
 
@@ -224,21 +238,34 @@ const CookbookList: React.FC = () => {
           <Box
             sx={{
               textAlign: 'center',
-              py: 8,
+              py: { xs: 4, sm: 6, md: 8 },
               px: 2,
             }}
           >
             <MenuBook
               sx={{
-                fontSize: 80,
+                fontSize: { xs: 60, sm: 80 },
                 color: '#3a3a3a',
                 mb: 2,
               }}
             />
-            <Typography variant='h5' sx={{ mb: 2, color: '#9ca3af' }}>
+            <Typography
+              variant='h5'
+              sx={{
+                mb: 2,
+                color: '#9ca3af',
+                fontSize: { xs: '1.25rem', sm: '1.5rem' },
+              }}
+            >
               No cookbooks yet
             </Typography>
-            <Typography sx={{ mb: 4, color: '#6b7280' }}>
+            <Typography
+              sx={{
+                mb: 4,
+                color: '#6b7280',
+                fontSize: { xs: '0.875rem', sm: '1rem' },
+              }}
+            >
               Create your first cookbook to get started
             </Typography>
             <Button
@@ -248,6 +275,8 @@ const CookbookList: React.FC = () => {
               sx={{
                 backgroundColor: '#3b82f6',
                 '&:hover': { backgroundColor: '#2563eb' },
+                px: { xs: 2, sm: 3 },
+                py: { xs: 1, sm: 1.5 },
               }}
             >
               Create Your First Cookbook
@@ -257,7 +286,7 @@ const CookbookList: React.FC = () => {
 
         {/* Cookbook Grid */}
         {cookbooks.length > 0 && (
-          <Grid container spacing={3}>
+          <Grid container spacing={{ xs: 2, sm: 3 }}>
             {cookbooks.map((cookbook) => (
               <Grid item xs={12} sm={6} md={4} lg={3} key={cookbook._id}>
                 <Card
@@ -267,8 +296,8 @@ const CookbookList: React.FC = () => {
                     cursor: 'pointer',
                     transition: 'all 0.2s',
                     '&:hover': {
-                      transform: 'translateY(-4px)',
-                      boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+                      transform: { xs: 'none', sm: 'translateY(-4px)' },
+                      boxShadow: { xs: 'none', sm: '0 8px 24px rgba(0,0,0,0.3)' },
                     },
                     position: 'relative',
                     height: '100%',
@@ -279,15 +308,17 @@ const CookbookList: React.FC = () => {
                 >
                   <CardMedia
                     component='img'
-                    height='200'
+                    sx={{
+                      height: { xs: 180, sm: 200 },
+                      objectFit: 'cover',
+                    }}
                     image={
                       cookbook.coverImage ||
                       'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400'
                     }
                     alt={cookbook.title}
-                    sx={{ objectFit: 'cover' }}
                   />
-                  <CardContent sx={{ flexGrow: 1 }}>
+                  <CardContent sx={{ flexGrow: 1, p: { xs: 1.5, sm: 2 } }}>
                     <Box
                       sx={{
                         display: 'flex',
@@ -300,6 +331,7 @@ const CookbookList: React.FC = () => {
                         variant='h6'
                         sx={{
                           fontWeight: 600,
+                          fontSize: { xs: '1rem', sm: '1.125rem' },
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
                           display: '-webkit-box',
@@ -363,7 +395,7 @@ const CookbookList: React.FC = () => {
                       recipe(s)
                     </Typography>
                   </CardContent>
-                  <CardActions sx={{ p: 2, pt: 0 }}>
+                  <CardActions sx={{ p: { xs: 1.5, sm: 2 }, pt: 0 }}>
                     <Button
                       size='small'
                       startIcon={<Edit />}
@@ -371,7 +403,10 @@ const CookbookList: React.FC = () => {
                         e.stopPropagation();
                         navigate(`/dashboard/cookbook/${cookbook._id}/edit`);
                       }}
-                      sx={{ color: '#3b82f6' }}
+                      sx={{
+                        color: '#3b82f6',
+                        fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                      }}
                     >
                       Edit
                     </Button>
@@ -383,7 +418,10 @@ const CookbookList: React.FC = () => {
                           e.stopPropagation();
                           window.open(cookbook.pdfUrl, '_blank');
                         }}
-                        sx={{ color: '#10b981' }}
+                        sx={{
+                          color: '#10b981',
+                          fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                        }}
                       >
                         PDF
                       </Button>

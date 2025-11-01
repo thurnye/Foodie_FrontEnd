@@ -267,14 +267,20 @@ const CookBookContents: React.FC<ICookBookContents> = ({
         </Box>
       ) : (
         // Render static content for non-editable sections
-        <Box sx={{ p: 4 }}>
+        <Box
+          sx={{
+            flex: 1,
+            overflow: 'auto',
+            p: { xs: 2, sm: 3, md: 4 },
+          }}
+        >
           <Box
             sx={{
               maxWidth: 800,
               mx: 'auto',
               backgroundColor: '#252525',
               borderRadius: 2,
-              p: 4,
+              p: { xs: 2, sm: 3, md: 4 },
               minHeight: '100%',
             }}
           >

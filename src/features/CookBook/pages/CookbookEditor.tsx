@@ -12,6 +12,9 @@ import {
   CircularProgress,
   Alert,
   Snackbar,
+  Drawer,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import {
   Save,
@@ -22,6 +25,7 @@ import {
   ArrowBack,
   ChevronLeft,
   ChevronRight,
+  Menu as MenuIcon,
 } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
@@ -37,12 +41,16 @@ import RecipeSelector from '../components/RecipeSelector';
 import CookbookSettings from '../components/CookbookSettings';
 import { IRecipe } from '../../Recipe/types/recipe.types';
 import { ICookbook, UpdateCookbookData } from '../types/cookbook.types';
+import { IBookSection } from '../types/book.types';
 import CookBookContents from '../components/CookBookContents';
+import axios from 'axios';
 
 const CookbookEditor: React.FC = () => {
   const { cookbookId } = useParams<{ cookbookId: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const { currentCookbook, loading, error, selectedRecipes } = useSelector(
     (state: RootState) => state.cookbook
@@ -69,6 +77,7 @@ const CookbookEditor: React.FC = () => {
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   // Fetch cookbook on mount
   useEffect(() => {
@@ -276,6 +285,104 @@ const CookbookEditor: React.FC = () => {
     }
   };
 
+  const handleSaveAsBook = async () => {
+    if (!cookbookId || !currentCookbook) return;
+
+    setIsSaving(true);
+    try {
+      // Collect all edited sections
+      const sections: IBookSection[] = [];
+
+      // Add cover section if edited
+      if (pendingChanges.description) {
+        sections.push({
+          sectionId: 'cover',
+          sectionType: 'cover',
+          content: pendingChanges.description,
+          lastEditedAt: new Date().toISOString(),
+        });
+      }
+
+      // Add intro section if edited
+      if (pendingChanges.authorBio) {
+        sections.push({
+          sectionId: 'intro',
+          sectionType: 'intro',
+          content: pendingChanges.authorBio,
+          lastEditedAt: new Date().toISOString(),
+        });
+      }
+
+      // Add notes section if edited
+      if (pendingChanges.notes) {
+        sections.push({
+          sectionId: 'notes',
+          sectionType: 'notes',
+          content: pendingChanges.notes,
+          lastEditedAt: new Date().toISOString(),
+        });
+      }
+
+      // Add all edited recipes
+      Object.entries(recipeNotes).forEach(([recipeId, content]) => {
+        if (content && content.trim()) {
+          sections.push({
+            sectionId: recipeId,
+            sectionType: 'recipe',
+            content,
+            lastEditedAt: new Date().toISOString(),
+          });
+        }
+      });
+
+      if (sections.length === 0) {
+        setSnackbar({
+          open: true,
+          message: 'No edited content to save. Please edit some sections first.',
+          severity: 'warning',
+        });
+        setIsSaving(false);
+        return;
+      }
+
+      // Save as book
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/cookbook-service/api/books`,
+        {
+          cookbookId,
+          title: currentCookbook.title,
+          description: currentCookbook.description,
+          sections,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          withCredentials: true,
+        }
+      );
+
+      console.log('Book saved:', response.data);
+
+      setSnackbar({
+        open: true,
+        message: `Book saved successfully with ${sections.length} edited section(s)!`,
+        severity: 'success',
+      });
+    } catch (err: any) {
+      console.error('Save as book error:', err);
+      const errorMessage = err?.response?.data?.message || err?.message || 'Failed to save as book';
+
+      setSnackbar({
+        open: true,
+        message: errorMessage,
+        severity: 'error',
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleAddRecipes = async (recipeIds: string[]) => {
     if (!cookbookId || !currentCookbook) return;
 
@@ -473,16 +580,22 @@ const CookbookEditor: React.FC = () => {
           boxShadow: 'none',
         }}
       >
-        <Toolbar sx={{ justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Toolbar sx={{ justifyContent: 'space-between', px: { xs: 1, sm: 2 } }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
+            <IconButton
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              sx={{ color: '#e0e0e0', display: { md: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
             <IconButton
               onClick={() => navigate('/dashboard/cook-book')}
               sx={{ color: '#e0e0e0' }}
             >
               <ArrowBack />
             </IconButton>
-            <Box>
-              <Typography variant='h6' sx={{ fontWeight: 600 }}>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Typography variant='h6' sx={{ fontWeight: 600, fontSize: { xs: '0.9rem', sm: '1.25rem' } }}>
                 {currentCookbook?.title || 'Untitled Cookbook'}
               </Typography>
               {currentCookbook?.status === 'generating' && (
@@ -494,7 +607,17 @@ const CookbookEditor: React.FC = () => {
             </Box>
           </Box>
 
-          <Box sx={{ display: 'flex', gap: 1 }}>
+          <Box sx={{ display: 'flex', gap: { xs: 0.5, sm: 1 }, alignItems: 'center' }}>
+            {/* Settings - visible on all screens */}
+            <IconButton
+              onClick={() => setSettingsOpen(true)}
+              sx={{
+                color: '#e0e0e0',
+                display: { xs: 'flex', sm: 'none' },
+              }}
+            >
+              <Settings />
+            </IconButton>
             <Button
               variant='outlined'
               startIcon={<Settings />}
@@ -503,10 +626,15 @@ const CookbookEditor: React.FC = () => {
                 color: '#e0e0e0',
                 borderColor: '#3a3a3a',
                 '&:hover': { borderColor: '#4a4a4a' },
+                display: { xs: 'none', sm: 'flex' },
               }}
             >
-              Settings
+              <Box component="span" sx={{ display: { xs: 'none', md: 'inline' } }}>
+                Settings
+              </Box>
             </Button>
+
+            {/* Preview - hide on mobile */}
             <Button
               variant='outlined'
               startIcon={<Preview />}
@@ -515,10 +643,13 @@ const CookbookEditor: React.FC = () => {
                 color: '#e0e0e0',
                 borderColor: '#3a3a3a',
                 '&:hover': { borderColor: '#4a4a4a' },
+                display: { xs: 'none', md: 'flex' },
               }}
             >
               Preview
             </Button>
+
+            {/* Save - visible on all screens */}
             <Button
               variant='contained'
               startIcon={isSaving ? <CircularProgress size={16} /> : <Save />}
@@ -527,10 +658,31 @@ const CookbookEditor: React.FC = () => {
               sx={{
                 backgroundColor: '#3b82f6',
                 '&:hover': { backgroundColor: '#2563eb' },
+                minWidth: { xs: 'auto', sm: '90px' },
+                px: { xs: 1, sm: 2 },
               }}
             >
-              {isSaving ? 'Saving...' : 'Save'}
+              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                {isSaving ? 'Saving...' : 'Save'}
+              </Box>
             </Button>
+
+            {/* Save as Book - hide text on small screens */}
+            <Button
+              variant='contained'
+              startIcon={<Save />}
+              onClick={handleSaveAsBook}
+              disabled={isSaving || currentCookbook?.status === 'generating'}
+              sx={{
+                backgroundColor: '#8b5cf6',
+                '&:hover': { backgroundColor: '#7c3aed' },
+                display: { xs: 'none', lg: 'flex' },
+              }}
+            >
+              Save as Book
+            </Button>
+
+            {/* Generate PDF - hide text on mobile */}
             <Button
               variant='contained'
               startIcon={
@@ -541,10 +693,16 @@ const CookbookEditor: React.FC = () => {
               sx={{
                 backgroundColor: '#10b981',
                 '&:hover': { backgroundColor: '#059669' },
+                minWidth: { xs: 'auto', sm: '140px' },
+                px: { xs: 1, sm: 2 },
               }}
             >
-              {isGenerating ? 'Generating...' : 'Generate PDF'}
+              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                {isGenerating ? 'Generating...' : 'Generate PDF'}
+              </Box>
             </Button>
+
+            {/* More menu */}
             <IconButton onClick={handleMenuOpen} sx={{ color: '#e0e0e0' }}>
               <MoreVert />
             </IconButton>
@@ -553,17 +711,46 @@ const CookbookEditor: React.FC = () => {
       </AppBar>
 
       {/* Main Content Area */}
-      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
-        {/* Sidebar */}
-        <EditorSidebar
-          cookbookTitle={currentCookbook?.title || 'My Cookbook'}
-          recipes={currentCookbook?.recipes || []}
-          selectedRecipeId={selectedSection}
-          onRecipeSelect={setSelectedSection}
-          onAddRecipe={() => setRecipeSelectorOpen(true)}
-          onEditInfo={() => setSettingsOpen(true)}
-          isGenerating={currentCookbook?.status === 'generating'}
-        />
+      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden', position: 'relative' }}>
+        {/* Sidebar - Mobile Drawer (Absolute positioned) */}
+        <Box
+          sx={{
+            display: { xs: sidebarOpen ? 'block' : 'none', md: 'none' },
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            width: 280,
+            zIndex: 1200,
+            boxShadow: '2px 0 8px rgba(0,0,0,0.3)',
+          }}
+        >
+          <EditorSidebar
+            cookbookTitle={currentCookbook?.title || 'My Cookbook'}
+            recipes={currentCookbook?.recipes || []}
+            selectedRecipeId={selectedSection}
+            onRecipeSelect={(id) => {
+              setSelectedSection(id);
+              setSidebarOpen(false); // Close drawer on mobile after selection
+            }}
+            onAddRecipe={() => setRecipeSelectorOpen(true)}
+            onEditInfo={() => setSettingsOpen(true)}
+            isGenerating={currentCookbook?.status === 'generating'}
+          />
+        </Box>
+
+        {/* Sidebar - Desktop Permanent */}
+        <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+          <EditorSidebar
+            cookbookTitle={currentCookbook?.title || 'My Cookbook'}
+            recipes={currentCookbook?.recipes || []}
+            selectedRecipeId={selectedSection}
+            onRecipeSelect={setSelectedSection}
+            onAddRecipe={() => setRecipeSelectorOpen(true)}
+            onEditInfo={() => setSettingsOpen(true)}
+            isGenerating={currentCookbook?.status === 'generating'}
+          />
+        </Box>
 
         {/* Editor Area */}
         <Box
@@ -593,8 +780,8 @@ const CookbookEditor: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              px: 3,
-              py: 1.5,
+              px: { xs: 1, sm: 2, md: 3 },
+              py: { xs: 1, sm: 1.5 },
               backgroundColor: '#252525',
               borderTop: '1px solid #2d2d2d',
             }}
@@ -605,6 +792,7 @@ const CookbookEditor: React.FC = () => {
               sx={{
                 color: '#e0e0e0',
                 '&.Mui-disabled': { color: '#6b7280' },
+                p: { xs: 0.5, sm: 1 },
               }}
             >
               <ChevronLeft />
@@ -614,12 +802,16 @@ const CookbookEditor: React.FC = () => {
               sx={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 2,
+                gap: { xs: 1, sm: 2 },
               }}
             >
               <Typography
                 variant='body2'
-                sx={{ color: '#9ca3af', fontSize: '0.875rem' }}
+                sx={{
+                  color: '#9ca3af',
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                  display: { xs: 'none', sm: 'block' },
+                }}
               >
                 Page
               </Typography>
@@ -628,14 +820,17 @@ const CookbookEditor: React.FC = () => {
                 sx={{
                   color: '#e0e0e0',
                   fontWeight: 600,
-                  fontSize: '1rem',
+                  fontSize: { xs: '0.875rem', sm: '1rem' },
                 }}
               >
                 {currentPageNumber}
               </Typography>
               <Typography
                 variant='body2'
-                sx={{ color: '#6b7280', fontSize: '0.875rem' }}
+                sx={{
+                  color: '#6b7280',
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                }}
               >
                 of {calculatePageInfo().totalPages}
               </Typography>
@@ -647,6 +842,7 @@ const CookbookEditor: React.FC = () => {
               sx={{
                 color: '#e0e0e0',
                 '&.Mui-disabled': { color: '#6b7280' },
+                p: { xs: 0.5, sm: 1 },
               }}
             >
               <ChevronRight />
@@ -668,6 +864,15 @@ const CookbookEditor: React.FC = () => {
         }}
       >
         <MenuItem onClick={handlePreview}>Preview</MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleMenuClose();
+            handleSaveAsBook();
+          }}
+          sx={{ display: { lg: 'none' } }}
+        >
+          Save as Book
+        </MenuItem>
         <MenuItem onClick={handleExport}>Export</MenuItem>
       </Menu>
 

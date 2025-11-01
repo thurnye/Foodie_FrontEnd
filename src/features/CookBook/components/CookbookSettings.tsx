@@ -16,6 +16,8 @@ import {
   Tab,
   Switch,
   FormControlLabel,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { CookbookTheme, CookbookLayout, ICookbook } from '../types/cookbook.types';
 
@@ -46,6 +48,8 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
   cookbook,
   onSave,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [tabValue, setTabValue] = React.useState(0);
   const [settings, setSettings] = React.useState<Partial<ICookbook>>({
     title: '',
@@ -109,6 +113,7 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
       onClose={onClose}
       maxWidth="sm"
       fullWidth
+      fullScreen={isMobile}
       PaperProps={{
         sx: {
           backgroundColor: '#1e1e1e',
@@ -116,16 +121,27 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
         },
       }}
     >
-      <DialogTitle sx={{ borderBottom: '1px solid #2d2d2d' }}>
+      <DialogTitle
+        sx={{
+          borderBottom: '1px solid #2d2d2d',
+          fontSize: { xs: '1.125rem', sm: '1.25rem' },
+          p: { xs: 2, sm: 3 },
+        }}
+      >
         Cookbook Settings
       </DialogTitle>
 
       <Tabs
         value={tabValue}
         onChange={(_, newValue) => setTabValue(newValue)}
+        variant={isMobile ? 'fullWidth' : 'standard'}
         sx={{
           borderBottom: '1px solid #2d2d2d',
-          '& .MuiTab-root': { color: '#9ca3af' },
+          '& .MuiTab-root': {
+            color: '#9ca3af',
+            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+            minWidth: { xs: 'auto', sm: 90 },
+          },
           '& .Mui-selected': { color: '#3b82f6' },
         }}
       >
@@ -134,7 +150,7 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
         <Tab label="Author" />
       </Tabs>
 
-      <DialogContent sx={{ p: 3 }}>
+      <DialogContent sx={{ p: { xs: 2, sm: 3 } }}>
         {/* General Tab */}
         <TabPanel value={tabValue} index={0}>
           <TextField
@@ -325,8 +341,21 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
         </TabPanel>
       </DialogContent>
 
-      <DialogActions sx={{ p: 3, borderTop: '1px solid #2d2d2d' }}>
-        <Button onClick={onClose} sx={{ color: '#9ca3af' }}>
+      <DialogActions
+        sx={{
+          p: { xs: 2, sm: 3 },
+          borderTop: '1px solid #2d2d2d',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: { xs: 1, sm: 0 },
+        }}
+      >
+        <Button
+          onClick={onClose}
+          sx={{
+            color: '#9ca3af',
+            width: { xs: '100%', sm: 'auto' },
+          }}
+        >
           Cancel
         </Button>
         <Button
@@ -335,6 +364,7 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
           sx={{
             backgroundColor: '#3b82f6',
             '&:hover': { backgroundColor: '#2563eb' },
+            width: { xs: '100%', sm: 'auto' },
           }}
         >
           Save Settings
