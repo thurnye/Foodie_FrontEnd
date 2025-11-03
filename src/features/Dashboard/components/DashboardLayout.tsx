@@ -22,6 +22,7 @@ import {
   Bookmark as BookmarkIcon,
   ChevronLeft as ChevronLeftIcon,
   Settings as SettingsIcon,
+  ViewQuilt,
 } from '@mui/icons-material';
 
 const drawerWidth = 260;
@@ -52,6 +53,11 @@ const navItems: NavItem[] = [
     title: 'Cook Book',
     path: '/dashboard/cook-book',
     icon: <BookIcon />,
+  },
+  {
+    title: 'Templates',
+    path: '/dashboard/templates',
+    icon: <ViewQuilt />,
   },
   {
     title: 'Saves & Bookmarks',

@@ -23,6 +23,7 @@ import Unsplash from '../../../../../../app/services/app.Unsplash.service';
 import ImageLayout from '../../../../../../app/components/Layouts/ImageLayout';
 import FileUpload from '../../../../../../app/components/FileUpload';
 import { IContentBlock, IFAQ, IRecipeDetails } from '../../../../../Recipe/types/recipe.types';
+import VideoPlayer from '../../../../../../app/components/VideoPlayer';
 
 
 // Define the structure of props and sub-data
@@ -157,7 +158,8 @@ const RecipeDetailsForm: React.FC<RecipeDetailsFormProps> = ({ setData, defaultV
                         )}
                         {el.type === 'video' && (
                           <Box sx={{ maxWidth: 650, m: 'auto', mb: 3 }}>
-                            {parser(el.value as string)}
+                            {/* {parser(el.value as string)} */}
+                            <VideoPlayer link={el.value as string}/>
                           </Box>
                         )}
                       </Box>

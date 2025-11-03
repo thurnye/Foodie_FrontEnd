@@ -28,6 +28,7 @@ import {
 import IngredientsList from '../../../IngredientsList';
 import DirectionStepper from '../../../DirectionStepper';
 import { IRecipeFormType } from '../../../../types/dashboard_recipe.types';
+import VideoPlayer from '../../../../../../app/components/VideoPlayer';
 
 interface RecipePreviewContentProps {
   recipe: IRecipeFormType;
@@ -164,7 +165,8 @@ const RecipePreviewContent: React.FC<RecipePreviewContentProps> = ({
                       mt: 2,
                     }}
                   >
-                    {parser(el.value)}
+                    {/* {parser(el.value)} */}
+                    <VideoPlayer link={el.value}/>
                   </Box>
                 )}
             </Box>

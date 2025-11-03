@@ -27,6 +27,8 @@ const RecipeDetails: React.FC = () => {
         details: data,
       };
 
+      console.log('UPDATED DATA:::', updatedData)
+
       //Enable the next step in the form
       if (formSteps[currentFormStep + 1]) {
         formSteps[currentFormStep + 1].isDisabled = false;

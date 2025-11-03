@@ -60,6 +60,7 @@
     "jsonwebtoken": "^9.0.2",
     "jspdf": "^2.5.1",
     "jwt-decode": "^4.0.0",
+    "lucide-react": "^0.552.0",
     "luxon": "^3.4.4",
     "milsymbol": "^2.2.0",
     "moment": "^2.29.4",

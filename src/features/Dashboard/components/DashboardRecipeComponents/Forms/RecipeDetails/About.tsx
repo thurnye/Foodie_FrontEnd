@@ -24,6 +24,7 @@ import { convertToBase64, getRandomNumber } from '../../../../../../app/utils/ap
 import ImageLayout from '../../../../../../app/components/Layouts/ImageLayout';
 import Unsplash from '../../../../../../app/services/app.Unsplash.service';
 import TextEditor from '../../../../../../app/components/TextEditor';
+import VideoPlayer from '../../../../../../app/components/VideoPlayer';
 
 // Types
 interface AboutItem {
@@ -296,18 +297,18 @@ const About: React.FC<AboutProps> = ({ setAbout, about, setActiveSection }) => {
                     multiline
                     rows={4}
                     {...field}
-                    label='Embedded Video link'
+                    label='Video link'
                     size='small'
                   />
                   <FormHelperText>
-                    Please change the width in the embedded element to “100%” if
-                    present.
+                    paste the video link
                   </FormHelperText>
                   {field.value && (
                     <Card sx={{ mt: 3, border: 0, boxShadow: 'none' }}>
                       <CardContent>
                         <Box sx={{ textAlign: 'center', width: '100%' }}>
-                          {parser(field.value as string)}
+                          {/* {parser(field.value as string)} */}
+                          <VideoPlayer link={field.value as string}/>
                         </Box>
                       </CardContent>
                     </Card>

@@ -70,6 +70,8 @@ const RecipePreview: React.FC = () => {
     setLoading(true);
     setError(null);
 
+    console.log('recipeForm::', recipeForm)
+
     try {
       // Unified endpoint handles both create and update automatically
       // If recipeForm has _id, it updates; otherwise creates new recipe

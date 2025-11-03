@@ -1,6 +1,7 @@
 import { RouteObject } from 'react-router-dom';
 import { lazy } from 'react';
 import { cookbookRoutes } from '../../CookBook/router/cookbook.router';
+import { templateRoutes } from '../../Templates/router/templates.router';
 
 const DashboardLayout = lazy(() =>
   import('../components/DashboardLayout').then((m) => ({ default: m.default }))
@@ -59,6 +60,7 @@ export const dashboardRoutes: RouteObject[] = [
         element: <DashboardCreateEditRecipe />,
       },
       ...cookbookRoutes,
+      ...templateRoutes,
       // {
       //   path: 'recipes/cook-book',
       //   element: <DashboardRecipeCookBook />,
