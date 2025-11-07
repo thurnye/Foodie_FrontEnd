@@ -1,8 +1,296 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Box, Paper, Typography, Button, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Box, Paper, Typography, Button, Select, MenuItem, FormControl, InputLabel, TextField, Dialog, DialogTitle, DialogContent, DialogActions, Chip, Card, CardMedia, Grid, Divider, Stack } from "@mui/material";
 import { usePDF } from "react-to-pdf";
+import { IRecipe } from "../../../Recipe/types/recipe.types";
 
 type PageLayout = "A3-portrait" | "A3-landscape" | "A4-portrait" | "A4-landscape" | "letter-portrait" | "letter-landscape";
+
+const data: any = {
+  "_id": {
+    "$oid": "664e404cb4513dfa42a75dd7"
+  },
+  "basicInfo": {
+    "recipeName": "Smoked Tofu Salad with spicy peanut sauce",
+    "duration": {
+      "value": "10 Minutes",
+      "label": "10 Minutes"
+    },
+    "level": {
+      "value": "Medium",
+      "label": "Medium"
+    },
+    "serving": {
+      "value": "1",
+      "label": "1"
+    },
+    "tags": [
+      {
+        "value": "10 ingredients or less",
+        "label": "10 ingredients or less",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75dd8"
+        }
+      },
+      {
+        "value": "appetizer",
+        "label": "appetizer",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75dd9"
+        }
+      },
+      {
+        "value": "bbb",
+        "label": "bbb",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75dda"
+        }
+      }
+    ],
+    "categories": [
+      {
+        "value": "Pizza",
+        "label": "Pizza",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75ddb"
+        }
+      }
+    ]
+  },
+  "details": {
+    "thumbnail": "http://res.cloudinary.com/xperiacloud/image/upload/v1688927568/l2qgx3ktzkfgwpxxdadx.jpg",
+    "about": [
+      {
+        "type": "text",
+        "value": "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75ddc"
+        }
+      },
+      {
+        "type": "image",
+        "value": [
+          "https://images.unsplash.com/photo-1517666005606-69dea9b54865?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0ODIwNDd8MHwxfHNlYXJjaHwyfHx0b21hdG8lMjBwdXJlZXxlbnwwfHx8fDE3MTU4MDk5NTd8MA&ixlib=rb-4.0.3&q=80&w=400",
+          "https://images.unsplash.com/photo-1542010589005-d1eacc3918f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0ODIwNDd8MHwxfHNlYXJjaHw0fHxyZWNpcGV8ZW58MHx8fHwxNzE1NzkzOTgyfDA&ixlib=rb-4.0.3&q=80&w=400"
+        ],
+        "isUnsplash": true,
+        "isMultiple": true,
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75ddd"
+        }
+      },
+      {
+        "type": "text",
+        "value": "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75dde"
+        }
+      }
+    ],
+    "faqs": [
+      {
+        "ques": "ssdfs",
+        "ans": "rrfgfgfgf",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75ddf"
+        }
+      }
+    ]
+  },
+  "nutritionalFacts": [
+    {
+      "name": "calories",
+      "amount": "455",
+      "unit": "g",
+      "_id": {
+        "$oid": "664e404cb4513dfa42a75de0"
+      }
+    },
+    {
+      "name": "satFat",
+      "amount": "344",
+      "unit": "g",
+      "_id": {
+        "$oid": "664e404cb4513dfa42a75de1"
+      }
+    },
+    {
+      "name": "carbs",
+      "amount": "454",
+      "unit": "g",
+      "_id": {
+        "$oid": "664e404cb4513dfa42a75de2"
+      }
+    },
+    {
+      "name": "protein",
+      "amount": "43",
+      "unit": "g",
+      "_id": {
+        "$oid": "664e404cb4513dfa42a75de3"
+      }
+    },
+    {
+      "name": "cholesterol",
+      "amount": "34323",
+      "unit": "mg",
+      "_id": {
+        "$oid": "664e404cb4513dfa42a75de4"
+      }
+    },
+    {
+      "name": "sodium",
+      "amount": "654",
+      "unit": "mg",
+      "_id": {
+        "$oid": "664e404cb4513dfa42a75de5"
+      }
+    },
+    {
+      "name": "sugar",
+      "amount": "45332",
+      "unit": "g",
+      "_id": {
+        "$oid": "664e404cb4513dfa42a75de6"
+      }
+    },
+    {
+      "name": "fibers",
+      "amount": "4546",
+      "unit": "g",
+      "_id": {
+        "$oid": "664e404cb4513dfa42a75de7"
+      }
+    }
+  ],
+  "directions": {
+    "methods": [
+      {
+        "step": [
+          {
+            "type": "title",
+            "value": "Preparations",
+            "_id": {
+              "$oid": "664e404cb4513dfa42a75de9"
+            }
+          },
+          {
+            "type": "text",
+            "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+            "_id": {
+              "$oid": "664e404cb4513dfa42a75dea"
+            }
+          },
+          {
+            "type": "image",
+            "value": [
+              "https://images.unsplash.com/photo-1542010589005-d1eacc3918f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0ODIwNDd8MHwxfHNlYXJjaHw0fHxyZWNpcGV8ZW58MHx8fHwxNzE1NzkzOTgyfDA&ixlib=rb-4.0.3&q=80&w=400",
+              "https://images.unsplash.com/photo-1466637574441-749b8f19452f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0ODIwNDd8MHwxfHNlYXJjaHwyfHxyZWNpcGV8ZW58MHx8fHwxNzE1NzkzOTgyfDA&ixlib=rb-4.0.3&q=80&w=400"
+            ],
+            "isUnsplash": true,
+            "isMultiple": true,
+            "_id": {
+              "$oid": "664e404cb4513dfa42a75deb"
+            }
+          }
+        ],
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75de8"
+        }
+      },
+      {
+        "step": [
+          {
+            "type": "title",
+            "value": "Boiling",
+            "_id": {
+              "$oid": "664e404cb4513dfa42a75ded"
+            }
+          },
+          {
+            "type": "text",
+            "value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+            "_id": {
+              "$oid": "664e404cb4513dfa42a75dee"
+            }
+          }
+        ],
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75dec"
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "name": "2 pisces",
+        "type": "main",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75def"
+        }
+      },
+      {
+        "name": "1 ½ cups peeled and chopped golden potato or sweet potato (large bite-size pieces)",
+        "type": "main",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75df0"
+        }
+      },
+      {
+        "name": "4 Eggs batches flax eggs* (2 flax eggs = 2 Tbsp flaxseed meal / 14 g + 5 Tbsp / 75 ml water)",
+        "type": "main",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75df1"
+        }
+      },
+      {
+        "name": "0.17 cup chopped walnuts or pecans (or sub other nut or seed of choice)",
+        "type": "main",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75df2"
+        }
+      },
+      {
+        "name": "fresh herbs, such as chopped parsley and/or cilantro",
+        "type": "dressing",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75df3"
+        }
+      },
+      {
+        "name": "2 cups blueberries, washed and picked over for stems",
+        "type": "main",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75df4"
+        }
+      },
+      {
+        "name": "300 g Mayonaise",
+        "type": "dressing",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75df5"
+        }
+      },
+      {
+        "name": "1 tablespoon honey (light brown sugar or maple syrup also works)",
+        "type": "main",
+        "_id": {
+          "$oid": "664e404cb4513dfa42a75df6"
+        }
+      }
+    ]
+  },
+  "author": {
+    "$oid": "612296fc86231100a0631b22"
+  },
+  "reviews": [],
+  "createdAt": {
+    "$date": "2024-05-22T18:58:21.386Z"
+  },
+  "updatedAt": {
+    "$date": "2024-05-23T18:47:17.831Z"
+  },
+  "__v": 0
+};
+
 
 // Page dimensions in pixels (at 96 DPI)
 const PAGE_DIMENSIONS: Record<PageLayout, { width: number; height: number; maxContentHeight: number }> = {
@@ -14,9 +302,447 @@ const PAGE_DIMENSIONS: Record<PageLayout, { width: number; height: number; maxCo
   "letter-landscape": { width: 1056, height: 816, maxContentHeight: 740 },
 };
 
+// Helper function to strip HTML tags and convert to plain text
+const stripHtml = (html: string): string => {
+  const tmp = document.createElement("DIV");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+};
+
+// Split recipe into sections for pagination
+const getRecipeSections = (recipe: IRecipe) => {
+  const sections: React.ReactNode[] = [];
+
+  // Section 1: Header
+  sections.push(
+    <Box key="header">
+      <Typography variant="h3" component="h1" gutterBottom fontWeight="bold" sx={{ mb: 3 }}>
+        {recipe.basicInfo.recipeName}
+      </Typography>
+
+      <Stack direction="row" spacing={2} sx={{ mb: 2 }} flexWrap="wrap">
+        <Chip label={`⏱️ ${recipe.basicInfo.duration.value}`} color="primary" variant="outlined" />
+        <Chip label={`📊 ${recipe.basicInfo.level.value}`} color="secondary" variant="outlined" />
+        <Chip label={`🍽️ Serves ${recipe.basicInfo.serving.value}`} color="success" variant="outlined" />
+      </Stack>
+
+      {recipe.basicInfo.tags && recipe.basicInfo.tags.length > 0 && (
+        <Box sx={{ mb: 2 }}>
+          {recipe.basicInfo.tags.map((tag, idx) => (
+            <Chip key={idx} label={tag.value} size="small" sx={{ mr: 1, mb: 1 }} />
+          ))}
+        </Box>
+      )}
+
+      {recipe.basicInfo.categories && recipe.basicInfo.categories.length > 0 && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            Categories:
+          </Typography>
+          {recipe.basicInfo.categories.map((cat, idx) => (
+            <Chip key={idx} label={cat.value} color="info" size="small" sx={{ mr: 1 }} />
+          ))}
+        </Box>
+      )}
+
+      {recipe.details.thumbnail && (
+        <Card sx={{ mb: 2, maxWidth: "100%" }}>
+          <CardMedia
+            component="img"
+            image={recipe.details.thumbnail}
+            alt={recipe.basicInfo.recipeName}
+            sx={{ maxHeight: 300, objectFit: "cover" }}
+          />
+        </Card>
+      )}
+    </Box>
+  );
+
+  // Section 2: About
+  if (recipe.details.about && recipe.details.about.length > 0) {
+    recipe.details.about.forEach((item, idx) => {
+      if (item.type === "text") {
+        sections.push(
+          <Box key={`about-text-${idx}`} sx={{ mb: 2 }}>
+            <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 1 }}>
+              About
+            </Typography>
+            <Typography variant="body1" paragraph>
+              {stripHtml(item.value as string)}
+            </Typography>
+          </Box>
+        );
+      } else if (item.type === "image") {
+        sections.push(
+          <Grid container spacing={2} key={`about-img-${idx}`} sx={{ mb: 2 }}>
+            {(Array.isArray(item.value) ? item.value : [item.value]).map((img, imgIdx) => (
+              <Grid item xs={12} sm={6} key={imgIdx}>
+                <Card>
+                  <CardMedia
+                    component="img"
+                    image={img}
+                    alt={`Image ${imgIdx + 1}`}
+                    sx={{ height: 180, objectFit: "cover" }}
+                  />
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        );
+      }
+    });
+  }
+
+  // Section 3: Ingredients
+  const ingredientsByType: Record<string, string[]> = {};
+  recipe.directions.ingredients.forEach((ing) => {
+    if (!ingredientsByType[ing.type]) {
+      ingredientsByType[ing.type] = [];
+    }
+    ingredientsByType[ing.type].push(ing.name);
+  });
+
+  sections.push(
+    <Box key="ingredients" sx={{ mb: 3 }}>
+      <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+        Ingredients
+      </Typography>
+      {Object.entries(ingredientsByType).map(([type, items]) => (
+        <Box key={type} sx={{ mb: 2 }}>
+          <Typography variant="h6" sx={{ textTransform: "capitalize", mb: 1 }}>
+            {type}:
+          </Typography>
+          <Box component="ul" sx={{ pl: 3 }}>
+            {items.map((item, idx) => (
+              <Typography component="li" key={idx} variant="body1" sx={{ mb: 0.5 }}>
+                {item}
+              </Typography>
+            ))}
+          </Box>
+        </Box>
+      ))}
+    </Box>
+  );
+
+  // Section 4: Directions
+  recipe.directions.methods.forEach((method, methodIdx) => {
+    const stepElements: React.ReactNode[] = [];
+
+    method.step.forEach((step, stepIdx) => {
+      if (step.type === "title") {
+        stepElements.push(
+          <Typography key={`title-${stepIdx}`} variant="subtitle1" fontWeight="bold" gutterBottom>
+            {step.value as string}
+          </Typography>
+        );
+      } else if (step.type === "text") {
+        stepElements.push(
+          <Typography key={`text-${stepIdx}`} variant="body1" paragraph>
+            {stripHtml(step.value as string)}
+          </Typography>
+        );
+      } else if (step.type === "image") {
+        stepElements.push(
+          <Grid container spacing={2} key={`img-${stepIdx}`} sx={{ my: 1 }}>
+            {(Array.isArray(step.value) ? step.value : [step.value]).map((img, imgIdx) => (
+              <Grid item xs={12} sm={6} key={imgIdx}>
+                <Card>
+                  <CardMedia
+                    component="img"
+                    image={img}
+                    alt={`Step ${methodIdx + 1} - Image ${imgIdx + 1}`}
+                    sx={{ height: 180, objectFit: "cover" }}
+                  />
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        );
+      }
+    });
+
+    sections.push(
+      <Box key={`direction-${methodIdx}`} sx={{ mb: 3 }}>
+        {methodIdx === 0 && (
+          <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+            Directions
+          </Typography>
+        )}
+        <Typography variant="h6" color="primary" gutterBottom>
+          Step {methodIdx + 1}
+        </Typography>
+        {stepElements}
+      </Box>
+    );
+  });
+
+  // Section 5: Nutritional Facts
+  if (recipe.nutritionalFacts && recipe.nutritionalFacts.length > 0) {
+    sections.push(
+      <Box key="nutrition" sx={{ mb: 3 }}>
+        <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+          Nutritional Facts
+        </Typography>
+        <Grid container spacing={2}>
+          {recipe.nutritionalFacts.map((fact, idx) => (
+            <Grid item xs={6} sm={4} md={3} key={idx}>
+              <Card sx={{ p: 2, textAlign: "center" }}>
+                <Typography variant="body2" color="text.secondary" sx={{ textTransform: "capitalize" }}>
+                  {fact.name}
+                </Typography>
+                <Typography variant="h6" fontWeight="bold">
+                  {fact.amount}{fact.unit}
+                </Typography>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    );
+  }
+
+  // Section 6: FAQs
+  if (recipe.details.faqs && recipe.details.faqs.length > 0) {
+    sections.push(
+      <Box key="faqs" sx={{ mb: 3 }}>
+        <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+          FAQs
+        </Typography>
+        {recipe.details.faqs.map((faq, idx) => (
+          <Box key={idx} sx={{ mb: 2 }}>
+            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+              Q{idx + 1}: {faq.ques}
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              A: {faq.ans}
+            </Typography>
+          </Box>
+        ))}
+      </Box>
+    );
+  }
+
+  return sections;
+};
+
+// Render recipe content as JSX
+const RecipeContent: React.FC<{ recipe: IRecipe }> = ({ recipe }) => {
+  return (
+    <Box>
+      {/* Title */}
+      <Typography variant="h3" component="h1" gutterBottom fontWeight="bold" sx={{ mb: 3 }}>
+        {recipe.basicInfo.recipeName}
+      </Typography>
+
+      {/* Basic Info */}
+      <Stack direction="row" spacing={2} sx={{ mb: 2 }}>
+        <Chip label={`⏱️ ${recipe.basicInfo.duration.value}`} color="primary" variant="outlined" />
+        <Chip label={`📊 ${recipe.basicInfo.level.value}`} color="secondary" variant="outlined" />
+        <Chip label={`🍽️ Serves ${recipe.basicInfo.serving.value}`} color="success" variant="outlined" />
+      </Stack>
+
+      {/* Tags */}
+      {recipe.basicInfo.tags && recipe.basicInfo.tags.length > 0 && (
+        <Box sx={{ mb: 2 }}>
+          {recipe.basicInfo.tags.map((tag, idx) => (
+            <Chip key={idx} label={tag.value} size="small" sx={{ mr: 1, mb: 1 }} />
+          ))}
+        </Box>
+      )}
+
+      {/* Categories */}
+      {recipe.basicInfo.categories && recipe.basicInfo.categories.length > 0 && (
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+            Categories:
+          </Typography>
+          {recipe.basicInfo.categories.map((cat, idx) => (
+            <Chip key={idx} label={cat.value} color="info" size="small" sx={{ mr: 1 }} />
+          ))}
+        </Box>
+      )}
+
+      <Divider sx={{ my: 3 }} />
+
+      {/* Thumbnail */}
+      {recipe.details.thumbnail && (
+        <Card sx={{ mb: 3, maxWidth: "100%" }}>
+          <CardMedia
+            component="img"
+            image={recipe.details.thumbnail}
+            alt={recipe.basicInfo.recipeName}
+            sx={{ maxHeight: 400, objectFit: "cover" }}
+          />
+        </Card>
+      )}
+
+      {/* About Section */}
+      {recipe.details.about && recipe.details.about.length > 0 && (
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+            About
+          </Typography>
+          {recipe.details.about.map((item, idx) => (
+            <Box key={idx} sx={{ mb: 2 }}>
+              {item.type === "text" && (
+                <Typography variant="body1" paragraph>
+                  {stripHtml(item.value as string)}
+                </Typography>
+              )}
+              {item.type === "image" && (
+                <Grid container spacing={2} sx={{ my: 2 }}>
+                  {(Array.isArray(item.value) ? item.value : [item.value]).map((img, imgIdx) => (
+                    <Grid item xs={12} sm={6} key={imgIdx}>
+                      <Card>
+                        <CardMedia
+                          component="img"
+                          image={img}
+                          alt={`Image ${imgIdx + 1}`}
+                          sx={{ height: 200, objectFit: "cover" }}
+                        />
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
+            </Box>
+          ))}
+        </Box>
+      )}
+
+      <Divider sx={{ my: 3 }} />
+
+      {/* Ingredients */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+          Ingredients
+        </Typography>
+        {(() => {
+          const ingredientsByType: Record<string, string[]> = {};
+          recipe.directions.ingredients.forEach((ing) => {
+            if (!ingredientsByType[ing.type]) {
+              ingredientsByType[ing.type] = [];
+            }
+            ingredientsByType[ing.type].push(ing.name);
+          });
+
+          return Object.entries(ingredientsByType).map(([type, items]) => (
+            <Box key={type} sx={{ mb: 2 }}>
+              <Typography variant="h6" sx={{ textTransform: "capitalize", mb: 1 }}>
+                {type}:
+              </Typography>
+              <Box component="ul" sx={{ pl: 3 }}>
+                {items.map((item, idx) => (
+                  <Typography component="li" key={idx} variant="body1" sx={{ mb: 0.5 }}>
+                    {item}
+                  </Typography>
+                ))}
+              </Box>
+            </Box>
+          ));
+        })()}
+      </Box>
+
+      <Divider sx={{ my: 3 }} />
+
+      {/* Directions */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+          Directions
+        </Typography>
+        {recipe.directions.methods.map((method, methodIdx) => (
+          <Box key={methodIdx} sx={{ mb: 3 }}>
+            <Typography variant="h6" color="primary" gutterBottom>
+              Step {methodIdx + 1}
+            </Typography>
+            {method.step.map((step, stepIdx) => (
+              <Box key={stepIdx} sx={{ mb: 2 }}>
+                {step.type === "title" && (
+                  <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                    {step.value as string}
+                  </Typography>
+                )}
+                {step.type === "text" && (
+                  <Typography variant="body1" paragraph>
+                    {stripHtml(step.value as string)}
+                  </Typography>
+                )}
+                {step.type === "image" && (
+                  <Grid container spacing={2} sx={{ my: 1 }}>
+                    {(Array.isArray(step.value) ? step.value : [step.value]).map((img, imgIdx) => (
+                      <Grid item xs={12} sm={6} key={imgIdx}>
+                        <Card>
+                          <CardMedia
+                            component="img"
+                            image={img}
+                            alt={`Step ${methodIdx + 1} - Image ${imgIdx + 1}`}
+                            sx={{ height: 200, objectFit: "cover" }}
+                          />
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
+                )}
+              </Box>
+            ))}
+          </Box>
+        ))}
+      </Box>
+
+      <Divider sx={{ my: 3 }} />
+
+      {/* Nutritional Facts */}
+      {recipe.nutritionalFacts && recipe.nutritionalFacts.length > 0 && (
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+            Nutritional Facts
+          </Typography>
+          <Grid container spacing={2}>
+            {recipe.nutritionalFacts.map((fact, idx) => (
+              <Grid item xs={6} sm={4} md={3} key={idx}>
+                <Card sx={{ p: 2, textAlign: "center" }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ textTransform: "capitalize" }}>
+                    {fact.name}
+                  </Typography>
+                  <Typography variant="h6" fontWeight="bold">
+                    {fact.amount}{fact.unit}
+                  </Typography>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+      )}
+
+      {/* FAQs */}
+      {recipe.details.faqs && recipe.details.faqs.length > 0 && (
+        <Box sx={{ mb: 4 }}>
+          <Divider sx={{ my: 3 }} />
+          <Typography variant="h5" gutterBottom fontWeight="bold" sx={{ mb: 2 }}>
+            FAQs
+          </Typography>
+          {recipe.details.faqs.map((faq, idx) => (
+            <Box key={idx} sx={{ mb: 2 }}>
+              <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
+                Q{idx + 1}: {faq.ques}
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                A: {faq.ans}
+              </Typography>
+            </Box>
+          ))}
+        </Box>
+      )}
+    </Box>
+  );
+};
+
 export default function NewRustic() {
   const [pages, setPages] = useState<string[]>([""]);
   const [pageLayout, setPageLayout] = useState<PageLayout>("A4-portrait");
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [recipeJson, setRecipeJson] = useState<string>("");
+  const [recipeData, setRecipeData] = useState<IRecipe | null>(null);
   const fullTextRef = useRef<string>(""); // store full text without triggering re-render
   const measureRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<HTMLDivElement>(null);
@@ -156,9 +882,22 @@ export default function NewRustic() {
     paginate(fullText);
   };
 
-  // ensure a first blank page
+  // Handle recipe import
+  const handleImportRecipe = () => {
+    try {
+      const recipe: IRecipe = JSON.parse(recipeJson);
+      setRecipeData(recipe);
+      setImportDialogOpen(false);
+      setRecipeJson("");
+    } catch (error) {
+      alert("Invalid JSON format. Please check your recipe data.");
+      console.error("Recipe import error:", error);
+    }
+  };
+
+  // Load sample recipe data on mount
   useEffect(() => {
-    paginate("");
+    setRecipeData(data as IRecipe);
   }, []);
 
   // Re-paginate when page layout changes
@@ -203,8 +942,8 @@ export default function NewRustic() {
         Word-Like Editor (Smooth Typing + Pagination)
       </Typography>
 
-      {/* Page Layout Selector */}
-      <Box sx={{ maxWidth: "300px", mx: "auto", mb: 3 }}>
+      {/* Page Layout Selector and Import Button */}
+      <Box sx={{ maxWidth: "600px", mx: "auto", mb: 3, display: "flex", gap: 2 }}>
         <FormControl fullWidth>
           <InputLabel>Page Layout</InputLabel>
           <Select
@@ -220,6 +959,25 @@ export default function NewRustic() {
             <MenuItem value="letter-landscape">US Letter - Landscape</MenuItem>
           </Select>
         </FormControl>
+
+        <Button
+          variant="outlined"
+          onClick={() => setImportDialogOpen(true)}
+          sx={{ whiteSpace: "nowrap" }}
+        >
+          Import Recipe
+        </Button>
+
+        {recipeData && (
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => setRecipeData(null)}
+            sx={{ whiteSpace: "nowrap" }}
+          >
+            Clear Recipe
+          </Button>
+        )}
       </Box>
 
       {/* Hidden measurement element */}
@@ -236,63 +994,126 @@ export default function NewRustic() {
       />
 
       <Box ref={targetRef}>
-        {pages.map((content, i) => (
-          <Paper
-            key={i}
+        {recipeData ? (
+          <Box
             sx={{
               width: `${currentDimensions.width}px`,
-              height: `${currentDimensions.height}px`,
               mx: "auto",
-              mb: 4,
-              p: 4,
-              bgcolor: "#fff",
-              position: "relative",
-              overflow: "hidden",
             }}
-            elevation={3}
           >
-            {/* Editable only on the last visible page */}
-            {i === pages.length - 1 ? (
-              <div
-                ref={editorRef}
-                contentEditable
-                suppressContentEditableWarning
-                onInput={handleInput}
-                style={{
-                  outline: "none",
-                  whiteSpace: "pre-wrap",
-                  lineHeight: 1.6,
-                  minHeight: "100%",
-                  width: "100%",
-                  overflowWrap: "break-word",
-                }}
-              />
+            {/* Distribute sections across pages */}
+            {(() => {
+              const sections = getRecipeSections(recipeData);
+              const pages: React.ReactNode[][] = [[]];
+              let currentPage = 0;
 
-            ) : (
-              <Box
-                // variant="body1"
+              // Simple distribution: put sections on pages (this is a basic approach)
+              // For production, you'd need to measure actual rendered heights
+              const sectionsPerPage = Math.ceil(sections.length / 3); // Rough estimate
+
+              sections.forEach((section, idx) => {
+                if (idx > 0 && idx % sectionsPerPage === 0 && pages[currentPage].length > 0) {
+                  currentPage++;
+                  pages[currentPage] = [];
+                }
+                pages[currentPage].push(section);
+              });
+
+              return pages.map((pageSections, pageIdx) => (
+                <Paper
+                  key={pageIdx}
+                  sx={{
+                    width: "100%",
+                    height: `${currentDimensions.height}px`,
+                    mb: 4, // Space between pages
+                    p: 4,
+                    bgcolor: "#fff",
+                    position: "relative",
+                    overflow: "auto", // Allow scrolling within page if content overflows
+                    boxShadow: 3,
+                  }}
+                  elevation={3}
+                >
+                  <Box sx={{ height: "100%", overflow: "hidden" }}>
+                    {pageSections}
+                  </Box>
+
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      position: 'absolute',
+                      bottom: 8,
+                      right: 16,
+                      color: 'gray',
+                      background: '#fff',
+                      padding: '2px 8px',
+                      borderRadius: 1,
+                      fontSize: '11px',
+                    }}
+                  >
+                    Page {pageIdx + 1}
+                  </Typography>
+                </Paper>
+              ));
+            })()}
+          </Box>
+        ) : (
+          pages.map((content, i) => (
+            <Paper
+              key={i}
+              sx={{
+                width: `${currentDimensions.width}px`,
+                height: `${currentDimensions.height}px`,
+                mx: "auto",
+                mb: 4,
+                p: 4,
+                bgcolor: "#fff",
+                position: "relative",
+                overflow: "hidden",
+              }}
+              elevation={3}
+            >
+              {/* Editable only on the last visible page */}
+              {i === pages.length - 1 ? (
+                <div
+                  ref={editorRef}
+                  contentEditable
+                  suppressContentEditableWarning
+                  onInput={handleInput}
+                  style={{
+                    outline: "none",
+                    whiteSpace: "pre-wrap",
+                    lineHeight: 1.6,
+                    minHeight: "100%",
+                    width: "100%",
+                    overflowWrap: "break-word",
+                  }}
+                />
+              ) : (
+                <Box
+                  sx={{
+                    whiteSpace: "pre-wrap",
+                    lineHeight: 1.6,
+                    userSelect: "none",
+                  }}
+                >
+                  {content}
+                </Box>
+              )}
+              <Typography
+                variant="caption"
                 sx={{
-                  whiteSpace: "pre-wrap",
-                  lineHeight: 1.6,
-                  userSelect: "none",
+                  position: "absolute",
+                  bottom: 8,
+                  right: 16,
+                  color: "gray",
                 }}
               >
-                {content}
-              </Box>
-            )}
-            <Typography
-              variant="caption"
-              sx={{
-                position: "absolute",
-                bottom: 8,
-                right: 16,
-                color: "gray",
-              }}
-            >
-              Page {i + 1}
-            </Typography>
-          </Paper>
-        ))}
+                Page {i + 1}
+              </Typography>
+            </Paper>
+          ))
+        )}
       </Box>
 
       <Box sx={{ textAlign: "center", mt: 4 }}>
@@ -300,6 +1121,36 @@ export default function NewRustic() {
           Download {pdfFormat} PDF ({pdfOrientation})
         </Button>
       </Box>
+
+      {/* Import Recipe Dialog */}
+      <Dialog
+        open={importDialogOpen}
+        onClose={() => setImportDialogOpen(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Import Recipe JSON</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Paste Recipe JSON Here"
+            fullWidth
+            multiline
+            rows={15}
+            value={recipeJson}
+            onChange={(e) => setRecipeJson(e.target.value)}
+            placeholder='Paste your recipe JSON data here...'
+            sx={{ mt: 2 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setImportDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleImportRecipe} variant="contained">
+            Import
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
