@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import Hot from './Hot/Hot';
 import Vegan from './Vegan/Vegan';
 import Caliente from './Caliente/Caliente';
+import NewRustic from './New/NewRustic';
 
 export default function Template() {
   // get the id from the route params
@@ -17,7 +18,8 @@ export default function Template() {
   const renderTemplate = () => {
     switch (templateId?.toLowerCase()) {
       case 'rustic':
-        return <Rustic />;
+        // return <Rustic />;
+        return <NewRustic />;
       case 'traditional':
         return <Traditional />;
       case 'classic':
