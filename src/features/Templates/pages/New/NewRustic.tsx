@@ -16,12 +16,18 @@ import {
   Chip,
   Card,
   CardMedia,
-  Grid,
   Divider,
   Stack,
+  CardContent,
+  Grid,
+  List,
 } from '@mui/material';
 import { usePDF } from 'react-to-pdf';
 import { IRecipe } from '../../../Recipe/types/recipe.types';
+import parser from 'html-react-parser';
+import ImageLayout from '../../../../app/components/Layouts/ImageLayout';
+import { GiCampCookingPot, GiLever } from 'react-icons/gi';
+import { HandPlatter } from 'lucide-react';
 
 type PageLayout =
   | 'A3-portrait'
@@ -31,10 +37,7 @@ type PageLayout =
   | 'letter-portrait'
   | 'letter-landscape';
 
-const data: any = {
-  _id: {
-    $oid: '664e404cb4513dfa42a75dd7',
-  },
+const data: IRecipe = {
   basicInfo: {
     recipeName: 'Smoked Tofu Salad with spicy peanut sauce',
     duration: {
@@ -53,32 +56,20 @@ const data: any = {
       {
         value: '10 ingredients or less',
         label: '10 ingredients or less',
-        _id: {
-          $oid: '664e404cb4513dfa42a75dd8',
-        },
       },
       {
         value: 'appetizer',
         label: 'appetizer',
-        _id: {
-          $oid: '664e404cb4513dfa42a75dd9',
-        },
       },
       {
         value: 'bbb',
         label: 'bbb',
-        _id: {
-          $oid: '664e404cb4513dfa42a75dda',
-        },
       },
     ],
     categories: [
       {
         value: 'Pizza',
         label: 'Pizza',
-        _id: {
-          $oid: '664e404cb4513dfa42a75ddb',
-        },
       },
     ],
   },
@@ -90,9 +81,6 @@ const data: any = {
         type: 'text',
         value:
           "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-        _id: {
-          $oid: '664e404cb4513dfa42a75ddc',
-        },
       },
       {
         type: 'image',
@@ -102,26 +90,17 @@ const data: any = {
         ],
         isUnsplash: true,
         isMultiple: true,
-        _id: {
-          $oid: '664e404cb4513dfa42a75ddd',
-        },
       },
       {
         type: 'text',
         value:
           "<p><strong>Lorem Ipsum</strong>&nbsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>",
-        _id: {
-          $oid: '664e404cb4513dfa42a75dde',
-        },
       },
     ],
     faqs: [
       {
         ques: 'ssdfs',
         ans: 'rrfgfgfgf',
-        _id: {
-          $oid: '664e404cb4513dfa42a75ddf',
-        },
       },
     ],
   },
@@ -130,65 +109,41 @@ const data: any = {
       name: 'calories',
       amount: '455',
       unit: 'g',
-      _id: {
-        $oid: '664e404cb4513dfa42a75de0',
-      },
     },
     {
       name: 'satFat',
       amount: '344',
       unit: 'g',
-      _id: {
-        $oid: '664e404cb4513dfa42a75de1',
-      },
     },
     {
       name: 'carbs',
       amount: '454',
       unit: 'g',
-      _id: {
-        $oid: '664e404cb4513dfa42a75de2',
-      },
     },
     {
       name: 'protein',
       amount: '43',
       unit: 'g',
-      _id: {
-        $oid: '664e404cb4513dfa42a75de3',
-      },
     },
     {
       name: 'cholesterol',
-      amount: '34323',
+      amount: '343',
       unit: 'mg',
-      _id: {
-        $oid: '664e404cb4513dfa42a75de4',
-      },
     },
     {
       name: 'sodium',
       amount: '654',
       unit: 'mg',
-      _id: {
-        $oid: '664e404cb4513dfa42a75de5',
-      },
     },
     {
       name: 'sugar',
-      amount: '45332',
+      amount: '432',
       unit: 'g',
-      _id: {
-        $oid: '664e404cb4513dfa42a75de6',
-      },
     },
     {
       name: 'fibers',
-      amount: '4546',
+      amount: '46',
       unit: 'g',
-      _id: {
-        $oid: '664e404cb4513dfa42a75de7',
-      },
     },
   ],
   directions: {
@@ -198,17 +153,11 @@ const data: any = {
           {
             type: 'title',
             value: 'Preparations',
-            _id: {
-              $oid: '664e404cb4513dfa42a75de9',
-            },
           },
           {
             type: 'text',
             value:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            _id: {
-              $oid: '664e404cb4513dfa42a75dea',
-            },
           },
           {
             type: 'image',
@@ -218,108 +167,67 @@ const data: any = {
             ],
             isUnsplash: true,
             isMultiple: true,
-            _id: {
-              $oid: '664e404cb4513dfa42a75deb',
-            },
           },
         ],
-        _id: {
-          $oid: '664e404cb4513dfa42a75de8',
-        },
       },
       {
         step: [
           {
             type: 'title',
             value: 'Boiling',
-            _id: {
-              $oid: '664e404cb4513dfa42a75ded',
-            },
           },
           {
             type: 'text',
             value:
               "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-            _id: {
-              $oid: '664e404cb4513dfa42a75dee',
-            },
           },
         ],
-        _id: {
-          $oid: '664e404cb4513dfa42a75dec',
-        },
       },
     ],
     ingredients: [
       {
         name: '2 pisces',
         type: 'main',
-        _id: {
-          $oid: '664e404cb4513dfa42a75def',
-        },
       },
       {
         name: '1 ½ cups peeled and chopped golden potato or sweet potato (large bite-size pieces)',
         type: 'main',
-        _id: {
-          $oid: '664e404cb4513dfa42a75df0',
-        },
       },
       {
         name: '4 Eggs batches flax eggs* (2 flax eggs = 2 Tbsp flaxseed meal / 14 g + 5 Tbsp / 75 ml water)',
         type: 'main',
-        _id: {
-          $oid: '664e404cb4513dfa42a75df1',
-        },
       },
       {
         name: '0.17 cup chopped walnuts or pecans (or sub other nut or seed of choice)',
         type: 'main',
-        _id: {
-          $oid: '664e404cb4513dfa42a75df2',
-        },
       },
       {
         name: 'fresh herbs, such as chopped parsley and/or cilantro',
         type: 'dressing',
-        _id: {
-          $oid: '664e404cb4513dfa42a75df3',
-        },
       },
       {
         name: '2 cups blueberries, washed and picked over for stems',
         type: 'main',
-        _id: {
-          $oid: '664e404cb4513dfa42a75df4',
-        },
       },
       {
         name: '300 g Mayonaise',
         type: 'dressing',
-        _id: {
-          $oid: '664e404cb4513dfa42a75df5',
-        },
       },
       {
         name: '1 tablespoon honey (light brown sugar or maple syrup also works)',
         type: 'main',
-        _id: {
-          $oid: '664e404cb4513dfa42a75df6',
-        },
       },
     ],
   },
+  _id: '',
   author: {
-    $oid: '612296fc86231100a0631b22',
+    userId: 'string',
+    username: 'string',
+    firstName: 'string',
+    lastName: 'string',
+    avatar: 'string',
+    slogan: 'string',
   },
-  reviews: [],
-  createdAt: {
-    $date: '2024-05-22T18:58:21.386Z',
-  },
-  updatedAt: {
-    $date: '2024-05-23T18:47:17.831Z',
-  },
-  __v: 0,
 };
 
 // Page dimensions in pixels (at 96 DPI)
@@ -604,36 +512,649 @@ const getRecipeSections = (recipe: IRecipe) => {
     </Box>
   );
 
-//   Food Contents Sections
+  //   Food Contents Sections
 
-//   Food section  - Fried Rice
-    sections.push(
-        <Box key='food-fried-rice'></Box>
-    )
-//   Food section  - Dessert
-    sections.push(
-        <Box key='food-dessert'></Box>
-    )
-//   Food section  - Fruit Salad
-    sections.push(
-        <Box key='food-fruit-salad'></Box>
-    )
-//   Food section  - Bread
-    sections.push(
-        <Box key='food-bread'></Box>
-    )
-//   Food section  - Cripsy Chicken
-    sections.push(
-        <Box key='food-crispy-chicken'></Box>
-    )
-//   Food section  - Chaomin
-    sections.push(
-        <Box key='food-chaomin'></Box>
-    )
-//   Food section - Fruit Salad 2
-    sections.push(
-        <Box key='food-fruit-salad-2'></Box>
-    )
+  //   Food section  - Fried Rice
+  sections.push(
+    <Box key='food-fried-rice' sx={{ display: 'flex', px: 5 }}>
+      <Box
+        sx={{
+          width: 794,
+          height: 1123,
+          maxContentHeight: 1050,
+          border: '2px dotted black',
+          p: 5,
+        }}
+      >
+        {/* Recipe Name */}
+        <Box>
+          <Typography
+            sx={{
+              fontFamily: "'Arial', sans-serif",
+              fontSize: '3rem',
+              fontWeight: 700,
+              color: '#2d2d2d',
+              letterSpacing: '0.05em',
+              mb: 2,
+              lineHeight: 1.2,
+              textAlign: 'center',
+            }}
+          >
+            {data.basicInfo.recipeName.toUpperCase()}
+          </Typography>
+
+          {/* Description */}
+          <Typography>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis ad
+            natus molestiae tenetur, provident rerum nostrum quas ratione saepe
+            nam, voluptatem sit deleniti eveniet numquam odit autem dicta quos
+            ex debitis officiis unde aliquam obcaecati. Ipsa, voluptatibus
+            doloremque facere temporibus ratione, in nesciunt fuga praesentium
+            eius alias ex incidunt. Qui quibusdam, optio neque pariatur,
+            nesciunt, numquam cupiditate assumenda quam dolore blanditiis
+            voluptates. Obcaecati odio magnam illum aperiam incidunt repudiandae
+            repellat alias sapiente aliquam, itaque quaerat ad cum dicta,
+            doloribus sequi! At iusto voluptatum nam quisquam eos aliquid
+            consectetur, illo molestiae quam quia repellendus labore totam eius
+            provident rem. Soluta, ducimus!
+          </Typography>
+
+          {/* Level, Serving, Duration */}
+          <Box sx={{ mt: 2, backgroundColor: '#ebebeb', p: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '80%',
+                margin: 'auto',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <GiCampCookingPot size={30} />
+                <Typography variant='caption'>Cooking</Typography>
+                <Divider
+                  sx={{
+                    width: 100,
+                    borderWidth: 1.5,
+                    borderColor: 'black',
+                    borderStyle: 'solid', // ensures visible border
+                  }}
+                />
+                <Typography variant='caption'>{data.basicInfo.duration.value}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <GiLever
+                  size={30}
+                  color={
+                    data.basicInfo.level.value.toLowerCase() === 'easy'
+                      ? '#2E7D32'
+                      : data.basicInfo.level.value.toLowerCase() === 'medium'
+                      ? '#ED6C02'
+                      : '#D32F2F'
+                  }
+                />
+                <Typography variant='caption'>Level</Typography>
+                <Divider
+                  sx={{
+                    width: 100,
+                    borderWidth: 1.5,
+                    borderColor: 'black',
+                    borderStyle: 'solid', // ensures visible border
+                  }}
+                />
+                <Typography variant='caption'>{data.basicInfo.level.value}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <HandPlatter size={30} color='#0288D1' />
+                <Typography variant='caption'>Serving</Typography>
+                <Divider
+                  sx={{
+                    width: 100,
+                    borderWidth: 1.5,
+                    borderColor: 'black',
+                    borderStyle: 'solid', // ensures visible border
+                  }}
+                />
+                <Typography variant='caption'>
+                  {Number(data.basicInfo.serving.value) > 1
+                    ? `${data.basicInfo.serving.value} PORTIONS`
+                    : `${data.basicInfo.serving.value} PORTION`}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Ingredients */}
+          <Box>
+            <Box
+              sx={{
+                m: 3,
+                mt: 4,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Box sx={{ borderTop: '1px solid black', width: 300 }} />
+              <Box
+                sx={{
+                  py: 0.5,
+                  px: 2,
+                  width: 150,
+                  textAlign: 'center',
+                }}
+              >
+                <Typography>INGREDIENTS</Typography>
+              </Box>
+              <Box sx={{ borderTop: '1px solid black', width: 300 }} />
+            </Box>
+
+            <Box>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid container spacing={{ xs: 2 }} columns={{ xs: 12 }}>
+                  {data.directions.ingredients.map((el, indx) => (
+                    <Grid item xs={3} sm={4} md={4}>
+                      <Typography>{el.name}</Typography>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* nutritionalFacts */}
+          <Box>
+            <Box
+              sx={{
+                m: 3,
+                mt: 4,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Box sx={{ borderTop: '1px solid black', width: 300 }} />
+              <Box
+                sx={{
+                  py: 0.5,
+                  px: 2,
+                  width: 150,
+                  textAlign: 'center',
+                }}
+              >
+                <Typography>NUTRIENTS</Typography>
+              </Box>
+              <Box sx={{ borderTop: '1px solid black', width: 300 }} />
+            </Box>
+
+            <Box>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid container spacing={{ xs: 2 }} columns={{ xs: 12 }}>
+                  {data.nutritionalFacts.map((el, indx) => (
+                    <Grid item xs={1.5}>
+                      <Box sx={{textAlign:'center'}}>
+                        <Typography>{el.name}</Typography>
+                        <Typography>{el.amount}{el.unit}</Typography>
+                      </Box>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Box>
+          </Box>
+
+          {/*  */}
+          {/* <Box>
+            {data.details.about && data.details.about.length > 0 && (
+              <>
+                {recipe.details.about.forEach((item, idx) => {
+                  if (item.type === 'text') {
+                    <Box key={`about-text-${idx}`} sx={{ mb: 2 }}>
+                      <Typography
+                        variant='h5'
+                        gutterBottom
+                        fontWeight='bold'
+                        sx={{ mb: 1 }}
+                      >
+                        About
+                      </Typography>
+                      <Typography variant='body1' paragraph>
+                        {stripHtml(item.value as string)}
+                      </Typography>
+                    </Box>;
+                  } else if (item.type === 'image') {
+                    <Grid
+                      container
+                      spacing={2}
+                      key={`about-img-${idx}`}
+                      sx={{ mb: 2 }}
+                    >
+                      {(Array.isArray(item.value)
+                        ? item.value
+                        : [item.value]
+                      ).map((img, imgIdx) => (
+                        <Grid item xs={12} sm={6} key={imgIdx}>
+                          <Card>
+                            <CardMedia
+                              component='img'
+                              image={img}
+                              alt={`Image ${imgIdx + 1}`}
+                              sx={{ height: 180, objectFit: 'cover' }}
+                            />
+                          </Card>
+                        </Grid>
+                      ))}
+                    </Grid>;
+                  }
+                })}
+              </>
+            )}
+          </Box> */}
+          {/* <Box>
+          {recipe.details.about?.map((el, i) => (
+            <Box sx={{ width: '100%', my: 2 }} key={`about_recipe_${i}`}>
+              {el.type === 'text' && parser(el.value as string)}
+
+              {el.type === 'image' && Array.isArray(el.value) && (
+                <Card sx={{ boxShadow: 'none', border: 0, my: 3 }}>
+                  <CardContent>
+                    <ImageLayout
+                      isMultiple={el.isMultiple}
+                      imageList={el.value}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+            </Box>
+          ))}
+        </Box> */}
+        </Box>
+      </Box>
+
+      {/* Thumbnail Image */}
+      {/* <Box
+        sx={{
+          width: 794,
+          height: 1123,
+          maxContentHeight: 1050,
+          border: '2px dotted black',
+        }}
+      >
+        <Box
+          sx={{
+            height: '100%',
+            position: 'relative',
+            p: 5,
+          }}
+        >
+          <Box
+            sx={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=600&fit=crop')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              width: '100%',
+              height: '100%',
+              borderRadius: 1,
+            }}
+          />
+        </Box>
+      </Box> */}
+      <Box
+        sx={{
+          width: '50%',
+          bgcolor: '#fff',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
+        <Box
+          component='img'
+          src='https://images.unsplash.com/photo-1488477181946-6428a0291777?w=800&h=600&fit=crop'
+          alt='Muesli'
+          sx={{ width: '100%', height: '60%', objectFit: 'cover' }}
+        />
+
+        <Box sx={{ p: 6 }}>
+          <Typography
+            sx={{
+              fontFamily: "'Georgia', serif",
+              fontSize: '1.2rem',
+              fontWeight: 600,
+              color: '#2d2d2d',
+              mb: 2,
+            }}
+          >
+            Instructions
+          </Typography>
+
+          {data.directions.methods.map((method, index) =>
+            method.step.map((el, i) => (
+              <React.Fragment key={i}>
+                <Box sx={{ height: 'auto', pl: 3 }}>
+                  {/* Text Content */}
+                  {el.type === 'text' && (
+                    <Box
+                      sx={{
+                        display: 'flex',
+                      }}
+                    >
+                      <Typography sx={{ mb: 2, whiteSpace: 'pre-line', mx: 2 }}>
+                        {index + 1}.
+                      </Typography>
+                      <Typography sx={{ mb: 2, whiteSpace: 'pre-line' }}>
+                        {parser(el.value as string)}
+                      </Typography>
+                    </Box>
+                  )}
+                </Box>
+              </React.Fragment>
+            ))
+          )}
+        </Box>
+      </Box>
+    </Box>
+  );
+  sections.push(
+    <Box key='food-fried-rice' sx={{ display: 'flex', px: 5 }}>
+      <Box
+        sx={{
+          width: 794,
+          height: 1123,
+          maxContentHeight: 1050,
+          border: '2px dotted black',
+          p: 5,
+        }}
+      >
+        <Box>
+          <Typography
+            sx={{
+              fontFamily: "'Arial', sans-serif",
+              fontSize: '3rem',
+              fontWeight: 700,
+              color: '#2d2d2d',
+              letterSpacing: '0.05em',
+              mb: 2,
+              lineHeight: 1.2,
+              textAlign: 'center',
+            }}
+          >
+            {data.basicInfo.recipeName.toUpperCase()}
+          </Typography>
+
+          <Typography>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis ad
+            natus molestiae tenetur, provident rerum nostrum quas ratione saepe
+            nam, voluptatem sit deleniti eveniet numquam odit autem dicta quos
+            ex debitis officiis unde aliquam obcaecati. Ipsa, voluptatibus
+            doloremque facere temporibus ratione, in nesciunt fuga praesentium
+            eius alias ex incidunt. Qui quibusdam, optio neque pariatur,
+            nesciunt, numquam cupiditate assumenda quam dolore blanditiis
+            voluptates. Obcaecati odio magnam illum aperiam incidunt repudiandae
+            repellat alias sapiente aliquam, itaque quaerat ad cum dicta,
+            doloribus sequi! At iusto voluptatum nam quisquam eos aliquid
+            consectetur, illo molestiae quam quia repellendus labore totam eius
+            provident rem. Soluta, ducimus!
+          </Typography>
+
+          <Box sx={{ mt: 2, backgroundColor: '#ebebeb', p: 1 }}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '80%',
+                margin: 'auto',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <GiCampCookingPot size={50} />
+                <Typography>Cooking</Typography>
+                <Divider
+                  sx={{
+                    width: 100,
+                    borderWidth: 1.5,
+                    borderColor: 'black',
+                    borderStyle: 'solid', // ensures visible border
+                  }}
+                />
+                <Typography>{data.basicInfo.duration.value}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <GiLever
+                  size={50}
+                  color={
+                    data.basicInfo.level.value.toLowerCase() === 'easy'
+                      ? '#2E7D32'
+                      : data.basicInfo.level.value.toLowerCase() === 'medium'
+                      ? '#ED6C02'
+                      : '#D32F2F'
+                  }
+                />
+                <Typography>Level</Typography>
+                <Divider
+                  sx={{
+                    width: 100,
+                    borderWidth: 1.5,
+                    borderColor: 'black',
+                    borderStyle: 'solid', // ensures visible border
+                  }}
+                />
+                <Typography>{data.basicInfo.level.value}</Typography>
+              </Box>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <HandPlatter size={50} color='#0288D1' />
+                <Typography>Serving</Typography>
+                <Divider
+                  sx={{
+                    width: 100,
+                    borderWidth: 1.5,
+                    borderColor: 'black',
+                    borderStyle: 'solid', // ensures visible border
+                  }}
+                />
+                <Typography>
+                  {Number(data.basicInfo.serving.value) > 1
+                    ? `${data.basicInfo.serving.value} PORTIONS`
+                    : `${data.basicInfo.serving.value} PORTION`}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Ingredients */}
+          <Box>
+            <Box
+              sx={{
+                m: 3,
+                mt: 4,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+            >
+              <Box sx={{ borderTop: '1px solid black', width: 300 }} />
+              <Box
+                sx={{
+                  py: 0.5,
+                  px: 2,
+                  width: 150,
+                  textAlign: 'center',
+                }}
+              >
+                <Typography>INGREDIENTS</Typography>
+              </Box>
+              <Box sx={{ borderTop: '1px solid black', width: 300 }} />
+            </Box>
+
+            <Box>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid container spacing={{ xs: 2 }} columns={{ xs: 4 }}>
+                  {/* {Array.from(Array(6)).map((_, index) => (
+        ))} */}
+                  {data.directions.ingredients.map((el, indx) => (
+                    <Grid item xs={2} sm={4} md={4}>
+                      <Typography>{el.name}</Typography>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Box>
+          </Box>
+
+          {/*  */}
+          {/* <Box>
+            {data.details.about && data.details.about.length > 0 && (
+              <>
+                {recipe.details.about.forEach((item, idx) => {
+                  if (item.type === 'text') {
+                    <Box key={`about-text-${idx}`} sx={{ mb: 2 }}>
+                      <Typography
+                        variant='h5'
+                        gutterBottom
+                        fontWeight='bold'
+                        sx={{ mb: 1 }}
+                      >
+                        About
+                      </Typography>
+                      <Typography variant='body1' paragraph>
+                        {stripHtml(item.value as string)}
+                      </Typography>
+                    </Box>;
+                  } else if (item.type === 'image') {
+                    <Grid
+                      container
+                      spacing={2}
+                      key={`about-img-${idx}`}
+                      sx={{ mb: 2 }}
+                    >
+                      {(Array.isArray(item.value)
+                        ? item.value
+                        : [item.value]
+                      ).map((img, imgIdx) => (
+                        <Grid item xs={12} sm={6} key={imgIdx}>
+                          <Card>
+                            <CardMedia
+                              component='img'
+                              image={img}
+                              alt={`Image ${imgIdx + 1}`}
+                              sx={{ height: 180, objectFit: 'cover' }}
+                            />
+                          </Card>
+                        </Grid>
+                      ))}
+                    </Grid>;
+                  }
+                })}
+              </>
+            )}
+          </Box> */}
+          {/* <Box>
+          {recipe.details.about?.map((el, i) => (
+            <Box sx={{ width: '100%', my: 2 }} key={`about_recipe_${i}`}>
+              {el.type === 'text' && parser(el.value as string)}
+
+              {el.type === 'image' && Array.isArray(el.value) && (
+                <Card sx={{ boxShadow: 'none', border: 0, my: 3 }}>
+                  <CardContent>
+                    <ImageLayout
+                      isMultiple={el.isMultiple}
+                      imageList={el.value}
+                    />
+                  </CardContent>
+                </Card>
+              )}
+            </Box>
+          ))}
+        </Box> */}
+        </Box>
+      </Box>
+
+      {/* Thumbnail Image */}
+      <Box
+        sx={{
+          width: 794,
+          height: 1123,
+          maxContentHeight: 1050,
+          border: '2px dotted black',
+        }}
+      >
+        <Box
+          sx={{
+            height: '100%',
+            position: 'relative',
+            p: 5,
+          }}
+        >
+          {/* Background Image */}
+          <Box
+            sx={{
+              backgroundImage:
+                "url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=600&fit=crop')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              width: '100%',
+              height: '100%',
+              borderRadius: 1,
+            }}
+          />
+        </Box>
+      </Box>
+    </Box>
+  );
+  //   Food section  - Dessert
+  sections.push(<Box key='food-dessert'></Box>);
+  //   Food section  - Fruit Salad
+  sections.push(<Box key='food-fruit-salad'></Box>);
+  //   Food section  - Bread
+  sections.push(<Box key='food-bread'></Box>);
+  //   Food section  - Cripsy Chicken
+  sections.push(<Box key='food-crispy-chicken'></Box>);
+  //   Food section  - Chaomin
+  sections.push(<Box key='food-chaomin'></Box>);
+  //   Food section - Fruit Salad 2
+  sections.push(<Box key='food-fruit-salad-2'></Box>);
 
   // Section 1: Header
   sections.push(
@@ -1549,9 +2070,7 @@ export default function NewRustic() {
                     );
                   const lastPageHasFood =
                     lastPage &&
-                    lastPage.some((s: any) =>
-                      s?.key?.startsWith('food-')
-                    );
+                    lastPage.some((s: any) => s?.key?.startsWith('food-'));
 
                   if (
                     !lastPage ||
@@ -1577,8 +2096,12 @@ export default function NewRustic() {
                 const A4_PORTRAIT = { width: 794, height: 1123 };
 
                 // Dedicated pages always use A4 portrait, content pages use selected layout
-                const pageWidth = hasDedicatedPage ? A4_PORTRAIT.width : currentDimensions.width;
-                const pageHeight = hasDedicatedPage ? A4_PORTRAIT.height : currentDimensions.height;
+                const pageWidth = hasDedicatedPage
+                  ? A4_PORTRAIT.width
+                  : currentDimensions.width;
+                const pageHeight = hasDedicatedPage
+                  ? A4_PORTRAIT.height
+                  : currentDimensions.height;
 
                 return (
                   <Paper
@@ -1586,7 +2109,9 @@ export default function NewRustic() {
                     sx={{
                       width: `${pageWidth}px`,
                       height: hasDedicatedPage ? `${pageHeight}px` : 'auto',
-                      minHeight: hasDedicatedPage ? `${pageHeight}px` : `${pageHeight}px`,
+                      minHeight: hasDedicatedPage
+                        ? `${pageHeight}px`
+                        : `${pageHeight}px`,
                       maxHeight: hasDedicatedPage ? `${pageHeight}px` : 'none',
                       mb: 4,
                       p: 4,
