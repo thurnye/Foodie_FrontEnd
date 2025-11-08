@@ -21,6 +21,7 @@ import {
   CardContent,
   Grid,
   List,
+  ListItem,
 } from '@mui/material';
 import { usePDF } from 'react-to-pdf';
 import { IRecipe } from '../../../Recipe/types/recipe.types';
@@ -513,16 +514,14 @@ const getRecipeSections = (recipe: IRecipe) => {
   );
 
   //   Food Contents Sections
-
-  //   Food section  - Fried Rice
+  //   Food section  - layout 1
   sections.push(
-    <Box key='food-fried-rice' sx={{ display: 'flex', px: 5 }}>
+    <Box key='food-smoked-tofu' sx={{ display: 'flex', px: 5 }}>
       <Box
         sx={{
           width: 794,
           height: 1123,
           maxContentHeight: 1050,
-          border: '2px dotted black',
           p: 5,
         }}
       >
@@ -584,10 +583,12 @@ const getRecipeSections = (recipe: IRecipe) => {
                     width: 100,
                     borderWidth: 1.5,
                     borderColor: 'black',
-                    borderStyle: 'solid', // ensures visible border
+                    borderStyle: 'solid',
                   }}
                 />
-                <Typography variant='caption'>{data.basicInfo.duration.value}</Typography>
+                <Typography variant='caption'>
+                  {data.basicInfo.duration.value}
+                </Typography>
               </Box>
               <Box
                 sx={{
@@ -616,7 +617,9 @@ const getRecipeSections = (recipe: IRecipe) => {
                     borderStyle: 'solid', // ensures visible border
                   }}
                 />
-                <Typography variant='caption'>{data.basicInfo.level.value}</Typography>
+                <Typography variant='caption'>
+                  {data.basicInfo.level.value}
+                </Typography>
               </Box>
               <Box
                 sx={{
@@ -633,7 +636,7 @@ const getRecipeSections = (recipe: IRecipe) => {
                     width: 100,
                     borderWidth: 1.5,
                     borderColor: 'black',
-                    borderStyle: 'solid', // ensures visible border
+                    borderStyle: 'solid',
                   }}
                 />
                 <Typography variant='caption'>
@@ -713,9 +716,12 @@ const getRecipeSections = (recipe: IRecipe) => {
                 <Grid container spacing={{ xs: 2 }} columns={{ xs: 12 }}>
                   {data.nutritionalFacts.map((el, indx) => (
                     <Grid item xs={1.5}>
-                      <Box sx={{textAlign:'center'}}>
+                      <Box sx={{ textAlign: 'center' }}>
                         <Typography>{el.name}</Typography>
-                        <Typography>{el.amount}{el.unit}</Typography>
+                        <Typography>
+                          {el.amount}
+                          {el.unit}
+                        </Typography>
                       </Box>
                     </Grid>
                   ))}
@@ -723,72 +729,6 @@ const getRecipeSections = (recipe: IRecipe) => {
               </Box>
             </Box>
           </Box>
-
-          {/*  */}
-          {/* <Box>
-            {data.details.about && data.details.about.length > 0 && (
-              <>
-                {recipe.details.about.forEach((item, idx) => {
-                  if (item.type === 'text') {
-                    <Box key={`about-text-${idx}`} sx={{ mb: 2 }}>
-                      <Typography
-                        variant='h5'
-                        gutterBottom
-                        fontWeight='bold'
-                        sx={{ mb: 1 }}
-                      >
-                        About
-                      </Typography>
-                      <Typography variant='body1' paragraph>
-                        {stripHtml(item.value as string)}
-                      </Typography>
-                    </Box>;
-                  } else if (item.type === 'image') {
-                    <Grid
-                      container
-                      spacing={2}
-                      key={`about-img-${idx}`}
-                      sx={{ mb: 2 }}
-                    >
-                      {(Array.isArray(item.value)
-                        ? item.value
-                        : [item.value]
-                      ).map((img, imgIdx) => (
-                        <Grid item xs={12} sm={6} key={imgIdx}>
-                          <Card>
-                            <CardMedia
-                              component='img'
-                              image={img}
-                              alt={`Image ${imgIdx + 1}`}
-                              sx={{ height: 180, objectFit: 'cover' }}
-                            />
-                          </Card>
-                        </Grid>
-                      ))}
-                    </Grid>;
-                  }
-                })}
-              </>
-            )}
-          </Box> */}
-          {/* <Box>
-          {recipe.details.about?.map((el, i) => (
-            <Box sx={{ width: '100%', my: 2 }} key={`about_recipe_${i}`}>
-              {el.type === 'text' && parser(el.value as string)}
-
-              {el.type === 'image' && Array.isArray(el.value) && (
-                <Card sx={{ boxShadow: 'none', border: 0, my: 3 }}>
-                  <CardContent>
-                    <ImageLayout
-                      isMultiple={el.isMultiple}
-                      imageList={el.value}
-                    />
-                  </CardContent>
-                </Card>
-              )}
-            </Box>
-          ))}
-        </Box> */}
         </Box>
       </Box>
 
@@ -821,6 +761,8 @@ const getRecipeSections = (recipe: IRecipe) => {
           />
         </Box>
       </Box> */}
+
+      {/* second half */}
       <Box
         sx={{
           width: '50%',
@@ -829,13 +771,14 @@ const getRecipeSections = (recipe: IRecipe) => {
           flexDirection: 'column',
         }}
       >
+        {/* Thumbnail Image */}
         <Box
           component='img'
           src='https://images.unsplash.com/photo-1488477181946-6428a0291777?w=800&h=600&fit=crop'
           alt='Muesli'
           sx={{ width: '100%', height: '60%', objectFit: 'cover' }}
         />
-
+        {/* Instruction */}
         <Box sx={{ p: 6 }}>
           <Typography
             sx={{
@@ -876,273 +819,338 @@ const getRecipeSections = (recipe: IRecipe) => {
       </Box>
     </Box>
   );
+
+  //   Food section  - layout 2
   sections.push(
     <Box key='food-fried-rice' sx={{ display: 'flex', px: 5 }}>
+      {/* First Layout PAGE */}
       <Box
         sx={{
           width: 794,
           height: 1123,
-          maxContentHeight: 1050,
-          border: '2px dotted black',
-          p: 5,
-        }}
-      >
-        <Box>
-          <Typography
-            sx={{
-              fontFamily: "'Arial', sans-serif",
-              fontSize: '3rem',
-              fontWeight: 700,
-              color: '#2d2d2d',
-              letterSpacing: '0.05em',
-              mb: 2,
-              lineHeight: 1.2,
-              textAlign: 'center',
-            }}
-          >
-            {data.basicInfo.recipeName.toUpperCase()}
-          </Typography>
-
-          <Typography>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis ad
-            natus molestiae tenetur, provident rerum nostrum quas ratione saepe
-            nam, voluptatem sit deleniti eveniet numquam odit autem dicta quos
-            ex debitis officiis unde aliquam obcaecati. Ipsa, voluptatibus
-            doloremque facere temporibus ratione, in nesciunt fuga praesentium
-            eius alias ex incidunt. Qui quibusdam, optio neque pariatur,
-            nesciunt, numquam cupiditate assumenda quam dolore blanditiis
-            voluptates. Obcaecati odio magnam illum aperiam incidunt repudiandae
-            repellat alias sapiente aliquam, itaque quaerat ad cum dicta,
-            doloribus sequi! At iusto voluptatum nam quisquam eos aliquid
-            consectetur, illo molestiae quam quia repellendus labore totam eius
-            provident rem. Soluta, ducimus!
-          </Typography>
-
-          <Box sx={{ mt: 2, backgroundColor: '#ebebeb', p: 1 }}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '80%',
-                margin: 'auto',
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <GiCampCookingPot size={50} />
-                <Typography>Cooking</Typography>
-                <Divider
-                  sx={{
-                    width: 100,
-                    borderWidth: 1.5,
-                    borderColor: 'black',
-                    borderStyle: 'solid', // ensures visible border
-                  }}
-                />
-                <Typography>{data.basicInfo.duration.value}</Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <GiLever
-                  size={50}
-                  color={
-                    data.basicInfo.level.value.toLowerCase() === 'easy'
-                      ? '#2E7D32'
-                      : data.basicInfo.level.value.toLowerCase() === 'medium'
-                      ? '#ED6C02'
-                      : '#D32F2F'
-                  }
-                />
-                <Typography>Level</Typography>
-                <Divider
-                  sx={{
-                    width: 100,
-                    borderWidth: 1.5,
-                    borderColor: 'black',
-                    borderStyle: 'solid', // ensures visible border
-                  }}
-                />
-                <Typography>{data.basicInfo.level.value}</Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                }}
-              >
-                <HandPlatter size={50} color='#0288D1' />
-                <Typography>Serving</Typography>
-                <Divider
-                  sx={{
-                    width: 100,
-                    borderWidth: 1.5,
-                    borderColor: 'black',
-                    borderStyle: 'solid', // ensures visible border
-                  }}
-                />
-                <Typography>
-                  {Number(data.basicInfo.serving.value) > 1
-                    ? `${data.basicInfo.serving.value} PORTIONS`
-                    : `${data.basicInfo.serving.value} PORTION`}
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-
-          {/* Ingredients */}
-          <Box>
-            <Box
-              sx={{
-                m: 3,
-                mt: 4,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <Box sx={{ borderTop: '1px solid black', width: 300 }} />
-              <Box
-                sx={{
-                  py: 0.5,
-                  px: 2,
-                  width: 150,
-                  textAlign: 'center',
-                }}
-              >
-                <Typography>INGREDIENTS</Typography>
-              </Box>
-              <Box sx={{ borderTop: '1px solid black', width: 300 }} />
-            </Box>
-
-            <Box>
-              <Box sx={{ flexGrow: 1 }}>
-                <Grid container spacing={{ xs: 2 }} columns={{ xs: 4 }}>
-                  {/* {Array.from(Array(6)).map((_, index) => (
-        ))} */}
-                  {data.directions.ingredients.map((el, indx) => (
-                    <Grid item xs={2} sm={4} md={4}>
-                      <Typography>{el.name}</Typography>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            </Box>
-          </Box>
-
-          {/*  */}
-          {/* <Box>
-            {data.details.about && data.details.about.length > 0 && (
-              <>
-                {recipe.details.about.forEach((item, idx) => {
-                  if (item.type === 'text') {
-                    <Box key={`about-text-${idx}`} sx={{ mb: 2 }}>
-                      <Typography
-                        variant='h5'
-                        gutterBottom
-                        fontWeight='bold'
-                        sx={{ mb: 1 }}
-                      >
-                        About
-                      </Typography>
-                      <Typography variant='body1' paragraph>
-                        {stripHtml(item.value as string)}
-                      </Typography>
-                    </Box>;
-                  } else if (item.type === 'image') {
-                    <Grid
-                      container
-                      spacing={2}
-                      key={`about-img-${idx}`}
-                      sx={{ mb: 2 }}
-                    >
-                      {(Array.isArray(item.value)
-                        ? item.value
-                        : [item.value]
-                      ).map((img, imgIdx) => (
-                        <Grid item xs={12} sm={6} key={imgIdx}>
-                          <Card>
-                            <CardMedia
-                              component='img'
-                              image={img}
-                              alt={`Image ${imgIdx + 1}`}
-                              sx={{ height: 180, objectFit: 'cover' }}
-                            />
-                          </Card>
-                        </Grid>
-                      ))}
-                    </Grid>;
-                  }
-                })}
-              </>
-            )}
-          </Box> */}
-          {/* <Box>
-          {recipe.details.about?.map((el, i) => (
-            <Box sx={{ width: '100%', my: 2 }} key={`about_recipe_${i}`}>
-              {el.type === 'text' && parser(el.value as string)}
-
-              {el.type === 'image' && Array.isArray(el.value) && (
-                <Card sx={{ boxShadow: 'none', border: 0, my: 3 }}>
-                  <CardContent>
-                    <ImageLayout
-                      isMultiple={el.isMultiple}
-                      imageList={el.value}
-                    />
-                  </CardContent>
-                </Card>
-              )}
-            </Box>
-          ))}
-        </Box> */}
-        </Box>
-      </Box>
-
-      {/* Thumbnail Image */}
-      <Box
-        sx={{
-          width: 794,
-          height: 1123,
-          maxContentHeight: 1050,
-          border: '2px dotted black',
+          overflow: 'hidden',
         }}
       >
         <Box
           sx={{
             height: '100%',
-            position: 'relative',
-            p: 5,
+            display: 'flex',
+            flexDirection: 'row',
           }}
         >
-          {/* Background Image */}
+          {/* Left side - Image */}
           <Box
             sx={{
+              width: '50%',
               backgroundImage:
                 "url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=600&fit=crop')",
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              width: '100%',
-              height: '100%',
-              borderRadius: 1,
+              borderRight: '2px dotted black',
             }}
           />
+
+          {/* Right side - Content */}
+          <Box
+            sx={{
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              backgroundColor: '#fff',
+              borderLeft: '2px dotted black',
+            }}
+          >
+            {/* Top info bar */}
+            <Box sx={{ backgroundColor: '#ebebeb', p: 1 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                {/* Cooking */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <GiCampCookingPot size={30} />
+                  <Typography variant='caption'>Cooking</Typography>
+                  <Divider
+                    sx={{
+                      width: 80,
+                      borderWidth: 1.5,
+                      borderColor: 'black',
+                      borderStyle: 'solid',
+                    }}
+                  />
+                  <Typography variant='caption'>
+                    {data.basicInfo.duration.value}
+                  </Typography>
+                </Box>
+
+                {/* Level */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <GiLever
+                    size={30}
+                    color={
+                      data.basicInfo.level.value.toLowerCase() === 'easy'
+                        ? '#2E7D32'
+                        : data.basicInfo.level.value.toLowerCase() === 'medium'
+                        ? '#ED6C02'
+                        : '#D32F2F'
+                    }
+                  />
+                  <Typography variant='caption'>Level</Typography>
+                  <Divider
+                    sx={{
+                      width: 80,
+                      borderWidth: 1.5,
+                      borderColor: 'black',
+                      borderStyle: 'solid',
+                    }}
+                  />
+                  <Typography variant='caption'>
+                    {data.basicInfo.level.value}
+                  </Typography>
+                </Box>
+
+                {/* Serving */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <HandPlatter size={30} color='#0288D1' />
+                  <Typography variant='caption'>Serving</Typography>
+                  <Divider
+                    sx={{
+                      width: 80,
+                      borderWidth: 1.5,
+                      borderColor: 'black',
+                      borderStyle: 'solid',
+                    }}
+                  />
+                  <Typography variant='caption'>
+                    {Number(data.basicInfo.serving.value) > 1
+                      ? `${data.basicInfo.serving.value} PORTIONS`
+                      : `${data.basicInfo.serving.value} PORTION`}
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+
+            {/* Ingredients */}
+            <Box sx={{ p: 3, flex: 1 }}>
+              {/* Section title */}
+              <Box
+                sx={{
+                  mb: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box sx={{ flexGrow: 1, borderTop: '1px solid black' }} />
+                <Typography
+                  sx={{
+                    mx: 2,
+                    fontWeight: 'bold',
+                    fontSize: 14,
+                    letterSpacing: 1,
+                  }}
+                >
+                  INGREDIENTS
+                </Typography>
+                <Box sx={{ flexGrow: 1, borderTop: '1px solid black' }} />
+              </Box>
+
+              {/* Ingredients grid */}
+              <Grid container spacing={1}>
+                {data.directions.ingredients.map((el, indx) => (
+                  <Grid item xs={6} key={indx}>
+                    <Typography
+                      variant='body2'
+                      sx={{
+                        display: 'list-item',
+                        listStyleType: 'disc',
+                        ml: 3,
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {el.name}
+                    </Typography>
+                  </Grid>
+                ))}
+              </Grid>
+
+              {/* Nutrition */}
+              <Box
+                sx={{
+                  mt: 2,
+                  mb: 2,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <Box sx={{ flexGrow: 1, borderTop: '1px solid black' }} />
+                <Box
+                  sx={{
+                    py: 0.5,
+                    px: 2,
+                    textAlign: 'center',
+                  }}
+                >
+                  <Typography
+                    sx={{ fontWeight: 'bold', fontSize: 14, letterSpacing: 1 }}
+                  >
+                    NUTRIENTS
+                  </Typography>
+                </Box>
+                <Box sx={{ flexGrow: 1, borderTop: '1px solid black' }} />
+              </Box>
+              <Grid container spacing={1}>
+                {data.nutritionalFacts.map((el, indx) => (
+                  <Grid item xs={4} key={indx}>
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Typography
+                        sx={{
+                          fontWeight: 500,
+                          fontSize: 13,
+                          textTransform: 'uppercase',
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {el.name}
+                      </Typography>
+                      <Typography sx={{ fontSize: 12 }}>
+                        {el.amount}
+                        {el.unit}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          </Box>
         </Box>
       </Box>
+
+      {/* Second Layout PAGE */}
+     <Box
+      sx={{
+        width: 794,
+        height: 1123,
+        p: 5,
+        px: 10,
+        bgcolor: "#fff",
+      }}
+    >
+      {/* Recipe Title */}
+      <Typography
+        sx={{
+          fontFamily: "'Arial', sans-serif",
+          fontSize: "3rem",
+          fontWeight: 700,
+          color: "#2d2d2d",
+          letterSpacing: "0.05em",
+          mb: 2,
+          lineHeight: 1.2,
+          textAlign: "center",
+        }}
+      >
+        {data.basicInfo.recipeName.toUpperCase()}
+      </Typography>
+
+      {/* About / Intro */}
+      <Typography sx={{ fontSize: "1rem", lineHeight: 1.6, textAlign: "justify" }}>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis ad natus molestiae
+        tenetur, provident rerum nostrum quas ratione saepe nam, voluptatem sit deleniti eveniet
+        numquam odit autem dicta quos ex debitis officiis unde aliquam obcaecati. Ipsa,
+        voluptatibus doloremque facere temporibus ratione, in nesciunt fuga praesentium eius alias
+        ex incidunt. Qui quibusdam, optio neque pariatur, nesciunt, numquam cupiditate assumenda
+        quam dolore blanditiis voluptates. Obcaecati odio magnam illum aperiam incidunt repudiandae
+        repellat alias sapiente aliquam, itaque quaerat ad cum dicta, doloribus sequi! At iusto
+        voluptatum nam quisquam eos aliquid consectetur, illo molestiae quam quia repellendus labore
+        totam eius provident rem. Soluta, ducimus!
+      </Typography>
+
+      {/* Directions Section */}
+      <Box sx={{ mt: 6 }}>
+        <Typography
+          sx={{
+            fontFamily: "'Georgia', serif",
+            fontSize: "1.4rem",
+            fontWeight: 700,
+            color: "#2d2d2d",
+            mb: 3,
+          }}
+        >
+          Instructions
+        </Typography>
+
+        {data.directions.methods.map((method, methodIndex) => (
+          <Box key={methodIndex} sx={{ mb: 3 }}>
+            {method.step.map((el, stepIndex) =>
+              el.type === "text" ? (
+                <Grid
+                  key={`${methodIndex}-${stepIndex}`}
+                  container
+                  alignItems="flex-start"
+                  spacing={1}
+                  sx={{ mb: 2 }}
+                >
+                  {/* Step Number */}
+                  <Grid item xs="auto">
+                    <Typography
+                      sx={{
+                        fontWeight: 700,
+                        minWidth: "32px",
+                        textAlign: "right",
+                      }}
+                    >
+                      {stepIndex + 1}.
+                    </Typography>
+                  </Grid>
+
+                  {/* Step Text */}
+                  <Grid item xs>
+                    <Typography
+                      sx={{
+                        whiteSpace: "pre-line",
+                        lineHeight: 1.6,
+                        fontSize: "1rem",
+                      }}
+                    >
+                      {parser(el.value as string)}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              ) : null
+            )}
+          </Box>
+        ))}
+      </Box>
+    </Box>
     </Box>
   );
+
   //   Food section  - Dessert
   sections.push(<Box key='food-dessert'></Box>);
   //   Food section  - Fruit Salad
