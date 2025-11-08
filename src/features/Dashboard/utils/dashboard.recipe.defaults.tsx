@@ -1,5 +1,4 @@
-import { IFormStep } from "../types/dashboard_recipe.types";
-
+import { IFormStep } from '../types/dashboard_recipe.types';
 
 // Steps array
 export const formSteps: IFormStep[] = [
@@ -31,3 +30,86 @@ export const measurementUnits = [
   { label: 'Gallons (gal)', value: 'gal' },
   { label: 'Pieces', value: 'pieces' },
 ];
+
+export const tags = [
+  '10 ingredients or less',
+  '15 minutes or less',
+  '60 minutes or less',
+  'appetizer',
+  'Autumn',
+  'bacon',
+  'bake',
+  'basil',
+  'bbb',
+  'BBQ',
+  'Carbs',
+  'cheese',
+  'Dairy-free',
+  'Dessert',
+  'Dip',
+  'Easy',
+  'Fall',
+  'Fast-Food',
+  'Gluten',
+  'Gluten-Free',
+  'Italian cuisine',
+  'Latin-inspired',
+  'Lunch',
+  'Meat',
+  'Mexican-inspired',
+  'Milk',
+  'No-bake',
+  'Nut-free',
+  'Oil',
+  'Oil-free',
+  'Olive Oil',
+  'One bowl',
+  'Pasta',
+  'Protein',
+  'Raw',
+  'Recipes',
+  'Refined sugar-free',
+  'Sauce',
+  'Snacks',
+  'Soup',
+  'Soy-free',
+  'Spring',
+  'Summer',
+  'Tips and Tricks',
+  'Thai',
+  'Trans Fat',
+  'Vegan',
+  'Vegetables',
+  'Veggies',
+];
+
+export const categories= [
+  'Popular',
+  'Pizza',
+  'Meat',
+  'Lunch',
+  'Greens',
+  'Desserts',
+  'Snacks',
+  'Waffles',
+  'Breakfast',
+  'Cakes',
+  'Fast To Make',
+  'Grains',
+  'Pies',
+  'Sweets',
+  'Dinner',
+];
+
+export const durations = [
+  '5 Minutes',
+  '10 Minutes',
+  '15 Minutes',
+  '30 Minutes',
+  '45 Minutes',
+  '60 Minutes',
+  '60+ Minutes',
+];
+
+export const servings = ['1', '5', '10', '10+'];
+export const levels = ['Easy', 'Medium', 'Hard'];
