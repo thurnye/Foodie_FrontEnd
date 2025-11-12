@@ -16,7 +16,7 @@ import { useForm, Controller, useFieldArray } from 'react-hook-form';
 
 import SortableList, { SortableItemData } from '../../../../SortableList';
 import { getRandomNumber } from '../../../../../../app/utils/app.utils';
-import { measurementUnits } from '../../../../utils/dashboard.recipe.defaults';
+import { measurementUnits } from '../../../../../../shared/data/shared.recipe.optionsData';
 import { INutritionalFact } from '../../../../../Recipe/types/recipe.types';
 
 //  Props and form types

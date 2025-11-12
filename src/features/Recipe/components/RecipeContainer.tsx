@@ -132,7 +132,7 @@ const RecipeContainer: React.FC<IRecipeContainerProps> = ({ recipe }) => {
           {about?.map((el, i) => (
             <Box sx={{ width: '100%', my: 2 }} key={`about_recipe_${i}`}>
               {el.type === 'text' && parser(el.value as string)}
-
+            
               {el.type === 'image' && Array.isArray(el.value) && (
                 <Card sx={{ boxShadow: 'none', border: 0, my: 3 }}>
                   <CardContent>

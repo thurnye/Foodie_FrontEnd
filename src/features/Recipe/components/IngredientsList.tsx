@@ -31,7 +31,7 @@ const IngredientsList: React.FC<IngredientsListProps> = ({ ingredients }) => {
   const renderTable = (title: string, items: Ingredient[]) => (
     <Box sx={{ my: 5 }}>
       <Typography
-        variant="h5"
+        variant='h5'
         sx={{
           fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
           fontWeight: 500,
@@ -50,13 +50,13 @@ const IngredientsList: React.FC<IngredientsListProps> = ({ ingredients }) => {
           overflow: 'hidden',
         }}
       >
-        <Table size="small">
+        <Table size='small'>
           <TableHead>
             <TableRow>
               <TableCell sx={{ width: 50, borderRight: '2px solid #dee2e6' }} />
               <TableCell>
                 <Typography
-                  variant="h6"
+                  variant='h6'
                   sx={{
                     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
                     fontSize: '1rem',
@@ -101,8 +101,12 @@ const IngredientsList: React.FC<IngredientsListProps> = ({ ingredients }) => {
   return (
     <Box>
       {renderTable('Main Ingredients', mainIngredients)}
-      <Divider sx={{ my: 3 }} />
-      {renderTable('For Dressing', dressingIngredients)}
+      {dressingIngredients.length > 0 && (
+        <>
+          <Divider sx={{ my: 3 }} />
+          {renderTable('For Dressing', dressingIngredients)}
+        </>
+      )}
     </Box>
   );
 };

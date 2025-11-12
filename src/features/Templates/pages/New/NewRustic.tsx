@@ -30,6 +30,9 @@ import ImageLayout from '../../../../app/components/Layouts/ImageLayout';
 import { GiCampCookingPot, GiLever } from 'react-icons/gi';
 import { HandPlatter } from 'lucide-react';
 
+
+
+
 type PageLayout =
   | 'A3-portrait'
   | 'A3-landscape'

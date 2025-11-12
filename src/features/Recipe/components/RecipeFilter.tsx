@@ -15,6 +15,7 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import CustomizedButton from '../../../app/components/CustomizedButton';
 import { IRecipeQueryParams } from '../types/recipe.types';
+import { categories, tags } from '../../../shared/data/shared.recipe.optionsData';
 
 // ---------- Styled Accordion ----------
 const Accordion = styled((props: AccordionProps) => (
@@ -45,34 +46,34 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 // ---------- Constants ----------
-const cats: string[] = [
-  'Popular',
-  'Pizza',
-  'Meat',
-  'Lunch',
-  'Greens',
-  'Desserts',
-  'Snacks',
-  'Waffles',
-  'Breakfast',
-  'Cakes',
-  'Fast To Make',
-  'Grains',
-  'Pies',
-  'Sweets',
-  'Dinner',
-];
+// const cats: string[] = [
+//   'Popular',
+//   'Pizza',
+//   'Meat',
+//   'Lunch',
+//   'Greens',
+//   'Desserts',
+//   'Snacks',
+//   'Waffles',
+//   'Breakfast',
+//   'Cakes',
+//   'Fast To Make',
+//   'Grains',
+//   'Pies',
+//   'Sweets',
+//   'Dinner',
+// ];
 
-const tags: string[] = [
-  '10 ingredients or less',
-  '15 minutes or less',
-  '60 minutes or less',
-  'Appetizers',
-  'Bacon',
-  'Bake',
-  'Basil',
-  'BBQ',
-];
+// const tags: string[] = [
+//   '10 ingredients or less',
+//   '15 minutes or less',
+//   '60 minutes or less',
+//   'Appetizers',
+//   'Bacon',
+//   'Bake',
+//   'Basil',
+//   'BBQ',
+// ];
 
 interface FilterFormData {
   categories: string[];
@@ -90,7 +91,7 @@ const defaultValues: FilterFormData = {
 
 // ---------- Component ----------
 const RecipeFilter: React.FC<RecipeFilterProps> = ({ getFilter }) => {
-  const categories = cats.sort();
+  // const categories = cats.sort();
   const [showMore, setShowMore] = useState<string>('');
   const [expanded, setExpanded] = useState<string[]>([]);
   const { register, handleSubmit, reset } = useForm<FilterFormData>({
@@ -196,7 +197,7 @@ const RecipeFilter: React.FC<RecipeFilterProps> = ({ getFilter }) => {
                 key={el}
                 in={showMore === type}
                 style={{ transformOrigin: '0 0 0' }}
-                {...(showMore === type ? { timeout: 1000 * (i + 2) } : {})}
+                {...(showMore === type ? { timeout: 1000 * (i + 1) } : {})}
               >
                 <FormControlLabel
                   control={

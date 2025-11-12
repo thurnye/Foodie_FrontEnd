@@ -23,8 +23,8 @@ const NutrientsTable: React.FC<NutrientsTableProps> = ({ nutrients }) => {
     >
       <Box
         sx={{
-          width: '100%',
-          maxWidth: 1000,
+          // width: '100%',
+          // maxWidth: 1000,
           borderRadius: 1,
           overflow: 'hidden',
           boxShadow: theme.shadows[1],
@@ -66,27 +66,30 @@ const NutrientsTable: React.FC<NutrientsTableProps> = ({ nutrients }) => {
               md: 'repeat(4, 1fr)',
               lg: 'repeat(5, 1fr)',
             },
-            gap: { xs: 2, sm: 3, md: 4 },
+            gap: { xs: 2, sm: 3, md: 3 },
             alignItems: 'center',
             justifyItems: 'center',
             py: { xs: 3, lg: 4 },
-            px: { xs: 2, lg: 3 },
+            px: { xs: 2, lg:1},
           }}
         >
           {nutrients.map((el, index) => (
             <Box
               key={`nutrient_${index}`}
               sx={{
+                height:50,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                justifyContent:'center',
                 textAlign: 'center',
               }}
             >
               <Typography
                 sx={{
+                  height: 20,
                   fontWeight: 600,
-                  fontSize: { xs: '0.95rem', sm: '1rem' },
+                  // fontSize: { xs: '0.95rem', sm: '1rem' },
                   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
                   color: theme.palette.text.primary,
                 }}
@@ -95,8 +98,12 @@ const NutrientsTable: React.FC<NutrientsTableProps> = ({ nutrients }) => {
                 {el.unit}
               </Typography>
               <Typography
+              variant='caption'
                 sx={{
-                  fontSize: { xs: '0.85rem', sm: '0.9rem' },
+                  flexGrow: 1,
+                  
+                  mt:1,
+                  // fontSize: { xs: '0.85rem', sm: '0.9rem' },
                   color: theme.palette.text.secondary,
                   fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
                 }}

@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-  ]
+, "Script/mergeRecipe.js", "backup"  ]
 }

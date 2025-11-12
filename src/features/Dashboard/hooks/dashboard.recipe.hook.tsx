@@ -5,7 +5,7 @@ import {
   levels,
   servings,
   tags,
-} from '../utils/dashboard.recipe.defaults';
+} from '../../../shared/data/shared.recipe.optionsData';
 
 export interface NutrientOption {
   name: string;
