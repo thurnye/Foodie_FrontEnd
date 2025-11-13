@@ -14,7 +14,7 @@ export default function FoodLayoutEight({ data }: IFoodLayoutEight) {
     <Box
       key='food-layout-eight'
       sx={{
-        width: 1580,
+        width: '100%',
         height: 1123,
         overflow: 'hidden',
         display: 'flex',
@@ -31,7 +31,6 @@ export default function FoodLayoutEight({ data }: IFoodLayoutEight) {
             "url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=1600&h=900&fit=crop')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          ml: -7,
         }}
       />
 

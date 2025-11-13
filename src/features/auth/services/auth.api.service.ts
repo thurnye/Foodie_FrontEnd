@@ -135,7 +135,7 @@ class AuthApiService {
         throw new Error('No access token received from server');
       }
 
-      // console.log('[Auth API] ✅ Access token received from header');
+      // console.log('[Auth API] Access token received from header');
 
       // Update access token in memory
       TokenManager.setAccessToken(accessToken);
@@ -149,7 +149,7 @@ class AuthApiService {
         throw new Error('No user data received from server');
       }
 
-      // console.log('[Auth API] ✅ User data received:', userData);
+      // console.log('[Auth API] User data received:', userData);
 
       return {
         accessToken,

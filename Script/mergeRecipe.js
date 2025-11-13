@@ -47,11 +47,15 @@ function similarity(a, b) {
 
 // --- Load Data ---
 const recipeFoodieData = JSON.parse(
-  fs.readFileSync(path.resolve(__dirname, '../backup/FoodieBlog.recipes_backup.json'), 'utf-8')
+  fs.readFileSync(
+    path.resolve(__dirname, '../backup/FoodieBlog.recipes_backup.json'),
+    'utf-8'
+  )
 );
 
 let realisticRecipes = require('../backup/RealisticRecipes.js');
-if (realisticRecipes.realisticRecipes) realisticRecipes = realisticRecipes.realisticRecipes;
+if (realisticRecipes.realisticRecipes)
+  realisticRecipes = realisticRecipes.realisticRecipes;
 
 // --- Merge Logic ---
 const unmatched = [];
@@ -67,7 +71,8 @@ const updatedData = recipeFoodieData.map((item) => {
   // Fuzzy fallback
   if (!match) {
     match = realisticRecipes.find(
-      (recp) => similarity(normalizeName(recp.basicInfo.recipeName), originalName) > 0.9
+      (recp) =>
+        similarity(normalizeName(recp.basicInfo.recipeName), originalName) > 0.9
     );
   }
 
@@ -75,14 +80,16 @@ const updatedData = recipeFoodieData.map((item) => {
     const { basicInfo, details, nutritionalFacts, directions } = match;
     updatedNames.push(item.basicInfo.recipeName);
 
-    // ✅ Adjust only "image" blocks in details.about
+    // Adjust only "image" blocks in details.about
     const processedAbout = (details.about || []).map((block) => {
       if (block.type === 'image') {
         let imageArray = [];
 
         // Normalize value to always be an array of strings
         if (Array.isArray(block.value)) {
-          imageArray = block.value.filter((v) => typeof v === 'string' && v.trim());
+          imageArray = block.value.filter(
+            (v) => typeof v === 'string' && v.trim()
+          );
         } else if (typeof block.value === 'string' && block.value.trim()) {
           imageArray = [block.value.trim()];
         }
@@ -150,8 +157,8 @@ const outputPath = path.resolve(__dirname, 'updatedRecipeFoodieData.json');
 fs.writeFileSync(outputPath, JSON.stringify(updatedData, null, 2), 'utf-8');
 
 // --- Logs ---
-console.log(`\n✅ File created successfully: ${outputPath}`);
-console.log(`✅ Updated recipes: ${updatedNames.length}`);
+console.log(`\nFile created successfully: ${outputPath}`);
+console.log(`Updated recipes: ${updatedNames.length}`);
 console.log(`⚠️  Unmatched recipes: ${unmatched.length}`);
 if (unmatched.length > 0) {
   console.log('\n⚠️  Unmatched Recipe Names:\n', unmatched.join('\n'));

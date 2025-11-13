@@ -1,19 +1,19 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require('fs');
+const path = require('path');
 
 // Base path
-const basePath = path.join(__dirname, "../src", "features");
+const basePath = path.join(__dirname, '../src', 'features');
 
 // Subfolders to create in each feature
 const subDirs = [
-  "components",
-  "pages",
-  "services",
-  "hooks",
-  "types",
-  "utils",
-  "router",
-  "redux",
+  'components',
+  'pages',
+  'services',
+  'hooks',
+  'types',
+  'utils',
+  'router',
+  'redux',
 ];
 
 function createFeature(moduleName) {
@@ -37,16 +37,16 @@ function createFeature(moduleName) {
   });
 
   // Create README file
-  const readmeFile = path.join(featurePath, "README.md");
+  const readmeFile = path.join(featurePath, 'README.md');
   fs.writeFileSync(
     readmeFile,
     `# ${featureName} Feature\n\n**Description:** Add details about the ${featureName} feature here.\n\n## Structure\n${subDirs
       .map((d) => `- ${d}/`)
-      .join("\n")}\n`
+      .join('\n')}\n`
   );
-  console.log("   ├── 📄 Created file: README.md");
+  console.log('   ├── 📄 Created file: README.md');
 
-  console.log(`✅ Feature "${featureName}" scaffold created successfully!\n`);
+  console.log(`Feature "${featureName}" scaffold created successfully!\n`);
 }
 
 function capitalize(str) {
@@ -57,8 +57,8 @@ function capitalize(str) {
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
-  console.error("⚠️ Please provide one or more feature names. Example:");
-  console.error("   npm run create:feature Home Recipes Profile");
+  console.error('⚠️ Please provide one or more feature names. Example:');
+  console.error('   npm run create:feature Home Recipes Profile');
   process.exit(1);
 }
 

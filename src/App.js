@@ -82,7 +82,7 @@ function App() {
   });
 
   useEffect(() => {
-    if (initRef.current) return; // ✅ Prevent rerun
+    if (initRef.current) return; // Prevent rerun
     initRef.current = true;
 
     dispatch(initializeAuth());

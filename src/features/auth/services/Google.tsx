@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleLogin, GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
+import {
+  GoogleLogin,
+  GoogleLoginResponse,
+  GoogleLoginResponseOffline,
+} from 'react-google-login';
 import { gapi } from 'gapi-script';
 import { Box } from '@mui/material';
 import services from '../../../util/services';
@@ -31,7 +35,7 @@ const Google: React.FC = () => {
   const [showCancel, setShowCancel] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
 
-  // ✅ Initialize Google API client
+  // Initialize Google API client
   useEffect(() => {
     const initClient = async () => {
       try {
@@ -52,8 +56,10 @@ const Google: React.FC = () => {
     }
   }, [clientId]);
 
-  // ✅ On success callback
-  const onSuccess = async (res: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+  // On success callback
+  const onSuccess = async (
+    res: GoogleLoginResponse | GoogleLoginResponseOffline
+  ) => {
     // handle only online response (GoogleLoginResponse)
     if ('profileObj' in res) {
       try {
@@ -63,7 +69,8 @@ const Google: React.FC = () => {
         setShowCancel(false);
 
         if (call) {
-          const { email, familyName, givenName, googleId, imageUrl } = res.profileObj;
+          const { email, familyName, givenName, googleId, imageUrl } =
+            res.profileObj;
           const userData: IUserData = {
             firstName: givenName,
             lastName: familyName,
@@ -75,7 +82,9 @@ const Google: React.FC = () => {
 
           console.log(userData);
 
-          const result: IServiceResponse = await services.postGoogleLogin(userData);
+          const result: IServiceResponse = await services.postGoogleLogin(
+            userData
+          );
           const token = result.data;
 
           console.log(result);
@@ -118,10 +127,10 @@ const Google: React.FC = () => {
       >
         <GoogleLogin
           clientId={clientId}
-          buttonText="Sign in with Google"
+          buttonText='Sign in with Google'
           onSuccess={onSuccess}
           onFailure={onFailure}
-          cookiePolicy="single_host_origin"
+          cookiePolicy='single_host_origin'
           isSignedIn={true}
         />
       </Box>

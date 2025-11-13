@@ -32,7 +32,7 @@ export function clearUserStorage() {
 
   // Clear user profile data
   localStorage.removeItem(USER_KEY);
-  // console.log('[Storage] ✅ User data removed from localStorage');
+  // console.log('[Storage] User data removed from localStorage');
   // console.log('[Storage] localStorage AFTER clear:', localStorage.getItem(USER_KEY));
 
   // Note: Tokens are NOT in localStorage anymore

@@ -24,7 +24,7 @@ const root = `https://api.unsplash.com/`;
 const key = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
 const limit = 30;
 
-// ✅ Types
+// Types
 interface UnsplashImage {
   id: string;
   image: string;
@@ -99,8 +99,8 @@ const Unsplash: React.FC<UnsplashProps> = ({
     <Box>
       {showButton && (
         <CustomizedButton
-          variant="text"
-          label="Unsplash"
+          variant='text'
+          label='Unsplash'
           startIcon={<FaUnsplash />}
           disableElevation
           onClick={() => setOpen(true)}
@@ -108,8 +108,10 @@ const Unsplash: React.FC<UnsplashProps> = ({
         />
       )}
 
-      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
-        <DialogTitle sx={{ textAlign: 'center' }}>Search Unsplash Images</DialogTitle>
+      <Dialog open={open} onClose={handleClose} maxWidth='lg' fullWidth>
+        <DialogTitle sx={{ textAlign: 'center' }}>
+          Search Unsplash Images
+        </DialogTitle>
         <DialogContent>
           <Box
             sx={{
@@ -120,37 +122,45 @@ const Unsplash: React.FC<UnsplashProps> = ({
             }}
           >
             <TextField
-              size="small"
+              size='small'
               fullWidth
               value={searchedQuery}
               onChange={(e) => setSearchedQuery(e.target.value)}
-              placeholder="Search for images..."
+              placeholder='Search for images...'
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  '& fieldset': { borderRadius: 0, border: 'none', boxShadow: 2 },
+                  '& fieldset': {
+                    borderRadius: 0,
+                    border: 'none',
+                    boxShadow: 2,
+                  },
                 },
               }}
             />
             <CustomizedButton
-              variant="contained"
-              label="Search"
-              backgroundColor="#000"
+              variant='contained'
+              label='Search'
+              backgroundColor='#000'
               disableElevation
               onClick={handleSearch}
               sx={{ fontSize: { xs: 15, md: 18 }, borderRadius: 0, height: 40 }}
             />
           </Box>
 
-          <Typography variant="caption" sx={{ display: 'block', mb: 2 }}>
+          <Typography variant='caption' sx={{ display: 'block', mb: 2 }}>
             Click to select image
           </Typography>
 
-          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+          <Grid
+            container
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 4, sm: 8, md: 12 }}
+          >
             {searchedResult.map((item) => (
               <Grid item xs={2} sm={4} md={4} key={item.id}>
                 <Box sx={{ position: 'relative' }}>
                   <CardMedia
-                    component="img"
+                    component='img'
                     image={item.image}
                     alt={item.description}
                     onClick={() => handleSelect(item.image)}
@@ -185,8 +195,9 @@ const Unsplash: React.FC<UnsplashProps> = ({
         </DialogContent>
 
         <DialogActions sx={{ justifyContent: 'space-between' }}>
-          <Typography variant="body2" sx={{ textAlign: 'start' }}>
-            {tempSelectedImages.length > 0 && `Selections: ${tempSelectedImages.length}`}
+          <Typography variant='body2' sx={{ textAlign: 'start' }}>
+            {tempSelectedImages.length > 0 &&
+              `Selections: ${tempSelectedImages.length}`}
           </Typography>
           <Box>
             <Button onClick={handleClose}>Cancel</Button>

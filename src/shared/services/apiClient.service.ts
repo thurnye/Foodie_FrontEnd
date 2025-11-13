@@ -52,7 +52,7 @@ class ApiClient {
     this.client = axios.create({
       baseURL: API_BASE_URL,
       timeout: API_TIMEOUT,
-      withCredentials: true, // ✅ allows backend HttpOnly cookie
+      withCredentials: true, // allows backend HttpOnly cookie
       headers: { 'Content-Type': 'application/json' },
     });
 
