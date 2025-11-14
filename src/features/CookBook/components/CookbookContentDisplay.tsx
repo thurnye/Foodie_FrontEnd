@@ -182,6 +182,7 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
                   maxWidth: 794,
                   maxHeight: 1123,
                   m: 'auto',
+                  mb: 4,
                   p: 0,
                 }}
               >

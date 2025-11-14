@@ -30,7 +30,11 @@ export function getFoodLayouts(
   let recipe: IRecipeData | undefined = data?.recipe || recipeData;
 
   // If no recipe data is available, use sample data as fallback
-  if (!recipe && sampleCookbookData.books && sampleCookbookData.books.length > 0) {
+  if (
+    !recipe &&
+    sampleCookbookData.books &&
+    sampleCookbookData.books.length > 0
+  ) {
     console.log('Using sample cookbook data as fallback for food layout');
     const firstBook = sampleCookbookData.books[0];
     if (typeof firstBook !== 'string') {
@@ -40,7 +44,7 @@ export function getFoodLayouts(
 
   // If still no recipe data, return empty array
   if (!recipe) {
-    console.warn('⚠️ No recipe data provided to getFoodLayouts');
+    console.warn(' No recipe data provided to getFoodLayouts');
     return pages;
   }
 
