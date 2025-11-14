@@ -146,7 +146,7 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
         }}
       >
         <Tab label="General" />
-        <Tab label="Design" />
+        <Tab label="Page Design" />
         <Tab label="Author" />
       </Tabs>
 

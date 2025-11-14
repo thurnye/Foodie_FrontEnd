@@ -11,10 +11,75 @@ export enum BookStatus {
  * Section content - stores edited HTML content for each section
  */
 export interface IBookSection {
-  sectionId: string; // 'cover', 'intro', 'toc', 'notes', or recipe ID
-  sectionType: 'cover' | 'intro' | 'toc' | 'notes' | 'recipe';
+  sectionId: string; // 'frontCover', 'backCover', 'intro', 'toc', 'notes', or recipe ID
+  sectionType: 'frontCover' | 'backCover' | 'intro' | 'toc' | 'notes' | 'recipe';
   content: string; // HTML content from editor
   lastEditedAt: Date | string;
+}
+
+/**
+ * Value Label interface for recipe fields
+ */
+export interface IValueLabel {
+  value: string;
+  label: string;
+}
+
+/**
+ * Content Block interface for recipe content
+ */
+export interface IContentBlock {
+  type: 'text' | 'image' | 'video' | 'title';
+  value: any;
+  isUnsplash?: boolean;
+  isMultiple?: boolean;
+}
+
+/**
+ * FAQ interface
+ */
+export interface IFAQ {
+  ques: string;
+  ans: string;
+}
+
+/**
+ * Ingredient interface
+ */
+export interface IIngredient {
+  name: string;
+  type: 'main' | 'dressing';
+}
+
+/**
+ * Method interface
+ */
+export interface IMethod {
+  step: IContentBlock[];
+}
+
+/**
+ * Recipe data embedded in Book
+ */
+export interface IRecipeData {
+  basicInfo: {
+    recipeName: string;
+    duration: IValueLabel;
+    level: IValueLabel;
+    serving: IValueLabel;
+    tags: IValueLabel[];
+    categories: IValueLabel[];
+  };
+  details: {
+    thumbnail: string;
+    about: IContentBlock[];
+    faqs: IFAQ[];
+  };
+  directions: {
+    methods: IMethod[];
+    ingredients: IIngredient[];
+  };
+  author: string;
 }
 
 /**
@@ -23,9 +88,8 @@ export interface IBookSection {
 export interface IBook {
   _id: string;
   cookbook: string; // Cookbook ID
-  author: string;
-  title: string;
-  description?: string;
+  layout?: string;
+  recipe?: IRecipeData;
 
   // Edited sections content
   sections: IBookSection[];
@@ -46,17 +110,16 @@ export interface IBook {
  */
 export interface CreateBookData {
   cookbookId: string;
-  title: string;
-  description?: string;
-  sections: IBookSection[];
+  layout?: string;
+  sections?: IBookSection[];
+  recipeData?: IRecipeData;
 }
 
 /**
  * Update Book Data
  */
 export interface UpdateBookData {
-  title?: string;
-  description?: string;
+  layout?: string;
   sections?: IBookSection[];
   status?: BookStatus;
   isPublic?: boolean;

@@ -389,8 +389,8 @@ const CookbookList: React.FC = () => {
                       )}
                     </Box>
                     <Typography variant='caption' sx={{ color: '#6b7280' }}>
-                      {Array.isArray(cookbook.recipes)
-                        ? cookbook.recipes.length
+                      {Array.isArray(cookbook.books)
+                        ? cookbook.books.length
                         : 0}{' '}
                       recipe(s)
                     </Typography>

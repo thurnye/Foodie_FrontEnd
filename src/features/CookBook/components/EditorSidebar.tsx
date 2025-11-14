@@ -20,11 +20,11 @@ import {
   Restaurant,
   Notes,
 } from '@mui/icons-material';
-import { IRecipe } from '../../Recipe/types/recipe.types';
+import { IBook } from '../types/book.types';
 
 interface EditorSidebarProps {
   cookbookTitle: string;
-  recipes: IRecipe[] | string[];
+  recipes: IBook[] | string[];
   selectedRecipeId: string | null;
   onRecipeSelect: (recipeId: string) => void;
   onAddRecipe: () => void;
@@ -200,16 +200,16 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
 
         <Collapse in={bodyMatterOpen} timeout="auto" unmountOnExit>
           <List component="div" disablePadding>
-            {recipes.map((recipe, index) => {
-              const recipeObj = typeof recipe === 'string' ? null : recipe;
-              const recipeId = typeof recipe === 'string' ? recipe : recipe._id;
+            {recipes.map((book, index) => {
+              const bookObj = typeof book === 'string' ? null : book;
+              const bookId = typeof book === 'string' ? book : book._id;
               const recipeName =
-                recipeObj?.basicInfo?.recipeName || `Recipe ${index + 1}`;
+                bookObj?.recipe?.basicInfo?.recipeName || `Recipe ${index + 1}`;
 
               return (
                 <ListItemButton
-                  key={recipeId}
-                  selected={selectedRecipeId === recipeId}
+                  key={bookId}
+                  selected={selectedRecipeId === bookId}
                   sx={{
                     pl: 4,
                     py: 1,
@@ -219,7 +219,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
                       '&:hover': { backgroundColor: '#1d4ed8' },
                     },
                   }}
-                  onClick={() => onRecipeSelect(recipeId)}
+                  onClick={() => onRecipeSelect(bookId)}
                 >
                   <DragIndicator
                     sx={{ fontSize: 16, mr: 1, color: '#6b7280', cursor: 'grab' }}

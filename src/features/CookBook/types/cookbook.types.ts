@@ -1,4 +1,5 @@
 import { IRecipe } from '../../Recipe/types/recipe.types';
+import { IBook } from './book.types';
 
 export enum CookbookTheme {
   MODERN = 'modern',
@@ -32,7 +33,7 @@ export interface ICookbook {
   author: string;
   title: string;
   description?: string;
-  recipes: string[] | IRecipe[];
+  books: IBook[];
 
   // Customization
   theme: CookbookTheme;
