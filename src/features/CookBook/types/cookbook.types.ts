@@ -10,9 +10,16 @@ export enum CookbookTheme {
 }
 
 export enum CookbookLayout {
-  SINGLE_COLUMN = 'single-column',
-  TWO_COLUMN = 'two-column',
-  MAGAZINE = 'magazine',
+  LayoutOne = 'layout-one',
+  LayoutTwo = 'layout-two',
+  LayoutThree = 'layout-three',
+  LayoutFour = 'layout-four',
+  LayoutFive = 'layout-five',
+  LayoutSix = 'layout-six',
+  LayoutSeven = 'layout-seven',
+  LayoutEight = 'layout-eight',
+  LayoutNine = 'layout-nine',
+  LayoutTen = 'layout-ten',
 }
 
 export enum CookbookStatus {

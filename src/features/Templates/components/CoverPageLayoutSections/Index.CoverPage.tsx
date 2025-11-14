@@ -14,33 +14,33 @@ export function getCoverPageLayouts(): React.ReactNode[] {
   const pages: React.ReactNode[] = [];
 
   // layout number from recipe data (default to 1)
-  const layoutNumber:number = 7;
+  const layoutNumber: number = 1;
 
   switch (layoutNumber) {
     case 1:
-      pages.push(<CoverPageLayoutOne key="cover-page-1" />);
+      pages.push(<CoverPageLayoutOne key='cover-page-1' />);
       break;
     case 2:
-      pages.push(<CoverPageLayoutTwo key="cover-page-2" />);
+      pages.push(<CoverPageLayoutTwo key='cover-page-2' />);
       break;
     case 3:
-      pages.push(<CoverPageLayoutThree key="cover-page-3" />);
+      pages.push(<CoverPageLayoutThree key='cover-page-3' />);
       break;
     case 4:
-      pages.push(<CoverPageLayoutFour key="cover-page-4" />);
+      pages.push(<CoverPageLayoutFour key='cover-page-4' />);
       break;
     case 5:
-      pages.push(<CoverPageLayoutFive key="cover-page-5" />);
+      pages.push(<CoverPageLayoutFive key='cover-page-5' />);
       break;
     case 6:
-      pages.push(<CoverPageLayoutSix key="cover-page-6" />);
+      pages.push(<CoverPageLayoutSix key='cover-page-6' />);
       break;
     case 7:
-      pages.push(<CoverPageLayoutSeven key="cover-page-7" />);
+      pages.push(<CoverPageLayoutSeven key='cover-page-7' />);
       break;
     default:
-      console.warn(`⚠️ Invalid layout number: ${layoutNumber}`);
-      pages.push(<CoverPageLayoutOne key="cover-page-1"/>);
+      console.warn(` Invalid layout number: ${layoutNumber}`);
+      pages.push(<CoverPageLayoutOne key='cover-page-1' />);
       break;
   }
 

@@ -3,10 +3,10 @@ import { Box, Typography, Divider, Grid } from '@mui/material';
 import { GiCampCookingPot, GiLever } from 'react-icons/gi';
 import { HandPlatter } from 'lucide-react';
 import parser from 'html-react-parser';
-import { IRecipe } from '../../../Recipe/types/recipe.types';
+import { IRecipeData } from '../../../CookBook/types/book.types';
 
 interface IFoodLayoutThree {
-  data: IRecipe;
+  data: IRecipeData;
 }
 
 export default function FoodLayoutThree({ data }: IFoodLayoutThree) {

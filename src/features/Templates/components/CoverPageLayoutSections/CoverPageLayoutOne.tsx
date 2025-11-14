@@ -42,7 +42,8 @@ export default function CoverPageLayoutOne() {
           <Typography
             sx={{
               fontFamily: "'Arial', sans-serif",
-              fontSize: '2rem',
+              fontSize: '1.5rem',
+              fontStyle: 'italic',
             }}
           >
             Healthy

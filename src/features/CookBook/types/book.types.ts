@@ -89,7 +89,7 @@ export interface IBook {
   _id: string;
   cookbook: string; // Cookbook ID
   layout?: string;
-  recipe?: IRecipeData;
+  recipe: IRecipeData;
 
   // Edited sections content
   sections: IBookSection[];

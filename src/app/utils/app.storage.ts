@@ -26,7 +26,7 @@ export function getUser() {
 }
 
 export function clearUserStorage() {
-  // console.log('[Storage] ⚠️⚠️⚠️ clearUserStorage called!');
+  // console.log('[Storage]  clearUserStorage called!');
   // console.log('[Storage] Current localStorage BEFORE clear:', localStorage.getItem(USER_KEY));
   console.trace('[Storage] Stack trace:'); // Show where this was called from
 

@@ -159,7 +159,7 @@ fs.writeFileSync(outputPath, JSON.stringify(updatedData, null, 2), 'utf-8');
 // --- Logs ---
 console.log(`\nFile created successfully: ${outputPath}`);
 console.log(`Updated recipes: ${updatedNames.length}`);
-console.log(`⚠️  Unmatched recipes: ${unmatched.length}`);
+console.log(`  Unmatched recipes: ${unmatched.length}`);
 if (unmatched.length > 0) {
-  console.log('\n⚠️  Unmatched Recipe Names:\n', unmatched.join('\n'));
+  console.log('\n  Unmatched Recipe Names:\n', unmatched.join('\n'));
 }

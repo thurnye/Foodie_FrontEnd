@@ -1,8 +1,6 @@
 import React from 'react';
-import { IRecipe } from '../../../Recipe/types/recipe.types';
 import { Box, Typography, Card, CardMedia } from '@mui/material';
 
-const recipeData = require('../../../../shared/data/shared.updatedRecipeFoodieData.json');
 
 // split records into chunks for table of contents
 function splitRecipes(recipeData: string[]) {
@@ -23,12 +21,14 @@ function splitRecipes(recipeData: string[]) {
   return result;
 }
 
+
+
 // Return pages as an array instead of JSX directly
-export default function TableOfContentsLayoutOne(): React.ReactNode[] {
-  const recipeNames = recipeData.map((el: IRecipe) => el.basicInfo.recipeName);
+export default function TableOfContentsLayoutOne(recipeNames: string[]): React.ReactNode[] {
   const tableOfContentsData = splitRecipes(recipeNames);
 
   const pages: React.ReactNode[] = [];
+  console.log('recipeNames', recipeNames);
 
   Object.entries(tableOfContentsData).forEach(([partKey, partItems], partIndex) => {
     const startNumber = partIndex === 0 ? 1 : 9 + (partIndex - 1) * 10 + 1;
@@ -37,12 +37,13 @@ export default function TableOfContentsLayoutOne(): React.ReactNode[] {
       <Box
         key={`tableOfContent-${partIndex + 1}`}
         sx={{
-          height: '100%',
+          width: 794, height: 1123 ,
           position: 'relative',
         }}
       >
         <Box
           sx={{
+            width: '100%',
             display: 'flex',
             height: 'inherit',
           }}
@@ -50,11 +51,11 @@ export default function TableOfContentsLayoutOne(): React.ReactNode[] {
           <Box
             sx={{
               flexGrow: 1,
-              mt: -5,
-              mb: 4,
+              mt: 0,
+              mb: 0,
               py: 14,
               px: 8,
-              height: '115%',
+              height: 'inherit',
               backgroundColor: '#f9f9f9',
             }}
           >
@@ -114,7 +115,7 @@ export default function TableOfContentsLayoutOne(): React.ReactNode[] {
           </Box>
 
           {/* Image column */}
-          <Box sx={{ width: 300, py: 4 }}>
+          <Box sx={{ width: 300, display: 'flex', flexDirection: 'column', justifyContent:'space-evenly', alignItems:'center' }}>
             {Array.from(Array(3)).map((_, index) => (
               <Box key={`toc-img-${index}`}>
                 <Card sx={{ mb: 2, maxWidth: '100%', boxShadow: 'none' }}>

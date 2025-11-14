@@ -55,7 +55,6 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
     title: '',
     description: '',
     theme: CookbookTheme.MODERN,
-    layout: CookbookLayout.SINGLE_COLUMN,
     coverImage: '',
     authorBio: '',
     authorImage: '',
@@ -73,7 +72,6 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
         title: cookbook.title || '',
         description: cookbook.description || '',
         theme: cookbook.theme || CookbookTheme.MODERN,
-        layout: cookbook.layout || CookbookLayout.SINGLE_COLUMN,
         coverImage: cookbook.coverImage || '',
         authorBio: cookbook.authorBio || '',
         authorImage: cookbook.authorImage || '',
@@ -239,25 +237,6 @@ const CookbookSettings: React.FC<CookbookSettingsProps> = ({
               {Object.values(CookbookTheme).map((theme) => (
                 <MenuItem key={theme} value={theme}>
                   {theme.charAt(0).toUpperCase() + theme.slice(1)}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <FormControl fullWidth sx={{ mb: 2 }}>
-            <InputLabel sx={{ color: '#9ca3af' }}>Layout</InputLabel>
-            <Select
-              value={settings.layout}
-              onChange={(e) => handleChange('layout', e.target.value)}
-              sx={{
-                backgroundColor: '#252525',
-                color: '#e0e0e0',
-                '& fieldset': { borderColor: '#3a3a3a' },
-              }}
-            >
-              {Object.values(CookbookLayout).map((layout) => (
-                <MenuItem key={layout} value={layout}>
-                  {layout.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}
                 </MenuItem>
               ))}
             </Select>

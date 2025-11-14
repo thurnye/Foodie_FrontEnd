@@ -57,7 +57,7 @@ function capitalize(str) {
 const args = process.argv.slice(2);
 
 if (args.length === 0) {
-  console.error('⚠️ Please provide one or more feature names. Example:');
+  console.error(' Please provide one or more feature names. Example:');
   console.error('   npm run create:feature Home Recipes Profile');
   process.exit(1);
 }
