@@ -568,7 +568,7 @@ const getRecipeSections = (recipe: IRecipe) => {
   });
 
   // --- Welcome Layout Pages ---
-  const introLayouts = getIntroPageLayouts();
+  const introLayouts = getIntroPageLayouts(null);
   introLayouts.forEach((layout, index) => {
     sections.push(<React.Fragment key={`welcome`}>{layout}</React.Fragment>);
   });

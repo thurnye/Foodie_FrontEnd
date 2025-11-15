@@ -5,7 +5,14 @@
     "accent": "#f59e0b"
   },
   "_id": "6904ff7c2a4107ffd85e8e89",
-  "author": "612296fc86231100a0631b22",
+  "author": {
+    "_id": "612296fc86231100a0631b22",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@example.com",
+    "avatar": "https://ui-avatars.com/api/?name=John+Doe&background=3b82f6&color=fff",
+    "aboutMe": "Passionate chef and cookbook author with over 15 years of experience in creating delicious recipes."
+  },
   "title": "Dessert Menus",
   "description": "This is for deserts",
   "theme": "rustic",

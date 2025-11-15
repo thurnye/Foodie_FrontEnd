@@ -35,9 +35,18 @@ export interface CustomColors {
   accent?: string;
 }
 
+export interface ICookbookAuthor {
+  _id?: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatar: string;
+  bio: string;
+}
+
 export interface ICookbook {
   _id: string;
-  author: string;
+  author: ICookbookAuthor;
   title: string;
   description?: string;
   books: IBook[];
@@ -150,4 +159,17 @@ export interface CookbookState {
     totalPages: number;
     totalCookbooks: number;
   } | null;
+}
+
+// Type guard to check if author is populated
+export function isAuthorPopulated(author: string | ICookbookAuthor): author is ICookbookAuthor {
+  return typeof author === 'object' && author !== null && 'firstName' in author;
+}
+
+// Helper to get author name
+export function getAuthorName(author: string | ICookbookAuthor): string {
+  if (isAuthorPopulated(author)) {
+    return `${author.firstName} ${author.lastName}`.trim();
+  }
+  return 'Unknown Author';
 }

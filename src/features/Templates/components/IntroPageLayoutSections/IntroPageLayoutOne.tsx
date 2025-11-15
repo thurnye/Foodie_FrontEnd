@@ -5,19 +5,20 @@ import {
   Card,
   CardMedia,
 } from '@mui/material';
-import { IRecipe } from '../../../Recipe/types/recipe.types';
+import { ICookbookAuthor } from '../../../CookBook/types/cookbook.types';
 
 interface IIntroPageLayoutOne {
-  recipe: IRecipe;
+  author: ICookbookAuthor;
 }
 
-export default function IntroPageLayoutOne({ recipe }: IIntroPageLayoutOne) {
+export default function IntroPageLayoutOne({ author }: IIntroPageLayoutOne) {
+  console.log('author in IntroPageLayoutOne', author);
   return (
     <Box
       key='welcome'
       sx={{
         // border: '2px dotted green',
-        height: '100%',
+         width: 794, height: 1123 ,
         position: 'relative',
       }}
     >
@@ -60,8 +61,8 @@ export default function IntroPageLayoutOne({ recipe }: IIntroPageLayoutOne) {
               <Card sx={{ mb: 2, maxWidth: '100%' }}>
                 <CardMedia
                   component='img'
-                  image={recipe.details.thumbnail}
-                  alt={recipe.basicInfo.recipeName}
+                  image={author.avatar}
+                  alt={author.firstName}
                   sx={{ maxHeight: 300, objectFit: 'cover' }}
                 />
               </Card>
@@ -69,18 +70,14 @@ export default function IntroPageLayoutOne({ recipe }: IIntroPageLayoutOne) {
             <Box>
               <Typography>Contact Me.</Typography>
               <Typography>Phone: +123-4566-7890</Typography>
-              <Typography>Mail. use@example.com</Typography>
-              <Typography>Web: www.example.com</Typography>
+              <Typography>Mail. {author.email}</Typography>
+              <Typography>Web: <a href='www.author.com' target='_blank'>www.author.com</a></Typography>
             </Box>
           </Box>
           <Box sx={{ px: 8, py: 4 }}>
             <Typography> WELCOME</Typography>
             <Typography>
-              {' '}
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id
-              beatae quas nisi ad? Deleniti veritatis delectus beatae nisi
-              laudantium pariatur odio? Quas laborum et consectetur recusandae
-              dolorem maxime commodi voluptatem?
+              {author.bio}
             </Typography>
           </Box>
         </Box>

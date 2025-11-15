@@ -12,6 +12,7 @@ import { ICookbook, CookbookLayout } from '../types/cookbook.types';
 import { apiClient } from '../../../shared/services/apiClient.service';
 import { getFoodLayouts } from '../../Templates/components/FoodLayoutSections/FoodLayout';
 import { getTableOfContentsLayouts } from '../../Templates/components/TableOfContentsLayoutSections/Index.TableContent';
+import { getIntroPageLayouts } from '../../Templates/components/IntroPageLayoutSections/Index.Intro';
 
 interface CookbookContentDisplayProps {
   selectedSection: string | null;
@@ -47,8 +48,8 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
 
   // Update local layout when book changes
   React.useEffect(() => {
-    if (currentBook && typeof currentBook !== 'string') {
-      setBookLayout(CookbookLayout.LayoutOne);
+    if (currentBook) {
+      setBookLayout(currentBook.layout as CookbookLayout);
     }
   }, [currentBook]);
 
@@ -97,12 +98,14 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     return null;
   }, [currentBook, bookLayout]);
 
-  const foodLayouts = getFoodLayouts(bookWithUpdatedLayout);
-  console.log('foodLayouts', foodLayouts.length);
+  // --- Welcome Layout Pages ---
+  const introLayouts = getIntroPageLayouts(currentCookbook);
 
-  // Get TOC layouts when viewing the table of contents section
+  // Table of Contents layouts
   const tableOfContentsLayouts = getTableOfContentsLayouts(currentCookbook);
-  console.log('tableOfContentsLayouts', tableOfContentsLayouts.length);
+
+  // Food layouts
+  const foodLayouts = getFoodLayouts(bookWithUpdatedLayout);
 
   return (
     <Box
@@ -169,6 +172,29 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
           p: 4,
         }}
       >
+        {/* Introduction */}
+        {selectedSection === 'intro' && (
+          <Box>
+            {introLayouts.map((layout, index) => (
+              <Paper
+                key={`welcome-${index + 1}`}
+                sx={{
+                  backgroundColor: '#fff',
+                  width: '100%',
+                  minWidth: 793,
+                  maxWidth: 794,
+                  maxHeight: 1123,
+                  m: 'auto',
+                  mb: 4,
+                  p: 0,
+                }}
+              >
+                {layout}
+              </Paper>
+            ))}
+          </Box>
+        )}
+
         {/* Table of Contents */}
         {selectedSection === 'toc' && (
           <Box>
@@ -194,9 +220,11 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
 
         {/* Recipe Layouts */}
         {isRecipeSection && (
-          <Box >
+          <Box>
             {foodLayouts.map((layout, index) => (
-              <Paper key={`food-layout-${index + 1}`} sx={{
+              <Paper
+                key={`food-layout-${index + 1}`}
+                sx={{
                   backgroundColor: '#fff',
                   width: '100%',
                   minWidth: 1586,
@@ -204,7 +232,8 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
                   maxHeight: 1123,
                   m: 'auto',
                   p: 0,
-                }}>
+                }}
+              >
                 {layout}
               </Paper>
             ))}
