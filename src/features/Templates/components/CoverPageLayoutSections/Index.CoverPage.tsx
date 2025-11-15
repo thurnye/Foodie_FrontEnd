@@ -10,32 +10,29 @@ import { CoverPageLayoutSix } from './CoverPageLayoutSix';
 import { CoverPageLayoutSeven } from './CoverPageLayoutSeven';
 
 // Function to return selected layout(s) based on layout number
-export function getCoverPageLayouts(): React.ReactNode[] {
+export function getCoverPageLayouts(layoutNumber: string = 'cover-layout-one'): {coverLayoutsCount:number, coverLayouts: React.ReactNode[]} {
   const pages: React.ReactNode[] = [];
 
-  // layout number from recipe data (default to 1)
-  const layoutNumber: number = 1;
-
   switch (layoutNumber) {
-    case 1:
+    case 'cover-layout-one':
       pages.push(<CoverPageLayoutOne key='cover-page-1' />);
       break;
-    case 2:
+    case 'cover-layout-two':
       pages.push(<CoverPageLayoutTwo key='cover-page-2' />);
       break;
-    case 3:
+    case 'cover-layout-three':
       pages.push(<CoverPageLayoutThree key='cover-page-3' />);
       break;
-    case 4:
+    case 'cover-layout-four':
       pages.push(<CoverPageLayoutFour key='cover-page-4' />);
       break;
-    case 5:
+    case 'cover-layout-five':
       pages.push(<CoverPageLayoutFive key='cover-page-5' />);
       break;
-    case 6:
+    case 'cover-layout-six':
       pages.push(<CoverPageLayoutSix key='cover-page-6' />);
       break;
-    case 7:
+    case 'cover-layout-seven':
       pages.push(<CoverPageLayoutSeven key='cover-page-7' />);
       break;
     default:
@@ -44,5 +41,5 @@ export function getCoverPageLayouts(): React.ReactNode[] {
       break;
   }
 
-  return pages;
+  return {coverLayoutsCount: 7, coverLayouts:pages};
 }

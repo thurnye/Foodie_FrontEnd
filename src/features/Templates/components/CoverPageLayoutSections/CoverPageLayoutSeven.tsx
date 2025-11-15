@@ -7,8 +7,8 @@ export const CoverPageLayoutSeven: React.FC = () => {
     <Box
       key='coverPage'
       sx={{
-        // border: '2px dotted green',
-        height: '100%',
+        width: 794,
+        height: 1123,
         position: 'relative',
       }}
     >
@@ -17,7 +17,7 @@ export const CoverPageLayoutSeven: React.FC = () => {
           height: 'inherit',
           position: 'relative',
           bgcolor: 'blue',
-           backgroundImage:
+          backgroundImage:
             "url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=900&q=80')",
           backgroundSize: 'cover',
           backgroundPosition: 'center',

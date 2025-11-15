@@ -562,20 +562,20 @@ const getRecipeSections = (recipe: IRecipe) => {
   const sections: React.ReactNode[] = [];
 
   // --- Cover Layout Pages ---
-  const coverLayouts = getCoverPageLayouts();
+  const {coverLayouts} = getCoverPageLayouts();
   coverLayouts.forEach((layout, index) => {
     sections.push(<React.Fragment key={`coverPage`}>{layout}</React.Fragment>);
   });
 
   // --- Welcome Layout Pages ---
-  const introLayouts = getIntroPageLayouts(null);
+  const {introLayouts} = getIntroPageLayouts(null);
   introLayouts.forEach((layout, index) => {
     sections.push(<React.Fragment key={`welcome`}>{layout}</React.Fragment>);
   });
 
   // Table of contents pages
-  const tocPages = getTableOfContentsLayouts(null);
-  tocPages.forEach((page: any, index: number) => {
+  const {tableOfContentsLayouts} = getTableOfContentsLayouts(null);
+  tableOfContentsLayouts.forEach((page: any, index: number) => {
     sections.push(
       <React.Fragment key={`tableOfContent`}>{page}</React.Fragment>
     );

@@ -1,13 +1,13 @@
 import React from 'react';
-import { Box, Typography} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 export default function CoverPageLayoutOne() {
   return (
     <Box
       key='coverPage'
       sx={{
-        // border: '2px dotted green',
-        height: '100%',
+        width: 794,
+        height: 1123,
         position: 'relative',
       }}
     >

@@ -7,8 +7,9 @@ const sampleBooksData: ICookbook = require('../../../../shared/data/shared.updat
 
 // Dynamically return selected TOC layout(s)
 export function getTableOfContentsLayouts(
-  books: ICookbook | null
-): React.ReactNode[] {
+  books: ICookbook | null,
+  layoutNumber: string = 'toc-layout-one'
+): {tocLayoutsCount: number, tableOfContentsLayouts: React.ReactNode[]} {
   const pages: React.ReactNode[] = [];
 
   // Use sample data as fallback if no books provided
@@ -25,11 +26,8 @@ export function getTableOfContentsLayouts(
     })
     .filter((name): name is string => name !== null);
 
-  // layout number from recipe data (default to 1)
-  const layoutNumber: number = 1;
-
   switch (layoutNumber) {
-    case 1:
+    case 'toc-layout-one':
       // Call the layout and spread its returned pages (Array<ReactNode>)
       pages.push(...TableOfContentsLayoutOne(recipeNames));
       break;
@@ -40,5 +38,5 @@ export function getTableOfContentsLayouts(
       break;
   }
 
-  return pages;
+  return {tocLayoutsCount: 1, tableOfContentsLayouts: pages};
 }

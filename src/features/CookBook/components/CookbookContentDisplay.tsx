@@ -13,6 +13,7 @@ import { apiClient } from '../../../shared/services/apiClient.service';
 import { getFoodLayouts } from '../../Templates/components/FoodLayoutSections/FoodLayout';
 import { getTableOfContentsLayouts } from '../../Templates/components/TableOfContentsLayoutSections/Index.TableContent';
 import { getIntroPageLayouts } from '../../Templates/components/IntroPageLayoutSections/Index.Intro';
+import { getCoverPageLayouts } from '../../Templates/components/CoverPageLayoutSections/Index.CoverPage';
 
 interface CookbookContentDisplayProps {
   selectedSection: string | null;
@@ -26,6 +27,9 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   const [bookLayout, setBookLayout] = useState<CookbookLayout>(
     CookbookLayout.LayoutOne
   );
+  const [coverLayout, setCoverLayout] = useState<string>('cover-layout-one');
+  const [introLayout, setIntroLayout] = useState<string>('intro-layout-one');
+  const [tocLayout, setTocLayout] = useState<string>('toc-layout-one');
   const [isSavingLayout, setIsSavingLayout] = useState(false);
 
   // Get the current book if a recipe is selected
@@ -98,11 +102,34 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     return null;
   }, [currentBook, bookLayout]);
 
+  // Helper to convert number to word (1 -> one, 2 -> two, etc.)
+  const numberToWord = (num: number): string => {
+    const words = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+    return words[num - 1] || num.toString();
+  };
+
+  // Create dynamic layout options based on section and count
+  const createLayoutOptions = (sectionType: string, count: number) => {
+    const options = [];
+    for (let i = 1; i <= count; i++) {
+      const layoutValue = `${sectionType}-layout-${numberToWord(i)}`;
+      options.push(
+        <MenuItem key={layoutValue} value={layoutValue}>
+          Layout {i}
+        </MenuItem>
+      );
+    }
+    return options;
+  };
+
+  // --- Cover Layout Pages ---
+  const {coverLayoutsCount, coverLayouts} = getCoverPageLayouts(coverLayout);
+
   // --- Welcome Layout Pages ---
-  const introLayouts = getIntroPageLayouts(currentCookbook);
+  const {introLayoutsCount, introLayouts} = getIntroPageLayouts(currentCookbook, introLayout);
 
   // Table of Contents layouts
-  const tableOfContentsLayouts = getTableOfContentsLayouts(currentCookbook);
+  const {tocLayoutsCount, tableOfContentsLayouts} = getTableOfContentsLayouts(currentCookbook, tocLayout);
 
   // Food layouts
   const foodLayouts = getFoodLayouts(bookWithUpdatedLayout);
@@ -116,7 +143,106 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
         flexDirection: 'column',
       }}
     >
-      {/* Layout Selector Toolbar (only show for recipe pages) */}
+      {/* Layout Selector Toolbar for Cover Page */}
+      {selectedSection === 'cover' && (
+        <Box
+          sx={{
+            p: 2,
+            borderBottom: '1px solid #2d2d2d',
+            backgroundColor: '#252525',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+            Cover Layout:
+          </Typography>
+          <FormControl size='small' sx={{ minWidth: 200 }}>
+            <Select
+              value={coverLayout}
+              onChange={(e) => setCoverLayout(e.target.value)}
+              sx={{
+                backgroundColor: '#1e1e1e',
+                color: '#e0e0e0',
+                '& fieldset': { borderColor: '#3a3a3a' },
+                '& .MuiSelect-select': { py: 1 },
+              }}
+            >
+              {createLayoutOptions('cover', coverLayoutsCount)}
+            </Select>
+          </FormControl>
+        </Box>
+      )}
+
+      {/* Layout Selector Toolbar for Intro Page */}
+      {selectedSection === 'intro' && (
+        <Box
+          sx={{
+            p: 2,
+            borderBottom: '1px solid #2d2d2d',
+            backgroundColor: '#252525',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+            Intro Layout:
+          </Typography>
+          <FormControl size='small' sx={{ minWidth: 200 }}>
+            <Select
+              value={introLayout}
+              onChange={(e) => setIntroLayout(e.target.value)}
+              sx={{
+                backgroundColor: '#1e1e1e',
+                color: '#e0e0e0',
+                '& fieldset': { borderColor: '#3a3a3a' },
+                '& .MuiSelect-select': { py: 1 },
+              }}
+            >
+              {createLayoutOptions('intro', introLayoutsCount)}
+            </Select>
+          </FormControl>
+        </Box>
+      )}
+
+      {/* Layout Selector Toolbar for TOC */}
+      {selectedSection === 'toc' && (
+        <Box
+          sx={{
+            p: 2,
+            borderBottom: '1px solid #2d2d2d',
+            backgroundColor: '#252525',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+            TOC Layout:
+          </Typography>
+          <FormControl size='small' sx={{ minWidth: 200 }}>
+            <Select
+              value={tocLayout}
+              onChange={(e) => setTocLayout(e.target.value)}
+              sx={{
+                backgroundColor: '#1e1e1e',
+                color: '#e0e0e0',
+                '& fieldset': { borderColor: '#3a3a3a' },
+                '& .MuiSelect-select': { py: 1 },
+              }}
+            >
+              {createLayoutOptions('toc', tocLayoutsCount)}
+            </Select>
+          </FormControl>
+        </Box>
+      )}
+
+      {/* Layout Selector Toolbar for Recipe Pages */}
       {isRecipeSection && (
         <Box
           sx={{
@@ -172,6 +298,29 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
           p: 4,
         }}
       >
+        {/* CoverPage */}
+        {selectedSection === 'cover' && (
+          <Box>
+            {coverLayouts.map((layout, index) => (
+              <Paper
+                key={`welcome-${index + 1}`}
+                sx={{
+                  backgroundColor: '#fff',
+                  width: '100%',
+                  minWidth: 793,
+                  maxWidth: 794,
+                  maxHeight: 1123,
+                  m: 'auto',
+                  mb: 4,
+                  p: 0,
+                }}
+              >
+                {layout}
+              </Paper>
+            ))}
+          </Box>
+        )}
+
         {/* Introduction */}
         {selectedSection === 'intro' && (
           <Box>
@@ -240,27 +389,7 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
           </Box>
         )}
 
-        {/* Default Content for non-TOC and non-Recipe sections */}
-        {!isRecipeSection && selectedSection !== 'toc' && (
-          <Box sx={{ textAlign: 'center', mt: 8 }}>
-            <Typography variant='h4' sx={{ color: '#e0e0e0', mb: 2 }}>
-              {selectedSection === 'cover' && 'Cover Page'}
-              {selectedSection === 'intro' && 'Introduction'}
-              {selectedSection === 'notes' && 'Notes'}
-              {!selectedSection && 'Select a section'}
-            </Typography>
-            <Typography variant='body1' sx={{ color: '#9ca3af' }}>
-              {selectedSection === 'cover' &&
-                'Cover page content will appear here'}
-              {selectedSection === 'intro' &&
-                'Introduction content will appear here'}
-              {selectedSection === 'notes' &&
-                'Additional notes will appear here'}
-              {!selectedSection &&
-                'Choose a section from the sidebar to view its content'}
-            </Typography>
-          </Box>
-        )}
+        
       </Box>
     </Box>
   );
