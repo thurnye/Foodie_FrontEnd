@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   List,
@@ -9,6 +9,8 @@ import {
   IconButton,
   Collapse,
   Divider,
+  MenuItem,
+  Menu,
 } from '@mui/material';
 import {
   MenuBook,
@@ -19,6 +21,7 @@ import {
   Edit,
   Restaurant,
   Notes,
+  MoreVert,
 } from '@mui/icons-material';
 import { IBook } from '../types/book.types';
 
@@ -29,6 +32,8 @@ interface EditorSidebarProps {
   onRecipeSelect: (recipeId: string) => void;
   onAddRecipe: () => void;
   onEditInfo: () => void;
+  onAddExtraPage?: (pageType: 'blank' | 'template', section: 'front' | 'back', templateType?: string) => void;
+  extraPages?: Array<{ id: string; title: string; type: 'blank' | 'template'; templateType?: string; section?: 'front' | 'back' }>;
   isGenerating?: boolean;
 }
 
@@ -39,11 +44,48 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
   onRecipeSelect,
   onAddRecipe,
   onEditInfo,
+  onAddExtraPage,
+  extraPages = [],
   isGenerating = false,
 }) => {
   const [frontMatterOpen, setFrontMatterOpen] = React.useState(true);
   const [bodyMatterOpen, setBodyMatterOpen] = React.useState(true);
   const [backMatterOpen, setBackMatterOpen] = React.useState(true);
+  const [frontMenuAnchor, setFrontMenuAnchor] = useState<null | HTMLElement>(null);
+  const [backMenuAnchor, setBackMenuAnchor] = useState<null | HTMLElement>(null);
+  const [templateMenuAnchor, setTemplateMenuAnchor] = useState<null | HTMLElement>(null);
+  const [currentSection, setCurrentSection] = useState<'front' | 'back'>('front');
+
+  const handleAddBlankPage = (section: 'front' | 'back') => {
+    if (onAddExtraPage) {
+      onAddExtraPage('blank', section);
+    }
+    if (section === 'front') {
+      setFrontMenuAnchor(null);
+    } else {
+      setBackMenuAnchor(null);
+    }
+  };
+
+  const handleOpenTemplateMenu = (section: 'front' | 'back', event: React.MouseEvent<HTMLElement>) => {
+    setCurrentSection(section);
+    setTemplateMenuAnchor(event.currentTarget);
+    if (section === 'front') {
+      setFrontMenuAnchor(null);
+    } else {
+      setBackMenuAnchor(null);
+    }
+  };
+
+  const handleSelectTemplate = (templateType: string) => {
+    if (onAddExtraPage) {
+      onAddExtraPage('template', currentSection, templateType);
+    }
+    setTemplateMenuAnchor(null);
+  };
+
+  const frontExtraPages = extraPages.filter(page => page.section === 'front' || !page.section);
+  const backExtraPages = extraPages.filter(page => page.section === 'back');
 
   return (
     <Box
@@ -70,20 +112,25 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
       >
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <MenuBook sx={{ color: '#3b82f6' }} />
-          <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
+          <Typography
+            variant='h6'
+            sx={{ fontWeight: 600, fontSize: '0.95rem' }}
+          >
             {cookbookTitle || 'My Cookbook'}
           </Typography>
         </Box>
         <IconButton
-          size="small"
+          size='small'
           onClick={onAddRecipe}
           disabled={isGenerating}
           sx={{
             color: isGenerating ? '#6b7280' : '#3b82f6',
             '&:hover': { backgroundColor: '#2d2d2d' },
-            '&.Mui-disabled': { color: '#6b7280' }
+            '&.Mui-disabled': { color: '#6b7280' },
           }}
-          title={isGenerating ? 'Cannot add recipes while generating' : 'Add recipes'}
+          title={
+            isGenerating ? 'Cannot add recipes while generating' : 'Add recipes'
+          }
         >
           <Add />
         </IconButton>
@@ -101,7 +148,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
             }}
           >
             <ListItemText
-              primary="Front matter"
+              primary='Front matter'
               primaryTypographyProps={{
                 fontSize: '0.85rem',
                 fontWeight: 500,
@@ -110,7 +157,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
             />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <IconButton
-                size="small"
+                size='small'
                 onClick={(e) => {
                   e.stopPropagation();
                   onEditInfo();
@@ -128,47 +175,124 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
           </ListItemButton>
         </ListItem>
 
-        <Collapse in={frontMatterOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
+        <Collapse in={frontMatterOpen} timeout='auto' unmountOnExit>
+         <Box
+            sx={{
+              pl: 4,
+              py: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography
+                variant='h6'
+                sx={{ fontWeight: 600, fontSize: '0.95rem' }}
+              >
+                Add Additional Front Page
+              </Typography>
+            </Box>
+            <IconButton
+              size='small'
+              onClick={(event: React.MouseEvent<HTMLElement>) =>
+                setFrontMenuAnchor(event.currentTarget)
+              }
+              disabled={isGenerating}
+              sx={{
+                color: isGenerating ? '#6b7280' : '#3b82f6',
+                '&:hover': { backgroundColor: '#2d2d2d' },
+                '&.Mui-disabled': { color: '#6b7280' },
+              }}
+              title={
+                isGenerating
+                  ? 'Cannot add additional page while generating'
+                  : 'Add Additional Page'
+              }
+            >
+              <MoreVert />
+            </IconButton>
+          </Box>
+
+          <List component='div' disablePadding>
+            {/* Default front matter pages */}
             <ListItemButton
+              selected={selectedRecipeId === 'cover'}
               sx={{
                 pl: 4,
                 py: 1,
                 '&:hover': { backgroundColor: '#2d2d2d' },
+                '&.Mui-selected': {
+                  backgroundColor: '#2d2d2d',
+                  '&:hover': { backgroundColor: '#2d2d2d' },
+                },
               }}
               onClick={() => onRecipeSelect('cover')}
             >
               <ListItemText
-                primary="Cover & Title"
+                primary='Cover & Title'
                 primaryTypographyProps={{ fontSize: '0.875rem' }}
               />
             </ListItemButton>
             <ListItemButton
+              selected={selectedRecipeId === 'intro'}
               sx={{
                 pl: 4,
                 py: 1,
                 '&:hover': { backgroundColor: '#2d2d2d' },
+                '&.Mui-selected': {
+                  backgroundColor: '#2d2d2d',
+                  '&:hover': { backgroundColor: '#2d2d2d' },
+                },
               }}
               onClick={() => onRecipeSelect('intro')}
             >
               <ListItemText
-                primary="Introduction"
+                primary='Introduction'
                 primaryTypographyProps={{ fontSize: '0.875rem' }}
               />
             </ListItemButton>
             <ListItemButton
+              selected={selectedRecipeId === 'toc'}
               sx={{
                 pl: 4,
                 py: 1,
                 '&:hover': { backgroundColor: '#2d2d2d' },
+                '&.Mui-selected': {
+                  backgroundColor: '#2d2d2d',
+                  '&:hover': { backgroundColor: '#2d2d2d' },
+                },
               }}
               onClick={() => onRecipeSelect('toc')}
             >
               <ListItemText
-                primary="Table of contents"
+                primary='Table of contents'
                 primaryTypographyProps={{ fontSize: '0.875rem' }}
               />
             </ListItemButton>
+
+            {/* Extra front matter pages */}
+            {frontExtraPages.map((page) => (
+              <ListItemButton
+                key={page.id}
+                selected={selectedRecipeId === page.id}
+                sx={{
+                  pl: 4,
+                  py: 1,
+                  '&:hover': { backgroundColor: '#2d2d2d' },
+                  '&.Mui-selected': {
+                    backgroundColor: '#2d2d2d',
+                    '&:hover': { backgroundColor: '#2d2d2d' },
+                  },
+                }}
+                onClick={() => onRecipeSelect(page.id)}
+              >
+                <ListItemText
+                  primary={page.title}
+                  primaryTypographyProps={{ fontSize: '0.875rem' }}
+                />
+              </ListItemButton>
+            ))}
           </List>
         </Collapse>
 
@@ -184,7 +308,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
             }}
           >
             <ListItemText
-              primary="Body matter"
+              primary='Body matter'
               primaryTypographyProps={{
                 fontSize: '0.85rem',
                 fontWeight: 500,
@@ -199,8 +323,8 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
           </ListItemButton>
         </ListItem>
 
-        <Collapse in={bodyMatterOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
+        <Collapse in={bodyMatterOpen} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
             {recipes.map((book, index) => {
               const bookObj = typeof book === 'string' ? null : book;
               const bookId = typeof book === 'string' ? book : book._id;
@@ -216,14 +340,19 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
                     py: 1,
                     '&:hover': { backgroundColor: '#2d2d2d' },
                     '&.Mui-selected': {
-                      backgroundColor: '#2563eb',
-                      '&:hover': { backgroundColor: '#1d4ed8' },
+                      backgroundColor: '#2d2d2d',
+                      '&:hover': { backgroundColor: '#2d2d2d' },
                     },
                   }}
                   onClick={() => onRecipeSelect(bookId)}
                 >
                   <DragIndicator
-                    sx={{ fontSize: 16, mr: 1, color: '#6b7280', cursor: 'grab' }}
+                    sx={{
+                      fontSize: 16,
+                      mr: 1,
+                      color: '#6b7280',
+                      cursor: 'grab',
+                    }}
                   />
                   <Typography sx={{ fontSize: '0.875rem', mr: 1 }}>
                     {index + 1}
@@ -257,7 +386,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
             }}
           >
             <ListItemText
-              primary="Back matter"
+              primary='Back matter'
               primaryTypographyProps={{
                 fontSize: '0.85rem',
                 fontWeight: 500,
@@ -272,31 +401,85 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
           </ListItemButton>
         </ListItem>
 
-        <Collapse in={backMatterOpen} timeout="auto" unmountOnExit>
-          <List component="div" disablePadding>
-            <ListItemButton
+        <Collapse in={backMatterOpen} timeout='auto' unmountOnExit>
+          <Box
+            sx={{
+              pl: 4,
+              py: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography
+                variant='h6'
+                sx={{ fontWeight: 600, fontSize: '0.95rem' }}
+              >
+                Add Additional Back Page
+              </Typography>
+            </Box>
+            <IconButton
+              size='small'
+              onClick={(event: React.MouseEvent<HTMLElement>) =>
+                setBackMenuAnchor(event.currentTarget)
+              }
+              disabled={isGenerating}
               sx={{
-                pl: 4,
-                py: 1,
+                color: isGenerating ? '#6b7280' : '#3b82f6',
                 '&:hover': { backgroundColor: '#2d2d2d' },
+                '&.Mui-disabled': { color: '#6b7280' },
               }}
-              onClick={() => onRecipeSelect('notes')}
+              title={
+                isGenerating
+                  ? 'Cannot add additional page while generating'
+                  : 'Add Additional Page'
+              }
             >
-              <ListItemText
-                primary="Notes"
-                primaryTypographyProps={{ fontSize: '0.875rem' }}
-              />
-            </ListItemButton>
+              <MoreVert />
+            </IconButton>
+          </Box>
+
+          <List component='div' disablePadding>
+            {/* Extra back matter pages */}
+            {backExtraPages.map((page) => (
+              <ListItemButton
+                key={page.id}
+                selected={selectedRecipeId === page.id}
+                sx={{
+                  pl: 4,
+                  py: 1,
+                  '&:hover': { backgroundColor: '#2d2d2d' },
+                  '&.Mui-selected': {
+                    backgroundColor: '#2d2d2d',
+                    '&:hover': { backgroundColor: '#2d2d2d' },
+                  },
+                }}
+                onClick={() => onRecipeSelect(page.id)}
+              >
+                <ListItemText
+                  primary={page.title}
+                  primaryTypographyProps={{ fontSize: '0.875rem' }}
+                />
+              </ListItemButton>
+            ))}
+
+            {/* Default back matter pages */}
             <ListItemButton
+              selected={selectedRecipeId === 'back-cover'}
               sx={{
                 pl: 4,
                 py: 1,
                 '&:hover': { backgroundColor: '#2d2d2d' },
+                '&.Mui-selected': {
+                  backgroundColor: '#2d2d2d',
+                  '&:hover': { backgroundColor: '#2d2d2d' },
+                },
               }}
               onClick={() => onRecipeSelect('back-cover')}
             >
               <ListItemText
-                primary="Back Cover"
+                primary='Back Cover'
                 primaryTypographyProps={{ fontSize: '0.875rem' }}
               />
             </ListItemButton>
@@ -319,6 +502,62 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
           {recipes.length} of {recipes.length} recipes
         </Typography>
       </Box>
+
+      {/* Front Matter Menu */}
+      <Menu
+        anchorEl={frontMenuAnchor}
+        open={Boolean(frontMenuAnchor)}
+        onClose={() => setFrontMenuAnchor(null)}
+        PaperProps={{
+          sx: {
+            backgroundColor: '#252525',
+            color: '#e0e0e0',
+          },
+        }}
+      >
+        <MenuItem onClick={() => handleAddBlankPage('front')}>Blank Page</MenuItem>
+        <MenuItem onClick={(e) => handleOpenTemplateMenu('front', e)}>
+          Select From Template
+        </MenuItem>
+      </Menu>
+
+      {/* Back Matter Menu */}
+      <Menu
+        anchorEl={backMenuAnchor}
+        open={Boolean(backMenuAnchor)}
+        onClose={() => setBackMenuAnchor(null)}
+        PaperProps={{
+          sx: {
+            backgroundColor: '#252525',
+            color: '#e0e0e0',
+          },
+        }}
+      >
+        <MenuItem onClick={() => handleAddBlankPage('back')}>Blank Page</MenuItem>
+        <MenuItem onClick={(e) => handleOpenTemplateMenu('back', e)}>
+          Select From Template
+        </MenuItem>
+      </Menu>
+
+      {/* Template Selection Menu */}
+      <Menu
+        anchorEl={templateMenuAnchor}
+        open={Boolean(templateMenuAnchor)}
+        onClose={() => setTemplateMenuAnchor(null)}
+        PaperProps={{
+          sx: {
+            backgroundColor: '#252525',
+            color: '#e0e0e0',
+          },
+        }}
+      >
+        <MenuItem onClick={() => handleSelectTemplate('weekly-planner')}>
+          Weekly Planner
+        </MenuItem>
+        <MenuItem onClick={() => handleSelectTemplate('note-page')}>
+          Note Page
+        </MenuItem>
+      </Menu>
     </Box>
   );
 };

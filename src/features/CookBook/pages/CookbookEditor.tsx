@@ -27,6 +27,13 @@ const CookbookEditor: React.FC = () => {
   const [recipeSelectorOpen, setRecipeSelectorOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [extraPages, setExtraPages] = useState<Array<{
+    id: string;
+    title: string;
+    type: 'blank' | 'template';
+    templateType?: string;
+    section?: 'front' | 'back';
+  }>>([]);
 
   // Custom hooks for state and logic management
   const {
@@ -75,6 +82,30 @@ const CookbookEditor: React.FC = () => {
 
   const handleExport = () => {
     console.log('Export cookbook');
+  };
+
+  const handleAddExtraPage = (pageType: 'blank' | 'template', section: 'front' | 'back', templateType?: string) => {
+    const pageId = `extra-page-${Date.now()}`;
+    let pageTitle = '';
+
+    if (pageType === 'blank') {
+      pageTitle = 'Blank Page';
+    } else if (templateType === 'weekly-planner') {
+      pageTitle = 'Weekly Planner';
+    } else if (templateType === 'note-page') {
+      pageTitle = 'Note Page';
+    }
+
+    const newPage = {
+      id: pageId,
+      title: pageTitle,
+      type: pageType as 'blank' | 'template',
+      templateType,
+      section,
+    };
+
+    setExtraPages((prev) => [...prev, newPage]);
+    setSelectedSection(pageId);
   };
 
   // Loading state
@@ -163,6 +194,8 @@ const CookbookEditor: React.FC = () => {
             }}
             onAddRecipe={() => setRecipeSelectorOpen(true)}
             onEditInfo={() => setSettingsOpen(true)}
+            onAddExtraPage={handleAddExtraPage}
+            extraPages={extraPages}
             isGenerating={currentCookbook?.status === 'generating'}
           />
         </Box>
@@ -176,6 +209,8 @@ const CookbookEditor: React.FC = () => {
             onRecipeSelect={setSelectedSection}
             onAddRecipe={() => setRecipeSelectorOpen(true)}
             onEditInfo={() => setSettingsOpen(true)}
+            onAddExtraPage={handleAddExtraPage}
+            extraPages={extraPages}
             isGenerating={currentCookbook?.status === 'generating'}
           />
         </Box>
@@ -193,6 +228,11 @@ const CookbookEditor: React.FC = () => {
           <CookbookContentDisplay
             selectedSection={selectedSection}
             currentCookbook={currentCookbook}
+            currentPageNumber={currentPageNumber}
+            totalPages={totalPages}
+            onPreviousPage={handlePreviousPage}
+            onNextPage={handleNextPage}
+            extraPages={extraPages}
           />
 
           {/* Page Navigation Footer */}

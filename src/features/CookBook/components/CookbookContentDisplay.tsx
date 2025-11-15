@@ -15,15 +15,36 @@ import { getTableOfContentsLayouts } from '../../Templates/components/TableOfCon
 import { getIntroPageLayouts } from '../../Templates/components/IntroPageLayoutSections/Index.Intro';
 import { getCoverPageLayouts } from '../../Templates/components/CoverPageLayoutSections/Index.CoverPage';
 import { getBackCoverPageLayouts } from '../../Templates/components/BackCoverLayoutSections/index.BackCover';
+import WeeklyPlannerLayout from '../../Templates/components/ExtraPageLayoutSelections/WeeklyPlannerLayout';
+import BackCoverNoteLayout from '../../Templates/components/ExtraPageLayoutSelections/BackCoverNoteLayout';
+import CookbookPageNavigation from './CookbookPageNavigation';
+
+interface ExtraPage {
+  id: string;
+  title: string;
+  type: 'blank' | 'template';
+  templateType?: string;
+  section?: 'front' | 'back';
+}
 
 interface CookbookContentDisplayProps {
   selectedSection: string | null;
   currentCookbook: ICookbook | null;
+  currentPageNumber: number;
+  totalPages: number;
+  onPreviousPage: () => void;
+  onNextPage: () => void;
+  extraPages?: ExtraPage[];
 }
 
 const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   selectedSection,
   currentCookbook,
+  currentPageNumber,
+  totalPages,
+  onPreviousPage,
+  onNextPage,
+  extraPages = [],
 }) => {
   const [bookLayout, setBookLayout] = useState<CookbookLayout>(
     CookbookLayout.LayoutOne
@@ -31,7 +52,9 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   const [coverLayout, setCoverLayout] = useState<string>('cover-layout-one');
   const [introLayout, setIntroLayout] = useState<string>('intro-layout-one');
   const [tocLayout, setTocLayout] = useState<string>('toc-layout-one');
-  const [backCoverLayout, setBackCoverLayout] = useState<string>('back-cover-layout-one');
+  const [backCoverLayout, setBackCoverLayout] = useState<string>(
+    'back-cover-layout-one'
+  );
   const [isSavingLayout, setIsSavingLayout] = useState(false);
 
   // Get the current book if a recipe is selected
@@ -106,7 +129,18 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
 
   // Helper to convert number to word (1 -> one, 2 -> two, etc.)
   const numberToWord = (num: number): string => {
-    const words = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+    const words = [
+      'one',
+      'two',
+      'three',
+      'four',
+      'five',
+      'six',
+      'seven',
+      'eight',
+      'nine',
+      'ten',
+    ];
     return words[num - 1] || num.toString();
   };
 
@@ -125,16 +159,23 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   };
 
   // --- Cover Layout Pages ---
-  const {coverLayoutsCount, coverLayouts} = getCoverPageLayouts(coverLayout);
+  const { coverLayoutsCount, coverLayouts } = getCoverPageLayouts(coverLayout);
 
   // --- Welcome Layout Pages ---
-  const {introLayoutsCount, introLayouts} = getIntroPageLayouts(currentCookbook, introLayout);
+  const { introLayoutsCount, introLayouts } = getIntroPageLayouts(
+    currentCookbook,
+    introLayout
+  );
 
   // Table of Contents layouts
-  const {tocLayoutsCount, tableOfContentsLayouts} = getTableOfContentsLayouts(currentCookbook, tocLayout);
+  const { tocLayoutsCount, tableOfContentsLayouts } = getTableOfContentsLayouts(
+    currentCookbook,
+    tocLayout
+  );
 
   // --- Back Cover Layout Pages ---
-  const {backCoverLayoutsCount, backCoverLayouts} = getBackCoverPageLayouts(backCoverLayout);
+  const { backCoverLayoutsCount, backCoverLayouts } =
+    getBackCoverPageLayouts(backCoverLayout);
 
   // Food layouts
   const foodLayouts = getFoodLayouts(bookWithUpdatedLayout);
@@ -148,185 +189,194 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
         flexDirection: 'column',
       }}
     >
-      {/* Layout Selector Toolbar for Cover Page */}
-      {selectedSection === 'cover' && (
-        <Box
-          sx={{
-            p: 2,
-            borderBottom: '1px solid #2d2d2d',
-            backgroundColor: '#252525',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
-          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
-            Cover Layout:
-          </Typography>
-          <FormControl size='small' sx={{ minWidth: 200 }}>
-            <Select
-              value={coverLayout}
-              onChange={(e) => setCoverLayout(e.target.value)}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          borderBottom: '1px solid #2d2d2d',
+          backgroundColor: '#252525',
+        }}
+      >
+        <Box sx={{flexGrow:1}}>
+          {/* Layout Selector Toolbar for Cover Page */}
+          {selectedSection === 'cover' && (
+            <Box
               sx={{
-                backgroundColor: '#1e1e1e',
-                color: '#e0e0e0',
-                '& fieldset': { borderColor: '#3a3a3a' },
-                '& .MuiSelect-select': { py: 1 },
+                p: 2,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
               }}
             >
-              {createLayoutOptions('cover', coverLayoutsCount)}
-            </Select>
-          </FormControl>
-        </Box>
-      )}
+              <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+              <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+                Cover Layout:
+              </Typography>
+              <FormControl size='small' sx={{ minWidth: 200 }}>
+                <Select
+                  value={coverLayout}
+                  onChange={(e) => setCoverLayout(e.target.value)}
+                  sx={{
+                    backgroundColor: '#1e1e1e',
+                    color: '#e0e0e0',
+                    '& fieldset': { borderColor: '#3a3a3a' },
+                    '& .MuiSelect-select': { py: 1 },
+                  }}
+                >
+                  {createLayoutOptions('cover', coverLayoutsCount)}
+                </Select>
+              </FormControl>
+            </Box>
+          )}
 
-      {/* Layout Selector Toolbar for Intro Page */}
-      {selectedSection === 'intro' && (
-        <Box
-          sx={{
-            p: 2,
-            borderBottom: '1px solid #2d2d2d',
-            backgroundColor: '#252525',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
-          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
-            Intro Layout:
-          </Typography>
-          <FormControl size='small' sx={{ minWidth: 200 }}>
-            <Select
-              value={introLayout}
-              onChange={(e) => setIntroLayout(e.target.value)}
+          {/* Layout Selector Toolbar for Intro Page */}
+          {selectedSection === 'intro' && (
+            <Box
               sx={{
-                backgroundColor: '#1e1e1e',
-                color: '#e0e0e0',
-                '& fieldset': { borderColor: '#3a3a3a' },
-                '& .MuiSelect-select': { py: 1 },
+                p: 2,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
               }}
             >
-              {createLayoutOptions('intro', introLayoutsCount)}
-            </Select>
-          </FormControl>
-        </Box>
-      )}
+              <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+              <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+                Intro Layout:
+              </Typography>
+              <FormControl size='small' sx={{ minWidth: 200 }}>
+                <Select
+                  value={introLayout}
+                  onChange={(e) => setIntroLayout(e.target.value)}
+                  sx={{
+                    backgroundColor: '#1e1e1e',
+                    color: '#e0e0e0',
+                    '& fieldset': { borderColor: '#3a3a3a' },
+                    '& .MuiSelect-select': { py: 1 },
+                  }}
+                >
+                  {createLayoutOptions('intro', introLayoutsCount)}
+                </Select>
+              </FormControl>
+            </Box>
+          )}
 
-      {/* Layout Selector Toolbar for TOC */}
-      {selectedSection === 'toc' && (
-        <Box
-          sx={{
-            p: 2,
-            borderBottom: '1px solid #2d2d2d',
-            backgroundColor: '#252525',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
-          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
-            TOC Layout:
-          </Typography>
-          <FormControl size='small' sx={{ minWidth: 200 }}>
-            <Select
-              value={tocLayout}
-              onChange={(e) => setTocLayout(e.target.value)}
+          {/* Layout Selector Toolbar for TOC */}
+          {selectedSection === 'toc' && (
+            <Box
               sx={{
-                backgroundColor: '#1e1e1e',
-                color: '#e0e0e0',
-                '& fieldset': { borderColor: '#3a3a3a' },
-                '& .MuiSelect-select': { py: 1 },
+                p: 2,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
               }}
             >
-              {createLayoutOptions('toc', tocLayoutsCount)}
-            </Select>
-          </FormControl>
-        </Box>
-      )}
+              <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+              <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+                TOC Layout:
+              </Typography>
+              <FormControl size='small' sx={{ minWidth: 200 }}>
+                <Select
+                  value={tocLayout}
+                  onChange={(e) => setTocLayout(e.target.value)}
+                  sx={{
+                    backgroundColor: '#1e1e1e',
+                    color: '#e0e0e0',
+                    '& fieldset': { borderColor: '#3a3a3a' },
+                    '& .MuiSelect-select': { py: 1 },
+                  }}
+                >
+                  {createLayoutOptions('toc', tocLayoutsCount)}
+                </Select>
+              </FormControl>
+            </Box>
+          )}
 
-      {/* Layout Selector Toolbar for Recipe Pages */}
-      {isRecipeSection && (
-        <Box
-          sx={{
-            p: 2,
-            borderBottom: '1px solid #2d2d2d',
-            backgroundColor: '#252525',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
-          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
-            Page Layout:
-          </Typography>
-          <FormControl size='small' sx={{ minWidth: 200 }}>
-            <Select
-              value={bookLayout}
-              onChange={(e) =>
-                handleLayoutChange(e.target.value as CookbookLayout)
-              }
-              disabled={isSavingLayout}
+          {/* Layout Selector Toolbar for Recipe Pages */}
+          {isRecipeSection && (
+            <Box
               sx={{
-                backgroundColor: '#1e1e1e',
-                color: '#e0e0e0',
-                '& fieldset': { borderColor: '#3a3a3a' },
-                '& .MuiSelect-select': { py: 1 },
+                p: 2,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
               }}
             >
-              {Object.values(CookbookLayout).map((layout) => (
-                <MenuItem key={layout} value={layout}>
-                  {layout
-                    .split('-')
-                    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                    .join(' ')}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {isSavingLayout && (
-            <Typography variant='caption' sx={{ color: '#9ca3af' }}>
-              Saving...
-            </Typography>
+              <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+              <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+                Page Layout:
+              </Typography>
+              <FormControl size='small' sx={{ minWidth: 200 }}>
+                <Select
+                  value={bookLayout}
+                  onChange={(e) =>
+                    handleLayoutChange(e.target.value as CookbookLayout)
+                  }
+                  disabled={isSavingLayout}
+                  sx={{
+                    backgroundColor: '#1e1e1e',
+                    color: '#e0e0e0',
+                    '& fieldset': { borderColor: '#3a3a3a' },
+                    '& .MuiSelect-select': { py: 1 },
+                  }}
+                >
+                  {Object.values(CookbookLayout).map((layout) => (
+                    <MenuItem key={layout} value={layout}>
+                      {layout
+                        .split('-')
+                        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                        .join(' ')}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {isSavingLayout && (
+                <Typography variant='caption' sx={{ color: '#9ca3af' }}>
+                  Saving...
+                </Typography>
+              )}
+            </Box>
+          )}
+
+          {/* Layout Selector Toolbar for Back Cover */}
+          {selectedSection === 'back-cover' && (
+            <Box
+              sx={{
+                p: 2,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+              <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+                Back Cover Layout:
+              </Typography>
+              <FormControl size='small' sx={{ minWidth: 200 }}>
+                <Select
+                  value={backCoverLayout}
+                  onChange={(e) => setBackCoverLayout(e.target.value)}
+                  sx={{
+                    backgroundColor: '#1e1e1e',
+                    color: '#e0e0e0',
+                    '& fieldset': { borderColor: '#3a3a3a' },
+                    '& .MuiSelect-select': { py: 1 },
+                  }}
+                >
+                  {createLayoutOptions('back-cover', backCoverLayoutsCount)}
+                </Select>
+              </FormControl>
+            </Box>
           )}
         </Box>
-      )}
 
-      {/* Layout Selector Toolbar for Back Cover */}
-      {selectedSection === 'back-cover' && (
-        <Box
-          sx={{
-            p: 2,
-            borderBottom: '1px solid #2d2d2d',
-            backgroundColor: '#252525',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
-          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
-            Back Cover Layout:
-          </Typography>
-          <FormControl size='small' sx={{ minWidth: 200 }}>
-            <Select
-              value={backCoverLayout}
-              onChange={(e) => setBackCoverLayout(e.target.value)}
-              sx={{
-                backgroundColor: '#1e1e1e',
-                color: '#e0e0e0',
-                '& fieldset': { borderColor: '#3a3a3a' },
-                '& .MuiSelect-select': { py: 1 },
-              }}
-            >
-              {createLayoutOptions('back-cover', backCoverLayoutsCount)}
-            </Select>
-          </FormControl>
-        </Box>
-      )}
+        <CookbookPageNavigation
+          currentPageNumber={currentPageNumber}
+          totalPages={totalPages}
+          onPreviousPage={onPreviousPage}
+          onNextPage={onNextPage}
+        />
+      </Box>
 
       {/* Content Display */}
       <Box
@@ -450,6 +500,47 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
           </Box>
         )}
 
+        {/* Extra Pages */}
+        {extraPages.map((page) => {
+          if (selectedSection === page.id) {
+            return (
+              <Box key={page.id}>
+                <Paper
+                  sx={{
+                    backgroundColor: '#fff',
+                  width: '100%',
+                  minWidth: 1586,
+                  maxWidth: 1587,
+                  maxHeight: 1123,
+                  m: 'auto',
+                  p: 0,
+                  }}
+                >
+                  {page.type === 'blank' ? (
+                    // Blank white page
+                    <Box
+                      sx={{
+                        width: '100%',
+                        height: 1123,
+                        backgroundColor: '#fff',
+                        display: 'flex',
+                        p:2
+                      }}
+                    >
+                      <Box sx={{width: 798, borderRight:'2px dotted #2d2d2d', p: 3}}></Box>
+                      <Box sx={{ p: 3}} ></Box>
+                    </Box>
+                  ) : page.templateType === 'weekly-planner' ? (
+                    <WeeklyPlannerLayout />
+                  ) : page.templateType === 'note-page' ? (
+                    <BackCoverNoteLayout />
+                  ) : null}
+                </Paper>
+              </Box>
+            );
+          }
+          return null;
+        })}
       </Box>
     </Box>
   );

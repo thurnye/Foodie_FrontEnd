@@ -13,6 +13,10 @@ export function getExtraPageLayouts(): React.ReactNode[] {
   switch (layoutNumber) {
     case 1:
       pages.push(<WeeklyPlannerLayout key='food-layout-weekly-planner' />);
+      // pages.push(<BackCoverNoteLayout key='food-layout-note' />);
+      break;
+    case 2:
+      // pages.push(<WeeklyPlannerLayout key='food-layout-weekly-planner' />);
       pages.push(<BackCoverNoteLayout key='food-layout-note' />);
       break;
     default:

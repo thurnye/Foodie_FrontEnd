@@ -24,9 +24,10 @@ export const useCookbookNavigation = ({
     // 3. Table of Contents
     // 4-N. Recipes (one page per recipe)
     // N+1. Notes
+    // N+2. Back Cover
 
     const recipeCount = currentCookbook.books?.length || 0;
-    const totalPages = 3 + recipeCount + 1; // cover + intro + toc + recipes + notes
+    const totalPages = 3 + recipeCount + 2; // cover + intro + toc + recipes + notes + back cover
 
     let currentPage = 1;
     if (selectedSection === 'cover') {
@@ -36,7 +37,9 @@ export const useCookbookNavigation = ({
     } else if (selectedSection === 'toc') {
       currentPage = 3;
     } else if (selectedSection === 'notes') {
-      currentPage = totalPages;
+      currentPage = totalPages - 1; // Second to last page
+    } else if (selectedSection === 'back-cover') {
+      currentPage = totalPages; // Last page
     } else if (selectedSection && selectedSection !== 'toc') {
       // It's a recipe - find its index
       const recipeIndex = currentCookbook.books.findIndex((r) =>
@@ -60,14 +63,18 @@ export const useCookbookNavigation = ({
   const navigateToPage = (pageNumber: number) => {
     if (!currentCookbook) return;
 
+    const { totalPages } = calculatePageInfo();
+
     if (pageNumber === 1) {
       setSelectedSection('cover');
     } else if (pageNumber === 2) {
       setSelectedSection('intro');
     } else if (pageNumber === 3) {
       setSelectedSection('toc');
-    } else if (pageNumber === calculatePageInfo().totalPages) {
-      setSelectedSection('notes');
+    } else if (pageNumber === totalPages) {
+      setSelectedSection('back-cover'); // Last page is back cover
+    } else if (pageNumber === totalPages - 1) {
+      setSelectedSection('notes'); // Second to last page is notes
     } else {
       // It's a recipe page
       const recipeIndex = pageNumber - 4; // Subtract cover(1), intro(2), toc(3)
