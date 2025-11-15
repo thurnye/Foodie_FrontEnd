@@ -1,5 +1,4 @@
 import React from 'react';
-import { IRecipe } from '../../../Recipe/types/recipe.types';
 
 import CoverPageLayoutOne from './CoverPageLayoutOne';
 import { CoverPageLayoutTwo } from './CoverPageLayoutTwo';

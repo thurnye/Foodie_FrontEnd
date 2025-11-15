@@ -293,14 +293,11 @@ const data: IRecipe = {
 
 
 // Function to return selected layout(s) based on layout number
-export function getBackPageLayouts(): React.ReactNode[] {
+export function getBackCoverPageLayouts(layoutNumber: string = 'back-cover-layout-one'): {backCoverLayoutsCount: number, backCoverLayouts: React.ReactNode[]} {
   const pages: React.ReactNode[] = [];
 
-  // layout number from recipe data (default to 1)
-  const layoutNumber:number = 1;
-
   switch (layoutNumber) {
-    case 1:
+    case 'back-cover-layout-one':
       pages.push(<BackCoverLayoutOne key="backCover" data={data}/>);
       break;
     default:
@@ -309,5 +306,5 @@ export function getBackPageLayouts(): React.ReactNode[] {
       break;
   }
 
-  return pages;
+  return {backCoverLayoutsCount: 1, backCoverLayouts: pages};
 }

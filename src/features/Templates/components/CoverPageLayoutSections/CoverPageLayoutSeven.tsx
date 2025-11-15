@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
-import { Spa } from '@mui/icons-material';
 
 export const CoverPageLayoutSeven: React.FC = () => {
   return (

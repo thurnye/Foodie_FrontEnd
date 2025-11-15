@@ -10,9 +10,9 @@ import { getFoodLayouts } from '../../components/FoodLayoutSections/FoodLayout';
 import { getCoverPageLayouts } from '../../components/CoverPageLayoutSections/Index.CoverPage';
 import { getTableOfContentsLayouts } from '../../components/TableOfContentsLayoutSections/Index.TableContent';
 import { getIntroPageLayouts } from '../../components/IntroPageLayoutSections/Index.Intro';
-import { getBackPageLayouts } from '../../components/BackCoverLayoutSections/index.BackCover';
 import { getExtraPageLayouts } from '../../components/ExtraPageLayoutSelections/Index.ExtraLayout';
 import { BookStatus, IBook } from '../../../CookBook/types/book.types';
+import { getBackCoverPageLayouts } from '../../components/BackCoverLayoutSections/index.BackCover';
 
 type PageLayout =
   | 'A3-portrait'
@@ -596,8 +596,8 @@ const getRecipeSections = (recipe: IRecipe) => {
     );
   });
   // --- Back Cover Page ---
-  const backPageLayouts = getBackPageLayouts();
-  backPageLayouts.forEach((layout, index) => {
+  const {backCoverLayouts} = getBackCoverPageLayouts();
+  backCoverLayouts.forEach((layout, index) => {
     sections.push(<React.Fragment key={`backCover`}>{layout}</React.Fragment>);
   });
 

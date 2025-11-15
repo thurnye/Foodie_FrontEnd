@@ -14,6 +14,7 @@ import { getFoodLayouts } from '../../Templates/components/FoodLayoutSections/Fo
 import { getTableOfContentsLayouts } from '../../Templates/components/TableOfContentsLayoutSections/Index.TableContent';
 import { getIntroPageLayouts } from '../../Templates/components/IntroPageLayoutSections/Index.Intro';
 import { getCoverPageLayouts } from '../../Templates/components/CoverPageLayoutSections/Index.CoverPage';
+import { getBackCoverPageLayouts } from '../../Templates/components/BackCoverLayoutSections/index.BackCover';
 
 interface CookbookContentDisplayProps {
   selectedSection: string | null;
@@ -30,6 +31,7 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   const [coverLayout, setCoverLayout] = useState<string>('cover-layout-one');
   const [introLayout, setIntroLayout] = useState<string>('intro-layout-one');
   const [tocLayout, setTocLayout] = useState<string>('toc-layout-one');
+  const [backCoverLayout, setBackCoverLayout] = useState<string>('back-cover-layout-one');
   const [isSavingLayout, setIsSavingLayout] = useState(false);
 
   // Get the current book if a recipe is selected
@@ -130,6 +132,9 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
 
   // Table of Contents layouts
   const {tocLayoutsCount, tableOfContentsLayouts} = getTableOfContentsLayouts(currentCookbook, tocLayout);
+
+  // --- Back Cover Layout Pages ---
+  const {backCoverLayoutsCount, backCoverLayouts} = getBackCoverPageLayouts(backCoverLayout);
 
   // Food layouts
   const foodLayouts = getFoodLayouts(bookWithUpdatedLayout);
@@ -290,6 +295,39 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
         </Box>
       )}
 
+      {/* Layout Selector Toolbar for Back Cover */}
+      {selectedSection === 'back-cover' && (
+        <Box
+          sx={{
+            p: 2,
+            borderBottom: '1px solid #2d2d2d',
+            backgroundColor: '#252525',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Settings sx={{ color: '#9ca3af', fontSize: 20 }} />
+          <Typography variant='body2' sx={{ color: '#9ca3af' }}>
+            Back Cover Layout:
+          </Typography>
+          <FormControl size='small' sx={{ minWidth: 200 }}>
+            <Select
+              value={backCoverLayout}
+              onChange={(e) => setBackCoverLayout(e.target.value)}
+              sx={{
+                backgroundColor: '#1e1e1e',
+                color: '#e0e0e0',
+                '& fieldset': { borderColor: '#3a3a3a' },
+                '& .MuiSelect-select': { py: 1 },
+              }}
+            >
+              {createLayoutOptions('back-cover', backCoverLayoutsCount)}
+            </Select>
+          </FormControl>
+        </Box>
+      )}
+
       {/* Content Display */}
       <Box
         sx={{
@@ -389,7 +427,29 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
           </Box>
         )}
 
-        
+        {/* Back Cover */}
+        {selectedSection === 'back-cover' && (
+          <Box>
+            {backCoverLayouts.map((layout, index) => (
+              <Paper
+                key={`back-cover-${index + 1}`}
+                sx={{
+                  backgroundColor: '#fff',
+                  width: '100%',
+                  minWidth: 793,
+                  maxWidth: 794,
+                  maxHeight: 1123,
+                  m: 'auto',
+                  mb: 4,
+                  p: 0,
+                }}
+              >
+                {layout}
+              </Paper>
+            ))}
+          </Box>
+        )}
+
       </Box>
     </Box>
   );

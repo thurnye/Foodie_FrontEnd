@@ -43,6 +43,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
 }) => {
   const [frontMatterOpen, setFrontMatterOpen] = React.useState(true);
   const [bodyMatterOpen, setBodyMatterOpen] = React.useState(true);
+  const [backMatterOpen, setBackMatterOpen] = React.useState(true);
 
   return (
     <Box
@@ -249,6 +250,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
         {/* Back Matter */}
         <ListItem disablePadding>
           <ListItemButton
+            onClick={() => setBackMatterOpen(!backMatterOpen)}
             sx={{
               py: 1.5,
               '&:hover': { backgroundColor: '#2d2d2d' },
@@ -262,22 +264,44 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
                 color: '#9ca3af',
               }}
             />
+            {backMatterOpen ? (
+              <ExpandLess sx={{ fontSize: 20 }} />
+            ) : (
+              <ExpandMore sx={{ fontSize: 20 }} />
+            )}
           </ListItemButton>
         </ListItem>
 
-        <ListItemButton
-          sx={{
-            pl: 4,
-            py: 1,
-            '&:hover': { backgroundColor: '#2d2d2d' },
-          }}
-          onClick={() => onRecipeSelect('notes')}
-        >
-          <ListItemText
-            primary="Notes"
-            primaryTypographyProps={{ fontSize: '0.875rem' }}
-          />
-        </ListItemButton>
+        <Collapse in={backMatterOpen} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton
+              sx={{
+                pl: 4,
+                py: 1,
+                '&:hover': { backgroundColor: '#2d2d2d' },
+              }}
+              onClick={() => onRecipeSelect('notes')}
+            >
+              <ListItemText
+                primary="Notes"
+                primaryTypographyProps={{ fontSize: '0.875rem' }}
+              />
+            </ListItemButton>
+            <ListItemButton
+              sx={{
+                pl: 4,
+                py: 1,
+                '&:hover': { backgroundColor: '#2d2d2d' },
+              }}
+              onClick={() => onRecipeSelect('back-cover')}
+            >
+              <ListItemText
+                primary="Back Cover"
+                primaryTypographyProps={{ fontSize: '0.875rem' }}
+              />
+            </ListItemButton>
+          </List>
+        </Collapse>
       </List>
 
       {/* Footer */}
