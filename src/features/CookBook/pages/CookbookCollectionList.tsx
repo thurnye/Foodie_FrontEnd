@@ -45,7 +45,7 @@ import {
   fetchMyCookbooks,
 } from '../redux/cookbook.async.thunk';
 
-const CookbookList: React.FC = () => {
+const CookbookCollectionList: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
@@ -127,7 +127,7 @@ const CookbookList: React.FC = () => {
       setCreateDialogOpen(false);
       setNewCookbookTitle('');
       setNewCookbookDescription('');
-      navigate(`/dashboard/cookbook/${result._id}/edit`);
+      navigate(`/dashboard/cook-book/collection/${result._id}`);
     } catch (err) {
       console.error('Failed to create cookbook:', err);
     }
@@ -135,7 +135,7 @@ const CookbookList: React.FC = () => {
 
   const handleCardClick = (cookbook: ICookbook) => {
     dispatch(setCurrentCookbook(cookbook));
-    navigate(`/dashboard/cookbook/${cookbook._id}/edit`);
+    navigate(`/dashboard/cook-book/collection/${cookbook._id}`);
   };
 
   const getStatusColor = (status: CookbookStatus) => {
@@ -202,7 +202,7 @@ const CookbookList: React.FC = () => {
                 fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' },
               }}
             >
-              My Cookbooks
+              My Cook Book Collections
             </Typography>
           </Box>
           <Button
@@ -218,7 +218,7 @@ const CookbookList: React.FC = () => {
             }}
           >
             <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-              Create Cookbook
+              Create New Collection
             </Box>
             <Box component="span" sx={{ display: { xs: 'inline', sm: 'none' } }}>
               Create
@@ -392,10 +392,10 @@ const CookbookList: React.FC = () => {
                       {Array.isArray(cookbook.books)
                         ? cookbook.books.length
                         : 0}{' '}
-                      recipe(s)
+                      Book(s)
                     </Typography>
                   </CardContent>
-                  <CardActions sx={{ p: { xs: 1.5, sm: 2 }, pt: 0 }}>
+                  {/* <CardActions sx={{ p: { xs: 1.5, sm: 2 }, pt: 0 }}>
                     <Button
                       size='small'
                       startIcon={<Edit />}
@@ -426,7 +426,7 @@ const CookbookList: React.FC = () => {
                         PDF
                       </Button>
                     )}
-                  </CardActions>
+                  </CardActions> */}
                 </Card>
               </Grid>
             ))}
@@ -449,10 +449,6 @@ const CookbookList: React.FC = () => {
         <MenuItem onClick={handleEdit}>
           <Edit sx={{ mr: 1, fontSize: 20 }} />
           Edit
-        </MenuItem>
-        <MenuItem onClick={handleView}>
-          <Visibility sx={{ mr: 1, fontSize: 20 }} />
-          View
         </MenuItem>
         <MenuItem onClick={handleDeleteClick} sx={{ color: '#ef4444' }}>
           <Delete sx={{ mr: 1, fontSize: 20 }} />
@@ -572,4 +568,4 @@ const CookbookList: React.FC = () => {
   );
 };
 
-export default CookbookList;
+export default CookbookCollectionList;

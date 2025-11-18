@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
   Box,
   CircularProgress,
@@ -17,23 +18,83 @@ import CookbookPageNavigation from '../components/CookbookPageNavigation';
 import { useCookbookData } from '../hooks/useCookbookData';
 import { useCookbookNavigation } from '../hooks/useCookbookNavigation';
 import { useCookbookActions } from '../hooks/useCookbookActions';
+import { apiClient } from '../../../shared/services/apiClient.service';
+import { fetchCookbookById } from '../redux/cookbook.async.thunk';
+import { AppDispatch } from '../../../app/stores/stores';
+import { bookService } from '../services/book.service';
 
-const CookbookEditor: React.FC = () => {
-  const { cookbookId } = useParams<{ cookbookId: string }>();
+const BookEditor: React.FC = () => {
+  const { bookId } = useParams<{ bookId: string }>();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [recipeSelectorOpen, setRecipeSelectorOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [extraPages, setExtraPages] = useState<Array<{
-    id: string;
-    title: string;
-    type: 'blank' | 'template';
-    templateType?: string;
-    section?: 'front' | 'back';
-  }>>([]);
+  const [cookbookId, setCookbookId] = useState<string | undefined>(undefined);
+  const [loadingBook, setLoadingBook] = useState(true);
+  const [bookError, setBookError] = useState<string | null>(null);
+  const [currentBook, setCurrentBook] = useState<any>(null);
+
+  // Fetch book data
+  useEffect(() => {
+    const fetchBook = async () => {
+      if (!bookId) return;
+
+      try {
+        setLoadingBook(true);
+        const book = await bookService.getBookById(bookId);
+
+        // Extract cookbook ID - could be string or object if populated
+        const extractedCookbookId = typeof book.cookbook === 'string'
+          ? book.cookbook
+          : (book.cookbook as any)?._id || book.cookbook;
+
+        console.log('📖 Book fetched:', book);
+        console.log('📚 Extracted cookbookId:', extractedCookbookId);
+        console.log('📄 Book recipes:', book.recipe);
+
+        setCurrentBook(book);
+        setCookbookId(extractedCookbookId);
+        setBookError(null);
+      } catch (err: any) {
+        console.error('Failed to fetch book:', err);
+        setBookError(err?.response?.data?.message || 'Failed to load book');
+      } finally {
+        setLoadingBook(false);
+      }
+    };
+
+    fetchBook();
+  }, [bookId]);
+
+  // Refetch book when recipes are added or layout changes
+  useEffect(() => {
+    const refetchBook = async () => {
+      if (!bookId) return;
+
+      try {
+        console.log('🔄 Refetching book due to update event...');
+        const book = await bookService.getBookById(bookId);
+        console.log('✅ Book refetched successfully:', book);
+        console.log('📄 Updated recipes:', book.recipe);
+        setCurrentBook(book);
+      } catch (err: any) {
+        console.error('❌ Failed to refetch book:', err);
+      }
+    };
+
+    // Listen for book updates (triggered after adding recipes or changing layout)
+    const handleBookUpdate = () => {
+      console.log('📡 Received bookUpdated event');
+      refetchBook();
+    };
+
+    window.addEventListener('bookUpdated', handleBookUpdate);
+    return () => window.removeEventListener('bookUpdated', handleBookUpdate);
+  }, [bookId]);
 
   // Custom hooks for state and logic management
   const {
@@ -46,6 +107,47 @@ const CookbookEditor: React.FC = () => {
     setPendingChanges,
     recipeNotes,
   } = useCookbookData(cookbookId);
+
+  // Convert cookbook extra pages to component format
+  const extraPages = React.useMemo(() => {
+    const pages = (currentCookbook?.extraPages || []).map(page => ({
+      id: page.pageId,
+      title: page.title,
+      type: page.pageType,
+      templateType: page.templateType,
+      section: page.section,
+    }));
+
+    // Debug: Log extra pages
+    if (pages.length > 0) {
+      console.log('📄 Extra pages loaded:', pages);
+    }
+
+    return pages;
+  }, [currentCookbook?.extraPages]);
+
+  // Create a modified cookbook object with book recipe pages for content display
+  const modifiedCookbook = React.useMemo(() => {
+    if (!currentBook || !currentCookbook) return currentCookbook;
+
+    const recipePages = currentBook.recipe || [];
+
+    console.log('📚 Creating modified cookbook with book recipe pages:', {
+      bookId: currentBook._id,
+      recipeCount: currentBook.recipe?.length,
+      layouts: recipePages.map((r: any) => ({ pageId: r.pageId, layout: r.layout }))
+    });
+
+    return {
+      ...currentCookbook,
+      // Replace books array with recipe pages from current book formatted as books
+      books: recipePages.map((recipePage: any) => ({
+        _id: recipePage.pageId,
+        recipe: [recipePage],
+        ...recipePage,
+      })),
+    };
+  }, [currentBook, currentCookbook]);
 
   const {
     currentPageNumber,
@@ -73,6 +175,7 @@ const CookbookEditor: React.FC = () => {
     pendingChanges,
     recipeNotes,
     setPendingChanges,
+    bookId, // Pass bookId for updating existing books
   });
 
   // Simple handlers
@@ -84,10 +187,10 @@ const CookbookEditor: React.FC = () => {
     console.log('Export cookbook');
   };
 
-  const handleAddExtraPage = (pageType: 'blank' | 'template', section: 'front' | 'back', templateType?: string) => {
-    const pageId = `extra-page-${Date.now()}`;
-    let pageTitle = '';
+  const handleAddExtraPage = async (pageType: 'blank' | 'template', section: 'front' | 'back', templateType?: string) => {
+    if (!currentCookbook || !cookbookId) return;
 
+    let pageTitle = '';
     if (pageType === 'blank') {
       pageTitle = 'Blank Page';
     } else if (templateType === 'weekly-planner') {
@@ -96,20 +199,40 @@ const CookbookEditor: React.FC = () => {
       pageTitle = 'Note Page';
     }
 
-    const newPage = {
-      id: pageId,
-      title: pageTitle,
-      type: pageType as 'blank' | 'template',
-      templateType,
-      section,
-    };
+    try {
+      // Calculate position based on section and existing extra pages
+      const existingPagesInSection = currentCookbook.extraPages?.filter(p => p.section === section) || [];
+      const position = existingPagesInSection.length + 1;
 
-    setExtraPages((prev) => [...prev, newPage]);
-    setSelectedSection(pageId);
+      // Call backend API to add extra page
+      await apiClient.post(`/cookbook/${currentCookbook._id}/extra-pages`, {
+        title: pageTitle,
+        pageType,
+        templateType,
+        section,
+        position,
+      });
+
+      // Refetch cookbook data to get updated extraPages
+      const result = await dispatch(fetchCookbookById(cookbookId));
+
+      // Select the newly added page if fetch was successful
+      if (result.payload && typeof result.payload === 'object' && 'extraPages' in result.payload) {
+        const cookbook = result.payload as any;
+        const newPages = cookbook.extraPages?.filter((p: any) => p.section === section) || [];
+        const newPageId = newPages[newPages.length - 1]?.pageId;
+        if (newPageId) {
+          setSelectedSection(newPageId);
+        }
+      }
+    } catch (error) {
+      console.error('Error adding extra page:', error);
+      alert('Failed to add page. Please try again.');
+    }
   };
 
   // Loading state
-  if (loading && !currentCookbook) {
+  if (loadingBook || (loading && !currentCookbook)) {
     return (
       <Box
         sx={{
@@ -126,7 +249,7 @@ const CookbookEditor: React.FC = () => {
   }
 
   // Error state
-  if (error && !currentCookbook) {
+  if (bookError || (error && !currentCookbook)) {
     return (
       <Box
         sx={{
@@ -138,7 +261,7 @@ const CookbookEditor: React.FC = () => {
         }}
       >
         <Alert severity='error' sx={{ maxWidth: 400 }}>
-          {error}
+          {bookError || error}
         </Alert>
       </Box>
     );
@@ -160,7 +283,7 @@ const CookbookEditor: React.FC = () => {
         isSaving={isSaving}
         isGenerating={isGenerating}
         sidebarOpen={sidebarOpen}
-        onBack={() => navigate('/dashboard/cook-book')}
+        onBack={() => navigate(`/dashboard/cook-book/collection/${cookbookId}`)}
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         onSettingsOpen={() => setSettingsOpen(true)}
         onSave={handleSave}
@@ -185,8 +308,8 @@ const CookbookEditor: React.FC = () => {
           }}
         >
           <EditorSidebar
-            cookbookTitle={currentCookbook?.title || 'My Cookbook'}
-            recipes={currentCookbook?.books || []}
+            cookbookTitle={currentBook?.name || currentCookbook?.title || 'My Book'}
+            recipes={modifiedCookbook?.books || []}
             selectedRecipeId={selectedSection}
             onRecipeSelect={(id) => {
               setSelectedSection(id);
@@ -203,8 +326,8 @@ const CookbookEditor: React.FC = () => {
         {/* Sidebar - Desktop Permanent */}
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <EditorSidebar
-            cookbookTitle={currentCookbook?.title || 'My Cookbook'}
-            recipes={currentCookbook?.books || []}
+            cookbookTitle={currentBook?.name || currentCookbook?.title || 'My Book'}
+            recipes={modifiedCookbook?.books || []}
             selectedRecipeId={selectedSection}
             onRecipeSelect={setSelectedSection}
             onAddRecipe={() => setRecipeSelectorOpen(true)}
@@ -227,7 +350,7 @@ const CookbookEditor: React.FC = () => {
           {/* Content Display */}
           <CookbookContentDisplay
             selectedSection={selectedSection}
-            currentCookbook={currentCookbook}
+            currentCookbook={modifiedCookbook}
             currentPageNumber={currentPageNumber}
             totalPages={totalPages}
             onPreviousPage={handlePreviousPage}
@@ -279,4 +402,4 @@ const CookbookEditor: React.FC = () => {
   );
 };
 
-export default CookbookEditor;
+export default BookEditor;

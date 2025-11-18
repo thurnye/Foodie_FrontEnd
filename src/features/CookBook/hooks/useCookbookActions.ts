@@ -9,7 +9,7 @@ import {
 } from '../redux/cookbook.async.thunk';
 import { ICookbook, UpdateCookbookData } from '../types/cookbook.types';
 import { IBookSection } from '../types/book.types';
-import { apiClient } from '../../../shared/services/apiClient.service';
+import { bookService } from '../services/book.service';
 import { IRecipe } from '../../Recipe/types/recipe.types';
 
 interface SnackbarState {
@@ -27,11 +27,14 @@ interface UseCookbookActionsProps {
     notes?: string;
   };
   recipeNotes: Record<string, string>;
-  setPendingChanges: React.Dispatch<React.SetStateAction<{
-    description?: string;
-    authorBio?: string;
-    notes?: string;
-  }>>;
+  setPendingChanges: React.Dispatch<
+    React.SetStateAction<{
+      description?: string;
+      authorBio?: string;
+      notes?: string;
+    }>
+  >;
+  bookId?: string; // Optional bookId for updating existing books
 }
 
 export const useCookbookActions = ({
@@ -40,6 +43,7 @@ export const useCookbookActions = ({
   pendingChanges,
   recipeNotes,
   setPendingChanges,
+  bookId,
 }: UseCookbookActionsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [snackbar, setSnackbar] = useState<SnackbarState>({
@@ -56,7 +60,8 @@ export const useCookbookActions = ({
     if (currentCookbook.status === 'generating') {
       setSnackbar({
         open: true,
-        message: 'Cannot update cookbook while it is being generated. Please wait for generation to complete.',
+        message:
+          'Cannot update cookbook while it is being generated. Please wait for generation to complete.',
         severity: 'warning',
       });
       return;
@@ -117,14 +122,18 @@ export const useCookbookActions = ({
       }
 
       // Save sections to book
-      await apiClient.post(
-        '/books',
-        {
-          cookbookId,
-          layout: currentCookbook.layout,
-          sections,
-        }
-      );
+      // Generate a meaningful name if not updating existing book
+      const bookName = currentCookbook.title
+        ? `${currentCookbook.title} - ${new Date().toLocaleDateString()}`
+        : `My Book - ${new Date().toLocaleDateString()}`;
+
+      await bookService.createBook({
+        bookId, // If bookId exists, update existing book
+        cookbookId,
+        name: bookName,
+        description: currentCookbook.description || 'My cookbook book',
+        sections,
+      });
 
       setPendingChanges({});
 
@@ -138,7 +147,8 @@ export const useCookbookActions = ({
       await dispatch(fetchCookbookById(cookbookId)).unwrap();
     } catch (err: any) {
       console.error('Save book error:', err);
-      const errorMessage = err?.response?.data?.message || err?.message || 'Failed to save book';
+      const errorMessage =
+        err?.response?.data?.message || err?.message || 'Failed to save book';
 
       setSnackbar({
         open: true,
@@ -163,9 +173,10 @@ export const useCookbookActions = ({
       });
     } catch (err: any) {
       console.error('Generate cookbook error:', err);
-      const errorMessage = typeof err === 'string'
-        ? err
-        : err?.message || err?.error || 'Failed to generate cookbook';
+      const errorMessage =
+        typeof err === 'string'
+          ? err
+          : err?.message || err?.error || 'Failed to generate cookbook';
 
       setSnackbar({
         open: true,
@@ -177,14 +188,14 @@ export const useCookbookActions = ({
     }
   };
 
-
   const handleAddRecipes = async (recipeIds: string[]) => {
     if (!cookbookId || !currentCookbook) return;
 
     if (currentCookbook.status === 'generating') {
       setSnackbar({
         open: true,
-        message: 'Cannot add recipes while cookbook is being generated. Please wait for generation to complete.',
+        message:
+          'Cannot add recipes while cookbook is being generated. Please wait for generation to complete.',
         severity: 'warning',
       });
       return;
@@ -192,65 +203,41 @@ export const useCookbookActions = ({
 
     setIsSaving(true);
     try {
-      // Fetch each recipe data and create a book for it
-      const bookCreationPromises = recipeIds.map(async (recipeId) => {
-        try {
-          // Fetch the full recipe data
-          const recipeData = await apiClient.get<IRecipe>(
-            `/recipe/${recipeId}`
-          );
+      console.log('📤 Adding recipe pages to cookbook:', { cookbookId, recipeIds, bookId });
 
-          if (!recipeData) {
-            throw new Error(`Recipe data not found for ${recipeId}`);
-          }
+      // Generate a meaningful name for the book
+      // const bookName = currentCookbook.title
+      //   ? `${currentCookbook.title} - ${new Date().toLocaleDateString()}`
+      //   : `My Book - ${new Date().toLocaleDateString()}`;
 
-          // Create a book with the recipe data embedded
-          await apiClient.post(
-            '/books',
-            {
-              cookbookId,
-              layout: currentCookbook.layout,
-              recipeData: {
-                basicInfo: recipeData.basicInfo,
-                details: recipeData.details,
-                directions: recipeData.directions,
-                author: recipeData.author.userId, // Only send the userId (ObjectId)
-              },
-            }
-          );
-
-          return { success: true, recipeId };
-        } catch (error: any) {
-          console.error(`Error creating book for recipe ${recipeId}:`, error);
-          return { success: false, recipeId, error };
-        }
+      // Use createBook with bookId if available (update existing) or without (create new)
+      const book = await bookService.createBook({
+        bookId, // If bookId exists, update existing book
+        cookbookId,
+        // name: bookName,
+        // description: currentCookbook.description || 'My cookbook book',
+        recipeIds,
       });
 
-      const results = await Promise.all(bookCreationPromises);
-      const successCount = results.filter((r) => r.success).length;
-      const failedCount = results.length - successCount;
+      console.log('✅ Recipe pages added successfully:', book);
 
       // Refresh cookbook to get updated books
       await dispatch(fetchCookbookById(cookbookId)).unwrap();
 
       dispatch(clearSelectedRecipes());
 
-      if (failedCount === 0) {
-        setSnackbar({
-          open: true,
-          message: `${successCount} recipe(s) added to cookbook as books`,
-          severity: 'success',
-        });
-      } else {
-        setSnackbar({
-          open: true,
-          message: `${successCount} recipe(s) added successfully, ${failedCount} failed`,
-          severity: 'warning',
-        });
-      }
+      // Trigger book refetch event for BookEditor
+      window.dispatchEvent(new CustomEvent('bookUpdated'));
+
+      setSnackbar({
+        open: true,
+        message: `${recipeIds.length} recipe(s) added to ${bookId ? 'book' : 'cookbook'} successfully`,
+        severity: 'success',
+      });
     } catch (err: any) {
       console.error('Add recipes error:', err);
-      const errorMessage = err?.response?.data?.message || err?.message || 'Failed to add recipes';
+      const errorMessage =
+        err?.response?.data?.message || err?.message || 'Failed to add recipes';
 
       setSnackbar({
         open: true,
@@ -273,7 +260,8 @@ export const useCookbookActions = ({
     if (currentCookbook.status === 'generating') {
       setSnackbar({
         open: true,
-        message: 'Cannot update settings while cookbook is being generated. Please wait for generation to complete.',
+        message:
+          'Cannot update settings while cookbook is being generated. Please wait for generation to complete.',
         severity: 'warning',
       });
       return;
@@ -283,13 +271,21 @@ export const useCookbookActions = ({
       const cleanedSettings: UpdateCookbookData = {};
 
       Object.entries(settings).forEach(([key, value]) => {
-        if (value === '' && ['coverImage', 'authorBio', 'authorImage', 'description'].includes(key)) {
+        if (
+          value === '' &&
+          ['coverImage', 'authorBio', 'authorImage', 'description'].includes(
+            key
+          )
+        ) {
           return;
         }
         cleanedSettings[key as keyof UpdateCookbookData] = value as any;
       });
 
-      console.log('Dispatching updateCookbook with cleaned data:', { cookbookId, data: cleanedSettings });
+      console.log('Dispatching updateCookbook with cleaned data:', {
+        cookbookId,
+        data: cleanedSettings,
+      });
       await dispatch(
         updateCookbook({
           cookbookId,
@@ -310,11 +306,12 @@ export const useCookbookActions = ({
       console.error('Error details:', {
         message: err?.message,
         error: err?.error,
-        full: err
+        full: err,
       });
-      const errorMessage = typeof err === 'string'
-        ? err
-        : err?.message || err?.error || 'Failed to update settings';
+      const errorMessage =
+        typeof err === 'string'
+          ? err
+          : err?.message || err?.error || 'Failed to update settings';
 
       setSnackbar({
         open: true,

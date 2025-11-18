@@ -44,12 +44,25 @@ export interface ICookbookAuthor {
   bio: string;
 }
 
+export interface IExtraPage {
+  pageId: string;
+  title: string;
+  pageType: 'blank' | 'template';
+  templateType?: 'weekly-planner' | 'note-page';
+  section: 'front' | 'back';
+  position: number;
+  createdAt?: Date | string;
+}
+
 export interface ICookbook {
   _id: string;
   author: ICookbookAuthor;
   title: string;
   description?: string;
   books: IBook[];
+
+  // Extra pages (blank pages, templates) added by user
+  extraPages?: IExtraPage[];
 
   // Customization
   theme: CookbookTheme;

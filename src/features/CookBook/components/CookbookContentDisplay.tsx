@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -9,7 +11,7 @@ import {
 } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 import { ICookbook, CookbookLayout } from '../types/cookbook.types';
-import { apiClient } from '../../../shared/services/apiClient.service';
+import { bookService } from '../services/book.service';
 import { getFoodLayouts } from '../../Templates/components/FoodLayoutSections/FoodLayout';
 import { getTableOfContentsLayouts } from '../../Templates/components/TableOfContentsLayoutSections/Index.TableContent';
 import { getIntroPageLayouts } from '../../Templates/components/IntroPageLayoutSections/Index.Intro';
@@ -18,6 +20,8 @@ import { getBackCoverPageLayouts } from '../../Templates/components/BackCoverLay
 import WeeklyPlannerLayout from '../../Templates/components/ExtraPageLayoutSelections/WeeklyPlannerLayout';
 import BackCoverNoteLayout from '../../Templates/components/ExtraPageLayoutSelections/BackCoverNoteLayout';
 import CookbookPageNavigation from './CookbookPageNavigation';
+import { fetchCookbookById } from '../redux/cookbook.async.thunk';
+import { AppDispatch } from '../../../app/stores/stores';
 
 interface ExtraPage {
   id: string;
@@ -46,6 +50,12 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   onNextPage,
   extraPages = [],
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { cookbookId, bookId } = useParams<{ cookbookId?: string; bookId?: string }>();
+
+  // Determine if we're in BookEditor or CookbookEditor context
+  const isBookEditorContext = !!bookId;
+
   const [bookLayout, setBookLayout] = useState<CookbookLayout>(
     CookbookLayout.LayoutOne
   );
@@ -77,29 +87,119 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
 
   // Update local layout when book changes
   React.useEffect(() => {
-    if (currentBook) {
-      setBookLayout(currentBook.layout as CookbookLayout);
+    if (currentBook && typeof currentBook !== 'string') {
+      // New schema: Find the recipe in the book's recipe array
+      const recipePage = (currentBook as any).recipe?.find((r: any) => r.pageId === selectedSection);
+      if (recipePage?.layout) {
+        setBookLayout(recipePage.layout as CookbookLayout);
+      } else if ((currentBook as any).layout) {
+        // Old schema: Use book's layout field (backward compatibility)
+        setBookLayout((currentBook as any).layout as CookbookLayout);
+      }
     }
-  }, [currentBook]);
+  }, [currentBook, selectedSection]);
 
   const handleLayoutChange = async (newLayout: CookbookLayout) => {
-    if (!currentBook || typeof currentBook === 'string') return;
+    if (!currentBook || typeof currentBook === 'string') {
+      console.warn('⚠️ Cannot update layout: No valid book selected');
+      return;
+    }
+
+    console.log('📐 Layout change requested:', {
+      selectedSection,
+      newLayout,
+      currentBookId: currentBook._id,
+      isBookEditor: isBookEditorContext,
+    });
 
     setBookLayout(newLayout);
     setIsSavingLayout(true);
 
     try {
-      await apiClient.put(`/books/${currentBook._id}`, {
-        layout: newLayout,
-      });
-      console.log('Book layout updated successfully');
+      // Check if this is a new schema book (has recipe array)
+      if ((currentBook as any).recipe && (currentBook as any).recipe.length > 0) {
+        // NEW SCHEMA: Find the SPECIFIC recipe page being viewed
+        const recipePage = (currentBook as any).recipe.find(
+          (r: any) => r.pageId === selectedSection
+        );
+
+        if (recipePage) {
+          console.log('📤 [NEW SCHEMA] Saving layout to backend for specific recipe page...', {
+            bookId: currentBook._id,
+            pageId: recipePage.pageId,
+            selectedSection,
+            newLayout,
+          });
+
+          // Update the specific page's layout via book service
+          const updatedBook = await bookService.updatePage(
+            currentBook._id,
+            recipePage.pageId,
+            { layout: newLayout }
+          );
+
+          console.log('✅ Layout saved successfully to database', {
+            returnedBook: updatedBook,
+            updatedRecipeLayout: (updatedBook as any)?.recipe?.find((r: any) => r.pageId === recipePage.pageId)?.layout,
+          });
+
+          if (isBookEditorContext) {
+            // In BookEditor context: trigger book refetch event
+            window.dispatchEvent(new CustomEvent('bookUpdated'));
+            console.log('✅ Book update event dispatched for refetch');
+          } else if (cookbookId) {
+            // In CookbookEditor context: refetch cookbook
+            await dispatch(fetchCookbookById(cookbookId));
+            console.log('✅ Cookbook data refetched, layout change persisted');
+          }
+        } else {
+          console.warn('⚠️ No recipe page found matching selectedSection:', selectedSection);
+          console.warn('Available recipe pages:',
+            (currentBook as any).recipe?.map((r: any) => ({ pageId: r.pageId, layout: r.layout })) || []
+          );
+        }
+      } else {
+        // OLD SCHEMA: Update the book's layout field directly
+        console.log('📤 [OLD SCHEMA] Saving layout to backend...', {
+          bookId: currentBook._id,
+          newLayout,
+        });
+
+        // Update the book's layout field via book service
+        await bookService.updateBook(currentBook._id, {
+          layout: newLayout,
+        });
+
+        console.log('✅ Layout saved successfully, refetching data...');
+
+        if (isBookEditorContext) {
+          // In BookEditor context: trigger book refetch event
+          window.dispatchEvent(new CustomEvent('bookUpdated'));
+          console.log('✅ Book update event dispatched');
+        } else if (cookbookId) {
+          // In CookbookEditor context: refetch cookbook
+          await dispatch(fetchCookbookById(cookbookId));
+          console.log('✅ Cookbook data refetched, layout change persisted');
+        }
+      }
     } catch (error) {
-      console.error('Failed to update book layout:', error);
+      console.error('❌ Failed to update book layout:', error);
+
       // Revert on error
       if (currentBook && typeof currentBook !== 'string') {
-        setBookLayout(
-          (currentBook.layout as CookbookLayout) || CookbookLayout.LayoutOne
-        );
+        let originalLayout = CookbookLayout.LayoutOne;
+
+        if ((currentBook as any).recipe && (currentBook as any).recipe.length > 0) {
+          // New schema
+          const recipePage = (currentBook as any).recipe.find((r: any) => r.pageId === selectedSection);
+          originalLayout = (recipePage?.layout as CookbookLayout) || CookbookLayout.LayoutOne;
+        } else {
+          // Old schema
+          originalLayout = ((currentBook as any).layout as CookbookLayout) || CookbookLayout.LayoutOne;
+        }
+
+        console.log('↩️ Reverting to original layout:', originalLayout);
+        setBookLayout(originalLayout);
       }
     } finally {
       setIsSavingLayout(false);
@@ -115,17 +215,46 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     currentBook
   );
 
+  // Debug logging for recipe section detection
+  React.useEffect(() => {
+    console.log('🔍 Recipe section detection:', {
+      selectedSection,
+      isRecipeSection,
+      currentBook: !!currentBook,
+      currentBookType: typeof currentBook,
+      currentBookId: currentBook && typeof currentBook !== 'string' ? currentBook._id : null,
+      availableBooks: currentCookbook?.books?.map((b: any) =>
+        typeof b === 'string' ? b : b._id
+      ),
+    });
+  }, [selectedSection, isRecipeSection, currentBook, currentCookbook]);
+
   // Get food layouts based on the current book with the updated layout state
   // We need to merge the current book data with the updated layout to show changes in real-time
   const bookWithUpdatedLayout = React.useMemo(() => {
     if (currentBook && typeof currentBook !== 'string') {
-      return {
-        ...currentBook,
-        layout: bookLayout,
-      };
+      if ((currentBook as any).recipe && (currentBook as any).recipe.length > 0) {
+        // New schema: Update the recipe's layout in the recipe array
+        const updatedRecipes = (currentBook as any).recipe.map((r: any) =>
+          r.pageId === selectedSection
+            ? { ...r, layout: bookLayout }
+            : r
+        );
+
+        return {
+          ...currentBook,
+          recipe: updatedRecipes,
+        };
+      } else {
+        // Old schema: Update layout field directly (backward compatibility)
+        return {
+          ...currentBook,
+          layout: bookLayout,
+        } as any;
+      }
     }
     return null;
-  }, [currentBook, bookLayout]);
+  }, [currentBook, bookLayout, selectedSection]);
 
   // Helper to convert number to word (1 -> one, 2 -> two, etc.)
   const numberToWord = (num: number): string => {
@@ -309,9 +438,15 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
               <FormControl size='small' sx={{ minWidth: 200 }}>
                 <Select
                   value={bookLayout}
-                  onChange={(e) =>
-                    handleLayoutChange(e.target.value as CookbookLayout)
-                  }
+                  onChange={(e) => {
+                    console.log('🎛️ Layout dropdown changed:', {
+                      oldValue: bookLayout,
+                      newValue: e.target.value,
+                      selectedSection,
+                      currentBook: !!currentBook,
+                    });
+                    handleLayoutChange(e.target.value as CookbookLayout);
+                  }}
                   disabled={isSavingLayout}
                   sx={{
                     backgroundColor: '#1e1e1e',

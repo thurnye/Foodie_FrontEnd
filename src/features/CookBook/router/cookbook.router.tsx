@@ -1,21 +1,30 @@
 import { RouteObject } from 'react-router-dom';
 import { lazy } from 'react';
 
-const CookbookList = lazy(() =>
-  import('../pages/CookbookList').then((m) => ({ default: m.default }))
+const CookbookCollectionList = lazy(() =>
+  import('../pages/CookbookCollectionList').then((m) => ({
+    default: m.default,
+  }))
+);
+const BookList = lazy(() =>
+  import('../pages/BookList').then((m) => ({ default: m.default }))
 );
 
 const CookbookEditor = lazy(() =>
-  import('../pages/CookbookEditor').then((m) => ({ default: m.default }))
+  import('../pages/BookEditor').then((m) => ({ default: m.default }))
 );
 
 export const cookbookRoutes: RouteObject[] = [
   {
     path: 'cook-book',
-    element: <CookbookList />,
+    element: <CookbookCollectionList />,
   },
   {
-    path: 'cookbook/:cookbookId/edit',
+    path: 'cook-book/collection/:cookbookId',
+    element: <BookList />,
+  },
+  {
+    path: 'cook-book/book/:bookId/edit',
     element: <CookbookEditor />,
   },
 ];

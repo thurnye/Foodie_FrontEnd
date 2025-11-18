@@ -20,7 +20,6 @@ import {
   DragIndicator,
   Edit,
   Restaurant,
-  Notes,
   MoreVert,
 } from '@mui/icons-material';
 import { IBook } from '../types/book.types';
@@ -328,8 +327,28 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
             {recipes.map((book, index) => {
               const bookObj = typeof book === 'string' ? null : book;
               const bookId = typeof book === 'string' ? book : book._id;
-              const recipeName =
-                bookObj?.recipe?.basicInfo?.recipeName || `Recipe ${index + 1}`;
+
+              // Debug: Log book structure
+              if (index === 0 && bookObj) {
+                console.log('📖 Book structure:', {
+                  hasRecipe: !!(bookObj as any).recipe,
+                  recipeLength: (bookObj as any).recipe?.length,
+                  firstRecipe: (bookObj as any).recipe?.[0],
+                  bookObj: bookObj
+                });
+              }
+
+              // Get recipe name - support new schema with recipe array
+              let recipeName = `Recipe ${index + 1}`;
+
+              if ((bookObj as any)?.recipe && Array.isArray((bookObj as any).recipe)) {
+                // New schema: recipe array contains recipe pages
+                const recipeData = (bookObj as any).recipe[0];
+
+                if (recipeData?.basicInfo?.recipeName) {
+                  recipeName = recipeData.basicInfo.recipeName;
+                }
+              }
 
               return (
                 <ListItemButton

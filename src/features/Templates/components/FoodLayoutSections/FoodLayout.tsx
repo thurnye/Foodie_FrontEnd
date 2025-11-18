@@ -23,11 +23,29 @@ export function getFoodLayouts(
 ): React.ReactNode[] {
   const pages: React.ReactNode[] = [];
 
-  // Get layout from IBook or default to layout-one
-  const layoutNumber = data?.layout || 'layout-one';
+  let layoutNumber = 'layout-one';
+  let recipe: IRecipeData | undefined = recipeData;
 
-  // Get recipe data from IBook, provided recipeData, or use first sample book from cookbook
-  let recipe: IRecipeData | undefined = data?.recipe || recipeData;
+  if (data) {
+    // New schema: recipe array contains recipe pages
+    const bookData = data as any;
+    if (bookData.recipe && Array.isArray(bookData.recipe) && bookData.recipe.length > 0) {
+      const recipePage = bookData.recipe[0];
+      if (recipePage?.layout) {
+        layoutNumber = recipePage.layout;
+      }
+      // The recipe page itself contains all the recipe data
+      recipe = recipePage;
+    } else if (bookData.layout) {
+      // Old schema fallback
+      layoutNumber = bookData.layout;
+      if (bookData.recipe) {
+        recipe = Array.isArray(bookData.recipe)
+          ? bookData.recipe[0]
+          : bookData.recipe;
+      }
+    }
+  }
 
   // If no recipe data is available, use sample data as fallback
   if (
@@ -38,13 +56,28 @@ export function getFoodLayouts(
     console.log('Using sample cookbook data as fallback for food layout');
     const firstBook = sampleCookbookData.books[0];
     if (typeof firstBook !== 'string') {
-      recipe = firstBook.recipe;
+      // New schema: recipe array
+      if ((firstBook as any).recipe && Array.isArray((firstBook as any).recipe)) {
+        recipe = (firstBook as any).recipe[0];
+      } else if ((firstBook as any).recipe) {
+        // Fallback to old schema
+        const oldRecipe = (firstBook as any).recipe;
+        recipe = Array.isArray(oldRecipe)
+          ? oldRecipe[0]
+          : oldRecipe;
+      }
     }
   }
 
   // If still no recipe data, return empty array
   if (!recipe) {
-    console.warn(' No recipe data provided to getFoodLayouts');
+    console.warn('⚠️ No recipe data provided to getFoodLayouts', { data, recipeData });
+    return pages;
+  }
+
+  // Validate recipe structure
+  if (!recipe.basicInfo || !recipe.basicInfo.recipeName) {
+    console.error('❌ Invalid recipe structure - missing basicInfo or recipeName', recipe);
     return pages;
   }
 

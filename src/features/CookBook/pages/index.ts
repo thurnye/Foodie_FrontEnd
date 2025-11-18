@@ -1,2 +1,2 @@
-export { default as CookbookList } from './CookbookList';
-export { default as CookbookEditor } from './CookbookEditor';
+export { default as CookbookList } from './BookList';
+export { default as CookbookEditor } from './BookEditor';

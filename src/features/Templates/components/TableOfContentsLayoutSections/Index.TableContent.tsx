@@ -16,11 +16,22 @@ export function getTableOfContentsLayouts(
   const booksToUse = !books ? sampleBooksData : books;
   console.log('booksToUse for TOC', booksToUse);
 
-  // Extract recipe names from books
+  // Extract recipe names from books - support new schema with recipe array
   const recipeNames = booksToUse.books
     .map((book) => {
-      if (typeof book !== 'string' && book.recipe) {
-        return book.recipe.basicInfo.recipeName;
+      if (typeof book !== 'string') {
+        // New schema: recipe array contains recipe pages
+        const bookData = book as any;
+        if (bookData.recipe && Array.isArray(bookData.recipe) && bookData.recipe.length > 0) {
+          const recipePage = bookData.recipe[0];
+          if (recipePage?.basicInfo?.recipeName) {
+            return recipePage.basicInfo.recipeName;
+          }
+        }
+        // Old schema fallback
+        if (bookData.recipe?.basicInfo?.recipeName) {
+          return bookData.recipe.basicInfo.recipeName;
+        }
       }
       return null;
     })

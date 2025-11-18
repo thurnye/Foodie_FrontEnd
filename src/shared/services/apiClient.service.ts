@@ -77,9 +77,9 @@ class ApiClient {
     if (config.data) config.data = sanitizeObject(config.data);
 
     if (process.env.NODE_ENV === 'development') {
-      // console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, {
-      //   data: redactSensitiveData(config.data || {}),
-      // });
+      console.log(`[API] ${config.method?.toUpperCase()} ${config.url}`, {
+        data: redactSensitiveData(config.data || {}),
+      });
     }
 
     return config;
