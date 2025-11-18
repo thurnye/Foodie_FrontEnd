@@ -117,6 +117,7 @@ class BookService {
    * Update page in book
    */
   async updatePage(bookId: string, pageId: string, updates: UpdatePageData): Promise<IBook> {
+    console.log('Updating page with data:', updates);
     const response = await apiClient.put<IBook>(
       `/books/${bookId}/pages/${pageId}`,
       updates

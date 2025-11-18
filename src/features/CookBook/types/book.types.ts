@@ -287,6 +287,7 @@ export interface CreatePageData {
  * Update Page Data
  */
 export interface UpdatePageData {
+  pageType?: PageType; // Flag to indicate which field to update
   position?: number;
   coverData?: ICoverPageData;
   introData?: IIntroPageData;

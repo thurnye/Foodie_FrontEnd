@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 import { ICookbook, CookbookLayout } from '../types/cookbook.types';
+import { PageType } from '../types/book.types';
 import { bookService } from '../services/book.service';
 import { getFoodLayouts } from '../../Templates/components/FoodLayoutSections/FoodLayout';
 import { getTableOfContentsLayouts } from '../../Templates/components/TableOfContentsLayoutSections/Index.TableContent';
@@ -42,8 +43,8 @@ interface CookbookContentDisplayProps {
 }
 
 const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
-  selectedSection,
-  currentCookbook,
+  selectedSection, // 'cover', 'intro', 'toc', 'notes', or recipe ID
+  currentCookbook, // The current cookbook data
   currentPageNumber,
   totalPages,
   onPreviousPage,
@@ -53,8 +54,12 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   const dispatch = useDispatch<AppDispatch>();
   const { cookbookId, bookId } = useParams<{ cookbookId?: string; bookId?: string }>();
 
+  console.log('🍳 CookbookContentDisplay render:', { cookbookId, bookId })
+
   // Determine if we're in BookEditor or CookbookEditor context
   const isBookEditorContext = !!bookId;
+
+  console.log('📝 Editor context:', isBookEditorContext)
 
   const [bookLayout, setBookLayout] = useState<CookbookLayout>(
     CookbookLayout.LayoutOne
@@ -85,6 +90,8 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     return null;
   }, [selectedSection, currentCookbook]);
 
+ 
+
   // Update local layout when book changes
   React.useEffect(() => {
     if (currentBook && typeof currentBook !== 'string') {
@@ -100,90 +107,69 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   }, [currentBook, selectedSection]);
 
   const handleLayoutChange = async (newLayout: CookbookLayout) => {
-    if (!currentBook || typeof currentBook === 'string') {
-      console.warn('⚠️ Cannot update layout: No valid book selected');
-      return;
-    }
-
     console.log('📐 Layout change requested:', {
       selectedSection,
       newLayout,
-      currentBookId: currentBook._id,
+      bookId,
       isBookEditor: isBookEditorContext,
     });
+
+     console.log('📚 Current book for section:', currentBook)
 
     setBookLayout(newLayout);
     setIsSavingLayout(true);
 
     try {
-      // Check if this is a new schema book (has recipe array)
-      if ((currentBook as any).recipe && (currentBook as any).recipe.length > 0) {
-        // NEW SCHEMA: Find the SPECIFIC recipe page being viewed
-        const recipePage = (currentBook as any).recipe.find(
-          (r: any) => r.pageId === selectedSection
-        );
-
-        if (recipePage) {
-          console.log('📤 [NEW SCHEMA] Saving layout to backend for specific recipe page...', {
-            bookId: currentBook._id,
-            pageId: recipePage.pageId,
-            selectedSection,
-            newLayout,
-          });
-
-          // Update the specific page's layout via book service
-          const updatedBook = await bookService.updatePage(
-            currentBook._id,
-            recipePage.pageId,
-            { layout: newLayout }
-          );
-
-          console.log('✅ Layout saved successfully to database', {
-            returnedBook: updatedBook,
-            updatedRecipeLayout: (updatedBook as any)?.recipe?.find((r: any) => r.pageId === recipePage.pageId)?.layout,
-          });
-
-          if (isBookEditorContext) {
-            // In BookEditor context: trigger book refetch event
-            window.dispatchEvent(new CustomEvent('bookUpdated'));
-            console.log('✅ Book update event dispatched for refetch');
-          } else if (cookbookId) {
-            // In CookbookEditor context: refetch cookbook
-            await dispatch(fetchCookbookById(cookbookId));
-            console.log('✅ Cookbook data refetched, layout change persisted');
-          }
+      if (isBookEditorContext && bookId && selectedSection) {
+        // Determine pageType based on selectedSection
+        let pageType: PageType;
+        if (selectedSection === 'cover') {
+          pageType = PageType.COVER;
+        } else if (selectedSection === 'intro') {
+          pageType = PageType.INTRO;
+        } else if (selectedSection === 'toc') {
+          pageType = PageType.TOC;
+        } else if (selectedSection === 'notes') {
+          pageType = PageType.NOTES;
         } else {
-          console.warn('⚠️ No recipe page found matching selectedSection:', selectedSection);
-          console.warn('Available recipe pages:',
-            (currentBook as any).recipe?.map((r: any) => ({ pageId: r.pageId, layout: r.layout })) || []
-          );
+          // Check if it's an extra page
+          const extraPage = extraPages?.find(p => p.id === selectedSection);
+          if (extraPage) {
+            pageType = PageType.EXTRA;
+          } else {
+            // Default to RECIPE for other pages
+            pageType = PageType.RECIPE;
+          }
         }
-      } else {
-        // OLD SCHEMA: Update the book's layout field directly
-        console.log('📤 [OLD SCHEMA] Saving layout to backend...', {
-          bookId: currentBook._id,
+
+        console.log('📤 Saving layout...', {
+          bookId,
+          pageId: selectedSection,
+          pageType,
           newLayout,
         });
 
-        // Update the book's layout field via book service
-        await bookService.updateBook(currentBook._id, {
+        await bookService.updatePage(bookId, selectedSection, {
           layout: newLayout,
+          pageType,
         });
 
-        console.log('✅ Layout saved successfully, refetching data...');
+        console.log('✅ Layout saved successfully');
 
-        if (isBookEditorContext) {
-          // In BookEditor context: trigger book refetch event
-          window.dispatchEvent(new CustomEvent('bookUpdated'));
-          console.log('✅ Book update event dispatched');
-        } else if (cookbookId) {
-          // In CookbookEditor context: refetch cookbook
+        // Trigger refetch
+        window.dispatchEvent(new CustomEvent('bookUpdated'));
+      } else if (currentBook && typeof currentBook !== 'string') {
+        // CookbookEditor context - old logic
+        console.log('📤 Updating in cookbook editor context...');
+
+        await bookService.updateBook(currentBook._id, { layout: newLayout });
+
+        if (cookbookId) {
           await dispatch(fetchCookbookById(cookbookId));
-          console.log('✅ Cookbook data refetched, layout change persisted');
         }
       }
     } catch (error) {
-      console.error('❌ Failed to update book layout:', error);
+      console.error('❌ Failed to update layout:', error);
 
       // Revert on error
       if (currentBook && typeof currentBook !== 'string') {
