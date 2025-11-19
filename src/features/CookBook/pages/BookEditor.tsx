@@ -108,9 +108,9 @@ const BookEditor: React.FC = () => {
     recipeNotes,
   } = useCookbookData(cookbookId);
 
-  // Convert cookbook extra pages to component format
+  // Convert book's extra pages to component format
   const extraPages = React.useMemo(() => {
-    const pages = (currentCookbook?.extraPages || []).map(page => ({
+    const pages = (currentBook?.extraPageData || []).map((page: any) => ({
       id: page.pageId,
       title: page.title,
       type: page.pageType,
@@ -120,11 +120,11 @@ const BookEditor: React.FC = () => {
 
     // Debug: Log extra pages
     if (pages.length > 0) {
-      console.log('📄 Extra pages loaded:', pages);
+      console.log('📄 Extra pages loaded from book:', pages);
     }
 
     return pages;
-  }, [currentCookbook?.extraPages]);
+  }, [currentBook?.extraPageData]);
 
   // Create a modified cookbook object with book recipe pages for content display
   const modifiedCookbook = React.useMemo(() => {
@@ -188,7 +188,7 @@ const BookEditor: React.FC = () => {
   };
 
   const handleAddExtraPage = async (pageType: 'blank' | 'template', section: 'front' | 'back', templateType?: string) => {
-    if (!currentCookbook || !cookbookId) return;
+    if (!currentBook || !bookId) return;
 
     let pageTitle = '';
     if (pageType === 'blank') {
@@ -200,31 +200,27 @@ const BookEditor: React.FC = () => {
     }
 
     try {
-      // Calculate position based on section and existing extra pages
-      const existingPagesInSection = currentCookbook.extraPages?.filter(p => p.section === section) || [];
+      // Calculate position based on section and existing extra pages in the book
+      const existingPagesInSection = currentBook.extraPageData?.filter((p: any) => p.section === section) || [];
       const position = existingPagesInSection.length + 1;
 
-      // Call backend API to add extra page
-      await apiClient.post(`/cookbook/${currentCookbook._id}/extra-pages`, {
-        title: pageTitle,
-        pageType,
-        templateType,
-        section,
+      // Call backend API to add extra page to the book
+      await bookService.addPage(bookId, {
+        pageType: 'extra' as any,
         position,
+        extraPageData: {
+          title: pageTitle,
+          pageType,
+          templateType,
+          section,
+        } as any,
       });
 
-      // Refetch cookbook data to get updated extraPages
-      const result = await dispatch(fetchCookbookById(cookbookId));
+      // Trigger book refetch
+      console.log('📡 Dispatching bookUpdated event after adding extra page');
+      window.dispatchEvent(new CustomEvent('bookUpdated'));
 
-      // Select the newly added page if fetch was successful
-      if (result.payload && typeof result.payload === 'object' && 'extraPages' in result.payload) {
-        const cookbook = result.payload as any;
-        const newPages = cookbook.extraPages?.filter((p: any) => p.section === section) || [];
-        const newPageId = newPages[newPages.length - 1]?.pageId;
-        if (newPageId) {
-          setSelectedSection(newPageId);
-        }
-      }
+      // Note: The book refetch in useEffect will update currentBook and extraPages automatically
     } catch (error) {
       console.error('Error adding extra page:', error);
       alert('Failed to add page. Please try again.');
@@ -356,6 +352,7 @@ const BookEditor: React.FC = () => {
             onPreviousPage={handlePreviousPage}
             onNextPage={handleNextPage}
             extraPages={extraPages}
+            actualBook={currentBook}
           />
 
           {/* Page Navigation Footer */}

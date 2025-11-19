@@ -1,6 +1,7 @@
 import React from 'react';
 import { IRecipe } from '../../../Recipe/types/recipe.types';
 import BackCoverLayoutOne from './BackCoverLayoutOne';
+import BackCoverLayoutTwo from './BackCoverLayoutTwo';
 const data: IRecipe = {
   basicInfo: {
     recipeName: 'Smoked Tofu Salad with Spicy Peanut Sauce',
@@ -300,11 +301,14 @@ export function getBackCoverPageLayouts(layoutNumber: string = 'back-cover-layou
     case 'back-cover-layout-one':
       pages.push(<BackCoverLayoutOne key="backCover" data={data}/>);
       break;
+    case 'back-cover-layout-two':
+      pages.push(<BackCoverLayoutTwo key="backCover" data={data}/>);
+      break;
     default:
       console.warn(`Invalid layout number: ${layoutNumber}`);
       pages.push(<BackCoverLayoutOne key="backCover" data={data}/>);
       break;
   }
 
-  return {backCoverLayoutsCount: 1, backCoverLayouts: pages};
+  return {backCoverLayoutsCount: 2, backCoverLayouts: pages};
 }

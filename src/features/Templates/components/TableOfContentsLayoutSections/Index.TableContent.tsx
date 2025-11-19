@@ -2,6 +2,7 @@ import React from 'react';
 import { IBook } from '../../../CookBook/types/book.types';
 import TableOfContentsLayoutOne from './TableOfContentsLayoutOne';
 import { ICookbook } from '../../../CookBook/types/cookbook.types';
+import TableOfContentsLayoutTwo from './TableOfContentsLayoutTwo';
 const sampleBooksData: ICookbook = require('../../../../shared/data/shared.updatedRecipeFoodieData.json');
 
 
@@ -42,6 +43,10 @@ export function getTableOfContentsLayouts(
       // Call the layout and spread its returned pages (Array<ReactNode>)
       pages.push(...TableOfContentsLayoutOne(recipeNames));
       break;
+    case 'toc-layout-two':
+      // Call the layout and spread its returned pages (Array<ReactNode>)
+      pages.push(...TableOfContentsLayoutTwo(recipeNames));
+      break;
 
     default:
       console.warn(` Invalid table of contents layout: ${layoutNumber}`);
@@ -49,5 +54,5 @@ export function getTableOfContentsLayouts(
       break;
   }
 
-  return {tocLayoutsCount: 1, tableOfContentsLayouts: pages};
+  return {tocLayoutsCount: 2, tableOfContentsLayouts: pages};
 }

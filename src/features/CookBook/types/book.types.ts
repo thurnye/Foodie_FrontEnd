@@ -48,6 +48,32 @@ export interface IIntroPageData {
 }
 
 /**
+ * Table of Contents Page Data
+ */
+export interface ITocPageData {
+  pageId: string;
+  pageType: PageType;
+  position: number;
+  customContent?: string;
+  layout: string;
+}
+
+/**
+ * Back Cover Page Data
+ */
+export interface IBackCoverPageData {
+  pageId: string;
+  pageType: PageType;
+  position: number;
+  title?: string;
+  subtitle?: string;
+  backgroundImage?: string;
+  backgroundColor?: string;
+  customText?: string;
+  layout: string;
+}
+
+/**
  * Extra Page Data
  */
 export interface IExtraPageData {
@@ -224,11 +250,17 @@ export interface IBook {
   // Introduction page data
   introData?: IIntroPageData;
 
+  // Table of Contents page data
+  tocData?: ITocPageData;
+
+  // Back Cover page data
+  backCoverData?: IBackCoverPageData;
+
   // Recipe pages array
   recipe?: IRecipePage[];
 
-  // Extra page data
-  extraPageData?: IExtraPageData;
+  // Extra pages array (blank pages, templates, etc.)
+  extraPageData?: IExtraPageData[];
 
   // Edited sections content (for backward compatibility, can be deprecated later)
   sections?: IBookSection[];
@@ -278,6 +310,8 @@ export interface CreatePageData {
   position: number;
   coverData?: ICoverPageData;
   introData?: IIntroPageData;
+  tocData?: ITocPageData;
+  backCoverData?: IBackCoverPageData;
   recipe?: IRecipeData;
   extraPageData?: IExtraPageData;
   layout?: string;
@@ -291,6 +325,8 @@ export interface UpdatePageData {
   position?: number;
   coverData?: ICoverPageData;
   introData?: IIntroPageData;
+  tocData?: ITocPageData;
+  backCoverData?: IBackCoverPageData;
   recipe?: IRecipeData;
   extraPageData?: IExtraPageData;
   layout?: string;

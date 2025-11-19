@@ -11,6 +11,7 @@ import { CoverPageLayoutSeven } from './CoverPageLayoutSeven';
 // Function to return selected layout(s) based on layout number
 export function getCoverPageLayouts(layoutNumber: string = 'cover-layout-one'): {coverLayoutsCount:number, coverLayouts: React.ReactNode[]} {
   const pages: React.ReactNode[] = [];
+  console.log('Generating cover page layouts for layout number:', layoutNumber);
 
   switch (layoutNumber) {
     case 'cover-layout-one':

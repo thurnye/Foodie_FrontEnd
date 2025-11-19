@@ -5,6 +5,7 @@ import {
   ICookbook,
   ICookbookAuthor,
 } from '../../../CookBook/types/cookbook.types';
+import IntroPageLayoutTwo from './IntroPageLayoutTwo';
 
 const SampleData: ICookbookAuthor = {
   _id: '612296fc86231100a0631b22',
@@ -29,11 +30,14 @@ export function getIntroPageLayouts(
     case 'intro-layout-one':
       pages.push(<IntroPageLayoutOne key='welcome' author={cookbookAuthor} />);
       break;
+    case 'intro-layout-two':
+      pages.push(<IntroPageLayoutTwo key='welcome' author={cookbookAuthor} />);
+      break;
     default:
       console.warn(`Invalid layout number: ${layoutNumber}`);
       pages.push(<IntroPageLayoutOne key='welcome' author={cookbookAuthor} />);
       break;
   }
 
-  return {introLayoutsCount: 1, introLayouts: pages};
+  return {introLayoutsCount: 2, introLayouts: pages};
 }
