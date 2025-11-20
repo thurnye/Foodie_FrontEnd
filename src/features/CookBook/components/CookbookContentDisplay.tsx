@@ -15,8 +15,7 @@ import { getTableOfContentsLayouts } from '../../Templates/components/TableOfCon
 import { getIntroPageLayouts } from '../../Templates/components/IntroPageLayoutSections/Index.Intro';
 import { getCoverPageLayouts } from '../../Templates/components/CoverPageLayoutSections/Index.CoverPage';
 import { getBackCoverPageLayouts } from '../../Templates/components/BackCoverLayoutSections/index.BackCover';
-import WeeklyPlannerLayout from '../../Templates/components/ExtraPageLayoutSelections/WeeklyPlannerLayout';
-import BackCoverNoteLayout from '../../Templates/components/ExtraPageLayoutSelections/BackCoverNoteLayout';
+import { getExtraPageLayout } from '../../Templates/components/ExtraPageLayoutSelections/Index.ExtraLayout';
 import CookbookPageNavigation from './CookbookPageNavigation';
 import { useLayoutChange } from '../hooks/useLayoutChange';
 
@@ -664,6 +663,14 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
         {/* Extra Pages */}
         {extraPages.map((page) => {
           if (selectedSection === page.id) {
+            // Get layout from the extra page layout function
+            const extraPageData = actualBook?.extraPageData?.find((p: any) => p.pageId === page.id);
+            const { layout } = getExtraPageLayout(
+              page.type,
+              page.templateType as 'weekly-planner' | 'note-page' | undefined,
+              extraPageData?.paperSize // Pass DB paper size if available
+            );
+
             return (
               <Box key={page.id}>
                 <Paper
@@ -677,25 +684,7 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
                   p: 0,
                   }}
                 >
-                  {page.type === 'blank' ? (
-                    // Blank white page
-                    <Box
-                      sx={{
-                        width: '100%',
-                        height: 1123,
-                        backgroundColor: '#fff',
-                        display: 'flex',
-                        p:2
-                      }}
-                    >
-                      <Box sx={{width: 798, borderRight:'2px dotted #2d2d2d', p: 3}}></Box>
-                      <Box sx={{ p: 3}} ></Box>
-                    </Box>
-                  ) : page.templateType === 'weekly-planner' ? (
-                    <WeeklyPlannerLayout />
-                  ) : page.templateType === 'note-page' ? (
-                    <BackCoverNoteLayout />
-                  ) : null}
+                  {layout}
                 </Paper>
               </Box>
             );

@@ -203,6 +203,13 @@ const BookEditor: React.FC = () => {
     }
 
     try {
+      // Get default paper size from layout function
+      const { getExtraPageLayout } = await import('../../Templates/components/ExtraPageLayoutSelections/Index.ExtraLayout');
+      const { paperSize } = getExtraPageLayout(
+        pageType,
+        templateType as 'weekly-planner' | 'note-page' | undefined
+      );
+
       // Calculate position based on section and existing extra pages in the book
       const existingPagesInSection = currentBook.extraPageData?.filter((p: any) => p.section === section) || [];
       const position = existingPagesInSection.length + 1;
@@ -216,7 +223,7 @@ const BookEditor: React.FC = () => {
           pageType,
           templateType,
           section,
-          paperSize: 'A3', // Default paper size for extra pages
+          paperSize, // Use default paper size from layout function
         } as any,
       });
 

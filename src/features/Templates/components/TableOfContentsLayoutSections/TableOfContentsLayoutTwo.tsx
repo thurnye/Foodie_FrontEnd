@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, Card, CardMedia } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 // split records into chunks for table of contents
 function splitRecipes(recipeData: string[]) {
@@ -20,18 +20,19 @@ function splitRecipes(recipeData: string[]) {
   return result;
 }
 
-// Return pages as an array instead of JSX directly
 export default function TableOfContentsLayoutTwo(
   recipeNames: string[]
 ): React.ReactNode[] {
-  const tableOfContentsData = splitRecipes(recipeNames);
+  const tableOfContentsData: Record<string, string[]> =
+    splitRecipes(recipeNames);
 
   const pages: React.ReactNode[] = [];
-  console.log('recipeNames', recipeNames);
 
   Object.entries(tableOfContentsData).forEach(
     ([partKey, partItems], partIndex) => {
-      const startNumber = partIndex === 0 ? 1 : 9 + (partIndex - 1) * 10 + 1;
+      /** Start number for this page */
+      const startNumber =
+        partIndex === 0 ? 1 : 9 + (partIndex - 1) * 10 + 1;
 
       pages.push(
         <Box
@@ -53,7 +54,7 @@ export default function TableOfContentsLayoutTwo(
               display: 'flex',
             }}
           >
-            {/* Left page - Large overhead food photo */}
+            {/* Left page - Large image */}
             <Box
               sx={{
                 width: '50%',
@@ -62,9 +63,9 @@ export default function TableOfContentsLayoutTwo(
               }}
             >
               <Box
-                component='img'
-                src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=1200&fit=crop'
-                alt='Overhead food spread'
+                component="img"
+                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&h=1200&fit=crop"
+                alt="Overhead food spread"
                 sx={{
                   width: '100%',
                   height: '100%',
@@ -81,10 +82,11 @@ export default function TableOfContentsLayoutTwo(
                 bgcolor: '#5C8D89',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
+                justifyContent: 'flex-start',
                 p: 8,
               }}
             >
+              {partIndex < 1 && (
               <Typography
                 sx={{
                   fontFamily: "'Arial', sans-serif",
@@ -97,61 +99,64 @@ export default function TableOfContentsLayoutTwo(
               >
                 Table of Content
               </Typography>
+              )}
 
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                {[
-                  { num: '01', title: 'Cookbook Template', page: '04' },
-                  { num: '02', title: 'Cooking Quote', page: '06' },
-                  { num: '03', title: 'Cookbook Sidebar', page: '08' },
-                  { num: '04', title: 'Full Page Recipe', page: '10' },
-                  { num: '05', title: 'Healthy', page: '12' },
-                  { num: '06', title: 'Cookbook Fastfood', page: '14' },
-                  { num: '07', title: 'Cookbook Sidebar Menu', page: '16' },
-                ].map((item) => (
-                  <Box
-                    key={item.num}
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: 3,
-                      borderBottom: '1px solid rgba(255,255,255,0.3)',
-                      pb: 2,
-                    }}
-                  >
-                    <Typography
+                {partItems.map((item: string, index: number) => {
+                  const itemNumber = startNumber + index; // continuous numbering
+                  const itemPage = itemNumber + 3; // your logic: starts at page 4
+
+                  return (
+                    <Box
+                      key={`${item}-${index}`}
                       sx={{
-                        fontFamily: "'Arial', sans-serif",
-                        fontSize: '2rem',
-                        fontWeight: 700,
-                        color: '#fff',
-                        minWidth: '60px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 3,
+                        borderBottom: '1px solid rgba(255,255,255,0.3)',
+                        pb: 2,
                       }}
                     >
-                      {item.num}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontFamily: "'Arial', sans-serif",
-                        fontSize: '1.4rem',
-                        fontWeight: 400,
-                        color: '#fff',
-                        flex: 1,
-                      }}
-                    >
-                      {item.title}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontFamily: "'Arial', sans-serif",
-                        fontSize: '1.2rem',
-                        fontWeight: 400,
-                        color: 'rgba(255,255,255,0.8)',
-                      }}
-                    >
-                      {item.page}
-                    </Typography>
-                  </Box>
-                ))}
+                      {/* Number */}
+                      <Typography
+                        sx={{
+                          fontFamily: "'Arial', sans-serif",
+                          fontSize: '2rem',
+                          fontWeight: 700,
+                          color: '#fff',
+                          minWidth: '60px',
+                        }}
+                      >
+                        {itemNumber.toString().padStart(2, '0')}
+                      </Typography>
+
+                      {/* Title */}
+                      <Typography
+                        sx={{
+                          fontFamily: "'Arial', sans-serif",
+                          fontSize: '1.4rem',
+                          fontWeight: 400,
+                          color: '#fff',
+                          flex: 1,
+                        }}
+                      >
+                        {item}
+                      </Typography>
+
+                      {/* Page */}
+                      <Typography
+                        sx={{
+                          fontFamily: "'Arial', sans-serif",
+                          fontSize: '1.2rem',
+                          fontWeight: 400,
+                          color: 'rgba(255,255,255,0.8)',
+                        }}
+                      >
+                        {itemPage}
+                      </Typography>
+                    </Box>
+                  );
+                })}
               </Box>
             </Box>
           </Box>

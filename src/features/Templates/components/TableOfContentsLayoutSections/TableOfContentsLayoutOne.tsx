@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Typography, Card, CardMedia } from '@mui/material';
+import { PageLayoutFormat } from '../../../CookBook/types/book.types';
 
 
 // split records into chunks for table of contents
@@ -24,11 +25,20 @@ function splitRecipes(recipeData: string[]) {
 
 
 // Return pages as an array instead of JSX directly
-export default function TableOfContentsLayoutOne(recipeNames: string[]): React.ReactNode[] {
+export default function TableOfContentsLayoutOne(
+  recipeNames: string[],
+  paperSize: PageLayoutFormat = PageLayoutFormat.A4
+): React.ReactNode[] {
   const tableOfContentsData = splitRecipes(recipeNames);
 
   const pages: React.ReactNode[] = [];
-  console.log('recipeNames', recipeNames);
+
+  // Determine dimensions based on paper size
+  // A3 = landscape (420mm x 297mm), A4 = portrait (210mm x 297mm)
+  const isA3 = paperSize === PageLayoutFormat.A3;
+  const dimensions = isA3
+    ? { width: 1588, height: 1123 } // A3 landscape
+    : { width: 794, height: 1123 }; // A4 portrait
 
   Object.entries(tableOfContentsData).forEach(([partKey, partItems], partIndex) => {
     const startNumber = partIndex === 0 ? 1 : 9 + (partIndex - 1) * 10 + 1;
@@ -37,7 +47,8 @@ export default function TableOfContentsLayoutOne(recipeNames: string[]): React.R
       <Box
         key={`tableOfContent-${partIndex + 1}`}
         sx={{
-          width: 794, height: 1123 ,
+          width: dimensions.width,
+          height: dimensions.height,
           position: 'relative',
         }}
       >

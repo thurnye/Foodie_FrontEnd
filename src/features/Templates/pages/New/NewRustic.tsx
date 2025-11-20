@@ -6,7 +6,7 @@ import { getFoodLayouts } from '../../components/FoodLayoutSections/FoodLayout';
 import { getCoverPageLayouts } from '../../components/CoverPageLayoutSections/Index.CoverPage';
 import { getTableOfContentsLayouts } from '../../components/TableOfContentsLayoutSections/Index.TableContent';
 import { getIntroPageLayouts } from '../../components/IntroPageLayoutSections/Index.Intro';
-import { getExtraPageLayouts } from '../../components/ExtraPageLayoutSelections/Index.ExtraLayout';
+import { getExtraPageLayout } from '../../components/ExtraPageLayoutSelections/Index.ExtraLayout';
 import {
   BookStatus,
   IBook,
@@ -614,12 +614,16 @@ const getRecipeSections = (recipe: IRecipe) => {
     );
   });
   // --- extra Layout Pages ---
-  const extraLayouts = getExtraPageLayouts();
-  extraLayouts.forEach((layout, index) => {
-    sections.push(
-      <React.Fragment key={`food-layout-${index + 1}`}>{layout}</React.Fragment>
-    );
-  });
+  // Display both weekly planner and note page templates
+  const { layout: weeklyPlannerLayout } = getExtraPageLayout('template', 'weekly-planner');
+  const { layout: notePageLayout } = getExtraPageLayout('template', 'note-page');
+
+  sections.push(
+    <React.Fragment key="weekly-planner">{weeklyPlannerLayout}</React.Fragment>
+  );
+  sections.push(
+    <React.Fragment key="note-page">{notePageLayout}</React.Fragment>
+  );
   // --- Back Cover Page ---
   const { backCoverLayouts } = getBackCoverPageLayouts();
   backCoverLayouts.forEach((layout, index) => {

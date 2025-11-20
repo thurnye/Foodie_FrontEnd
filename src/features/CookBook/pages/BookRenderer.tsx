@@ -8,8 +8,7 @@ import { getIntroPageLayouts } from '../../Templates/components/IntroPageLayoutS
 import { getTableOfContentsLayouts } from '../../Templates/components/TableOfContentsLayoutSections/Index.TableContent';
 import { getBackCoverPageLayouts } from '../../Templates/components/BackCoverLayoutSections/index.BackCover';
 import { getFoodLayouts } from '../../Templates/components/FoodLayoutSections/FoodLayout';
-import WeeklyPlannerLayout from '../../Templates/components/ExtraPageLayoutSelections/WeeklyPlannerLayout';
-import BackCoverNoteLayout from '../../Templates/components/ExtraPageLayoutSelections/BackCoverNoteLayout';
+import { getExtraPageLayout } from '../../Templates/components/ExtraPageLayoutSelections/Index.ExtraLayout';
 
 /**
  * BookRenderer Component
@@ -28,6 +27,8 @@ const BookRenderer: React.FC = () => {
   const bookId = searchParams.get('bookId');
   const pageId = searchParams.get('pageId');
   const pageType = searchParams.get('pageType');
+  const pageIndexParam = searchParams.get('pageIndex');
+  const pageIndex = pageIndexParam ? parseInt(pageIndexParam, 10) : 0;
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -168,6 +169,15 @@ const BookRenderer: React.FC = () => {
           tocLayout,
           book.tocData.paperSize // Pass DB paper size
         );
+
+        // Render only the specific TOC page requested by pageIndex
+        // Backend will call this multiple times for multi-page TOCs
+        const tocPageToRender = tableOfContentsLayouts[pageIndex];
+
+        if (!tocPageToRender) {
+          return <Alert severity="error">TOC page {pageIndex} not found</Alert>;
+        }
+
         return (
           <Box sx={{
             width: '100% !important',
@@ -177,7 +187,7 @@ const BookRenderer: React.FC = () => {
               maxWidth: '100% !important',
             }
           }}>
-            {tableOfContentsLayouts[0]}
+            {tocPageToRender}
           </Box>
         );
 
@@ -228,48 +238,23 @@ const BookRenderer: React.FC = () => {
         const extraPage = book.extraPageData?.find((p: any) => p.pageId === pageId);
         if (!extraPage) return <Alert severity="error">Extra page not found</Alert>;
 
-        // Render appropriate template based on page type
-        if (extraPage.pageType === 'blank') {
-          return (
-            <Box
-              sx={{
-                width: '100%',
-                height: '297mm',
-                backgroundColor: '#fff',
-                display: 'flex',
-                p: 2,
-              }}
-            >
-              <Box sx={{ width: '50%', borderRight: '2px dotted #2d2d2d', p: 3 }}></Box>
-              <Box sx={{ width: '50%', p: 3 }}></Box>
-            </Box>
-          );
-        } else if (extraPage.templateType === 'weekly-planner') {
-          return  <Box sx={{
-            width: '100% !important',
-            height: '100%',
-            overflow: 'hidden',
-            '& *': {
-              maxWidth: '100% !important',
-            }
-          }}><WeeklyPlannerLayout /></Box>;
-        } else if (extraPage.templateType === 'note-page') {
-          return <Box sx={{
-            width: '100% !important',
-            height: '100%',
-            overflow: 'hidden',
-            '& *': {
-              maxWidth: '100% !important',
-            }
-          }}><BackCoverNoteLayout /></Box>;
-        }
+        // Get layout from the extra page layout function
+        const { layout } = getExtraPageLayout(
+          extraPage.pageType,
+          extraPage.templateType as 'weekly-planner' | 'note-page' | undefined,
+          extraPage.paperSize // Pass DB paper size
+        );
 
         return (
-          <Box sx={{ p: 8, minHeight: '297mm' }}>
-            <Typography variant="h2" sx={{ mb: 4, fontSize: '2.5rem', fontWeight: 'bold' }}>
-              {extraPage.title}
-            </Typography>
-            <div dangerouslySetInnerHTML={{ __html: extraPage.content || '<p>This is a custom page.</p>' }} />
+          <Box sx={{
+            width: '100% !important',
+            height: '100%',
+            overflow: 'hidden',
+            '& *': {
+              maxWidth: '100% !important',
+            }
+          }}>
+            {layout}
           </Box>
         );
       }
@@ -296,11 +281,20 @@ const BookRenderer: React.FC = () => {
         return book.introData?.paperSize === 'A3'
           ? { width: '297mm', height: '420mm' } // A3 portrait
           : { width: '210mm', height: '297mm' }; // A4 portrait
-      case 'toc':
-        // TOC pages are portrait
-        return book.tocData?.paperSize === 'A3'
-          ? { width: '297mm', height: '420mm' } // A3 portrait
-          : { width: '210mm', height: '297mm' }; // A4 portrait
+      case 'toc': {
+        // TOC orientation depends on paper size (same as recipe pages)
+        // A3 = landscape, A4 = portrait
+        const paperSize = book.tocData?.paperSize || 'A4';
+        const isLandscape = paperSize === 'A3';
+
+        if (isLandscape) {
+          // A3 landscape
+          return { width: '420mm', height: '297mm' };
+        } else {
+          // A4 portrait
+          return { width: '210mm', height: '297mm' };
+        }
+      }
       case 'back-cover':
         // Back cover pages are portrait
         return book.backCoverData?.paperSize === 'A3'

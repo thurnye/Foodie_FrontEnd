@@ -83,6 +83,7 @@ export default function WeeklyPlannerLayout() {
                sx={{
                  mt: 4,
                  pt: 3,
+                 mb: 4,
                  borderTop: '2px solid #8B7355',
                  textAlign: 'center',
                }}
@@ -150,7 +151,7 @@ export default function WeeklyPlannerLayout() {
      
              {/* Lined paper effect */}
              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-               {Array.from({ length: 35 }).map((_, idx) => (
+               {Array.from({ length: 33 }).map((_, idx) => (
                  <Box
                    key={idx}
                    sx={{
@@ -181,7 +182,7 @@ export default function WeeklyPlannerLayout() {
              <Box
                sx={{
                  position: 'absolute',
-                 bottom: 60,
+                 bottom: 70,
                  left: 0,
                  right: 0,
                  textAlign: 'center',
