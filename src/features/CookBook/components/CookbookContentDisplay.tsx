@@ -164,7 +164,7 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     setCoverLayout(newLayout);
 
     try {
-      await handleLayoutChange(newLayout as CookbookLayout);
+      await handleLayoutChange(newLayout as CookbookLayout, coverPaperSize);
     } catch (error) {
       console.error('Failed to update cover layout:', error);
       setCoverLayout(oldLayout);
@@ -177,7 +177,14 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     setIntroLayout(newLayout);
 
     try {
-      await handleLayoutChange(newLayout as CookbookLayout);
+      // Get the default paper size for the new layout (without passing DB override)
+      const { paperSize: newPaperSize } = getIntroPageLayouts(
+        currentCookbook,
+        newLayout
+        // Don't pass actualBook?.introData?.paperSize - we want the default for this layout
+      );
+
+      await handleLayoutChange(newLayout as CookbookLayout, newPaperSize);
     } catch (error) {
       console.error('Failed to update intro layout:', error);
       setIntroLayout(oldLayout);
@@ -190,7 +197,14 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     setTocLayout(newLayout);
 
     try {
-      await handleLayoutChange(newLayout as CookbookLayout);
+      // Get the default paper size for the new layout (without passing DB override)
+      const { paperSize: newPaperSize } = getTableOfContentsLayouts(
+        currentCookbook,
+        newLayout
+        // Don't pass actualBook?.tocData?.paperSize - we want the default for this layout
+      );
+
+      await handleLayoutChange(newLayout as CookbookLayout, newPaperSize);
     } catch (error) {
       console.error('Failed to update TOC layout:', error);
       setTocLayout(oldLayout);
@@ -203,7 +217,7 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     setBackCoverLayout(newLayout);
 
     try {
-      await handleLayoutChange(newLayout as CookbookLayout);
+      await handleLayoutChange(newLayout as CookbookLayout, backCoverPaperSize);
     } catch (error) {
       console.error('Failed to update back cover layout:', error);
       setBackCoverLayout(oldLayout);
@@ -292,22 +306,26 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
   };
 
   // --- Cover Layout Pages ---
-  const { coverLayoutsCount, coverLayouts } = getCoverPageLayouts(coverLayout);
+  const { coverLayoutsCount, coverLayouts, paperSize: coverPaperSize } = getCoverPageLayouts(coverLayout);
 
   // --- Welcome Layout Pages ---
-  const { introLayoutsCount, introLayouts } = getIntroPageLayouts(
+  // Pass database paper size from actualBook if available
+  const { introLayoutsCount, introLayouts, paperSize: introPaperSize } = getIntroPageLayouts(
     currentCookbook,
-    introLayout
+    introLayout,
+    actualBook?.introData?.paperSize // Pass DB paper size
   );
 
   // Table of Contents layouts
-  const { tocLayoutsCount, tableOfContentsLayouts } = getTableOfContentsLayouts(
+  // Pass database paper size from actualBook if available
+  const { tocLayoutsCount, tableOfContentsLayouts, paperSize: tocPaperSize } = getTableOfContentsLayouts(
     currentCookbook,
-    tocLayout
+    tocLayout,
+    actualBook?.tocData?.paperSize // Pass DB paper size
   );
 
   // --- Back Cover Layout Pages ---
-  const { backCoverLayoutsCount, backCoverLayouts } =
+  const { backCoverLayoutsCount, backCoverLayouts, paperSize: backCoverPaperSize } =
     getBackCoverPageLayouts(backCoverLayout);
 
   // Food layouts

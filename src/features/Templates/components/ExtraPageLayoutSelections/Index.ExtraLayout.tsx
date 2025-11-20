@@ -12,17 +12,17 @@ export function getExtraPageLayouts(): React.ReactNode[] {
 
   switch (layoutNumber) {
     case 1:
-      pages.push(<WeeklyPlannerLayout key='food-layout-weekly-planner' />);
+      pages.push(<WeeklyPlannerLayout key='food-layout-weekly-planner' />); //format will be A3
       // pages.push(<BackCoverNoteLayout key='food-layout-note' />);
       break;
     case 2:
       // pages.push(<WeeklyPlannerLayout key='food-layout-weekly-planner' />);
-      pages.push(<BackCoverNoteLayout key='food-layout-note' />);
+      pages.push(<BackCoverNoteLayout key='food-layout-note' />); //format will be A3
       break;
     default:
       console.warn(`Invalid layout number: ${layoutNumber}`);
-      pages.push(<WeeklyPlannerLayout key='food-layout-weekly-planner' />);
-      pages.push(<BackCoverNoteLayout key='food-layout-note' />);
+      pages.push(<WeeklyPlannerLayout key='food-layout-weekly-planner' />); //format will be A3
+      pages.push(<BackCoverNoteLayout key='food-layout-note' />); //format will be A4
       break;
   }
 

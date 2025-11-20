@@ -70,6 +70,14 @@ class BookService {
   }
 
   /**
+   * Get book data for PDF rendering (unauthenticated endpoint)
+   */
+  async getBookForRendering(bookId: string): Promise<IBook> {
+    const response = await apiClient.get<IBook>(`/books/${bookId}/render-data`);
+    return response;
+  }
+
+  /**
    * Get user's books
    */
   async getMyBooks(params?: {

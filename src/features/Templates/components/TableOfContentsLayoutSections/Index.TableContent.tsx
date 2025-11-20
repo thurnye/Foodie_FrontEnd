@@ -1,5 +1,5 @@
 import React from 'react';
-import { IBook } from '../../../CookBook/types/book.types';
+import { IBook, PageLayoutFormat } from '../../../CookBook/types/book.types';
 import TableOfContentsLayoutOne from './TableOfContentsLayoutOne';
 import { ICookbook } from '../../../CookBook/types/cookbook.types';
 import TableOfContentsLayoutTwo from './TableOfContentsLayoutTwo';
@@ -9,9 +9,13 @@ const sampleBooksData: ICookbook = require('../../../../shared/data/shared.updat
 // Dynamically return selected TOC layout(s)
 export function getTableOfContentsLayouts(
   books: ICookbook | null,
-  layoutNumber: string = 'toc-layout-one'
-): {tocLayoutsCount: number, tableOfContentsLayouts: React.ReactNode[]} {
+  layoutNumber: string = 'toc-layout-one',
+  dbPaperSize?: PageLayoutFormat // Optional paper size from database
+): {tocLayoutsCount: number, tableOfContentsLayouts: React.ReactNode[], paperSize: PageLayoutFormat} {
   const pages: React.ReactNode[] = [];
+
+  // Default paper sizes for each layout (used as fallback if dbPaperSize is not provided)
+  let defaultPaperSize: PageLayoutFormat = PageLayoutFormat.A4;
 
   // Use sample data as fallback if no books provided
   const booksToUse = !books ? sampleBooksData : books;
@@ -42,17 +46,23 @@ export function getTableOfContentsLayouts(
     case 'toc-layout-one':
       // Call the layout and spread its returned pages (Array<ReactNode>)
       pages.push(...TableOfContentsLayoutOne(recipeNames));
+      defaultPaperSize = PageLayoutFormat.A4;
       break;
     case 'toc-layout-two':
       // Call the layout and spread its returned pages (Array<ReactNode>)
       pages.push(...TableOfContentsLayoutTwo(recipeNames));
+      defaultPaperSize = PageLayoutFormat.A3;
       break;
 
     default:
       console.warn(` Invalid table of contents layout: ${layoutNumber}`);
       pages.push(...TableOfContentsLayoutOne(recipeNames));
+      defaultPaperSize = PageLayoutFormat.A4;
       break;
   }
 
-  return {tocLayoutsCount: 2, tableOfContentsLayouts: pages};
+  // Use database paper size if provided, otherwise fall back to default
+  const paperSize = dbPaperSize || defaultPaperSize;
+
+  return {tocLayoutsCount: 2, tableOfContentsLayouts: pages, paperSize};
 }

@@ -10,9 +10,13 @@ import { recipesRoutes } from '../../features/Recipe/router/recipe.router';
 import { homeRoutes } from '../../features/Home/router/home.router';
 import { dashboardRoutes } from '../../features/Dashboard/router/dashboard.router';
 // import { donationsRoutes } from '../../features/donation/router/donation.router';
+import BookRenderer from '../../features/CookBook/pages/BookRenderer';
 
 export default function AppRoutes() {
   const routes = useRoutes([
+    // Book renderer route - public route for PDF generation
+    { path: '/book-renderer', element: <BookRenderer /> },
+
     // Public routes (auth pages - redirect to home if authenticated)
     ...authRoutes.map((route) => ({
       ...route,

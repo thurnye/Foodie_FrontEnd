@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Alert,
   Snackbar,
+  Button,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -165,8 +166,10 @@ const BookEditor: React.FC = () => {
     setSnackbar,
     isSaving,
     isGenerating,
+    isGeneratingPdf,
     handleSave,
     handleGenerate,
+    handleGeneratePdf,
     handleAddRecipes,
     handleSettingsSave,
   } = useCookbookActions({
@@ -277,13 +280,13 @@ const BookEditor: React.FC = () => {
       <CookbookHeader
         currentCookbook={currentCookbook}
         isSaving={isSaving}
-        isGenerating={isGenerating}
+        isGenerating={isGeneratingPdf}
         sidebarOpen={sidebarOpen}
         onBack={() => navigate(`/dashboard/cook-book/collection/${cookbookId}`)}
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         onSettingsOpen={() => setSettingsOpen(true)}
         onSave={handleSave}
-        onGenerate={handleGenerate}
+        onGenerate={handleGeneratePdf}
         onPreview={handlePreview}
         onExport={handleExport}
       />
@@ -383,7 +386,7 @@ const BookEditor: React.FC = () => {
       {/* Snackbar for notifications */}
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={4000}
+        autoHideDuration={snackbar.action ? 10000 : 4000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
@@ -391,6 +394,20 @@ const BookEditor: React.FC = () => {
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
           sx={{ width: '100%' }}
+          action={
+            snackbar.action ? (
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  snackbar.action?.onClick();
+                  setSnackbar({ ...snackbar, open: false });
+                }}
+              >
+                {snackbar.action.label}
+              </Button>
+            ) : undefined
+          }
         >
           {snackbar.message}
         </Alert>

@@ -21,6 +21,14 @@ export enum PageType {
 }
 
 /**
+ * Page Layout Format Enum (Paper Size)
+ */
+export enum PageLayoutFormat {
+  A3 = 'A3',
+  A4 = 'A4',
+}
+
+/**
  * Cover/Back Cover Page Data
  */
 export interface ICoverPageData {
@@ -33,6 +41,7 @@ export interface ICoverPageData {
   backgroundColor?: string;
   customText?: string;
   layout: string;
+  paperSize?: PageLayoutFormat; // Paper size: 'A3' or 'A4'
 }
 
 /**
@@ -45,6 +54,7 @@ export interface IIntroPageData {
   backgroundImage?: string;
   customContent?: string;
   layout: string;
+  paperSize?: PageLayoutFormat; // Paper size: 'A3' or 'A4'
 }
 
 /**
@@ -56,6 +66,7 @@ export interface ITocPageData {
   position: number;
   customContent?: string;
   layout: string;
+  paperSize?: PageLayoutFormat; // Paper size: 'A3' or 'A4'
 }
 
 /**
@@ -71,6 +82,7 @@ export interface IBackCoverPageData {
   backgroundColor?: string;
   customText?: string;
   layout: string;
+  paperSize?: PageLayoutFormat; // Paper size: 'A3' or 'A4'
 }
 
 /**
@@ -84,6 +96,7 @@ export interface IExtraPageData {
   templateType?: string;
   content?: string;
   layout?: string;
+  paperSize?: PageLayoutFormat; // Paper size: 'A3' or 'A4'
 }
 
 /**
@@ -175,6 +188,7 @@ export interface IRecipePage {
   author: IRecipeAuthor;
   order: number;
   layout: string;
+  paperSize: PageLayoutFormat; // Default: A3 (not updatable)
 }
 
 /**
@@ -265,6 +279,9 @@ export interface IBook {
   // Edited sections content (for backward compatibility, can be deprecated later)
   sections?: IBookSection[];
 
+  // PDF URL - URL to the generated PDF file
+  bookUrl?: string;
+
   // Metadata
   status: BookStatus;
   isPublic: boolean;
@@ -330,5 +347,6 @@ export interface UpdatePageData {
   recipe?: IRecipeData;
   extraPageData?: IExtraPageData;
   layout?: string;
+  paperSize?: PageLayoutFormat; // Paper size for the page
   editedContent?: string;
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import { IRecipe } from '../../../Recipe/types/recipe.types';
 import BackCoverLayoutOne from './BackCoverLayoutOne';
 import BackCoverLayoutTwo from './BackCoverLayoutTwo';
+import { PageLayoutFormat } from '../../../CookBook/types/book.types';
 const data: IRecipe = {
   basicInfo: {
     recipeName: 'Smoked Tofu Salad with Spicy Peanut Sauce',
@@ -294,21 +295,22 @@ const data: IRecipe = {
 
 
 // Function to return selected layout(s) based on layout number
-export function getBackCoverPageLayouts(layoutNumber: string = 'back-cover-layout-one'): {backCoverLayoutsCount: number, backCoverLayouts: React.ReactNode[]} {
+export function getBackCoverPageLayouts(layoutNumber: string = 'back-cover-layout-one'): {backCoverLayoutsCount: number, backCoverLayouts: React.ReactNode[], paperSize: PageLayoutFormat} {
   const pages: React.ReactNode[] = [];
 
   switch (layoutNumber) {
     case 'back-cover-layout-one':
-      pages.push(<BackCoverLayoutOne key="backCover" data={data}/>);
+      pages.push(<BackCoverLayoutOne key="backCover" data={data}/>); //format will be A4
       break;
     case 'back-cover-layout-two':
-      pages.push(<BackCoverLayoutTwo key="backCover" data={data}/>);
+      pages.push(<BackCoverLayoutTwo key="backCover" data={data}/>); //format will be A4
       break;
     default:
       console.warn(`Invalid layout number: ${layoutNumber}`);
-      pages.push(<BackCoverLayoutOne key="backCover" data={data}/>);
+      pages.push(<BackCoverLayoutOne key="backCover" data={data}/>); //format will be A4
       break;
   }
 
-  return {backCoverLayoutsCount: 2, backCoverLayouts: pages};
+  // All back cover layouts use A4 format
+  return {backCoverLayoutsCount: 2, backCoverLayouts: pages, paperSize: PageLayoutFormat.A4};
 }

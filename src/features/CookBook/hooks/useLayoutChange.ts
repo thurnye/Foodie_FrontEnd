@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../app/stores/stores';
 import { bookService } from '../services/book.service';
 import { fetchCookbookById } from '../redux/cookbook.async.thunk';
-import { PageType } from '../types/book.types';
+import { PageType, PageLayoutFormat } from '../types/book.types';
 import { CookbookLayout } from '../types/cookbook.types';
 
 interface ExtraPage {
@@ -34,7 +34,7 @@ export const useLayoutChange = ({
   const { cookbookId, bookId } = useParams<{ cookbookId?: string; bookId?: string }>();
   const [isSavingLayout, setIsSavingLayout] = useState(false);
 
-  const handleLayoutChange = async (newLayout: CookbookLayout): Promise<void> => {
+  const handleLayoutChange = async (newLayout: CookbookLayout, paperSize?: PageLayoutFormat): Promise<void> => {
     if (!selectedSection) return;
     console.log('selectedSection for layout change:', selectedSection);
 
@@ -86,12 +86,21 @@ export const useLayoutChange = ({
           actualPageId,
           pageType,
           newLayout,
+          paperSize,
         });
 
-        await bookService.updatePage(bookId, actualPageId, {
+        // Build update payload with paperSize if provided (for non-recipe pages)
+        const updatePayload: any = {
           layout: newLayout,
           pageType,
-        });
+        };
+
+        // Only add paperSize for non-recipe pages
+        if (paperSize && pageType !== PageType.RECIPE) {
+          updatePayload.paperSize = paperSize;
+        }
+
+        await bookService.updatePage(bookId, actualPageId, updatePayload);
 
         console.log('✅ Layout saved successfully');
 

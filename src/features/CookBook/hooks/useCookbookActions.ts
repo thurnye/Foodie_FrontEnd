@@ -10,12 +10,17 @@ import {
 import { ICookbook, UpdateCookbookData } from '../types/cookbook.types';
 import { IBookSection } from '../types/book.types';
 import { bookService } from '../services/book.service';
+import { pdfService } from '../services/pdf.service';
 import { IRecipe } from '../../Recipe/types/recipe.types';
 
 interface SnackbarState {
   open: boolean;
   message: string;
   severity: 'success' | 'error' | 'info' | 'warning';
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
 interface UseCookbookActionsProps {
@@ -53,6 +58,7 @@ export const useCookbookActions = ({
   });
   const [isSaving, setIsSaving] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const handleSave = async () => {
     if (!cookbookId || !currentCookbook) return;
@@ -321,13 +327,84 @@ export const useCookbookActions = ({
     }
   };
 
+  const handleGeneratePdf = async () => {
+    if (!bookId) {
+      setSnackbar({
+        open: true,
+        message: 'No book ID available. Please save the book first.',
+        severity: 'warning',
+      });
+      return;
+    }
+
+    setIsGeneratingPdf(true);
+    setSnackbar({
+      open: true,
+      message: 'Generating PDF... This may take a moment.',
+      severity: 'info',
+    });
+
+    try {
+      // Generate the PDF (also saves it to the server)
+      const response = await pdfService.generateBookPdf(bookId, {
+        format: 'A4',
+        orientation: 'portrait',
+      });
+
+      // Show success message and prompt to download
+      setSnackbar({
+        open: true,
+        message: 'PDF generated successfully! Click to download.',
+        severity: 'success',
+        action: {
+          label: 'Download',
+          onClick: async () => {
+            try {
+              const bookName = currentCookbook?.title || 'book';
+              const filename = `${bookName.replace(/\s+/g, '-')}.pdf`;
+              await pdfService.downloadPdfFromUrl(response.data.bookUrl, filename);
+              setSnackbar({
+                open: true,
+                message: 'PDF downloaded successfully!',
+                severity: 'success',
+              });
+            } catch (error) {
+              console.error('Download error:', error);
+              setSnackbar({
+                open: true,
+                message: 'Failed to download PDF. Please try again.',
+                severity: 'error',
+              });
+            }
+          },
+        },
+      });
+    } catch (err: any) {
+      console.error('Generate PDF error:', err);
+      const errorMessage =
+        err?.response?.data?.message ||
+        err?.message ||
+        'Failed to generate PDF. Please try again.';
+
+      setSnackbar({
+        open: true,
+        message: errorMessage,
+        severity: 'error',
+      });
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
   return {
     snackbar,
     setSnackbar,
     isSaving,
     isGenerating,
+    isGeneratingPdf,
     handleSave,
     handleGenerate,
+    handleGeneratePdf,
     handleAddRecipes,
     handleSettingsSave,
   };

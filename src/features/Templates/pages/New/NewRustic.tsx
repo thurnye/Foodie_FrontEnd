@@ -317,17 +317,18 @@ const BookData: IBook = {
   description:
     'A collection of nutritious and delicious vegan recipes for every meal.',
   recipe: [
-    {
-      pageId: 'recipe-1',
-      pageType: PageType.RECIPE,
-      position: 1,
-      layout: 'layout-eight',
-      order: 1,
-        basicInfo: {
-          duration: {
-            value: '25',
-            label: '25 Minutes',
-          },
+  {
+    pageId: 'recipe-1',
+    pageType: PageType.RECIPE,
+    position: 1,
+    layout: 'layout-eight',
+    paperSize: 'A3' as any,
+    order: 1,
+      basicInfo: {
+        duration: {
+          value: '25',
+          label: '25 Minutes',
+        },
           level: {
             value: 'Easy',
             label: 'Easy',
@@ -556,6 +557,7 @@ const BookData: IBook = {
         lastName: 'Chef',
       },
     },
+  
   ],
   _id: '69166b93b2bd50a8b7448972',
   cookbook: '6904ff7c2a4107ffd85e8e89',
@@ -611,7 +613,7 @@ const getRecipeSections = (recipe: IRecipe) => {
       <React.Fragment key={`food-layout-${index + 1}`}>{layout}</React.Fragment>
     );
   });
-  // --- Food Layout Pages ---
+  // --- extra Layout Pages ---
   const extraLayouts = getExtraPageLayouts();
   extraLayouts.forEach((layout, index) => {
     sections.push(
