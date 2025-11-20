@@ -74,13 +74,36 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
       selectedSection !== 'cover' &&
       selectedSection !== 'intro' &&
       selectedSection !== 'toc' &&
-      selectedSection !== 'notes'
+      selectedSection !== 'notes' &&
+      selectedSection !== 'back-cover'
     ) {
-      return currentCookbook?.books?.find((b) =>
-        typeof b === 'string'
-          ? b === selectedSection
-          : b._id === selectedSection
-      );
+      console.log('🔍 Looking for recipe in cookbook:', {
+        selectedSection,
+        booksCount: currentCookbook?.books?.length,
+        booksArray: currentCookbook?.books,
+        bookIds: currentCookbook?.books?.map((b: any) => {
+          if (typeof b === 'string') return { type: 'string', id: b };
+          return { type: 'object', id: b._id, pageId: (b as any).pageId, hasRecipe: !!(b as any).recipe };
+        }),
+      });
+
+      const found = currentCookbook?.books?.find((b) => {
+        const bookId = typeof b === 'string' ? b : b._id;
+        const pageId = typeof b === 'object' && b !== null ? (b as any).pageId : null;
+
+        console.log('Comparing:', {
+          selectedSection,
+          bookId,
+          pageId,
+          match: bookId === selectedSection || pageId === selectedSection,
+        });
+
+        return bookId === selectedSection || pageId === selectedSection;
+      });
+
+      console.log('📖 Found book:', found ? 'YES' : 'NO', found);
+
+      return found;
     }
     return null;
   }, [selectedSection, currentCookbook]);

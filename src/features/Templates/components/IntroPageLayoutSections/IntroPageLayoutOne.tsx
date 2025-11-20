@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Typography,
-  Card,
-  CardMedia,
-} from '@mui/material';
+import { Box, Typography, Card, CardMedia } from '@mui/material';
 import { ICookbookAuthor } from '../../../CookBook/types/cookbook.types';
 
 interface IIntroPageLayoutOne {
@@ -18,7 +13,8 @@ export default function IntroPageLayoutOne({ author }: IIntroPageLayoutOne) {
       key='welcome'
       sx={{
         // border: '2px dotted green',
-         width: 794, height: 1123 ,
+        width: 794,
+        height: 1123,
         position: 'relative',
       }}
     >
@@ -41,7 +37,7 @@ export default function IntroPageLayoutOne({ author }: IIntroPageLayoutOne) {
             height: 'inherit',
             margin: 'auto',
             background: 'white',
-            width: '95%',
+            width: '70%',
             textAlign: 'center',
           }}
         >
@@ -57,28 +53,31 @@ export default function IntroPageLayoutOne({ author }: IIntroPageLayoutOne) {
               textAlign: 'start',
             }}
           >
-            <Box>
-              <Card sx={{ mb: 2, maxWidth: '100%' }}>
+            <Box sx={{ maxWidth: 300, mr: 4 }}>
+              <Card sx={{ mb: 2, maxWidth: '100%',  }}>
                 <CardMedia
                   component='img'
                   image={author.avatar}
                   alt={author.firstName}
-                  sx={{ maxHeight: 300, objectFit: 'cover' }}
+                  sx={{ maxHeight: 300, objectFit: 'cover', }}
                 />
               </Card>
             </Box>
             <Box>
               <Typography>Contact Me.</Typography>
               <Typography>Phone: +123-4566-7890</Typography>
-              <Typography>Mail. {author.email}</Typography>
-              <Typography>Web: <a href='www.author.com' target='_blank'>www.author.com</a></Typography>
+              <Typography>Mail: {author.email}</Typography>
+              <Typography>
+                Web:{' '}
+                <a href='www.author.com' target='_blank'>
+                  www.author.com
+                </a>
+              </Typography>
             </Box>
           </Box>
           <Box sx={{ px: 8, py: 4 }}>
             <Typography> WELCOME</Typography>
-            <Typography>
-              {author.bio}
-            </Typography>
+            <Typography>{author.bio}</Typography>
           </Box>
         </Box>
       </Box>

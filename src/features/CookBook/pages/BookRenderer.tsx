@@ -121,6 +121,10 @@ const BookRenderer: React.FC = () => {
         // Create a mock cookbook object with author data for intro page
         // book.cookbook might be populated with author data at runtime
         const cookbookData = book.cookbook as any;
+        console.log('📖 BookRenderer - Full book data:', book);
+        console.log('📚 BookRenderer - Cookbook data:', cookbookData);
+        console.log('👤 BookRenderer - Author data:', cookbookData?.author);
+
         const cookbookForIntro = {
           author: cookbookData?.author || {
             _id: '',
@@ -131,6 +135,8 @@ const BookRenderer: React.FC = () => {
             bio: book.introData.customContent || 'Welcome to this cookbook!',
           },
         };
+
+        console.log('📝 BookRenderer - Final cookbook for intro:', cookbookForIntro);
 
         const { introLayouts } = getIntroPageLayouts(
           cookbookForIntro as any,

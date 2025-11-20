@@ -91,10 +91,10 @@ export default function TableOfContentsLayoutOne(
                 key={`content-item-${index}`}
                 sx={{
                   display: 'flex',
-                  mb: 2,
+                  mb: 2
                 }}
               >
-                <Box sx={{ mr: 2 }}>
+                <Box sx={{ mr: 2, width: 50, maxWidth:50 }}>
                   <Typography
                     sx={{
                       fontSize: '2rem',
@@ -106,7 +106,7 @@ export default function TableOfContentsLayoutOne(
                       : startNumber + index}
                   </Typography>
                 </Box>
-                <Box>
+                <Box sx={{flexGrow: 1, textAlign: 'left'}}>
                   <Typography
                     variant='body1'
                     sx={{
