@@ -18,8 +18,7 @@ const weekDays = [
 
 export default function WeeklyPlannerLayout() {
   return (
-     <Box key='food-layout-twelve' sx={{ display: 'flex', width: 1588,
-               height: 1123, }}>
+     <Box key='food-layout-twelve' sx={{ display: 'flex',  }}>
            {/* First half */}
            <Box
              sx={{

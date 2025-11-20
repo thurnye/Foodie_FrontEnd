@@ -245,9 +245,23 @@ const BookRenderer: React.FC = () => {
             </Box>
           );
         } else if (extraPage.templateType === 'weekly-planner') {
-          return <WeeklyPlannerLayout />;
+          return  <Box sx={{
+            width: '100% !important',
+            height: '100%',
+            overflow: 'hidden',
+            '& *': {
+              maxWidth: '100% !important',
+            }
+          }}><WeeklyPlannerLayout /></Box>;
         } else if (extraPage.templateType === 'note-page') {
-          return <BackCoverNoteLayout />;
+          return <Box sx={{
+            width: '100% !important',
+            height: '100%',
+            overflow: 'hidden',
+            '& *': {
+              maxWidth: '100% !important',
+            }
+          }}><BackCoverNoteLayout /></Box>;
         }
 
         return (

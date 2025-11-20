@@ -216,6 +216,7 @@ const BookEditor: React.FC = () => {
           pageType,
           templateType,
           section,
+          paperSize: 'A3', // Default paper size for extra pages
         } as any,
       });
 

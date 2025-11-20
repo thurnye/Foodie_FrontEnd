@@ -61,9 +61,6 @@ export interface ICookbook {
   description?: string;
   books: IBook[];
 
-  // Extra pages (blank pages, templates) added by user
-  extraPages?: IExtraPage[];
-
   // Customization
   theme: CookbookTheme;
   layout: CookbookLayout;
