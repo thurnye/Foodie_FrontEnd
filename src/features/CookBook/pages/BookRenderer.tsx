@@ -317,11 +317,11 @@ const BookRenderer: React.FC = () => {
         // Extra pages are portrait
         const extraPage = book.extraPageData?.find((p: any) => p.pageId === pageId);
         return extraPage?.paperSize === 'A3'
-          ? { width: '297mm', height: '420mm' } // A3 portrait
+          ? { width: '420mm', height: '297mm' } // A3 landscape
           : { width: '210mm', height: '297mm' }; // A4 portrait
       }
       default:
-        return { width: '210mm', height: '297mm' };
+        return { width: '420mm', height: '297mm' }; // Default A3 landscape
     }
   };
 
