@@ -232,19 +232,6 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
     currentBook
   );
 
-  // Debug logging for recipe section detection
-  // useEffect(() => {
-  //   console.log('🔍 Recipe section detection:', {
-  //     selectedSection,
-  //     isRecipeSection,
-  //     currentBook: !!currentBook,
-  //     currentBookType: typeof currentBook,
-  //     currentBookId: currentBook && typeof currentBook !== 'string' ? currentBook._id : null,
-  //     availableBooks: currentCookbook?.books?.map((b: any) =>
-  //       typeof b === 'string' ? b : b._id
-  //     ),
-  //   });
-  // }, [selectedSection, isRecipeSection, currentBook, currentCookbook]);
 
   // Get food layouts based on the current book with the updated layout state
   // We need to merge the current book data with the updated layout to show changes in real-time
@@ -578,8 +565,8 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
                 sx={{
                   backgroundColor: '#fff',
                   width: '100%',
-                  minWidth: 793,
-                  maxWidth: 794,
+                 minWidth: introPaperSize === 'A4' ? 793 : 1586,
+                  maxWidth: introPaperSize === 'A4' ? 794 : 1587,
                   maxHeight: 1123,
                   m: 'auto',
                   mb: 4,
@@ -601,8 +588,8 @@ const CookbookContentDisplay: React.FC<CookbookContentDisplayProps> = ({
                 sx={{
                   backgroundColor: '#fff',
                   width: '100%',
-                  minWidth: 793,
-                  maxWidth: 794,
+                  minWidth: tocPaperSize === 'A4' ? 793 : 1586,
+                  maxWidth: tocPaperSize === 'A4' ? 794 : 1587,
                   maxHeight: 1123,
                   m: 'auto',
                   mb: 4,

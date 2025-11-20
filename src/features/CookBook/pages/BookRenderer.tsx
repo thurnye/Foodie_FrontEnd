@@ -276,11 +276,25 @@ const BookRenderer: React.FC = () => {
         return book.coverData?.paperSize === 'A3'
           ? { width: '297mm', height: '420mm' } // A3 portrait
           : { width: '210mm', height: '297mm' }; // A4 portrait
-      case 'intro':
-        // Intro pages are portrait
-        return book.introData?.paperSize === 'A3'
-          ? { width: '297mm', height: '420mm' } // A3 portrait
-          : { width: '210mm', height: '297mm' }; // A4 portrait
+      // case 'intro':
+      //   // Intro pages are portrait
+      //   return book.introData?.paperSize === 'A3'
+      //     ? { width: '297mm', height: '420mm' } // A3 portrait
+      //     : { width: '210mm', height: '297mm' }; // A4 portrait
+      case 'intro': {
+        // TOC orientation depends on paper size (same as recipe pages)
+        // A3 = landscape, A4 = portrait
+        const paperSize = book.introData?.paperSize || 'A4';
+        const isLandscape = paperSize === 'A3';
+
+        if (isLandscape) {
+          // A3 landscape
+          return { width: '420mm', height: '297mm' };
+        } else {
+          // A4 portrait
+          return { width: '210mm', height: '297mm' };
+        }
+      }
       case 'toc': {
         // TOC orientation depends on paper size (same as recipe pages)
         // A3 = landscape, A4 = portrait

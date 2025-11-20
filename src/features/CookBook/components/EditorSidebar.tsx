@@ -21,6 +21,7 @@ import {
   Edit,
   Restaurant,
   MoreVert,
+  Delete,
 } from '@mui/icons-material';
 import { IBook } from '../types/book.types';
 
@@ -32,6 +33,7 @@ interface EditorSidebarProps {
   onAddRecipe: () => void;
   onEditInfo: () => void;
   onAddExtraPage?: (pageType: 'blank' | 'template', section: 'front' | 'back', templateType?: string) => void;
+  onDeletePage?: (pageId: string, pageType: 'extra' | 'recipe', pageName?: string) => void;
   extraPages?: Array<{ id: string; title: string; type: 'blank' | 'template'; templateType?: string; section?: 'front' | 'back' }>;
   isGenerating?: boolean;
 }
@@ -44,6 +46,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
   onAddRecipe,
   onEditInfo,
   onAddExtraPage,
+  onDeletePage,
   extraPages = [],
   isGenerating = false,
 }) => {
@@ -290,6 +293,24 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
                   primary={page.title}
                   primaryTypographyProps={{ fontSize: '0.875rem' }}
                 />
+                {onDeletePage && (
+                  <IconButton
+                    size='small'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeletePage(page.id, 'extra', page.title);
+                    }}
+                    disabled={isGenerating}
+                    sx={{
+                      color: isGenerating ? '#6b7280' : '#ef4444',
+                      '&:hover': { backgroundColor: 'rgba(239, 68, 68, 0.1)' },
+                      '&.Mui-disabled': { color: '#6b7280' },
+                    }}
+                    title={isGenerating ? 'Cannot delete while generating' : 'Delete page'}
+                  >
+                    <Delete sx={{ fontSize: 16 }} />
+                  </IconButton>
+                )}
               </ListItemButton>
             ))}
           </List>
@@ -324,36 +345,34 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
 
         <Collapse in={bodyMatterOpen} timeout='auto' unmountOnExit>
           <List component='div' disablePadding>
-            {recipes.map((book, index) => {
-              const bookObj = typeof book === 'string' ? null : book;
-              const bookId = typeof book === 'string' ? book : book._id;
-
-              // Debug: Log book structure
-              if (index === 0 && bookObj) {
-                console.log('📖 Book structure:', {
-                  hasRecipe: !!(bookObj as any).recipe,
-                  recipeLength: (bookObj as any).recipe?.length,
-                  firstRecipe: (bookObj as any).recipe?.[0],
-                  bookObj: bookObj
-                });
-              }
-
-              // Get recipe name - support new schema with recipe array
+            {recipes.map((recipe, index) => {
+              // Handle both old cookbook structure (book with recipe array) and new structure (direct recipe object)
+              let recipePageId: string;
               let recipeName = `Recipe ${index + 1}`;
 
-              if ((bookObj as any)?.recipe && Array.isArray((bookObj as any).recipe)) {
-                // New schema: recipe array contains recipe pages
-                const recipeData = (bookObj as any).recipe[0];
-
-                if (recipeData?.basicInfo?.recipeName) {
-                  recipeName = recipeData.basicInfo.recipeName;
+              if (typeof recipe === 'string') {
+                recipePageId = recipe;
+              } else if ((recipe as any).pageId) {
+                // New structure: Direct recipe object from book.recipe array
+                recipePageId = (recipe as any).pageId;
+                if ((recipe as any).basicInfo?.recipeName) {
+                  recipeName = (recipe as any).basicInfo.recipeName;
+                }
+              } else {
+                // Old structure: Book object with recipe array
+                recipePageId = (recipe as any)._id;
+                if ((recipe as any).recipe && Array.isArray((recipe as any).recipe)) {
+                  const recipeData = (recipe as any).recipe[0];
+                  if (recipeData?.basicInfo?.recipeName) {
+                    recipeName = recipeData.basicInfo.recipeName;
+                  }
                 }
               }
 
               return (
                 <ListItemButton
-                  key={bookId}
-                  selected={selectedRecipeId === bookId}
+                  key={recipePageId}
+                  selected={selectedRecipeId === recipePageId}
                   sx={{
                     pl: 4,
                     py: 1,
@@ -363,7 +382,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
                       '&:hover': { backgroundColor: '#2d2d2d' },
                     },
                   }}
-                  onClick={() => onRecipeSelect(bookId)}
+                  onClick={() => onRecipeSelect(recipePageId)}
                 >
                   <DragIndicator
                     sx={{
@@ -387,6 +406,24 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
                       },
                     }}
                   />
+                  {onDeletePage && (
+                    <IconButton
+                      size='small'
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeletePage(recipePageId, 'recipe', recipeName);
+                      }}
+                      disabled={isGenerating}
+                      sx={{
+                        color: isGenerating ? '#6b7280' : '#ef4444',
+                        '&:hover': { backgroundColor: 'rgba(239, 68, 68, 0.1)' },
+                        '&.Mui-disabled': { color: '#6b7280' },
+                      }}
+                      title={isGenerating ? 'Cannot delete while generating' : 'Remove recipe'}
+                    >
+                      <Delete sx={{ fontSize: 16 }} />
+                    </IconButton>
+                  )}
                 </ListItemButton>
               );
             })}
@@ -480,6 +517,24 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({
                   primary={page.title}
                   primaryTypographyProps={{ fontSize: '0.875rem' }}
                 />
+                {onDeletePage && (
+                  <IconButton
+                    size='small'
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeletePage(page.id, 'extra', page.title);
+                    }}
+                    disabled={isGenerating}
+                    sx={{
+                      color: isGenerating ? '#6b7280' : '#ef4444',
+                      '&:hover': { backgroundColor: 'rgba(239, 68, 68, 0.1)' },
+                      '&.Mui-disabled': { color: '#6b7280' },
+                    }}
+                    title={isGenerating ? 'Cannot delete while generating' : 'Delete page'}
+                  >
+                    <Delete sx={{ fontSize: 16 }} />
+                  </IconButton>
+                )}
               </ListItemButton>
             ))}
 

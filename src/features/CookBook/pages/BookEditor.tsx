@@ -16,6 +16,7 @@ import CookbookSettings from '../components/CookbookSettings';
 import CookbookHeader from '../components/CookbookHeader';
 import CookbookContentDisplay from '../components/CookbookContentDisplay';
 import CookbookPageNavigation from '../components/CookbookPageNavigation';
+import DeletePageDialog from '../components/DeletePageDialog';
 import { useCookbookData } from '../hooks/useCookbookData';
 import { useCookbookNavigation } from '../hooks/useCookbookNavigation';
 import { useCookbookActions } from '../hooks/useCookbookActions';
@@ -38,6 +39,8 @@ const BookEditor: React.FC = () => {
   const [loadingBook, setLoadingBook] = useState(true);
   const [bookError, setBookError] = useState<string | null>(null);
   const [currentBook, setCurrentBook] = useState<any>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [pageToDelete, setPageToDelete] = useState<{ pageId: string; pageType: 'extra' | 'recipe'; pageName?: string } | null>(null);
 
   // Fetch book data
   useEffect(() => {
@@ -238,6 +241,46 @@ const BookEditor: React.FC = () => {
     }
   };
 
+  const handleDeletePage = (pageId: string, pageType: 'extra' | 'recipe', pageName?: string) => {
+    // Open delete confirmation dialog
+    setPageToDelete({ pageId, pageType, pageName });
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDeletePage = async () => {
+    if (!currentBook || !bookId || !pageToDelete) return;
+
+    try {
+      // Call backend API to delete the page
+      await bookService.deletePage(bookId, pageToDelete.pageId);
+
+      // If the deleted page was selected, switch to cover page
+      if (selectedSection === pageToDelete.pageId) {
+        setSelectedSection('cover');
+      }
+
+      // Trigger book refetch
+      console.log('📡 Dispatching bookUpdated event after deleting page');
+      window.dispatchEvent(new CustomEvent('bookUpdated'));
+
+      // Show success message
+      setSnackbar({
+        open: true,
+        message: pageToDelete.pageType === 'extra' ? 'Page deleted successfully' : 'Recipe removed successfully',
+        severity: 'success',
+      });
+
+      // Note: The book refetch in useEffect will update currentBook automatically
+    } catch (error: any) {
+      console.error('Error deleting page:', error);
+      setSnackbar({
+        open: true,
+        message: error?.response?.data?.message || 'Failed to delete page. Please try again.',
+        severity: 'error',
+      });
+    }
+  };
+
   // Loading state
   if (loadingBook || (loading && !currentCookbook)) {
     return (
@@ -316,7 +359,7 @@ const BookEditor: React.FC = () => {
         >
           <EditorSidebar
             cookbookTitle={currentBook?.name || currentCookbook?.title || 'My Book'}
-            recipes={modifiedCookbook?.books || []}
+            recipes={currentBook?.recipe || modifiedCookbook?.books || []}
             selectedRecipeId={selectedSection}
             onRecipeSelect={(id) => {
               setSelectedSection(id);
@@ -325,6 +368,7 @@ const BookEditor: React.FC = () => {
             onAddRecipe={() => setRecipeSelectorOpen(true)}
             onEditInfo={() => setSettingsOpen(true)}
             onAddExtraPage={handleAddExtraPage}
+            onDeletePage={handleDeletePage}
             extraPages={extraPages}
             isGenerating={currentCookbook?.status === 'generating'}
           />
@@ -334,12 +378,13 @@ const BookEditor: React.FC = () => {
         <Box sx={{ display: { xs: 'none', md: 'block' } }}>
           <EditorSidebar
             cookbookTitle={currentBook?.name || currentCookbook?.title || 'My Book'}
-            recipes={modifiedCookbook?.books || []}
+            recipes={currentBook?.recipe || modifiedCookbook?.books || []}
             selectedRecipeId={selectedSection}
             onRecipeSelect={setSelectedSection}
             onAddRecipe={() => setRecipeSelectorOpen(true)}
             onEditInfo={() => setSettingsOpen(true)}
             onAddExtraPage={handleAddExtraPage}
+            onDeletePage={handleDeletePage}
             extraPages={extraPages}
             isGenerating={currentCookbook?.status === 'generating'}
           />
@@ -389,6 +434,18 @@ const BookEditor: React.FC = () => {
         onClose={() => setSettingsOpen(false)}
         cookbook={currentCookbook}
         onSave={handleSettingsSave}
+      />
+
+      {/* Delete Page Dialog */}
+      <DeletePageDialog
+        open={deleteDialogOpen}
+        onClose={() => {
+          setDeleteDialogOpen(false);
+          setPageToDelete(null);
+        }}
+        onConfirm={confirmDeletePage}
+        pageType={pageToDelete?.pageType || 'extra'}
+        pageName={pageToDelete?.pageName}
       />
 
       {/* Snackbar for notifications */}

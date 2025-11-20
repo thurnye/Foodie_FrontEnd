@@ -1,5 +1,5 @@
 import React from 'react';
-import { IBook, PageLayoutFormat } from '../../../CookBook/types/book.types';
+import { PageLayoutFormat } from '../../../CookBook/types/book.types';
 import TableOfContentsLayoutOne from './TableOfContentsLayoutOne';
 import { ICookbook } from '../../../CookBook/types/cookbook.types';
 import TableOfContentsLayoutTwo from './TableOfContentsLayoutTwo';
