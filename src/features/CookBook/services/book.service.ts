@@ -158,6 +158,22 @@ class BookService {
     const response = await apiClient.post<IBook>(`/books/${bookId}/publish`);
     return response;
   }
+
+  /**
+   * Get PDF generation status
+   */
+  async getGenerationStatus(bookId: string): Promise<{
+    current: string;
+    total: number;
+    currentStep: number;
+  } | null> {
+    const response = await apiClient.get<{
+      current: string;
+      total: number;
+      currentStep: number;
+    } | null>(`/books/${bookId}/generation-status`);
+    return response;
+  }
 }
 
 export const bookService = new BookService();

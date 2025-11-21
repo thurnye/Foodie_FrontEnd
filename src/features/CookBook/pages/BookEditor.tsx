@@ -330,6 +330,10 @@ const BookEditor: React.FC = () => {
       {/* Header */}
       <CookbookHeader
         currentCookbook={currentCookbook}
+        bookName={currentBook?.name}
+        bookId={bookId}
+        bookStatus={currentBook?.status}
+        bookUrl={currentBook?.bookUrl}
         isSaving={isSaving}
         isGenerating={isGeneratingPdf}
         sidebarOpen={sidebarOpen}
@@ -370,7 +374,7 @@ const BookEditor: React.FC = () => {
             onAddExtraPage={handleAddExtraPage}
             onDeletePage={handleDeletePage}
             extraPages={extraPages}
-            isGenerating={currentCookbook?.status === 'generating'}
+            isGenerating={currentBook?.status === 'generating'}
           />
         </Box>
 
@@ -386,7 +390,7 @@ const BookEditor: React.FC = () => {
             onAddExtraPage={handleAddExtraPage}
             onDeletePage={handleDeletePage}
             extraPages={extraPages}
-            isGenerating={currentCookbook?.status === 'generating'}
+            isGenerating={currentBook?.status === 'generating'}
           />
         </Box>
 

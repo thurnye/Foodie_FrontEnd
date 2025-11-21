@@ -3,6 +3,9 @@
  */
 export enum BookStatus {
   DRAFT = 'draft',
+  GENERATING = 'generating',
+  COMPLETED = 'completed',
+  FAILED = 'failed',
   PUBLISHED = 'published',
   ARCHIVED = 'archived',
 }
@@ -282,8 +285,12 @@ export interface IBook {
   // PDF URL - URL to the generated PDF file
   bookUrl?: string;
 
-  // Metadata
+  // Status & Generation
   status: BookStatus;
+  generationProgress?: number;
+  errorMessage?: string;
+
+  // Metadata
   isPublic: boolean;
   isActive: boolean;
 

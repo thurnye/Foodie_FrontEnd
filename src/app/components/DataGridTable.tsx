@@ -48,8 +48,8 @@ const DataGridTable: React.FC<DataGridTableProps> = ({
   }, [rowSelectionModel, setSelected]);
 
   return (
-    <Box sx={{ width: 1 }}>
-      <Box sx={{ height: 550, mt: 3 }}>
+    <Box sx={{ width: 'inherit' }}>
+      <Box sx={{ flexGrow: 1, height: 'calc(100vh - 450px)', mt: 3, width: '100%' }}>
         <DataGrid
           columns={columns}
           rows={rows}

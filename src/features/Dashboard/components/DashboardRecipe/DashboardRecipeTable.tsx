@@ -22,7 +22,7 @@ const columns = [
   {
     field: 'image',
     headerName: '',
-    width: 150,
+    // width: 150,
     renderCell: (params: any) => (
       <Box sx={{ height: 'inherit' }}>
         <CardMedia
@@ -38,23 +38,24 @@ const columns = [
   {
     field: 'recipeName',
     headerName: 'Recipe Name',
-    width: 200,
+    width: 500,
     renderCell: (params: any) => (
       <Box
         style={{
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
+          
         }}
       >
         {params.value}
       </Box>
     ),
   },
-  { field: 'categories', headerName: 'Categories', width: 150 },
-  { field: 'createdOn', headerName: 'Creation Date', width: 150 },
-  { field: 'reviews', headerName: 'Reviews', width: 80 },
-  { field: 'ratings', headerName: 'Ratings', width: 100 },
+  { field: 'categories', headerName: 'Categories', width: 250 },
+  { field: 'createdOn', headerName: 'Creation Date', width: 250 },
+  { field: 'reviews', headerName: 'Reviews', width: 200 },
+  { field: 'ratings', headerName: 'Ratings', width: 200 },
 ];
 
 interface RecipeRow {
@@ -95,11 +96,15 @@ interface DashboardRecipeTableProps {
   recipes: IRecipe[];
 }
 
-const DashboardRecipeTable: React.FC<DashboardRecipeTableProps> = ({ recipes }) => {
+const DashboardRecipeTable: React.FC<DashboardRecipeTableProps> = ({
+  recipes,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
 
-  const [selectedRecipeId, setSelectedRecipeId] = useState<string | undefined>();
+  const [selectedRecipeId, setSelectedRecipeId] = useState<
+    string | undefined
+  >();
   const [error, setError] = useState<string | null>(null);
   const [counts, setCounts] = useState<number>(0);
   const [isDelete, setIsDelete] = useState<boolean>(false);
@@ -140,62 +145,62 @@ const DashboardRecipeTable: React.FC<DashboardRecipeTableProps> = ({ recipes }) 
 
   return (
     <Box>
-      <Container maxWidth='lg' sx={{ mt: 4, mb: 4 }}>
-        <Grid container spacing={3}>
+      <Grid container spacing={3}>
+        <Grid item xs={12}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Typography gutterBottom sx={{ mx: 3 }}>
+              <Link to='cook-book'>Cook Book</Link>
+            </Typography>
+            <Typography gutterBottom sx={{ mx: 3 }}>
+              <Link to='create'>Create Recipe</Link>
+            </Typography>
+          </Box>
+        </Grid>
+
+        {error && (
           <Grid item xs={12}>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-              }}
-            >
-              <Typography gutterBottom sx={{ mx: 3 }}>
-                <Link to='cook-book'>Cook Book</Link>
-              </Typography>
-              <Typography gutterBottom sx={{ mx: 3 }}>
-                <Link to='create'>Create Recipe</Link>
-              </Typography>
-            </Box>
+            <Alert severity='error' onClose={() => setError(null)}>
+              {error}
+            </Alert>
           </Grid>
+        )}
 
-          {error && (
-            <Grid item xs={12}>
-              <Alert severity='error' onClose={() => setError(null)}>
-                {error}
-              </Alert>
-            </Grid>
-          )}
-
-          <Grid item xs={12}>
-            <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-              <Box sx={{ display: 'flex' }}>
-                <Typography variant='body1' gutterBottom sx={{ flexGrow: 1 }}>
-                  My Recipe Lists
-                </Typography>
-                <Stack direction='row' spacing={2}>
-                  <Button
-                    variant='text'
-                    disabled={!selectedRecipeId}
-                    onClick={() => setIsDelete(true)}
-                    sx={{ textTransform: 'none' }}
-                    color='error'
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    variant='text'
-                    disabled={!selectedRecipeId}
-                    onClick={() =>
-                      navigate(`/dashboard/recipes/edit/${selectedRecipeId}`, {
-                        state: { edit: true, id: selectedRecipeId },
-                      })
-                    }
-                    sx={{ textTransform: 'none' }}
-                  >
-                    Edit
-                  </Button>
-                </Stack>
-              </Box>
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{ display: 'flex' }}>
+              <Typography variant='body1' gutterBottom sx={{ flexGrow: 1 }}>
+                My Recipe Lists
+              </Typography>
+              <Stack direction='row' spacing={2}>
+                <Button
+                  variant='text'
+                  disabled={!selectedRecipeId}
+                  onClick={() => setIsDelete(true)}
+                  sx={{ textTransform: 'none' }}
+                  color='error'
+                >
+                  Delete
+                </Button>
+                <Button
+                  variant='text'
+                  disabled={!selectedRecipeId}
+                  onClick={() =>
+                    navigate(`/dashboard/recipes/edit/${selectedRecipeId}`, {
+                      state: { edit: true, id: selectedRecipeId },
+                    })
+                  }
+                  sx={{ textTransform: 'none' }}
+                >
+                  Edit
+                </Button>
+              </Stack>
+            </Box>
+            <Box>
               <DataGridTable
                 setSelected={handleSetSelected}
                 data={recipes}
@@ -205,48 +210,48 @@ const DashboardRecipeTable: React.FC<DashboardRecipeTableProps> = ({ recipes }) 
                 rows={rows}
                 columns={columns}
               />
-            </Paper>
-          </Grid>
+            </Box>
+          </Paper>
         </Grid>
-        <AlertDialog
-          open={isDelete}
-          setOpen={setIsDelete}
-          setConfirmDelete={() => handleSectionDelete()}
+      </Grid>
+      <AlertDialog
+        open={isDelete}
+        setOpen={setIsDelete}
+        setConfirmDelete={() => handleSectionDelete()}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <Box
+          <Typography
+            variant='button'
+            display='block'
+            gutterBottom
             sx={{
+              transform: 'none',
               display: 'flex',
-              flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
+              height: 50,
+              width: 50,
+              borderRadius: '50%',
+              backgroundColor: '#f8f7fa',
             }}
           >
-            <Typography
-              variant='button'
-              display='block'
-              gutterBottom
-              sx={{
-                transform: 'none',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: 50,
-                width: 50,
-                borderRadius: '50%',
-                backgroundColor: '#f8f7fa',
-              }}
-            >
-              <PiTrashThin fontSize={30} />
-            </Typography>
-            <Typography variant='h6' gutterBottom color='error'>
-              Delete
-            </Typography>
-            <Typography variant='caption' gutterBottom>
-              {message}
-            </Typography>
-          </Box>
-        </AlertDialog>
-      </Container>
+            <PiTrashThin fontSize={30} />
+          </Typography>
+          <Typography variant='h6' gutterBottom color='error'>
+            Delete
+          </Typography>
+          <Typography variant='caption' gutterBottom>
+            {message}
+          </Typography>
+        </Box>
+      </AlertDialog>
     </Box>
   );
 };

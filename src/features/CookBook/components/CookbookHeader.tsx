@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -9,6 +9,7 @@ import {
   MenuItem,
   CircularProgress,
   Box,
+  LinearProgress,
 } from '@mui/material';
 import {
   Save,
@@ -18,11 +19,17 @@ import {
   MoreVert,
   ArrowBack,
   Menu as MenuIcon,
+  Download,
 } from '@mui/icons-material';
 import { ICookbook } from '../types/cookbook.types';
+import { useGenerationStatus } from '../hooks/useGenerationStatus';
 
 interface CookbookHeaderProps {
   currentCookbook: ICookbook | null;
+  bookName?: string; // Optional book name for BookEditor context
+  bookId?: string; // Book ID for generation status polling
+  bookStatus?: string; // Book status for checking if generating
+  bookUrl?: string; // URL to the generated PDF
   isSaving: boolean;
   isGenerating: boolean;
   sidebarOpen: boolean;
@@ -37,6 +44,10 @@ interface CookbookHeaderProps {
 
 const CookbookHeader: React.FC<CookbookHeaderProps> = ({
   currentCookbook,
+  bookName,
+  bookId,
+  bookStatus,
+  bookUrl,
   isSaving,
   isGenerating,
   sidebarOpen,
@@ -49,6 +60,10 @@ const CookbookHeader: React.FC<CookbookHeaderProps> = ({
   onExport,
 }) => {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+
+  // Poll for generation status when generating (check both isGenerating prop and bookStatus)
+  const isCurrentlyGenerating = isGenerating || bookStatus === 'generating';
+  const generationStatus = useGenerationStatus(bookId, isCurrentlyGenerating);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setMenuAnchor(event.currentTarget);
@@ -71,6 +86,20 @@ const CookbookHeader: React.FC<CookbookHeaderProps> = ({
       onExport();
     }
   };
+
+  const handleDownloadPdf = () => {
+    if (!bookUrl) return;
+
+    // Create a temporary anchor element to trigger download
+    const link = document.createElement('a');
+    link.href = bookUrl;
+    link.download = `${bookName || currentCookbook?.title || 'cookbook'}.pdf`;
+    link.target = '_blank'; // Open in new tab as fallback
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
 
   return (
     <>
@@ -97,14 +126,54 @@ const CookbookHeader: React.FC<CookbookHeaderProps> = ({
               <ArrowBack />
             </IconButton>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Typography variant='h6' sx={{ fontWeight: 600, fontSize: { xs: '0.9rem', sm: '1.25rem' } }}>
-                {currentCookbook?.title || 'Untitled Cookbook'}
+              <Typography
+                variant='h6'
+                sx={{
+                  fontWeight: 600,
+                  fontSize: { xs: '0.9rem', sm: '1.25rem' },
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                }}
+              >
+                <span style={{ color: '#9ca3af' }}>
+                  {currentCookbook?.title || 'Untitled Cookbook'}
+                </span>
+                {bookName && (
+                  <>
+                    <span style={{ color: '#4a5568' }}>{'>'}</span>
+                    <span style={{ color: '#e0e0e0' }}>{bookName}</span>
+                  </>
+                )}
               </Typography>
-              {currentCookbook?.status === 'generating' && (
-                <Typography variant='caption' sx={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                  <CircularProgress size={12} sx={{ color: '#fbbf24' }} />
-                  Generating PDF... (Read-only mode)
-                </Typography>
+              {bookStatus === 'generating' && (
+                <Box sx={{ mt: 0.5 }}>
+                  <Typography variant='caption' sx={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                    <CircularProgress size={12} sx={{ color: '#fbbf24' }} />
+                    {generationStatus ? (
+                      <>
+                        Generating: {generationStatus.current} ({generationStatus.currentStep}/{generationStatus.total})
+                      </>
+                    ) : (
+                      'Generating PDF... (Read-only mode)'
+                    )}
+                  </Typography>
+                  {generationStatus && (
+                    <LinearProgress
+                      variant="determinate"
+                      value={(generationStatus.currentStep / generationStatus.total) * 100}
+                      sx={{
+                        mt: 0.5,
+                        height: 4,
+                        borderRadius: 2,
+                        backgroundColor: '#3a3a3a',
+                        '& .MuiLinearProgress-bar': {
+                          backgroundColor: '#fbbf24',
+                        },
+                      }}
+                    />
+                  )}
+                </Box>
               )}
             </Box>
           </Box>
@@ -137,7 +206,7 @@ const CookbookHeader: React.FC<CookbookHeaderProps> = ({
             </Button>
 
             {/* Preview - hide on mobile */}
-            <Button
+            {/* <Button
               variant='outlined'
               startIcon={<Preview />}
               onClick={handlePreview}
@@ -149,14 +218,14 @@ const CookbookHeader: React.FC<CookbookHeaderProps> = ({
               }}
             >
               Preview
-            </Button>
+            </Button> */}
 
             {/* Save - visible on all screens */}
-            <Button
+            {/* <Button
               variant='contained'
               startIcon={isSaving ? <CircularProgress size={16} /> : <Save />}
               onClick={onSave}
-              disabled={isSaving || currentCookbook?.status === 'generating'}
+              disabled={isSaving || bookStatus === 'generating'}
               sx={{
                 backgroundColor: '#3b82f6',
                 '&:hover': { backgroundColor: '#2563eb' },
@@ -167,27 +236,49 @@ const CookbookHeader: React.FC<CookbookHeaderProps> = ({
               <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
                 {isSaving ? 'Saving...' : 'Save'}
               </Box>
-            </Button>
+            </Button> */}
+
+            {/* Download PDF - visible when PDF is available */}
+            {bookUrl && bookStatus === 'completed' && (
+              <Button
+                variant='contained'
+                startIcon={<Download />}
+                onClick={handleDownloadPdf}
+                disabled={isGenerating}
+                sx={{
+                  backgroundColor: '#8b5cf6',
+                  '&:hover': { backgroundColor: '#7c3aed' },
+                  minWidth: { xs: 'auto', sm: '140px' },
+                  px: { xs: 1, sm: 2 },
+                }}
+              >
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  Download PDF
+                </Box>
+              </Button>
+            )}
 
             {/* Generate PDF - hide text on mobile */}
-            <Button
-              variant='contained'
-              startIcon={
-                isGenerating ? <CircularProgress size={16} /> : <PictureAsPdf />
-              }
-              onClick={onGenerate}
-              disabled={isGenerating}
-              sx={{
-                backgroundColor: '#10b981',
-                '&:hover': { backgroundColor: '#059669' },
-                minWidth: { xs: 'auto', sm: '140px' },
-                px: { xs: 1, sm: 2 },
-              }}
-            >
-              <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
-                {isGenerating ? 'Generating...' : 'Generate PDF'}
-              </Box>
-            </Button>
+            {/* {(!bookUrl || bookStatus !== 'completed') && ( */}
+              <Button
+                variant='contained'
+                startIcon={
+                  isGenerating ? <CircularProgress size={16} /> : <PictureAsPdf />
+                }
+                onClick={onGenerate}
+                disabled={isGenerating}
+                sx={{
+                  backgroundColor: '#10b981',
+                  '&:hover': { backgroundColor: '#059669' },
+                  minWidth: { xs: 'auto', sm: '140px' },
+                  px: { xs: 1, sm: 2 },
+                }}
+              >
+                <Box component="span" sx={{ display: { xs: 'none', sm: 'inline' } }}>
+                  {isGenerating ? 'Generating...' : 'Generate PDF'}
+                </Box>
+              </Button>
+            {/* )} */}
 
             {/* More menu */}
             <IconButton onClick={handleMenuOpen} sx={{ color: '#e0e0e0' }}>
