@@ -14,6 +14,7 @@ const subDirs = [
   'utils',
   'router',
   'redux',
+  'mock'
 ];
 
 function createFeature(moduleName) {

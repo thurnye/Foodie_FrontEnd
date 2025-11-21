@@ -1,16 +1,12 @@
-// routes/AppRoutes.tsx
 import { useRoutes } from 'react-router-dom';
-// import { authRoutes } from '../../features/auth/router/auth.routes';
 import PublicRoute from './wrappers/PublicRoutes';
 import ProtectedRoute from './wrappers/ProtectedRoutes';
 import { authRoutes } from '../../features/auth/router/auth.routes';
-// import PageNotFound from '../pages/PageNotFound';
-// import { userRoutes } from '../../features/user/router/user.router';
 import { recipesRoutes } from '../../features/Recipe/router/recipe.router';
 import { homeRoutes } from '../../features/Home/router/home.router';
 import { dashboardRoutes } from '../../features/Dashboard/router/dashboard.router';
-// import { donationsRoutes } from '../../features/donation/router/donation.router';
 import BookRenderer from '../../features/CookBook/pages/BookRenderer';
+import { communityRoutes } from '../../features/Community/router/community.router';
 
 export default function AppRoutes() {
   const routes = useRoutes([
@@ -26,20 +22,15 @@ export default function AppRoutes() {
     // Home route - accessible to everyone (no wrapper needed)
     ...homeRoutes,
 
-    // Protected routes (require authentication)
-    // ...userRoutes.map((route) => ({
-    //   ...route,
-    //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
-    // })),
-    // ...donationsRoutes.map((route) => ({
-    //   ...route,
-    //   element: <ProtectedRoute>{route.element}</ProtectedRoute>,
-    // })),
     ...recipesRoutes.map((route) => ({
       ...route,
       element: <ProtectedRoute>{route.element}</ProtectedRoute>,
     })),
     ...dashboardRoutes.map((route) => ({
+      ...route,
+      element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+    })),
+    ...communityRoutes.map((route) => ({
       ...route,
       element: <ProtectedRoute>{route.element}</ProtectedRoute>,
     })),
