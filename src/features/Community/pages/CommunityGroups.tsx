@@ -31,7 +31,7 @@ import {
   MoreVert,
 } from '@mui/icons-material';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
-import { fetchGroups, fetchMyGroups } from '../redux/community.thunk';
+import { fetchGroups, fetchMyGroups, joinGroup, cancelJoinRequest } from '../redux/community.thunk';
 import { IGroup } from '../types/community.types';
 import CreateGroupDialog from '../components/CreateGroupDialog';
 
@@ -41,6 +41,7 @@ const CommunityGroups: React.FC = () => {
   const { groups, myGroups, groupsLoading, groupsError } = useSelector(
     (state: RootState) => state.community
   );
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'all' | 'my'>('all');
@@ -57,12 +58,21 @@ const CommunityGroups: React.FC = () => {
     dispatch(fetchGroups({ search: searchQuery }));
   };
 
-  const handleGroupClick = (groupId: string, isPrivate: boolean) => {
-    if (isPrivate) {
-      // Handle private group logic (e.g., request to join)
+  const handleGroupClick = async (group: IGroup) => {
+    const isMember = group.members.some(
+      (m: any) => (typeof m.user === 'string' ? m.user : m.user._id) === user?.id
+    );
+    const hasRequestedJoin = group.joinRequest?.includes(user?.id || '');
+
+    if (isMember || !group.isPrivate) {
+      // Navigate to group if user is a member or group is public
+      navigate(`group/${group._id}`);
+    } else if (hasRequestedJoin) {
+      // Cancel join request if already requested
+      await dispatch(cancelJoinRequest(group._id));
     } else {
-      // Navigate to group detail page
-      navigate(`group/${groupId}`);
+      // Send join request for private group
+      await dispatch(joinGroup(group._id));
     }
   };
 
@@ -206,9 +216,7 @@ const CommunityGroups: React.FC = () => {
                         'https://via.placeholder.com/400x140?text=Group+Cover'
                       }
                       alt={group.name}
-                      onClick={() =>
-                        !group.isPrivate && navigate(`group/${group._id}`)
-                      }
+                      onClick={() => handleGroupClick(group)}
                     />
                     <Box
                       sx={{
@@ -261,9 +269,7 @@ const CommunityGroups: React.FC = () => {
 
                   <CardContent
                     sx={{ flexGrow: 1, pt: 0 }}
-                    onClick={() =>
-                      !group.isPrivate && navigate(`group/${group._id}`)
-                    }
+                    onClick={() => handleGroupClick(group)}
                   >
                     <Typography
                       variant='h6'
@@ -341,16 +347,25 @@ const CommunityGroups: React.FC = () => {
                     <Button
                       size='small'
                       variant='contained'
-                      onClick={() =>
-                        handleGroupClick(group._id, group.isPrivate)
-                      }
+                      onClick={() => handleGroupClick(group)}
                       sx={{
                         flex: 1,
                         backgroundColor: '#333',
                         '&:hover': { backgroundColor: '#444' },
                       }}
                     >
-                      {group.isPrivate ? 'Request to Join' : 'View Group'}
+                      {(() => {
+                        console.log('User:', user);
+                        const isMember = group.members.some(
+                          (m: any) => (typeof m.user === 'string' ? m.user : m.user._id) === user?.id
+                        );
+                        const hasRequestedJoin = group.joinRequest?.includes(user?.id || '');
+
+                        if (isMember) return 'View Group';
+                        if (hasRequestedJoin) return 'Cancel Request';
+                        if (group.isPrivate) return 'Request to Join';
+                        return 'View Group';
+                      })()}
                     </Button>
                     <IconButton
                       size='small'

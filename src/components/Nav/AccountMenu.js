@@ -51,7 +51,6 @@ function AccountMenu() {
   const dispatch = useDispatch();
   const navigate = useAppNavigate();
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
-  console.log('user from account menu:::', user);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -74,7 +73,6 @@ function AccountMenu() {
     }
   };
 
-  console.log('isAuthenticated:::', isAuthenticated);
 
   return (
     <Container maxWidth='xl'>
@@ -123,7 +121,7 @@ function AccountMenu() {
                     aria-haspopup='true'
                     aria-expanded={open ? 'true' : undefined}
                   >
-                    <Avatar alt='Test Test' src='/static/images/avatar/2.jpg' />
+                    <Avatar alt={`${user.firstName} ${user.lastName}`} src={user.avatar}/>
                   </IconButton>
                 </Tooltip>
                 <Menu

@@ -34,6 +34,7 @@ export interface IGroup {
   isPrivate: boolean;
   creator: string | ICommunityUser;
   members: IGroupMember[];
+  joinRequest: string[];
   memberCount: number;
   postCount: number;
   tags: string[];
@@ -222,4 +223,6 @@ export interface IPostFilters {
   tags?: string[];
   sort?: 'newest' | 'popular' | 'trending';
   isPinned?: boolean;
+  page?: number;
+  limit?: number;
 }

@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { AuthState } from '../../types/auth.types';
 import { clearUserStorage, saveUser } from '../../../../app/utils/app.storage';
 import { loginUser, registerUser, logoutUser, fetchCurrentUser, initializeAuth } from './asyncThunkServices';
+import {jwtDecode} from 'jwt-decode';
 
 // -------------------------------
 // Initial State
@@ -23,15 +24,18 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
-    setUser: (state, action) => {
-      state.user = action.payload;
-      state.isAuthenticated = !!action.payload;
-      if (action.payload) {
-        saveUser(action.payload);
-      } else {
-        clearUserStorage();
-      }
-    },
+    // setUser: (state, action) => {
+    //   console.log('setUser action payload:', action.payload);
+    //    const userDoc = jwtDecode(action.payload.token); 
+    //    console.log('Decoded User Document in setUser:', userDoc);
+    //   state.user = action.payload;
+    //   state.isAuthenticated = !!action.payload;
+    //   if (action.payload) {
+    //     saveUser(action.payload);
+    //   } else {
+    //     clearUserStorage();
+    //   }
+    // },
   },
   extraReducers: (builder) => {
     // Login
@@ -42,6 +46,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
+        console.log('loginUser fulfilled action payload:', action.payload);
         state.user = action.payload.user;
         state.isAuthenticated = true;
         state.error = null;
@@ -130,5 +135,5 @@ const authSlice = createSlice({
 // -------------------------------
 // Exports
 // -------------------------------
-export const { clearError, setUser } = authSlice.actions;
+export const { clearError } = authSlice.actions;
 export default authSlice.reducer;

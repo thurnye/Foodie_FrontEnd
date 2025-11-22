@@ -93,6 +93,11 @@ const communitySlice = createSlice({
       state.postsLoading = false;
       state.postsError = null;
     },
+    appendPosts: (state, action: PayloadAction<IPost[]>) => {
+      state.posts = [...state.posts, ...action.payload];
+      state.postsLoading = false;
+      state.postsError = null;
+    },
     setSelectedPost: (state, action: PayloadAction<IPost | null>) => {
       state.selectedPost = action.payload;
     },
@@ -185,6 +190,7 @@ export const {
   setGroupsError,
   setGroupFilters,
   setPosts,
+  appendPosts,
   setSelectedPost,
   addPost,
   updatePost,

@@ -23,8 +23,8 @@ export interface IUser {
 }
 
 export interface IUserLoginInfo {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 export interface RegisterData {

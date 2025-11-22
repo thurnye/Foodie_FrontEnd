@@ -138,6 +138,42 @@ export const leaveGroup = createAsyncThunk('community/leaveGroup', async (groupI
   }
 });
 
+export const cancelJoinRequest = createAsyncThunk('community/cancelJoinRequest', async (groupId: string, { dispatch }) => {
+  try {
+    const group = await communityService.cancelJoinRequest(groupId);
+    dispatch(updateGroupAction(group));
+    return group;
+  } catch (error: any) {
+    throw error;
+  }
+});
+
+export const approveJoinRequest = createAsyncThunk(
+  'community/approveJoinRequest',
+  async ({ groupId, userId }: { groupId: string; userId: string }, { dispatch }) => {
+    try {
+      const group = await communityService.approveJoinRequest(groupId, userId);
+      dispatch(updateGroupAction(group));
+      return group;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+);
+
+export const rejectJoinRequest = createAsyncThunk(
+  'community/rejectJoinRequest',
+  async ({ groupId, userId }: { groupId: string; userId: string }, { dispatch }) => {
+    try {
+      const group = await communityService.rejectJoinRequest(groupId, userId);
+      dispatch(updateGroupAction(group));
+      return group;
+    } catch (error: any) {
+      throw error;
+    }
+  }
+);
+
 // ==================== POST THUNKS ====================
 
 export const fetchPosts = createAsyncThunk(

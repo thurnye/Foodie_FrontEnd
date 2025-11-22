@@ -4,9 +4,11 @@ import { Box, useMediaQuery, useTheme } from '@mui/material';
 
 interface VideoPlayerProps {
   link: string;
+  width?: number | string
+  sx?: any
 }
 
-const VideoPlayer: React.FC<VideoPlayerProps> = ({ link }) => {
+const VideoPlayer: React.FC<VideoPlayerProps> = ({ link, sx, width }) => {
   const theme = useTheme();
 
   // Use MUI breakpoints to control width
@@ -15,7 +17,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ link }) => {
   const isMd = useMediaQuery(theme.breakpoints.between('md', 'lg')); // 900-1200px
   const isLg = useMediaQuery(theme.breakpoints.up('lg')); // >1200px
 
-  let playerWidth = 250;
+  let playerWidth =  width || 250;
 
   if (isXs) playerWidth = 250;
   else if (isSm) playerWidth = 350;
@@ -31,6 +33,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ link }) => {
         width: '100%',
         maxWidth: playerWidth,
         mx: 'auto',
+        ...sx
       }}
     >
       <ReactPlayer
@@ -38,7 +41,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ link }) => {
         width="100%"
         height="100%"
         style={{
-          maxWidth: playerWidth,
+          // maxWidth: playerWidth,
           aspectRatio: '16/9',
           borderRadius: 8,
           overflow: 'hidden',

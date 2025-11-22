@@ -1,0 +1,234 @@
+[
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "612296fc86231100a0631b22" },
+    "title": "What’s your go-to productivity hack lately?",
+    "content": "I’ve been experimenting with time-blocking and it has dramatically boosted my workflow. Anyone else tried combining Pomodoro with deep-focus sessions?",
+    "media": [
+      {
+        "type": "image",
+        "url": "https://picsum.photos/800/500",
+        " alt": "Productivity workspace"
+      }
+    ],
+    " votes": [
+      { "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "value": 1 },
+      { "user":{ "$oid": "612296fc86231100a0631b22"}, "value": 1 }
+    ],
+    "voteCount": 2,
+    "reactions": [{ "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "type": "like" }],
+    " reactionCount": 1,
+    "commentCount": 3,
+    "shareCount": 1,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["productivity", "workflow", "self-improvement"]
+  },
+
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "6920c643b1d58b638c2ddae1" },
+    "title": "UI/UX Inspiration for 2025",
+    "content": "Minimalist dashboards with adaptive dark modes are still dominating. Here are some layouts I’m loving this month.",
+    "media": [
+      {
+        "type": "image",
+        "url": "https://picsum.photos/700/450",
+        " alt": "UI inspiration"
+      }
+    ],
+    " votes": [{ "user":{ "$oid": "612296fc86231100a0631b22"}, "value": 1 }],
+    "voteCount": 1,
+    "reactions": [{ "user":{ "$oid": "612296fc86231100a0631b22"}, "type": "love" }],
+    " reactionCount": 1,
+    "commentCount": 6,
+    "shareCount": 2,
+    "isPinned": true,
+    "isLocked": false,
+    "tags": ["design", "uiux", "creative"]
+  },
+
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "612296fc86231100a0631b22" },
+    "title": "What technology are you most excited about?",
+    "content": "For me, it’s definitely AI-driven development tools. The speed boost is insane.",
+    " votes": [],
+    "voteCount": 0,
+    "reactions": [],
+    " reactionCount": 0,
+    "commentCount": 2,
+    "shareCount": 0,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["ai", "future", "technology"]
+  },
+
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "6920c643b1d58b638c2ddae1" },
+    "title": "React vs Vue in 2025?",
+    "content": "Which framework are you using this year and why? Performance or ecosystem?",
+    " votes": [{ "user":{ "$oid": "612296fc86231100a0631b22"}, "value": 1 }],
+    "voteCount": 1,
+    "reactions": [{ "user":{ "$oid": "612296fc86231100a0631b22"}, "type": "wow" }],
+    " reactionCount": 1,
+    "commentCount": 5,
+    "shareCount": 0,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["react", "vue", "javascript"]
+  },
+
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "612296fc86231100a0631b22" },
+    "title": "Trying out a new note-taking method",
+    "content": "Zettelkasten system is actually more powerful than I expected. Highly recommend!",
+    " votes": [{ "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "value": 1 }],
+    "voteCount": 1,
+    "reactions": [{ "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "type": "like" }],
+    " reactionCount": 1,
+    "commentCount": 1,
+    "shareCount": 0,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["notes", "productivity", "learning"]
+  },
+
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "6920c643b1d58b638c2ddae1" },
+    "title": "Daily Motivation Thread",
+    "content": "Drop a quote that keeps you going today.",
+    " votes": [],
+    "voteCount": 0,
+    "reactions": [],
+    " reactionCount": 0,
+    "commentCount": 12,
+    "shareCount": 1,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["motivation", "quotes", "mindset"]
+  },
+
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "612296fc86231100a0631b22" },
+    "title": "Has anyone tried building their own design system?",
+    "content": "I’m working on one now using tokens and CSS variables. Loving the flexibility.",
+    "media": [
+      {
+        "type": "image",
+        "url": "https://picsum.photos/900/450",
+        " alt": "Design system"
+      }
+    ],
+    " votes": [
+      { "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "value": 1 },
+      { "user":{ "$oid": "612296fc86231100a0631b22"}, "value": -1 }
+    ],
+    "voteCount": 0,
+    "reactions": [{ "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "type": "fire" }],
+    " reactionCount": 1,
+    "commentCount": 4,
+    "shareCount": 0,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["design-system", "frontend", "tokens"]
+  },
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "612296fc86231100a0631b22" },
+    "title": "Mastering API Performance in 2025",
+    "content": "I've been diving deep into optimizing Node.js APIs using caching, connection pooling, and proper schema design. This YouTube video breaks down some modern techniques that actually work in production:",
+    "media": [
+      {
+        "type": "video",
+        "url": "https://www.youtube.com/watch?v=Oe421EPjeBE",
+        "thumbnail": "https://picsum.photos/200/110",
+        " alt": "API performance video"
+      }
+    ],
+    " votes": [
+      { "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "value": 1 },
+      { "user":{ "$oid": "612296fc86231100a0631b22"}, "value": 1 }
+    ],
+    "voteCount": 2,
+    "reactions": [{ "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "type": "fire" }],
+    " reactionCount": 1,
+    "commentCount": 7,
+    "shareCount": 3,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["nodejs", "backend", "performance"]
+  },
+
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "6920c643b1d58b638c2ddae1" },
+    "title": "Top 5 VSCode Extensions for Developers",
+    "content": "I’ve been trying out new VSCode plugins and these ones boosted my productivity big-time. The video linked breaks them down perfectly!",
+    "media": [
+      {
+        "type": "video",
+        "url": "https://www.youtube.com/watch?v=fS4HpgfJ1Bw",
+        "thumbnail": "https://picsum.photos/200/110",
+        " alt": "VSCode extensions tutorial"
+      }
+    ],
+    " votes": [{ "user":{ "$oid": "612296fc86231100a0631b22"}, "value": 1 }],
+    "voteCount": 1,
+    "reactions": [{ "user":{ "$oid": "612296fc86231100a0631b22"}, "type": "wow" }],
+    " reactionCount": 1,
+    "commentCount": 4,
+    "shareCount": 1,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["vscode", "tools", "developer-tips"]
+  },
+
+  {
+    "group": {
+      "$oid": "6920a57e7c5c1bd810137c4d"
+    },
+    "author": { "$oid": "612296fc86231100a0631b22" },
+    "title": "How to Stay Consistent Learning New Skills",
+    "content": "This is the best YouTube explanation I’ve seen on building discipline. It’s more practical than motivational fluff. HIGHLY recommended:",
+    "media": [
+      {
+        "type": "video",
+        "url": "https://www.youtube.com/watch?v=NUmrS2-ljLw",
+        "thumbnail": "https://picsum.photos/200/110",
+        " alt": "Consistency and discipline video"
+      }
+    ],
+    " votes": [{ "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "value": 1 }],
+    "voteCount": 1,
+    "reactions": [{ "user":{ "$oid": "6920c643b1d58b638c2ddae1"}, "type": "love" }],
+    " reactionCount": 1,
+    "commentCount": 8,
+    "shareCount": 2,
+    "isPinned": false,
+    "isLocked": false,
+    "tags": ["motivation", "growth", "learning"]
+  }
+]

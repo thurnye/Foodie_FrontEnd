@@ -88,6 +88,27 @@ class CommunityService {
     return await apiClient.get<IGroup[]>(`${COMMUNITY_API_BASE}/groups/my-groups`);
   }
 
+  /**
+   * Cancel join request
+   */
+  async cancelJoinRequest(groupId: string): Promise<IGroup> {
+    return await apiClient.delete<IGroup>(`${COMMUNITY_API_BASE}/groups/${groupId}/join-request`);
+  }
+
+  /**
+   * Approve join request (admin/moderator only)
+   */
+  async approveJoinRequest(groupId: string, userId: string): Promise<IGroup> {
+    return await apiClient.post<IGroup>(`${COMMUNITY_API_BASE}/groups/${groupId}/join-request/${userId}/approve`);
+  }
+
+  /**
+   * Reject join request (admin/moderator only)
+   */
+  async rejectJoinRequest(groupId: string, userId: string): Promise<IGroup> {
+    return await apiClient.post<IGroup>(`${COMMUNITY_API_BASE}/groups/${groupId}/join-request/${userId}/reject`);
+  }
+
   // ==================== POST ENDPOINTS ====================
 
   /**
@@ -101,6 +122,8 @@ class CommunityService {
     if (filters?.tags) params.append('tags', filters.tags.join(','));
     if (filters?.sort) params.append('sort', filters.sort);
     if (filters?.isPinned !== undefined) params.append('isPinned', String(filters.isPinned));
+    if (filters?.page) params.append('page', String(filters.page));
+    if (filters?.limit) params.append('limit', String(filters.limit));
 
     return await apiClient.get<IPost[]>(
       `${COMMUNITY_API_BASE}/posts${params.toString() ? `?${params.toString()}` : ''}`
