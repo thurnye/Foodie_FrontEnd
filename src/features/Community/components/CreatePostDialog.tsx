@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Dialog,
@@ -15,16 +15,17 @@ import {
 } from '@mui/material';
 import { Close, Image, VideoLibrary, Cancel } from '@mui/icons-material';
 import { AppDispatch } from '../../../app/stores/stores';
-import { createPost } from '../redux/community.thunk';
-import { IPostMedia } from '../types/community.types';
+import { createPost, updatePost } from '../redux/community.thunk';
+import { IPostMedia, IPost } from '../types/community.types';
 
 interface CreatePostDialogProps {
   open: boolean;
   onClose: () => void;
   groupId: string;
+  editPost?: IPost;
 }
 
-const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, onClose, groupId }) => {
+const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, onClose, groupId, editPost }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [title, setTitle] = useState('');
@@ -37,6 +38,16 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, onClose, grou
   const [showImageInput, setShowImageInput] = useState(false);
   const [showVideoInput, setShowVideoInput] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Populate fields when editing
+  useEffect(() => {
+    if (editPost) {
+      setTitle(editPost.title);
+      setContent(editPost.content);
+      setMedia(editPost.media || []);
+      setTags(editPost.tags || []);
+    }
+  }, [editPost]);
 
   const handleAddImage = () => {
     if (imageUrl.trim()) {
@@ -74,18 +85,34 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, onClose, grou
 
     setIsSubmitting(true);
     try {
-      await dispatch(
-        createPost({
-          groupId,
-          title: title.trim(),
-          content: content.trim(),
-          media: media.length > 0 ? media : undefined,
-          tags: tags.length > 0 ? tags : undefined,
-        })
-      );
+      if (editPost) {
+        // Update existing post
+        await dispatch(
+          updatePost({
+            postId: editPost._id,
+            data: {
+              title: title.trim(),
+              content: content.trim(),
+              media: media.length > 0 ? media : undefined,
+              tags: tags.length > 0 ? tags : undefined,
+            },
+          })
+        );
+      } else {
+        // Create new post
+        await dispatch(
+          createPost({
+            groupId,
+            title: title.trim(),
+            content: content.trim(),
+            media: media.length > 0 ? media : undefined,
+            tags: tags.length > 0 ? tags : undefined,
+          })
+        );
+      }
       handleClose();
     } catch (error) {
-      console.error('Error creating post:', error);
+      console.error('Error saving post:', error);
     } finally {
       setIsSubmitting(false);
     }
@@ -107,7 +134,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, onClose, grou
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
       <DialogTitle sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <Typography variant="h6">Create Post</Typography>
+        <Typography variant="h6">{editPost ? 'Edit Post' : 'Create Post'}</Typography>
         <IconButton size="small" onClick={handleClose}>
           <Close />
         </IconButton>
@@ -286,7 +313,7 @@ const CreatePostDialog: React.FC<CreatePostDialogProps> = ({ open, onClose, grou
           onClick={handleSubmit}
           disabled={!title.trim() || !content.trim() || isSubmitting}
         >
-          {isSubmitting ? 'Posting...' : 'Post'}
+          {isSubmitting ? (editPost ? 'Updating...' : 'Posting...') : (editPost ? 'Update' : 'Post')}
         </Button>
       </DialogActions>
     </Dialog>

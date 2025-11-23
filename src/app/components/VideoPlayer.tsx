@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactPlayer from 'react-player/youtube';
+import ReactPlayer from 'react-player';
 import { Box, useMediaQuery, useTheme } from '@mui/material';
 
 interface VideoPlayerProps {

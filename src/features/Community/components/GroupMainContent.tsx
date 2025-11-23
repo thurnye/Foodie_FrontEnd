@@ -39,7 +39,7 @@ const GroupMainContent: React.FC<GroupMainContentProps> = ({
 
   return (
     <Box sx={{
-      maxHeight:'100vh',
+      maxHeight:{lg:'100vh'},
       overflow:'auto',
       '&::-webkit-scrollbar': {
         display: 'none'

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   Dialog,
@@ -18,15 +18,16 @@ import {
 } from '@mui/material';
 import { Close, Add, Image as ImageIcon } from '@mui/icons-material';
 import { AppDispatch } from '../../../app/stores/stores';
-import { createGroup } from '../redux/community.thunk';
-import { ICreateGroup } from '../types/community.types';
+import { createGroup, updateGroup } from '../redux/community.thunk';
+import { ICreateGroup, IGroup } from '../types/community.types';
 
 interface CreateGroupDialogProps {
   open: boolean;
   onClose: () => void;
+  editGroup?: IGroup;
 }
 
-const CreateGroupDialog: React.FC<CreateGroupDialogProps> = ({ open, onClose }) => {
+const CreateGroupDialog: React.FC<CreateGroupDialogProps> = ({ open, onClose, editGroup }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [formData, setFormData] = useState<ICreateGroup>({
@@ -43,6 +44,21 @@ const CreateGroupDialog: React.FC<CreateGroupDialogProps> = ({ open, onClose }) 
   const [ruleInput, setRuleInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // Populate fields when editing
+  useEffect(() => {
+    if (editGroup) {
+      setFormData({
+        name: editGroup.name,
+        description: editGroup.description,
+        isPrivate: editGroup.isPrivate,
+        tags: editGroup.tags || [],
+        rules: editGroup.rules || [],
+        coverImage: editGroup.coverImage || '',
+        icon: editGroup.icon || '',
+      });
+    }
+  }, [editGroup]);
 
   const handleInputChange = (field: keyof ICreateGroup) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -103,10 +119,19 @@ const CreateGroupDialog: React.FC<CreateGroupDialogProps> = ({ open, onClose }) 
     setError(null);
 
     try {
-      await dispatch(createGroup(formData)).unwrap();
+      if (editGroup) {
+        // Update existing group
+        await dispatch(updateGroup({
+          groupId: editGroup._id,
+          data: formData
+        })).unwrap();
+      } else {
+        // Create new group
+        await dispatch(createGroup(formData)).unwrap();
+      }
       handleClose();
     } catch (err: any) {
-      setError(err.message || 'Failed to create group');
+      setError(err.message || (editGroup ? 'Failed to update group' : 'Failed to create group'));
     } finally {
       setLoading(false);
     }
@@ -133,7 +158,7 @@ const CreateGroupDialog: React.FC<CreateGroupDialogProps> = ({ open, onClose }) 
       <DialogTitle>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant="h6" fontWeight="bold">
-            Create New Group
+            {editGroup ? 'Edit Group Settings' : 'Create New Group'}
           </Typography>
           <IconButton onClick={handleClose} size="small">
             <Close />
@@ -281,7 +306,7 @@ const CreateGroupDialog: React.FC<CreateGroupDialogProps> = ({ open, onClose }) 
               </Button>
             </Box>
             {formData.rules && formData.rules.length > 0 && (
-              <Box sx={{ pl: 2 }}>
+              <Box sx={{ pl: 2, height: 500, overflow: 'auto' }}>
                 {formData.rules.map((rule, index) => (
                   <Box
                     key={index}
@@ -323,7 +348,7 @@ const CreateGroupDialog: React.FC<CreateGroupDialogProps> = ({ open, onClose }) 
             '&:hover': { backgroundColor: '#ff5252' },
           }}
         >
-          {loading ? <CircularProgress size={24} /> : 'Create Group'}
+          {loading ? <CircularProgress size={24} /> : (editGroup ? 'Update Group' : 'Create Group')}
         </Button>
       </DialogActions>
     </Dialog>

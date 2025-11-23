@@ -1,7 +1,14 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Container, Grid, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Container,
+  Grid,
+  CircularProgress,
+  Typography,
+  Button
+} from '@mui/material';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
 import {
   fetchGroupById,
@@ -15,6 +22,7 @@ import {
 import { appendPosts } from '../redux/community.slice';
 import { ICommunityUser } from '../types/community.types';
 import CreatePostDialog from '../components/CreatePostDialog';
+import CreateGroupDialog from '../components/CreateGroupDialog';
 import GroupHeader from '../components/GroupHeader';
 import GroupLeftSidebar from '../components/GroupLeftSidebar';
 import GroupMainContent from '../components/GroupMainContent';
@@ -28,8 +36,9 @@ const GroupDetail: React.FC = () => {
   const { selectedGroup, posts, groupsLoading, postsLoading } = useSelector(
     (state: RootState) => state.community
   );
-
+  const [activeMobileTab, setActiveMobileTab] = useState<string>('feed');
   const [createPostOpen, setCreatePostOpen] = useState(false);
+  const [editGroupOpen, setEditGroupOpen] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const POSTS_PER_PAGE = 10;
@@ -123,7 +132,7 @@ const GroupDetail: React.FC = () => {
   const groupPosts = posts.filter((p) => p.group === groupId);
 
   return (
-    <Box sx={{ bgcolor: '#f5f5f5', py: 3}}>
+    <Box sx={{ bgcolor: '#f5f5f5', py: 3 }}>
       <Container maxWidth='xl'>
         {/* Group Header */}
         <GroupHeader
@@ -134,48 +143,87 @@ const GroupDetail: React.FC = () => {
           onCreatePost={() => setCreatePostOpen(true)}
           onJoinLeave={handleJoinLeave}
         />
+        <Box sx={{ display: { xs: 'flex', lg: 'none' }, my: 3, mx: 2 }}>
+          <Box sx={{ width: 100 }}>
+            <Button
+              variant='text'
+              onClick={() => setActiveMobileTab('feed')}
+              sx={{
+                color: activeMobileTab === 'feed' ? 'primary' : 'black'
+              }}
+              
+            >
+              Feeds
+            </Button>
+          </Box>
+          <Box sx={{ width: 100 }}>
+            <Button
+              variant='text'
+              onClick={() => setActiveMobileTab('about')}
+              sx={{
+                color: activeMobileTab === 'about' ? 'primary' : 'black'
+              }}
+            >
+              About
+            </Button>
+          </Box>
+        </Box>
+        <Box>
+          <Grid container spacing={3}>
+            {/* Left Sidebar */}
+            <Grid
+              item
+              xs={12}
+              lg={3}
+              sx={{ display: { xs: 'none', lg: 'block' } }}
+            >
+              <GroupLeftSidebar
+                currentGroup={currentGroup}
+                isMember={isMember}
+                isCreator={isCreator}
+                userRole={userRole}
+                groupId={groupId}
+                onCreatePost={() => setCreatePostOpen(true)}
+                onApproveJoinRequest={handleApproveJoinRequest}
+                onRejectJoinRequest={handleRejectJoinRequest}
+              />
+            </Grid>
 
-        <Grid container spacing={3}>
-          {/* Left Sidebar */}
-          <Grid item xs={12} md={3}>
-            <GroupLeftSidebar
-              currentGroup={currentGroup}
-              isMember={isMember}
-              isCreator={isCreator}
-              userRole={userRole}
-              groupId={groupId}
-              onCreatePost={() => setCreatePostOpen(true)}
-              onApproveJoinRequest={handleApproveJoinRequest}
-              onRejectJoinRequest={handleRejectJoinRequest}
-            />
-          </Grid>
+            {/* Main Content */}
+            <Grid item xs={12} lg={6} sx={{
+              display: activeMobileTab === 'feed' ? 'block' : 'none'
+            }}>
+              <GroupMainContent
+                groupPosts={groupPosts}
+                isMember={isMember}
+                onCreatePost={() => setCreatePostOpen(true)}
+                onLoadMore={loadMorePosts}
+                hasMore={hasMore}
+                loading={postsLoading}
+              />
+            </Grid>
 
-          {/* Main Content */}
-          <Grid item xs={12} md={6}>
-            <GroupMainContent
-              groupPosts={groupPosts}
-              isMember={isMember}
-              onCreatePost={() => setCreatePostOpen(true)}
-              onLoadMore={loadMorePosts}
-              hasMore={hasMore}
-              loading={postsLoading}
-            />
+            {/* Right Sidebar */}
+            <Grid
+              item
+              xs={12}
+              lg={3}
+              sx={{ display: { xs: activeMobileTab === 'about' ? 'block' : 'none', lg: 'block' } }}
+            >
+              <GroupRightSidebar
+                currentGroup={currentGroup}
+                isCreator={isCreator}
+                userRole={userRole}
+                userId={user?.id}
+                groupId={groupId}
+                onApproveJoinRequest={handleApproveJoinRequest}
+                onRejectJoinRequest={handleRejectJoinRequest}
+                onHandleJoinLeave={handleJoinLeave}
+                onEditGroup={() => setEditGroupOpen(true)}
+              />
+            </Grid>
           </Grid>
-
-          {/* Right Sidebar */}
-          <Grid item xs={12} md={3}>
-            <GroupRightSidebar
-              currentGroup={currentGroup}
-              isCreator={isCreator}
-              userRole={userRole}
-              userId={user?.id}
-              groupId={groupId}
-              onApproveJoinRequest={handleApproveJoinRequest}
-              onRejectJoinRequest={handleRejectJoinRequest}
-              onHandleJoinLeave={handleJoinLeave}
-            />
-          </Grid>
-        </Grid>
+        </Box>
       </Container>
 
       {/* Create Post Dialog */}
@@ -186,6 +234,13 @@ const GroupDetail: React.FC = () => {
           groupId={groupId}
         />
       )}
+
+      {/* Edit Group Dialog */}
+      <CreateGroupDialog
+        open={editGroupOpen}
+        onClose={() => setEditGroupOpen(false)}
+        editGroup={selectedGroup}
+      />
     </Box>
   );
 };

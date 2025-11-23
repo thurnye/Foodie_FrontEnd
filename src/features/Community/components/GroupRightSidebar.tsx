@@ -32,6 +32,7 @@ interface GroupRightSidebarProps {
   onApproveJoinRequest: (userId: string) => void;
   onRejectJoinRequest: (userId: string) => void;
   onHandleJoinLeave: () => void;
+  onEditGroup: () => void;
 }
 
 const GroupRightSidebar: React.FC<GroupRightSidebarProps> = ({
@@ -43,12 +44,21 @@ const GroupRightSidebar: React.FC<GroupRightSidebarProps> = ({
   onApproveJoinRequest,
   onRejectJoinRequest,
   onHandleJoinLeave,
+  onEditGroup,
 }) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
-    <>
+    <Box sx={{
+          maxHeight:'100vh',
+          overflow:'auto',
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          },
+          msOverflowStyle: 'none',
+          scrollbarWidth: 'none'
+        }}>
       {/* About */}
       <Card sx={{ mb: 2, borderRadius: 2 }}>
         <CardContent>
@@ -70,11 +80,12 @@ const GroupRightSidebar: React.FC<GroupRightSidebarProps> = ({
                 onClose={() => setAnchorEl(null)}
               >
                 <MenuItem
-                  onClick={() =>
-                    navigate(`/communities/groups/${groupId}/settings`)
-                  }
+                  onClick={() => {
+                    onEditGroup();
+                    setAnchorEl(null);
+                  }}
                 >
-                  Group Settings
+                  Edit Group Settings
                 </MenuItem>
                 <MenuItem
                   onClick={() =>
@@ -189,11 +200,11 @@ const GroupRightSidebar: React.FC<GroupRightSidebarProps> = ({
               Community Rules
             </Typography>
             <Divider sx={{ mb: 2 }} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, height: 500, overflow:'auto' }}>
               {currentGroup.rules.map((rule: string, index: number) => (
                 <Box key={index}>
                   <Typography variant='body2' fontWeight='bold'>
-                    {index + 1}. Rule {index + 1}
+                     Rule {index + 1}
                   </Typography>
                   <Typography variant='body2' color='text.secondary'>
                     {rule}
@@ -271,9 +282,9 @@ const GroupRightSidebar: React.FC<GroupRightSidebarProps> = ({
                             />
                           </IconButton>
                         )}
-                        <IconButton size='small' onClick={onHandleJoinLeave}>
+                        {isMe && <IconButton size='small' onClick={onHandleJoinLeave}>
                           <PersonRemove fontSize='small' color='error' />
-                        </IconButton>
+                        </IconButton>}
                       </Stack>
                     </Box>
                   </Box>
@@ -353,9 +364,9 @@ const GroupRightSidebar: React.FC<GroupRightSidebarProps> = ({
                             />
                           </IconButton>
                         )}
-                        <IconButton size='small' onClick={onHandleJoinLeave}>
+                        { isMe && <IconButton size='small' onClick={onHandleJoinLeave}>
                           <PersonRemove fontSize='small' color='error' />
-                        </IconButton>
+                        </IconButton>}
                       </Stack>
                     </Box>
                   </Box>
@@ -364,7 +375,7 @@ const GroupRightSidebar: React.FC<GroupRightSidebarProps> = ({
           </Box>
         </CardContent>
       </Card>
-    </>
+    </Box>
   );
 };
 

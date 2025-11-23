@@ -52,7 +52,15 @@ const GroupLeftSidebar: React.FC<GroupLeftSidebarProps> = ({
   };
 
   return (
-    <>
+    <Box sx={{
+          maxHeight:'100vh',
+          overflow:'auto',
+          '&::-webkit-scrollbar': {
+            display: 'none'
+          },
+          msOverflowStyle: 'none',
+          scrollbarWidth: 'none'
+        }}>
       <Card sx={{ mb: 2, borderRadius: 2 }}>
         <CardContent>
           <Box sx={{}}>
@@ -181,31 +189,7 @@ const GroupLeftSidebar: React.FC<GroupLeftSidebarProps> = ({
             </CardContent>
           </Card>
         )}
-
-      {/* Rules */}
-      {currentGroup.rules && currentGroup.rules.length > 0 && (
-        <Card sx={{ mb: 2, borderRadius: 2 }}>
-          <CardContent>
-            <Typography variant='h6' fontWeight='bold' gutterBottom>
-              Community Rules
-            </Typography>
-            <Divider sx={{ mb: 2 }} />
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-              {currentGroup.rules.map((rule: string, index: number) => (
-                <Box key={index}>
-                  <Typography variant='body2' fontWeight='bold'>
-                    {index + 1}. Rule {index + 1}
-                  </Typography>
-                  <Typography variant='body2' color='text.secondary'>
-                    {rule}
-                  </Typography>
-                </Box>
-              ))}
-            </Box>
-          </CardContent>
-        </Card>
-      )}
-    </>
+    </Box>
   );
 };
 

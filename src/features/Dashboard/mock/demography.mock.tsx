@@ -126,4 +126,3 @@ export const geoLocationData: Record<
     growth: 5.4
   },
 };
-

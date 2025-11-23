@@ -33,7 +33,7 @@ const GroupHeader: React.FC<GroupHeaderProps> = ({
       {currentGroup.coverImage && (
         <Box
           sx={{
-            height: 250,
+            height: {xs: 150, lg: 250},
             backgroundImage: `url(${currentGroup.coverImage})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -41,12 +41,12 @@ const GroupHeader: React.FC<GroupHeaderProps> = ({
         />
       )}
       <CardContent>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection : {xs: 'column', md: 'row'}, alignItems: 'flex-start', gap: 2 }}>
           <Avatar
             src={currentGroup.icon}
             sx={{
-              width: 150,
-              height: 150,
+              width: {xs: 80, md: 150},
+              height: {xs: 80, md: 150},
               fontSize: '4rem',
               bgcolor: 'primary.main',
               mt: currentGroup.coverImage ? -6 : 0,

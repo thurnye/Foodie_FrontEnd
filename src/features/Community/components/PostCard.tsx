@@ -13,6 +13,11 @@ import {
   Button,
   Divider,
   Collapse,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import {
   ArrowUpward,
@@ -39,6 +44,7 @@ import {
 } from '../redux/community.thunk';
 import PostComments from './PostComments';
 import VideoPlayer from '../../../app/components/VideoPlayer';
+import CreatePostDialog from './CreatePostDialog';
 
 interface PostCardProps {
   post: IPost;
@@ -63,6 +69,8 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
   );
   const [showComments, setShowComments] = useState(false);
   const [shareAnchorEl, setShareAnchorEl] = useState<null | HTMLElement>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
 
   const author = post.author as ICommunityUser;
   const userVote = post.votes?.find((v) => v.user === user?.id);
@@ -128,10 +136,22 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
     setShareAnchorEl(null);
   };
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      await dispatch(deletePost(post._id));
-    }
+  const handleDeleteClick = () => {
+    setDeleteDialogOpen(true);
+    setAnchorEl(null);
+  };
+
+  const handleDeleteConfirm = async () => {
+    await dispatch(deletePost(post._id));
+    setDeleteDialogOpen(false);
+  };
+
+  const handleDeleteCancel = () => {
+    setDeleteDialogOpen(false);
+  };
+
+  const handleEditClick = () => {
+    setEditDialogOpen(true);
     setAnchorEl(null);
   };
 
@@ -182,7 +202,13 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
               (typeof post.author === 'string'
                 ? post.author
                 : post.author._id) && (
-              <MenuItem onClick={handleDelete}>Delete</MenuItem>
+              <MenuItem onClick={handleDeleteClick}>Delete</MenuItem>
+            )}
+            {user?.id ===
+              (typeof post.author === 'string'
+                ? post.author
+                : post.author._id) && (
+              <MenuItem onClick={handleEditClick}>Edit</MenuItem>
             )}
             <MenuItem onClick={() => setAnchorEl(null)}>Report</MenuItem>
           </Menu>
@@ -305,7 +331,6 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
             sx={{ color: 'text.secondary', textTransform: 'none' }}
           >
             {post.commentCount}{' '}
-            {post.commentCount === 1 ? 'Comment' : 'Comments'}
           </Button>
 
           {/* Reactions */}
@@ -379,6 +404,37 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           <PostComments postId={post._id} />
         </Collapse>
       </CardContent>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleDeleteCancel}
+        aria-labelledby='delete-dialog-title'
+        aria-describedby='delete-dialog-description'
+      >
+        <DialogTitle id='delete-dialog-title'>Delete Post</DialogTitle>
+        <DialogContent>
+          <DialogContentText id='delete-dialog-description'>
+            Are you sure you want to delete this post? This action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel} color='primary'>
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color='error' variant='contained' autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Edit Post Dialog */}
+      <CreatePostDialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        groupId={typeof post.group === 'string' ? post.group : post.group._id}
+        editPost={post}
+      />
     </Card>
   );
 };
