@@ -7,7 +7,6 @@ import {
 import { gapi } from 'gapi-script';
 import { Box } from '@mui/material';
 import services from '../../../util/services';
-import RequestFeedback from '../../../components/RequestFeedback/RequestFeedback';
 
 // Define user data type
 interface IUserData {

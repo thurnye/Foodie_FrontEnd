@@ -10,13 +10,14 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 // import { useJsApiLoader } from '@react-google-maps/api';
 import './App.css';
-import AccountMenu from './components/Nav/AccountMenu';
+
 
 import { HelmetProvider } from 'react-helmet-async';
 import AppRoutes from './app/router/app.routes';
 import { useAppDispatch, useAppSelector } from './app/hooks/app.hooks';
 import { initializeAuth } from './features/auth/redux/slice/asyncThunkServices';
 import { Box, CircularProgress } from '@mui/material';
+import AccountMenu from './app/components/Nav/AccountMenu';
 
 library.add(fab, fas, far);
 

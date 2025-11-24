@@ -12,7 +12,8 @@ import {
 import parser from 'html-react-parser';
 import { IContentBlock, IMethod } from '../../Recipe/types/recipe.types';
 import ImageLayout from '../../../app/components/Layouts/ImageLayout';
-import VideoPlayer from '../../../components/VideoPlayer/VideoPlayer';
+import VideoPlayer from '../../../app/components/VideoPlayer';
+
 
 interface DirectionStepperProps {
   methods: IMethod[];
