@@ -45,7 +45,6 @@ const columns = [
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          
         }}
       >
         {params.value}
@@ -146,22 +145,6 @@ const DashboardRecipeTable: React.FC<DashboardRecipeTableProps> = ({
   return (
     <Box>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-            }}
-          >
-            <Typography gutterBottom sx={{ mx: 3 }}>
-              <Link to='cook-book'>Cook Book</Link>
-            </Typography>
-            <Typography gutterBottom sx={{ mx: 3 }}>
-              <Link to='create'>Create Recipe</Link>
-            </Typography>
-          </Box>
-        </Grid>
-
         {error && (
           <Grid item xs={12}>
             <Alert severity='error' onClose={() => setError(null)}>

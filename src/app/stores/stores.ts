@@ -4,6 +4,7 @@ import recipeReducer from '../../features/Recipe/redux/recipe.slice';
 import dashboardReducer from '../../features/Dashboard/redux/dashboard.slice';
 import cookbookReducer from '../../features/CookBook/redux/cookbook.slice';
 import communityReducer from '../../features/Community/redux/community.slice';
+import eventReducer from '../../features/Events/redux/event.slice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     dashboard: dashboardReducer,
     cookbook: cookbookReducer,
     community: communityReducer,
+    events: eventReducer,
   },
 });
 

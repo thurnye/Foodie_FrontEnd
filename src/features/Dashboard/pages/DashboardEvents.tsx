@@ -1,44 +1,12 @@
 import React from 'react';
-import {
-  Box,
-  Typography,
-  Grid,
-  Button,
-} from '@mui/material';
+import { Box, Typography, Grid, Button } from '@mui/material';
 import { Add as AddIcon } from '@mui/icons-material';
+import OrganizedEventList from '../../Events/pages/EventsOrganisedByMeList';
 
 const DashboardEvents: React.FC = () => {
   return (
     <Box>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 4,
-        }}
-      >
-        <Typography variant="h4">My Events</Typography>
-        <Button variant="contained" startIcon={<AddIcon />}>
-          Create Event
-        </Button>
-      </Box>
-
-      <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Box sx={{ p: 3, textAlign: 'center', minHeight: 200 }}>
-            <Typography variant="h6" color="text.secondary" gutterBottom>
-              No events yet
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Create your first event to get started
-            </Typography>
-            <Button variant="outlined" startIcon={<AddIcon />}>
-              Create Your First Event
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
+      <OrganizedEventList />
     </Box>
   );
 };

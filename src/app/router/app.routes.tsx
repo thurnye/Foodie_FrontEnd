@@ -7,6 +7,7 @@ import { homeRoutes } from '../../features/Home/router/home.router';
 import { dashboardRoutes } from '../../features/Dashboard/router/dashboard.router';
 import BookRenderer from '../../features/CookBook/pages/BookRenderer';
 import { communityRoutes } from '../../features/Community/router/community.router';
+import { eventRoutes } from '../../features/Events/router/event.router';
 
 export default function AppRoutes() {
   const routes = useRoutes([
@@ -31,6 +32,10 @@ export default function AppRoutes() {
       element: <ProtectedRoute>{route.element}</ProtectedRoute>,
     })),
     ...communityRoutes.map((route) => ({
+      ...route,
+      element: <ProtectedRoute>{route.element}</ProtectedRoute>,
+    })),
+    ...eventRoutes.map((route) => ({
       ...route,
       element: <ProtectedRoute>{route.element}</ProtectedRoute>,
     })),

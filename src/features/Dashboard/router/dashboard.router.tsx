@@ -2,6 +2,7 @@ import { RouteObject } from 'react-router-dom';
 import { lazy } from 'react';
 import { cookbookRoutes } from '../../CookBook/router/cookbook.router';
 import { templateRoutes } from '../../Templates/router/templates.router';
+import { eventRoutes } from '../../Events/router/event.router';
 
 const DashboardLayout = lazy(() =>
   import('../components/DashboardLayout').then((m) => ({ default: m.default }))
@@ -25,11 +26,6 @@ const DashboardBookmarks = lazy(() =>
 
 const DashboardCreateEditRecipe = lazy(() =>
   import('../pages/Dashboard_Create_Edit_Recipe').then((m) => ({
-    default: m.default,
-  }))
-);
-const DashboardRecipeCookBook = lazy(() =>
-  import('../pages/DashboardRecipeCookBook').then((m) => ({
     default: m.default,
   }))
 );
@@ -61,10 +57,8 @@ export const dashboardRoutes: RouteObject[] = [
       },
       ...cookbookRoutes,
       ...templateRoutes,
-      // {
-      //   path: 'recipes/cook-book',
-      //   element: <DashboardRecipeCookBook />,
-      // },
+      ...eventRoutes,
+
       {
         path: 'bookmarks',
         element: <DashboardBookmarks />,

@@ -30,7 +30,12 @@ const DashboardRecipes: React.FC = () => {
 
   if (recipesLoading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight={400}>
+      <Box
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        minHeight={400}
+      >
         <CircularProgress />
       </Box>
     );
@@ -47,18 +52,21 @@ const DashboardRecipes: React.FC = () => {
         }}
       >
         <Box>
-          <Typography variant="h4" sx={{ fontWeight: 700 }}>
+          <Typography variant='h4' sx={{ fontWeight: 700 }}>
             My Recipes
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+          <Typography variant='body2' color='text.secondary' sx={{ mt: 1 }}>
             Manage and track your recipe creations
           </Typography>
         </Box>
         <Button
-          variant="contained"
+          variant='contained'
           startIcon={<AddIcon />}
-          onClick={() => navigate('create-recipe')}
-          sx={{ bgcolor: '#1a1a2e' }}
+          onClick={() => navigate('create')}
+          sx={{
+            backgroundColor: '#333',
+            '&:hover': { backgroundColor: '#444' },
+          }}
         >
           Create Recipe
         </Button>
@@ -66,7 +74,7 @@ const DashboardRecipes: React.FC = () => {
 
       {recipesError && (
         <Alert
-          severity="error"
+          severity='error'
           sx={{ mb: 3 }}
           onClose={() => dispatch(clearRecipesError())}
         >
@@ -76,14 +84,14 @@ const DashboardRecipes: React.FC = () => {
 
       {myRecipes.length === 0 ? (
         <Box sx={{ p: 6, textAlign: 'center', borderRadius: 2 }}>
-          <Typography variant="h6" color="text.secondary" gutterBottom>
+          <Typography variant='h6' color='text.secondary' gutterBottom>
             No recipes yet
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+          <Typography variant='body2' color='text.secondary' sx={{ mb: 3 }}>
             Share your first recipe with the community
           </Typography>
           <Button
-            variant="contained"
+            variant='contained'
             startIcon={<AddIcon />}
             onClick={() => navigate('create-recipe')}
             sx={{ bgcolor: '#1a1a2e' }}
