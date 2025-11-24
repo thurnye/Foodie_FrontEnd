@@ -110,6 +110,8 @@ const EventDetail: React.FC = () => {
   );
   const isRegistered = !!userRegistration;
 
+  console.log('isRegistered::', isRegistered)
+
   const handleRegisterClick = (tierId: string) => {
     setSelectedTicketTier(tierId);
     setRegisterDialogOpen(true);
