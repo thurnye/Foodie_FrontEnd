@@ -13,7 +13,6 @@ const apiKey = '3qjuzznxv7sdmqriojmkxuz5wtx9m02n4b29csbvacw3ky76';
 
 const TextEditor: React.FC<ITextEditorProps> = ({ getContents, defaultValue = '' }) => {
   const editorRef = useRef<TinyMCEEditor | null>(null);
-  const initialValueRef = useRef(defaultValue);
 
   const handleChange = (content: string) => {
     getContents(content);
@@ -26,7 +25,7 @@ const TextEditor: React.FC<ITextEditorProps> = ({ getContents, defaultValue = ''
         onInit={(_, editor) => {
           editorRef.current = editor;
         }}
-        initialValue={initialValueRef.current}
+        initialValue={defaultValue}
         init={{
           height: '100%',
           menubar: true,

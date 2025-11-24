@@ -31,11 +31,11 @@ import {
   Share,
   Videocam,
 } from '@mui/icons-material';
-import { formatDistanceToNow } from 'date-fns';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
 import { IEvent, IEventOrganizer } from '../types/event.types';
 import { deleteEvent } from '../redux/event.thunk';
 import CreateEventDialog from './CreateEventDialog';
+import { EventStatus } from '../mock/event.mock';
 
 interface EventCardProps {
   event: IEvent;
@@ -43,7 +43,11 @@ interface EventCardProps {
   showStatus?: boolean;
 }
 
-const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showStatus=false }) => {
+const EventCard: React.FC<EventCardProps> = ({
+  event,
+  showActions = false,
+  showStatus = false,
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
@@ -54,16 +58,20 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
   const organizer = event.organizer as IEventOrganizer;
-  const isOrganizer = user?.id === (typeof event.organizer === 'string' ? event.organizer : organizer?._id);
-  const coverImage = event.images?.find((img) => img.isCover) || event.images?.[0];
+  const isOrganizer =
+    user?.id ===
+    (typeof event.organizer === 'string' ? event.organizer : organizer?._id);
+  const coverImage =
+    event.images?.find((img) => img.isCover) || event.images?.[0];
   const isOnline = event?.location?.type === 'online';
   const isSoldOut = event.attendeeCount >= event.capacity;
   const isPastEvent = new Date(event.endDate) < new Date();
 
   // Get the cheapest ticket
-  const cheapestTicket = event.ticketTiers?.reduce((min, tier) =>
-    tier.price < min.price ? tier : min
-  , event.ticketTiers[0]);
+  const cheapestTicket = event.ticketTiers?.reduce(
+    (min, tier) => (tier.price < min.price ? tier : min),
+    event.ticketTiers[0]
+  );
 
   const handleMenuOpen = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation();
@@ -107,13 +115,13 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'published':
+      case EventStatus.PUBLISHED:
         return 'success';
-      case 'draft':
+      case EventStatus.DRAFT:
         return 'default';
-      case 'cancelled':
+      case EventStatus.CANCELLED:
         return 'error';
-      case 'completed':
+      case EventStatus.COMPLETED:
         return 'info';
       default:
         return 'default';
@@ -124,6 +132,7 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
     <>
       <Card
         sx={{
+          position: 'relative',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
@@ -139,8 +148,8 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
         {/* Event Image */}
         {coverImage ? (
           <CardMedia
-            component="img"
-            height="200"
+            component='img'
+            height='200'
             image={coverImage.url}
             alt={coverImage.alt || event.title}
             sx={{ objectFit: 'cover' }}
@@ -159,45 +168,79 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
           </Box>
         )}
 
-        <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2 }}>
+        {isOnline && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              display: 'flex',
+              gap: 1,
+            }}
+          >
+            <Chip
+              icon={<Videocam />}
+              label='Online'
+              color='info'
+              sx={{
+                fontWeight: 'bold',
+              }}
+            />
+          </Box>
+        )}
+
+        <CardContent
+          sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 2 }}
+        >
           {/* Header with Status and Actions */}
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              mb: 1,
+            }}
+          >
             <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
-              {showStatus && <Chip
-                label={event.status}
-                size="small"
-                color={getStatusColor(event.status)}
-                sx={{ textTransform: 'capitalize' }}
-              />}
-              {isSoldOut && <Chip label="Sold Out" size="small" color="error" />}
-              {isPastEvent && <Chip label="Past Event" size="small" />}
+              {showStatus && (
+                <Chip
+                  label={event.status}
+                  size='small'
+                  color={getStatusColor(event.status)}
+                  sx={{ textTransform: 'capitalize' }}
+                />
+              )}
+              {isSoldOut && (
+                <Chip label='Sold Out' size='small' color='error' />
+              )}
+              {isPastEvent && <Chip label='Past Event' size='small' />}
               {isOnline && (
                 <Chip
                   icon={<Videocam />}
-                  label="Online"
-                  size="small"
-                  color="primary"
-                  variant="outlined"
+                  label='Online'
+                  size='small'
+                  color='primary'
+                  variant='outlined'
                 />
               )}
             </Box>
 
             {(showActions || isOrganizer) && (
-              <IconButton size="small" onClick={handleMenuOpen}>
-                <MoreVert fontSize="small" />
+              <IconButton size='small' onClick={handleMenuOpen}>
+                <MoreVert fontSize='small' />
               </IconButton>
             )}
           </Box>
 
           {/* Event Title */}
-          <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
+          <Typography variant='h6' gutterBottom sx={{ fontWeight: 600 }}>
             {event.title}
           </Typography>
 
           {/* Event Date */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <CalendarToday fontSize="small" color="action" />
-            <Typography variant="body2" color="text.secondary">
+            <CalendarToday fontSize='small' color='action' />
+            <Typography variant='body2' color='text.secondary'>
               {new Date(event.startDate).toLocaleDateString('en-US', {
                 weekday: 'short',
                 month: 'short',
@@ -214,18 +257,20 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
 
           {/* Event Location */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <LocationOn fontSize="small" color="action" />
-            <Typography variant="body2" color="text.secondary" noWrap>
+            <LocationOn fontSize='small' color='action' />
+            <Typography variant='body2' color='text.secondary' noWrap>
               {isOnline
                 ? 'Online Event'
-                : `${event.location?.venueName || ''}, ${event.location?.city || ''}`}
+                : `${event.location?.venueName || ''}, ${
+                    event.location?.city || ''
+                  }`}
             </Typography>
           </Box>
 
           {/* Attendee Count */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <People fontSize="small" color="action" />
-            <Typography variant="body2" color="text.secondary">
+            <People fontSize='small' color='action' />
+            <Typography variant='body2' color='text.secondary'>
               {event.attendeeCount} / {event.capacity} attendees
             </Typography>
           </Box>
@@ -233,8 +278,8 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
           {/* Price */}
           {cheapestTicket && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-              <ConfirmationNumber fontSize="small" color="action" />
-              <Typography variant="body2" color="text.secondary">
+              <ConfirmationNumber fontSize='small' color='action' />
+              <Typography variant='body2' color='text.secondary'>
                 {cheapestTicket.price === 0 ? (
                   <strong>Free</strong>
                 ) : (
@@ -250,10 +295,14 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
           {event.tags && event.tags.length > 0 && (
             <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', mb: 2 }}>
               {event.tags.slice(0, 3).map((tag, index) => (
-                <Chip key={index} label={tag} size="small" variant="outlined" />
+                <Chip key={index} label={tag} size='small' variant='outlined' />
               ))}
               {event.tags.length > 3 && (
-                <Chip label={`+${event.tags.length - 3}`} size="small" variant="outlined" />
+                <Chip
+                  label={`+${event.tags.length - 3}`}
+                  size='small'
+                  variant='outlined'
+                />
               )}
             </Box>
           )}
@@ -262,19 +311,29 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
           <Box sx={{ flex: 1 }} />
 
           {/* Organizer */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2, pt: 2, borderTop: '1px solid #e0e0e0' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 1,
+              mt: 2,
+              pt: 2,
+              borderTop: '1px solid #e0e0e0',
+            }}
+          >
             <Avatar
               src={organizer?.avatar}
               alt={`${organizer.firstName} ${organizer.lastName}`}
               sx={{ width: 32, height: 32 }}
             >
-              {organizer.firstName?.[0]}{organizer.lastName?.[0]}
+              {organizer.firstName?.[0]}
+              {organizer.lastName?.[0]}
             </Avatar>
             <Box sx={{ flex: 1 }}>
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant='caption' color='text.secondary'>
                 Organized by
               </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+              <Typography variant='body2' sx={{ fontWeight: 500 }}>
                 {organizer.firstName} {organizer.lastName}
               </Typography>
             </Box>
@@ -283,19 +342,23 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
       </Card>
 
       {/* Actions Menu */}
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+      >
         <MenuItem onClick={handleShare}>
-          <Share fontSize="small" sx={{ mr: 1 }} />
+          <Share fontSize='small' sx={{ mr: 1 }} />
           Share
         </MenuItem>
         {isOrganizer && (
           <>
             <MenuItem onClick={handleEdit}>
-              <Edit fontSize="small" sx={{ mr: 1 }} />
+              <Edit fontSize='small' sx={{ mr: 1 }} />
               Edit
             </MenuItem>
             <MenuItem onClick={handleDeleteClick} sx={{ color: 'error.main' }}>
-              <Delete fontSize="small" sx={{ mr: 1 }} />
+              <Delete fontSize='small' sx={{ mr: 1 }} />
               Delete
             </MenuItem>
           </>
@@ -311,13 +374,17 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
         <DialogTitle>Delete Event</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete "{event.title}"? This action cannot be undone and all registrations will be
-            cancelled.
+            Are you sure you want to delete "{event.title}"? This action cannot
+            be undone and all registrations will be cancelled.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+          <Button
+            onClick={handleDeleteConfirm}
+            color='error'
+            variant='contained'
+          >
             Delete
           </Button>
         </DialogActions>
@@ -345,9 +412,11 @@ const EventCard: React.FC<EventCardProps> = ({ event, showActions = false, showS
           </DialogContentText>
           <Stack spacing={2}>
             <Button
-              variant="outlined"
+              variant='outlined'
               onClick={() => {
-                navigator.clipboard.writeText(`${window.location.origin}/events/${event._id}`);
+                navigator.clipboard.writeText(
+                  `${window.location.origin}/events/${event._id}`
+                );
               }}
             >
               Copy Link

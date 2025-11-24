@@ -12,13 +12,46 @@ import validator from 'validator';
 
 export const sanitizeHtml = (dirty: string): string => {
   return DOMPurify.sanitize(dirty, {
-    ALLOWED_TAGS: ['b', 'i', 'em', 'strong', 'a', 'p', 'br'],
-    ALLOWED_ATTR: ['href', 'target'],
+    ALLOWED_TAGS: [
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'div',
+      'b',
+      'i',
+      'em',
+      'strong',
+      'a',
+      'p',
+      'br',
+    ],
+    ALLOWED_ATTR: ['href', 'target', 'id'],
   });
 };
 
 export const sanitizeInput = (input: string): string => {
-  return DOMPurify.sanitize(input, { ALLOWED_TAGS: [] });
+  return DOMPurify.sanitize(input, {
+    ALLOWED_TAGS: [
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'div',
+      'b',
+      'i',
+      'em',
+      'strong',
+      'a',
+      'p',
+      'br',
+    ],
+    ALLOWED_ATTR: ['href', 'target', 'id'],
+  });
 };
 
 export const sanitizeObject = <T extends Record<string, any>>(obj: T): T => {
@@ -26,11 +59,19 @@ export const sanitizeObject = <T extends Record<string, any>>(obj: T): T => {
   for (const key in sanitized) {
     if (typeof sanitized[key] === 'string') {
       sanitized[key] = sanitizeInput(sanitized[key]) as any;
-    } else if (typeof sanitized[key] === 'object' && sanitized[key] !== null && !Array.isArray(sanitized[key])) {
+    } else if (
+      typeof sanitized[key] === 'object' &&
+      sanitized[key] !== null &&
+      !Array.isArray(sanitized[key])
+    ) {
       sanitized[key] = sanitizeObject(sanitized[key]);
     } else if (Array.isArray(sanitized[key])) {
       sanitized[key] = sanitized[key].map((item: any) =>
-        typeof item === 'string' ? sanitizeInput(item) : typeof item === 'object' ? sanitizeObject(item) : item
+        typeof item === 'string'
+          ? sanitizeInput(item)
+          : typeof item === 'object'
+          ? sanitizeObject(item)
+          : item
       ) as any;
     }
   }
@@ -39,7 +80,8 @@ export const sanitizeObject = <T extends Record<string, any>>(obj: T): T => {
 
 // ========== VALIDATION ==========
 
-export const isValidEmail = (email: string): boolean => validator.isEmail(email);
+export const isValidEmail = (email: string): boolean =>
+  validator.isEmail(email);
 
 export const isValidPhoneNumber = (phone: string): boolean =>
   validator.isMobilePhone(phone, 'any', { strictMode: false });
@@ -89,14 +131,25 @@ export const redactPhoneNumber = (phone: string): string => {
 
 export const redactSensitiveData = (
   obj: Record<string, any>,
-  sensitiveFields: string[] = ['password', 'token', 'secret', 'apiKey', 'creditCard', 'ssn']
+  sensitiveFields: string[] = [
+    'password',
+    'token',
+    'secret',
+    'apiKey',
+    'creditCard',
+    'ssn',
+  ]
 ): Record<string, any> => {
   const redacted = { ...obj };
   for (const key in redacted) {
     const lowerKey = key.toLowerCase();
     if (sensitiveFields.some((field) => lowerKey.includes(field))) {
       redacted[key] = '[REDACTED]';
-    } else if (typeof redacted[key] === 'object' && redacted[key] !== null && !Array.isArray(redacted[key])) {
+    } else if (
+      typeof redacted[key] === 'object' &&
+      redacted[key] !== null &&
+      !Array.isArray(redacted[key])
+    ) {
       redacted[key] = redactSensitiveData(redacted[key], sensitiveFields);
     }
   }
