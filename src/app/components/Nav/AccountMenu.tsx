@@ -34,6 +34,7 @@ const appNav: NavItem[] = [
   { name: 'Recipes', path: '/recipes', active: false },
   { name: 'Community', path: '/communities', active: false },
   { name: 'Events', path: '/events', active: false },
+  { name: 'Communication', path: '/communication', active: false },
 ];
 
 const AccountMenu: React.FC = () => {
@@ -165,7 +166,7 @@ const AccountMenu: React.FC = () => {
                     <Link to="/communities">Communities</Link>
                   </MenuItem>
                   <MenuItem>
-                    <Link to="/chats">Chats</Link>
+                    <Link to="/communication">Communications</Link>
                   </MenuItem>
 
                   <Divider />

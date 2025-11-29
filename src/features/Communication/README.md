@@ -1,6 +1,6 @@
-# Messages Feature
+# Messenger Feature
 
-**Description:** Add details about the Messages feature here.
+**Description:** Add details about the Messenger feature here.
 
 ## Structure
 - components/
@@ -11,3 +11,4 @@
 - utils/
 - router/
 - redux/
+- mock/

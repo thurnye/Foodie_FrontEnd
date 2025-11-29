@@ -1,5 +1,6 @@
 export interface IUser {
   id: string;
+  _id?: string; // MongoDB ID alias for compatibility
   firstName: string;
   lastName: string;
   email: string;
@@ -15,6 +16,8 @@ export interface IUser {
   isActive?: boolean;
   // Legacy fields for backward compatibility
   name?: string;
+  status?: 'online' | 'offline' | 'away' | 'busy'; // For communication feature
+  lastSeen?: Date | string; // For communication feature
   role?: 'individual' | 'restaurant';
   location?: string;
   completedTrades?: number;

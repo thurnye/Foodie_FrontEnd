@@ -5,6 +5,7 @@ import dashboardReducer from '../../features/Dashboard/redux/dashboard.slice';
 import cookbookReducer from '../../features/CookBook/redux/cookbook.slice';
 import communityReducer from '../../features/Community/redux/community.slice';
 import eventReducer from '../../features/Events/redux/event.slice';
+import communicationReducer from '../../features/Communication/redux/communication.slice';
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     cookbook: cookbookReducer,
     community: communityReducer,
     events: eventReducer,
+    communication: communicationReducer,
   },
 });
 
