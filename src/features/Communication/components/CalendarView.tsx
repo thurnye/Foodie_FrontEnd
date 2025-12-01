@@ -25,7 +25,11 @@ import {
 } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../app/stores/stores';
-import { setCalendarView, toggleCreateMeeting, setMeetingDetails } from '../redux/communication.slice';
+import {
+  setCalendarView,
+  toggleCreateMeeting,
+  setMeetingDetails,
+} from '../redux/communication.slice';
 import { IMeeting } from '../types/communication.types';
 import {
   format,
@@ -49,7 +53,9 @@ const CalendarView: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const isTablet = useMediaQuery(theme.breakpoints.down('md'));
-  const { calendarView, meetings, settings } = useSelector((state: RootState) => state.communication);
+  const { calendarView, meetings, settings } = useSelector(
+    (state: RootState) => state.communication
+  );
 
   const [currentDate, setCurrentDate] = useState(new Date());
 
@@ -110,7 +116,10 @@ const CalendarView: React.FC = () => {
             borderColor: 'divider',
           }}
         >
-          <Typography variant="caption" sx={{ fontSize: isMobile ? '0.65rem' : '0.75rem' }}>
+          <Typography
+            variant='caption'
+            sx={{ fontSize: isMobile ? '0.65rem' : '0.75rem' }}
+          >
             {format(addDays(startDate, i), isMobile ? 'EEEEE' : 'EEE')}
           </Typography>
         </Box>
@@ -151,7 +160,7 @@ const CalendarView: React.FC = () => {
             }}
           >
             <Typography
-              variant="caption"
+              variant='caption'
               fontWeight={isToday(day) ? 600 : 400}
               sx={{
                 color: isToday(day) ? 'primary.contrastText' : 'text.primary',
@@ -161,12 +170,19 @@ const CalendarView: React.FC = () => {
               {formattedDate}
             </Typography>
             {!isMobile && (
-              <Box sx={{ mt: 0.5, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+              <Box
+                sx={{
+                  mt: 0.5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 0.5,
+                }}
+              >
                 {dayMeetings.slice(0, 3).map((meeting) => (
                   <Chip
                     key={meeting._id}
                     label={meeting.title}
-                    size="small"
+                    size='small'
                     onClick={() => dispatch(setMeetingDetails(meeting))}
                     sx={{
                       height: 20,
@@ -181,7 +197,7 @@ const CalendarView: React.FC = () => {
                   />
                 ))}
                 {dayMeetings.length > 3 && (
-                  <Typography variant="caption" color="primary">
+                  <Typography variant='caption' color='primary'>
                     +{dayMeetings.length - 3} more
                   </Typography>
                 )}
@@ -189,8 +205,13 @@ const CalendarView: React.FC = () => {
             )}
             {isMobile && dayMeetings.length > 0 && (
               <Box sx={{ mt: 0.5, textAlign: 'center' }}>
-                <Typography variant="caption" color="primary" sx={{ fontSize: '0.6rem' }}>
-                  {dayMeetings.length} {dayMeetings.length === 1 ? 'meeting' : 'meetings'}
+                <Typography
+                  variant='caption'
+                  color='primary'
+                  sx={{ fontSize: '0.6rem' }}
+                >
+                  {dayMeetings.length}{' '}
+                  {dayMeetings.length === 1 ? 'meeting' : 'meetings'}
                 </Typography>
               </Box>
             )}
@@ -199,7 +220,10 @@ const CalendarView: React.FC = () => {
         day = addDays(day, 1);
       }
       rows.push(
-        <Box key={day.toString()} sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
+        <Box
+          key={day.toString()}
+          sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}
+        >
           {days}
         </Box>
       );
@@ -208,7 +232,14 @@ const CalendarView: React.FC = () => {
 
     return (
       <Box>
-        <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', borderBottom: 1, borderColor: 'divider' }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            borderBottom: 1,
+            borderColor: 'divider',
+          }}
+        >
           {daysOfWeek}
         </Box>
         {rows}
@@ -248,8 +279,8 @@ const CalendarView: React.FC = () => {
                 : 'background.paper',
             }}
           >
-            <Typography variant="caption">{format(day, 'EEE')}</Typography>
-            <Typography variant="h6" fontWeight={isToday(day) ? 600 : 400}>
+            <Typography variant='caption'>{format(day, 'EEE')}</Typography>
+            <Typography variant='h6' fontWeight={isToday(day) ? 600 : 400}>
               {format(day, 'd')}
             </Typography>
           </Box>
@@ -261,17 +292,19 @@ const CalendarView: React.FC = () => {
                   p: 1.5,
                   mb: 1,
                   cursor: 'pointer',
-                  bgcolor: settings.theme === 'dark' ? 'grey.700' : 'background.paper',
+                  bgcolor:
+                    settings.theme === 'dark' ? 'grey.700' : 'background.paper',
                   '&:hover': {
-                    bgcolor: settings.theme === 'dark' ? 'grey.600' : 'grey.100',
+                    bgcolor:
+                      settings.theme === 'dark' ? 'grey.600' : 'grey.100',
                   },
                 }}
                 onClick={() => dispatch(setMeetingDetails(meeting))}
               >
-                <Typography variant="subtitle2" fontWeight={600}>
+                <Typography variant='subtitle2' fontWeight={600}>
                   {meeting.title}
                 </Typography>
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant='caption' color='text.secondary'>
                   {format(new Date(meeting.startTime), 'h:mm a')} -{' '}
                   {format(new Date(meeting.endTime), 'h:mm a')}
                 </Typography>
@@ -292,7 +325,11 @@ const CalendarView: React.FC = () => {
       );
     }
 
-    return <Box sx={{ display: 'flex', borderTop: 1, borderColor: 'divider' }}>{weekDays}</Box>;
+    return (
+      <Box sx={{ display: 'flex', borderTop: 1, borderColor: 'divider' }}>
+        {weekDays}
+      </Box>
+    );
   };
 
   const renderDayView = () => {
@@ -300,7 +337,7 @@ const CalendarView: React.FC = () => {
 
     return (
       <Box sx={{ p: 3 }}>
-        <Typography variant="h5" gutterBottom>
+        <Typography variant='h5' gutterBottom>
           {format(currentDate, 'EEEE, MMMM d, yyyy')}
         </Typography>
         <List>
@@ -313,7 +350,7 @@ const CalendarView: React.FC = () => {
                 p: 4,
               }}
             >
-              <Typography variant="body1" color="text.secondary">
+              <Typography variant='body1' color='text.secondary'>
                 No meetings scheduled for this day
               </Typography>
             </Box>
@@ -331,23 +368,31 @@ const CalendarView: React.FC = () => {
                 }}
                 onClick={() => dispatch(setMeetingDetails(meeting))}
               >
-                <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'space-between',
+                  }}
+                >
                   <Box>
-                    <Typography variant="h6">{meeting.title}</Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography variant='h6'>{meeting.title}</Typography>
+                    <Typography variant='body2' color='text.secondary'>
                       {format(new Date(meeting.startTime), 'h:mm a')} -{' '}
                       {format(new Date(meeting.endTime), 'h:mm a')}
                     </Typography>
                     {meeting.description && (
-                      <Typography variant="body2" sx={{ mt: 1 }}>
+                      <Typography variant='body2' sx={{ mt: 1 }}>
                         {meeting.description}
                       </Typography>
                     )}
                   </Box>
-                  <Chip label={meeting.status} size="small" color="primary" />
+                  <Chip label={meeting.status} size='small' color='primary' />
                 </Box>
-                <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <Typography variant="caption" color="text.secondary">
+                <Box
+                  sx={{ mt: 2, display: 'flex', alignItems: 'center', gap: 1 }}
+                >
+                  <Typography variant='caption' color='text.secondary'>
                     Participants:
                   </Typography>
                   <AvatarGroup max={5}>
@@ -372,7 +417,14 @@ const CalendarView: React.FC = () => {
 
   return (
     <>
-      <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          overflow: 'hidden',
+        }}
+      >
         {/* Header */}
         <Box
           sx={{
@@ -384,42 +436,72 @@ const CalendarView: React.FC = () => {
             gap: isMobile ? 1.5 : 0,
             borderBottom: 1,
             borderColor: 'divider',
-            bgcolor: settings.theme === 'dark' ? 'grey.800' : 'background.paper',
+            bgcolor:
+              settings.theme === 'dark' ? 'grey.800' : 'background.paper',
           }}
         >
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 1 }}>
-            <Typography variant={isMobile ? 'h6' : 'h5'} fontWeight={600} noWrap sx={{ flex: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: 1,
+            }}
+          >
+            <Typography
+              variant={isMobile ? 'h6' : 'h5'}
+              fontWeight={600}
+              noWrap
+              sx={{ flex: 1 }}
+            >
               {calendarView === 'month'
                 ? format(currentDate, isMobile ? 'MMM yyyy' : 'MMMM yyyy')
                 : calendarView === 'week'
-                ? `Week of ${format(startOfWeek(currentDate), isMobile ? 'MMM d' : 'MMM d, yyyy')}`
-                : format(currentDate, isMobile ? 'MMM d, yyyy' : 'MMMM d, yyyy')}
+                ? `Week of ${format(
+                    startOfWeek(currentDate),
+                    isMobile ? 'MMM d' : 'MMM d, yyyy'
+                  )}`
+                : format(
+                    currentDate,
+                    isMobile ? 'MMM d, yyyy' : 'MMMM d, yyyy'
+                  )}
             </Typography>
 
             {isMobile && (
               <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <IconButton onClick={handlePrevious} size="small">
-                  <ChevronLeftIcon fontSize="small" />
+                <IconButton onClick={handlePrevious} size='small'>
+                  <ChevronLeftIcon fontSize='small' />
                 </IconButton>
-                <IconButton onClick={handleNext} size="small">
-                  <ChevronRightIcon fontSize="small" />
+                <IconButton onClick={handleNext} size='small'>
+                  <ChevronRightIcon fontSize='small' />
                 </IconButton>
               </Box>
             )}
           </Box>
 
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: isMobile ? 1 : 2, flexWrap: 'wrap' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: isMobile ? 1 : 2,
+              flexWrap: 'wrap',
+            }}
+          >
             {!isMobile && (
               <>
-                <Button startIcon={<TodayIcon />} onClick={handleToday} size="small">
+                <Button
+                  startIcon={<TodayIcon />}
+                  onClick={handleToday}
+                  size='small'
+                >
                   Today
                 </Button>
 
                 <Box sx={{ display: 'flex', gap: 0.5 }}>
-                  <IconButton onClick={handlePrevious} size="small">
+                  <IconButton onClick={handlePrevious} size='small'>
                     <ChevronLeftIcon />
                   </IconButton>
-                  <IconButton onClick={handleNext} size="small">
+                  <IconButton onClick={handleNext} size='small'>
                     <ChevronRightIcon />
                   </IconButton>
                 </Box>
@@ -429,23 +511,25 @@ const CalendarView: React.FC = () => {
             <ToggleButtonGroup
               value={calendarView}
               exclusive
-              onChange={(e, newView) => newView && dispatch(setCalendarView(newView))}
-              size="small"
+              onChange={(e, newView) =>
+                newView && dispatch(setCalendarView(newView))
+              }
+              size='small'
               sx={{ flex: isMobile ? 1 : 'none' }}
             >
-              <ToggleButton value="month" sx={{ flex: isMobile ? 1 : 'none' }}>
+              <ToggleButton value='month' sx={{ flex: isMobile ? 1 : 'none' }}>
                 {isMobile ? 'M' : 'Month'}
               </ToggleButton>
-              <ToggleButton value="week" sx={{ flex: isMobile ? 1 : 'none' }}>
+              <ToggleButton value='week' sx={{ flex: isMobile ? 1 : 'none' }}>
                 {isMobile ? 'W' : 'Week'}
               </ToggleButton>
-              <ToggleButton value="day" sx={{ flex: isMobile ? 1 : 'none' }}>
+              <ToggleButton value='day' sx={{ flex: isMobile ? 1 : 'none' }}>
                 {isMobile ? 'D' : 'Day'}
               </ToggleButton>
             </ToggleButtonGroup>
 
             <Button
-              variant="contained"
+              variant='contained'
               startIcon={!isMobile && <AddIcon />}
               onClick={() => dispatch(toggleCreateMeeting())}
               size={isMobile ? 'small' : 'medium'}

@@ -9,9 +9,9 @@ export interface ITeam {
   name: string;
   description?: string;
   avatar?: string;
-  members: string[]; // User IDs
-  channels: string[]; // Channel IDs
-  owner: string; // User ID
+  members: (string | IUser)[]; // User IDs or populated User objects
+  channels: (string | IChannel)[]; // Channel IDs or populated Channel objects
+  owner: string | IUser; // User ID or populated User object
   createdAt: Date | string;
   updatedAt: Date | string;
 }
@@ -24,7 +24,7 @@ export interface IChannel {
   description?: string;
   type: 'text' | 'announcement';
   isPrivate: boolean;
-  members: string[]; // User IDs
+  members: (string | IUser)[]; // User IDs or populated User objects
   unreadCount: number;
   lastMessage?: IMessage;
   createdAt: Date | string;

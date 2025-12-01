@@ -19,7 +19,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../../app/stores/stores';
 import { selectConversation } from '../redux/communication.slice';
 import { formatDistanceToNow } from 'date-fns';
-import { currentUser } from '../data/mockData';
 
 interface DirectMessagesListProps {
   onClose?: () => void;
@@ -30,11 +29,17 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ onClose }) => {
   const { conversations, selectedConversationId, settings } = useSelector(
     (state: RootState) => state.communication
   );
+  const currentUser = useSelector((state: RootState) => state.auth?.user);
 
   const [searchQuery, setSearchQuery] = useState('');
 
+  const currentUserId = currentUser?._id || currentUser?.id;
+
   const filteredConversations = conversations.filter((conversation) => {
-    const otherParticipants = conversation.participants.filter((p) => p._id !== currentUser._id);
+    const otherParticipants = conversation.participants.filter((p) => {
+      const participantId = p._id || p.id;
+      return participantId !== currentUserId;
+    });
     const names = otherParticipants.map((p) => p.name).join(' ');
     return names.toLowerCase().includes(searchQuery.toLowerCase());
   });
@@ -96,9 +101,10 @@ const DirectMessagesList: React.FC<DirectMessagesListProps> = ({ onClose }) => {
       <Box sx={{ flex: 1, overflow: 'auto' }}>
         <List disablePadding>
           {filteredConversations.map((conversation) => {
-            const otherParticipants = conversation.participants.filter(
-              (p) => p._id !== currentUser._id
-            );
+            const otherParticipants = conversation.participants.filter((p) => {
+              const participantId = p._id || p.id;
+              return participantId !== currentUserId;
+            });
             const onlineCount = otherParticipants.filter((p) => p.status === 'online').length;
 
             return (

@@ -4,9 +4,7 @@ import {
   Avatar,
   Tooltip,
   IconButton,
-  Badge,
   Divider,
-  Typography,
 } from '@mui/material';
 import {
   Add as AddIcon,

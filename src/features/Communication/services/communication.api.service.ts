@@ -59,6 +59,13 @@ export const TeamAPI = {
       `${BASE_URL}/teams/${teamId}/members/${userId}`
     );
   },
+
+  // Invite member by email
+  inviteMemberByEmail: async (teamId: string, email: string): Promise<ITeam> => {
+    return apiClient.post<ITeam>(`${BASE_URL}/teams/${teamId}/invite`, {
+      email,
+    });
+  },
 };
 
 /**

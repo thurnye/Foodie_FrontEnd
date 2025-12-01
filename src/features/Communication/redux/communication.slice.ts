@@ -87,7 +87,7 @@ const initialState: CommunicationState = {
   notifications: [],
   unreadNotificationsCount: 0,
   meetings: [],
-  calendarView: 'week',
+  calendarView: 'month',
   activeCall: null,
   settings: {
     theme: 'light',

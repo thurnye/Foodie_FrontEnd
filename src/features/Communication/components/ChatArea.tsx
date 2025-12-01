@@ -6,20 +6,17 @@ import {
   Avatar,
   TextField,
   InputAdornment,
-  Paper,
   Chip,
   Tooltip,
   Menu,
   MenuItem,
   Divider,
   AvatarGroup,
-  Button,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import {
   MoreVert as MoreVertIcon,
-  People as PeopleIcon,
   Notifications as NotificationsIcon,
   AttachFile as AttachFileIcon,
   EmojiEmotions as EmojiIcon,
@@ -31,9 +28,13 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../../app/stores/stores';
 import { sendMessageThunk, startCall, toggleNotifications, fetchChannelMessages, fetchConversationMessages } from '../redux/communication.slice';
-import { IMessage, ICall } from '../types/communication.types';
+import { ICall } from '../types/communication.types';
 import MessageBubble from './MessageBubble';
 import { socketService } from '../services/socket.service';
+import InviteMemberDialog from './InviteMemberDialog';
+import ChannelSettingsDialog from './ChannelSettingsDialog';
+import ChannelInfoDialog from './ChannelInfoDialog';
+import { TeamAPI } from '../services/communication.api.service';
 
 const ChatArea: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -55,6 +56,9 @@ const ChatArea: React.FC = () => {
 
   const [messageText, setMessageText] = useState('');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
+  const [channelSettingsOpen, setChannelSettingsOpen] = useState(false);
+  const [channelInfoOpen, setChannelInfoOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const selectedChannel = channels.find((c) => c._id === selectedChannelId);
@@ -162,6 +166,30 @@ const ChatArea: React.FC = () => {
     dispatch(startCall(call));
   };
 
+  const handleInviteMember = async (email: string) => {
+    if (!selectedTeam?._id) {
+      throw new Error('No team selected');
+    }
+
+    try {
+      await TeamAPI.inviteMemberByEmail(selectedTeam._id, email);
+      // Optionally refresh the team data here if needed
+    } catch (error: any) {
+      throw new Error(error.response?.data?.error || 'Failed to invite member');
+    }
+  };
+
+  const handleOpenInviteDialog = () => {
+    setAnchorEl(null);
+    setInviteDialogOpen(true);
+  };
+
+  const handleRefreshChannel = async () => {
+    if (selectedChannelId) {
+      await dispatch(fetchChannelMessages(selectedChannelId));
+    }
+  };
+
   const renderHeader = () => {
     if (viewMode === 'channel' && selectedChannel) {
       return (
@@ -204,7 +232,7 @@ const ChatArea: React.FC = () => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Channel Info">
-                  <IconButton size={isMobile ? 'small' : 'medium'}>
+                  <IconButton size={isMobile ? 'small' : 'medium'} onClick={() => setChannelInfoOpen(true)}>
                     <InfoIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -438,22 +466,58 @@ const ChatArea: React.FC = () => {
               <CallIcon fontSize="small" sx={{ mr: 1 }} /> Start Audio Call
             </MenuItem>
             {viewMode === 'channel' && (
-              <MenuItem onClick={() => setAnchorEl(null)}>
+              <MenuItem onClick={() => { setAnchorEl(null); setChannelInfoOpen(true); }}>
                 <InfoIcon fontSize="small" sx={{ mr: 1 }} /> Channel Info
               </MenuItem>
             )}
             <Divider />
           </>
         )}
-        <MenuItem onClick={() => setAnchorEl(null)}>
-          {viewMode === 'channel' ? 'Channel Settings' : 'Conversation Settings'}
-        </MenuItem>
+        {viewMode === 'channel' && (
+          <MenuItem onClick={() => { setAnchorEl(null); setChannelSettingsOpen(true); }}>
+            Channel Settings
+          </MenuItem>
+        )}
+        {viewMode === 'dm' && (
+          <MenuItem onClick={() => setAnchorEl(null)}>
+            Conversation Settings
+          </MenuItem>
+        )}
         <MenuItem onClick={() => setAnchorEl(null)}>Notification Preferences</MenuItem>
+        {viewMode === 'channel' && selectedTeam && (
+          <MenuItem onClick={handleOpenInviteDialog}>Invite Member</MenuItem>
+        )}
         <Divider />
         <MenuItem onClick={() => setAnchorEl(null)} sx={{ color: 'error.main' }}>
           {viewMode === 'channel' ? 'Leave Channel' : 'Leave Conversation'}
         </MenuItem>
       </Menu>
+
+      {/* Invite Member Dialog */}
+      <InviteMemberDialog
+        open={inviteDialogOpen}
+        onClose={() => setInviteDialogOpen(false)}
+        onInvite={handleInviteMember}
+        teamName={selectedTeam?.name}
+      />
+
+      {/* Channel Settings Dialog */}
+      <ChannelSettingsDialog
+        open={channelSettingsOpen}
+        onClose={() => setChannelSettingsOpen(false)}
+        channel={selectedChannel || null}
+        onChannelUpdated={handleRefreshChannel}
+      />
+
+      {/* Channel Info Dialog */}
+      <ChannelInfoDialog
+        open={channelInfoOpen}
+        onClose={() => setChannelInfoOpen(false)}
+        channel={selectedChannel || null}
+        teamMembers={selectedTeam?.members || []}
+        currentUserId={currentUser?._id || currentUser?.id}
+        onMemberManaged={handleRefreshChannel}
+      />
     </Box>
   );
 };
