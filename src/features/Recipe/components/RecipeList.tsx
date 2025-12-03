@@ -24,7 +24,7 @@ export default function RecipeList() {
         <>
           <Grid container spacing={3}>
             {recipes.map((recipe: IRecipe) => (
-              <Grid item xs={6} lg={4} key={recipe._id}>
+              <Grid item xs={6} md={4} lg={3} key={recipe._id}>
                 <RecipesCard recipe={recipe} />
               </Grid>
             ))}

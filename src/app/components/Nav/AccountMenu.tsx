@@ -1,18 +1,28 @@
 import React, { MouseEvent, useState } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import CardMedia from '@mui/material/CardMedia';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Menu,
+  Container,
+  Avatar,
+  Tooltip,
+  MenuItem,
+  ListItemIcon,
+  Divider,
+  Button,
+  useTheme,
+  useMediaQuery,
+  useScrollTrigger,
+} from '@mui/material';
+import {
+  Settings as SettingsIcon,
+  Logout as LogoutIcon,
+  Dashboard as DashboardIcon,
+  People as PeopleIcon,
+  Chat as ChatIcon,
+} from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import { getRandomInt } from '../../../util/commons';
 import useAppNavigate from '../../../util/useAppNavigation';
@@ -34,12 +44,14 @@ const appNav: NavItem[] = [
   { name: 'Recipes', path: '/recipes', active: false },
   { name: 'Community', path: '/communities', active: false },
   { name: 'Events', path: '/events', active: false },
-  { name: 'Communication', path: '/communication', active: false },
+  // { name: 'Communication', path: '/communication', active: false },
 ];
 
 const AccountMenu: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useAppNavigate();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 
@@ -47,6 +59,12 @@ const AccountMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const open = Boolean(anchorEl);
+
+  // Add elevation on scroll for better UX
+  const trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 0,
+  });
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -68,131 +86,251 @@ const AccountMenu: React.FC = () => {
   };
 
   return (
-    <Container maxWidth="xl">
-      <AppBar
-        position="static"
-        sx={{
-          background: 'none',
-          color: '#000000A6',
-          boxShadow: 'none',
-          border: 'none',
-          mt: 2,
-        }}
-      >
-        <Container maxWidth="xl">
-          <Box sx={{ width: 200 }}>
-            <CardMedia component="img" image={Logo} alt="Logo" />
+    <AppBar
+      position={isMobile ? 'sticky' : 'static'}
+      elevation={trigger ? 4 : 0}
+      sx={{
+        bgcolor: 'background.paper',
+        color: 'text.primary',
+        borderBottom: 1,
+        borderColor: 'divider',
+        transition: 'box-shadow 0.3s ease-in-out',
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar
+          disableGutters
+          sx={{
+            minHeight: { xs: 64, md: 80 },
+            py: 1,
+          }}
+        >
+          {/* Logo */}
+          <Box
+            component={Link}
+            to="/"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              textDecoration: 'none',
+              mr: { xs: 2, md: 4 },
+              width: { xs: 120, sm: 150, md: 180 },
+            }}
+          >
+            <img
+              src={Logo}
+              alt="Foodie Logo"
+              style={{ width: '100%', height: 'auto' }}
+            />
           </Box>
 
-          <Toolbar disableGutters>
-            {/* Mobile Menu */}
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <SwipeableMenuDrawer items={appNav} />
-            </Box>
-
-            {/* Desktop Menu */}
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          {/* Desktop Navigation */}
+          {isAuthenticated && (
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'center',
+                gap: 1,
+                justifyContent:'center',
+              }}
+            >
               {appNav.map((page) => (
-                <Box key={getRandomInt()} sx={{ m: 2, fontSize: 20 }}>
-                  <Link to={page.path} style={{ color: '#000000A6' }}>
-                    {page.name}
-                  </Link>
-                </Box>
+                <Button
+                  key={getRandomInt()}
+                  component={Link}
+                  to={page.path}
+                  sx={{
+                    color: 'text.primary',
+                    fontSize: '1rem',
+                    fontWeight: 500,
+                    textTransform: 'none',
+                    px: 2,
+                    py: 1,
+                    '&:hover': {
+                      bgcolor: 'action.hover',
+                    },
+                  }}
+                >
+                  {page.name}
+                </Button>
               ))}
             </Box>
+          )}
 
-            {/* Right side */}
-            {!isAuthenticated ? (
-              <Link to="/login">Login / Signup</Link>
-            ) : (
-              <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Account settings">
-                  <IconButton
-                    onClick={handleClick}
-                    size="small"
-                    sx={{ ml: 2 }}
-                    aria-controls={open ? 'account-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                  >
+          {/* Mobile Menu */}
+          {isAuthenticated && (
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: 'flex', md: 'none' },
+                alignItems: 'center',
+              }}
+            >
+              <SwipeableMenuDrawer items={appNav} />
+            </Box>
+          )}
+
+          {/* Right side - Auth buttons or Account menu */}
+          {!isAuthenticated ? (
+            <Box sx={{ flexGrow: { xs: 1, md: 0 }, display: 'flex', justifyContent: 'flex-end' }}>
+              <Button
+                component={Link}
+                to="/login"
+                variant="contained"
+                sx={{
+                  textTransform: 'none',
+                  fontWeight: 600,
+                  px: 3,
+                  py: 1,
+                }}
+              >
+                Login / Signup
+              </Button>
+            </Box>
+          ) : (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Account settings">
+                <IconButton
+                  onClick={handleClick}
+                  size="small"
+                  sx={{ ml: 2 }}
+                  aria-controls={open ? 'account-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                >
+                  <Avatar
+                    alt={`${user?.firstName ?? ''} ${user?.lastName ?? ''}`}
+                    src={user?.avatar ?? ''}
+                    sx={{
+                      width: { xs: 36, md: 40 },
+                      height: { xs: 36, md: 40 },
+                      border: 2,
+                      borderColor: open ? 'primary.main' : 'transparent',
+                      transition: 'border-color 0.2s',
+                    }}
+                  />
+                </IconButton>
+              </Tooltip>
+
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={open}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 3,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.15))',
+                    mt: 1.5,
+                    minWidth: 220,
+                    '& .MuiAvatar-root': {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1.5,
+                    },
+                    '&::before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                {/* User Info Header */}
+                <Box sx={{ px: 2, py: 1.5, borderBottom: 1, borderColor: 'divider' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                     <Avatar
                       alt={`${user?.firstName ?? ''} ${user?.lastName ?? ''}`}
                       src={user?.avatar ?? ''}
+                      sx={{ width: 40, height: 40 }}
                     />
-                  </IconButton>
-                </Tooltip>
+                    <Box>
+                      <Box sx={{ fontWeight: 600, fontSize: '0.95rem' }}>
+                        {user?.firstName} {user?.lastName}
+                      </Box>
+                      <Box sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
+                        {user?.email}
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
 
-                <Menu
-                  anchorEl={anchorEl}
-                  id="account-menu"
-                  open={open}
-                  onClose={handleClose}
+                {/* Menu Items */}
+                <MenuItem
+                  component={Link}
+                  to="/dashboard"
                   onClick={handleClose}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: 'visible',
-                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                      mt: 1.5,
-                      '& .MuiAvatar-root': {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                      },
-                      '&::before': {
-                        content: '""',
-                        display: 'block',
-                        position: 'absolute',
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: 'background.paper',
-                        transform: 'translateY(-50%) rotate(45deg)',
-                        zIndex: 0,
-                      },
-                    },
-                  }}
-                  transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                  anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  sx={{ py: 1.5 }}
                 >
-                  <MenuItem onClick={handleClose}>Manage account</MenuItem>
+                  <ListItemIcon>
+                    <DashboardIcon fontSize="small" />
+                  </ListItemIcon>
+                  Dashboard
+                </MenuItem>
 
-                  <MenuItem>
-                    <Link to="/dashboard">Dashboard</Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link to="/communities">Communities</Link>
-                  </MenuItem>
-                  <MenuItem>
-                    <Link to="/communication">Communications</Link>
-                  </MenuItem>
+                <MenuItem
+                  component={Link}
+                  to="/communities"
+                  onClick={handleClose}
+                  sx={{ py: 1.5 }}
+                >
+                  <ListItemIcon>
+                    <PeopleIcon fontSize="small" />
+                  </ListItemIcon>
+                  Communities
+                </MenuItem>
 
-                  <Divider />
+                <MenuItem
+                  component={Link}
+                  to="/communication"
+                  onClick={handleClose}
+                  sx={{ py: 1.5 }}
+                >
+                  <ListItemIcon>
+                    <ChatIcon fontSize="small" />
+                  </ListItemIcon>
+                  Communication
+                </MenuItem>
 
-                  <MenuItem>
-                    <Link to="/account">
-                      <ListItemIcon>
-                        <Settings fontSize="small" />
-                      </ListItemIcon>
-                      Settings
-                    </Link>
-                  </MenuItem>
+                <Divider sx={{ my: 1 }} />
 
-                  <MenuItem onClick={logoutHandler}>
-                    <ListItemIcon>
-                      <Logout fontSize="small" />
-                    </ListItemIcon>
-                    Logout
-                  </MenuItem>
-                </Menu>
-              </Box>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </Container>
+                <MenuItem
+                  component={Link}
+                  to="/account"
+                  onClick={handleClose}
+                  sx={{ py: 1.5 }}
+                >
+                  <ListItemIcon>
+                    <SettingsIcon fontSize="small" />
+                  </ListItemIcon>
+                  Settings
+                </MenuItem>
+
+                <MenuItem onClick={logoutHandler} sx={{ py: 1.5, color: 'error.main' }}>
+                  <ListItemIcon>
+                    <LogoutIcon fontSize="small" color="error" />
+                  </ListItemIcon>
+                  Logout
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 };
 

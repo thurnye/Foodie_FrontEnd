@@ -2,7 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks/app.hooks';
 import { fetchRecipes } from '../redux/recipe.asyncThrunkService';
 import { IRecipeQueryParams } from '../types/recipe.types';
-import { Box, Container, Grid, Pagination, Alert } from '@mui/material';
+import {
+  Box,
+  Container,
+  Grid,
+  Pagination,
+  Alert,
+  Drawer,
+  IconButton,
+  useTheme,
+  useMediaQuery,
+  Fab,
+} from '@mui/material';
+import { FilterList as FilterListIcon, Close as CloseIcon } from '@mui/icons-material';
 
 import RecipeFilter from '../components/RecipeFilter';
 import RecipeList from '../components/RecipeList';
@@ -10,6 +22,8 @@ import RecipeList from '../components/RecipeList';
 export default function Recipes() {
   const dispatch = useAppDispatch();
   const { loading, error, pagination } = useAppSelector((state) => state.recipe);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [filters, setFilters] = useState<IRecipeQueryParams>({
     page: 1,
@@ -17,11 +31,11 @@ export default function Recipes() {
     sortBy: 'createdAt',
     sortOrder: 'asc',
   });
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchRecipes(filters));
   }, [dispatch, filters]);
-
 
   const handlePageChange = (
     _event: React.ChangeEvent<unknown>,
@@ -31,14 +45,23 @@ export default function Recipes() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
   return (
-    <Container sx={{ py: 5 }}>
+    <Container maxWidth='xl' sx={{ py: 5 }}>
       <>
         <Grid container spacing={3}>
-          <Grid item xs={12} sm={4}>
-            <RecipeFilter getFilter={setFilters} />
-          </Grid>
-          <Grid item xs={12} sm={8}>
+          {/* Desktop Filter */}
+          {!isMobile && (
+            <Grid item xs={12} sm={3}>
+              <RecipeFilter getFilter={setFilters} />
+            </Grid>
+          )}
+
+          {/* Recipe List */}
+          <Grid item xs={12} sm={isMobile ? 12 : 9}>
             {error && <Alert severity='error'>{error}</Alert>}
             {!error && (
               <>
@@ -63,6 +86,56 @@ export default function Recipes() {
             )}
           </Grid>
         </Grid>
+
+        {/* Mobile Filter Drawer */}
+        {isMobile && (
+          <>
+            <Fab
+              color='primary'
+              aria-label='filter'
+              onClick={handleDrawerToggle}
+              sx={{
+                position: 'fixed',
+                bottom: 16,
+                right: 16,
+                zIndex: 1000,
+              }}
+            >
+              <FilterListIcon />
+            </Fab>
+
+            <Drawer
+              anchor='right'
+              open={drawerOpen}
+              onClose={handleDrawerToggle}
+              sx={{
+                '& .MuiDrawer-paper': {
+                  width: '85%',
+                  maxWidth: 360,
+                },
+              }}
+            >
+              <Box sx={{ p: 2 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    mb: 2,
+                  }}
+                >
+                  <Box sx={{ fontSize: '1.25rem', fontWeight: 600 }}>
+                    Filters
+                  </Box>
+                  <IconButton onClick={handleDrawerToggle} size='small'>
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+                <RecipeFilter getFilter={setFilters} />
+              </Box>
+            </Drawer>
+          </>
+        )}
       </>
     </Container>
   );

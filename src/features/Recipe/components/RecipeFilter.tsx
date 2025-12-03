@@ -197,7 +197,7 @@ const RecipeFilter: React.FC<RecipeFilterProps> = ({ getFilter }) => {
                 key={el}
                 in={showMore === type}
                 style={{ transformOrigin: '0 0 0' }}
-                {...(showMore === type ? { timeout: 1000 * (i + 1) } : {})}
+                {...(showMore === type ? { timeout: 30 * (i + 1) } : {})}
               >
                 <FormControlLabel
                   control={

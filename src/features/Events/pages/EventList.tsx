@@ -11,8 +11,18 @@ import {
   Tabs,
   Tab,
   Paper,
+  Drawer,
+  IconButton,
+  useTheme,
+  useMediaQuery,
+  Fab,
 } from '@mui/material';
-import {  Event, CalendarToday } from '@mui/icons-material';
+import {
+  Event,
+  CalendarToday,
+  FilterList as FilterListIcon,
+  Close as CloseIcon,
+} from '@mui/icons-material';
 import { AppDispatch, RootState } from '../../../app/stores/stores';
 import { fetchEvents, fetchMyEvents } from '../redux/event.thunk';
 import { IEventFilters } from '../types/event.types';
@@ -24,9 +34,12 @@ const EventList: React.FC = () => {
   const { events, myEvents, eventsLoading, myEventsLoading, error } =
     useSelector((state: RootState) => state.events);
   const { user } = useSelector((state: RootState) => state.auth);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const [filters, setFilters] = useState<IEventFilters>({ sort: 'upcoming' });
   const [currentTab, setCurrentTab] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     if (currentTab === 0) {
@@ -42,6 +55,10 @@ const EventList: React.FC = () => {
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setCurrentTab(newValue);
+  };
+
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
   };
 
   const getCurrentEvents = () => {
@@ -120,8 +137,8 @@ const EventList: React.FC = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
-        {/* Filters Sidebar - Only show for All Events tab */}
-        {currentTab === 0 && (
+        {/* Filters Sidebar - Only show for All Events tab on desktop */}
+        {currentTab === 0 && !isMobile && (
           <Grid item xs={12} md={3}>
             <EventFilters
               filters={filters}
@@ -131,7 +148,7 @@ const EventList: React.FC = () => {
         )}
 
         {/* Events Grid */}
-        <Grid item xs={12} md={currentTab === 0 ? 9 : 12}>
+        <Grid item xs={12} md={currentTab === 0 && !isMobile ? 9 : 12}>
           {isLoading ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', py: 8 }}>
               <CircularProgress />
@@ -193,6 +210,59 @@ const EventList: React.FC = () => {
           )}
         </Grid>
       </Grid>
+
+      {/* Mobile Filter Drawer - Only show for All Events tab */}
+      {isMobile && currentTab === 0 && (
+        <>
+          <Fab
+            color='primary'
+            aria-label='filter'
+            onClick={handleDrawerToggle}
+            sx={{
+              position: 'fixed',
+              bottom: 16,
+              right: 16,
+              zIndex: 1000,
+            }}
+          >
+            <FilterListIcon />
+          </Fab>
+
+          <Drawer
+            anchor='right'
+            open={drawerOpen}
+            onClose={handleDrawerToggle}
+            sx={{
+              '& .MuiDrawer-paper': {
+                width: '85%',
+                maxWidth: 360,
+              },
+            }}
+          >
+            <Box sx={{ p: 2 }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  mb: 2,
+                }}
+              >
+                <Box sx={{ fontSize: '1.25rem', fontWeight: 600 }}>
+                  Filters
+                </Box>
+                <IconButton onClick={handleDrawerToggle} size='small'>
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              <EventFilters
+                filters={filters}
+                onFiltersChange={handleFiltersChange}
+              />
+            </Box>
+          </Drawer>
+        </>
+      )}
     </Container>
   );
 };
