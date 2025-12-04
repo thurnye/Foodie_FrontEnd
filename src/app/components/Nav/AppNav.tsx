@@ -39,7 +39,7 @@ interface NavItem {
   active: boolean;
 }
 
-const appNav: NavItem[] = [
+const appNavItems: NavItem[] = [
   { name: 'Home', path: '/', active: true },
   { name: 'Recipes', path: '/recipes', active: false },
   { name: 'Community', path: '/communities', active: false },
@@ -47,7 +47,7 @@ const appNav: NavItem[] = [
   // { name: 'Communication', path: '/communication', active: false },
 ];
 
-const AccountMenu: React.FC = () => {
+const AppNav: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useAppNavigate();
   const theme = useTheme();
@@ -135,7 +135,7 @@ const AccountMenu: React.FC = () => {
                 justifyContent:'center',
               }}
             >
-              {appNav.map((page) => (
+              {appNavItems.map((page) => (
                 <Button
                   key={getRandomInt()}
                   component={Link}
@@ -167,7 +167,7 @@ const AccountMenu: React.FC = () => {
                 alignItems: 'center',
               }}
             >
-              <SwipeableMenuDrawer items={appNav} />
+              <SwipeableMenuDrawer items={appNavItems} />
             </Box>
           )}
 
@@ -334,4 +334,4 @@ const AccountMenu: React.FC = () => {
   );
 };
 
-export default AccountMenu;
+export default AppNav;

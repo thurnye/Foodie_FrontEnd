@@ -17,7 +17,7 @@ import AppRoutes from './app/router/app.routes';
 import { useAppDispatch, useAppSelector } from './app/hooks/app.hooks';
 import { initializeAuth } from './features/auth/redux/slice/asyncThunkServices';
 import { Box, CircularProgress } from '@mui/material';
-import AccountMenu from './app/components/Nav/AccountMenu';
+import AppNav from './app/components/Nav/AppNav';
 
 library.add(fab, fas, far);
 
@@ -58,7 +58,7 @@ function App() {
     <React.Fragment>
       <BrowserRouter>
         <HelmetProvider context={helmetContext}>
-          <AccountMenu />
+          <AppNav />
           <Suspense
             fallback={
               <Box

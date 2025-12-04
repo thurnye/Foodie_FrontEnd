@@ -54,7 +54,7 @@ export const AUTH_FORM_FIELDS = {
   LAST_NAME: 'lastName',
   USERNAME: 'username',
   AVATAR: 'avatar',
-  BIRTHDATE: 'birthdate',
+  DATE_OF_BIRTH: 'dateOfBirth',
   GENDER: 'gender',
   PHONE_NUMBER: 'phoneNumber',
   ADDRESS: 'address',

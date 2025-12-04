@@ -11,3 +11,4 @@
 - utils/
 - router/
 - redux/
+- mock/

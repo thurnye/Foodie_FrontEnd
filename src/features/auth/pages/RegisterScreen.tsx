@@ -27,7 +27,7 @@ interface RegisterFormInputs {
   password: string;
   confirmPassword: string;
   avatar: string;
-  birthdate: string;
+  dateOfBirth: string;
   gender: string;
   phoneNumber: string;
   address: string;
@@ -58,7 +58,7 @@ export function RegisterScreen() {
       confirmPassword: '',
       avatar:
         'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=2070',
-      birthdate: '',
+      dateOfBirth: '',
       gender: '',
       phoneNumber: '',
       address: '',
@@ -235,18 +235,18 @@ export function RegisterScreen() {
                     {/* Birthdate */}
                     <Form.Group
                       className='mb-3'
-                      controlId={AUTH_FORM_FIELDS.BIRTHDATE}
+                      controlId={AUTH_FORM_FIELDS.DATE_OF_BIRTH}
                     >
                       <Form.Label>Birthdate</Form.Label>
                       <Form.Control
                         type='date'
-                        isInvalid={!!errors.birthdate}
-                        {...register('birthdate', {
+                        isInvalid={!!errors.dateOfBirth}
+                        {...register('dateOfBirth', {
                           required: 'Birthdate is required',
                         })}
                       />
                       <Form.Control.Feedback type='invalid'>
-                        {errors.birthdate?.message}
+                        {errors.dateOfBirth?.message}
                       </Form.Control.Feedback>
                     </Form.Group>
                   </Col>

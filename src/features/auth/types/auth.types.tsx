@@ -5,7 +5,7 @@ export interface IUser {
   lastName: string;
   email: string;
   avatar: string;
-  birthdate: string;
+  dateOfBirth: string;
   gender: string;
   phoneNumber?: string;
   address?: string;
@@ -36,7 +36,7 @@ export interface RegisterData {
   email: string;
   password: string;
   avatar?: string;
-  birthdate: string;
+  dateOfBirth: string;
   gender: string;
   phoneNumber?: string;
   address?: string;
