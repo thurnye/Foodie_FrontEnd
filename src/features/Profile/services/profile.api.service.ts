@@ -64,6 +64,13 @@ class ProfileApiService {
       data: { password },
     });
   }
+
+  /**
+   * Get user profile by ID (public-facing)
+   */
+  async getUserById(userId: string): Promise<IUser> {
+    return apiClient.get<IUser>(`${this.baseUrl}/${userId}`);
+  }
 }
 
 export const profileApiService = new ProfileApiService();

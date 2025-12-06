@@ -16,9 +16,6 @@ import { FaUtensils } from 'react-icons/fa6';
 import { MdExpandMore } from 'react-icons/md';
 
 import FavBookMarkPrintRecipe from './FavBookMarkPrintRecipe';
-import Recommendations from './Recommendations';
-import BookAd from './BookAd';
-import ReviewForm from './ReviewForm';
 import Share from './Share';
 import HelmentSEO from '../../../app/utils/HelmentSEO';
 import AppAvatar from '../../../app/components/AppAvatar';
@@ -42,6 +39,8 @@ const RecipeContainer: React.FC<IRecipeContainerProps> = ({ recipe }) => {
   const { recipeName, duration, level, serving, tags } = basicInfo;
   const { thumbnail, about, faqs } = details;
   const { methods, ingredients } = directions;
+
+  console.log(recipe)
 
   return (
     <Box sx={{ pb: 6 }}>

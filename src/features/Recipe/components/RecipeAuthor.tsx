@@ -10,6 +10,8 @@ const RecipeAuthor: React.FC = () => {
     (state) => state.recipe.currentRecipe?.author ?? null
   );
 
+  
+
   return (
     <>
       <BorderBoxTextLayout title='ABOUT ME'>
@@ -26,11 +28,7 @@ const RecipeAuthor: React.FC = () => {
             >
               <Box
                 component={Link}
-                to={{
-                  pathname: '/author',
-                  search: `?q=${author.firstName.replaceAll(' ', '-')}`,
-                }}
-                state={{ authorId: author.userId }}
+                to={`/author/${author.userId}`}
                 sx={{
                   display: 'flex',
                   justifyContent: 'center',

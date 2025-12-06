@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from './app/hooks/app.hooks';
 import { initializeAuth } from './features/auth/redux/slice/asyncThunkServices';
 import { Box, CircularProgress } from '@mui/material';
 import AppNav from './app/components/Nav/AppNav';
+import AppFooter from './features/Footer/components/AppFooter';
 
 library.add(fab, fas, far);
 
@@ -58,33 +59,51 @@ function App() {
     <React.Fragment>
       <BrowserRouter>
         <HelmetProvider context={helmetContext}>
-          <AppNav />
-          <Suspense
-            fallback={
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  minHeight: '100vh',
-                  bgcolor: 'background.default',
-                  color: 'text.primary',
-                }}
-              >
-                <CircularProgress
-                  size={48}
-                  thickness={4}
-                  sx={{
-                    color: 'primary.main',
-                    mb: 2,
-                  }}
-                />
-              </Box>
-            }
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: '100vh',
+            }}
           >
-            <AppRoutes />
-          </Suspense>
+            <AppNav />
+            <Box
+              component="main"
+              sx={{
+                flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+            >
+              <Suspense
+                fallback={
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      minHeight: '100vh',
+                      bgcolor: 'background.default',
+                      color: 'text.primary',
+                    }}
+                  >
+                    <CircularProgress
+                      size={48}
+                      thickness={4}
+                      sx={{
+                        color: 'primary.main',
+                        mb: 2,
+                      }}
+                    />
+                  </Box>
+                }
+              >
+                <AppRoutes />
+              </Suspense>
+            </Box>
+            <AppFooter />
+          </Box>
         </HelmetProvider>
       </BrowserRouter>
     </React.Fragment>

@@ -9,7 +9,7 @@ import BookRenderer from '../../features/CookBook/pages/BookRenderer';
 import { communityRoutes } from '../../features/Community/router/community.router';
 import { eventRoutes } from '../../features/Events/router/event.router';
 import { communicationRoutes } from '../../features/Communication/router/communication.router';
-import { profileRoutes } from '../../features/Profile/router/profile.routes';
+import { profileRoutes, authorRoutes } from '../../features/Profile/router/profile.routes';
 
 export default function AppRoutes() {
   const routes = useRoutes([
@@ -24,6 +24,9 @@ export default function AppRoutes() {
 
     // Home route - accessible to everyone (no wrapper needed)
     ...homeRoutes,
+
+    // Author profile routes - public (no wrapper needed)
+    ...authorRoutes,
 
     ...recipesRoutes.map((route) => ({
       ...route,

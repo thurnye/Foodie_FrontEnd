@@ -311,33 +311,35 @@ const EventCard: React.FC<EventCardProps> = ({
           <Box sx={{ flex: 1 }} />
 
           {/* Organizer */}
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              mt: 2,
-              pt: 2,
-              borderTop: '1px solid #e0e0e0',
-            }}
-          >
-            <Avatar
-              src={organizer?.avatar}
-              alt={`${organizer.firstName} ${organizer.lastName}`}
-              sx={{ width: 32, height: 32 }}
+          {organizer && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                mt: 2,
+                pt: 2,
+                borderTop: '1px solid #e0e0e0',
+              }}
             >
-              {organizer.firstName?.[0]}
-              {organizer.lastName?.[0]}
-            </Avatar>
-            <Box sx={{ flex: 1 }}>
-              <Typography variant='caption' color='text.secondary'>
-                Organized by
-              </Typography>
-              <Typography variant='body2' sx={{ fontWeight: 500 }}>
-                {organizer.firstName} {organizer.lastName}
-              </Typography>
+              <Avatar
+                src={organizer?.avatar}
+                alt={`${organizer?.firstName || ''} ${organizer?.lastName || ''}`}
+                sx={{ width: 32, height: 32 }}
+              >
+                {organizer?.firstName?.[0]}
+                {organizer?.lastName?.[0]}
+              </Avatar>
+              <Box sx={{ flex: 1 }}>
+                <Typography variant='caption' color='text.secondary'>
+                  Organized by
+                </Typography>
+                <Typography variant='body2' sx={{ fontWeight: 500 }}>
+                  {organizer?.firstName} {organizer?.lastName}
+                </Typography>
+              </Box>
             </Box>
-          </Box>
+          )}
         </CardContent>
       </Card>
 
