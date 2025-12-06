@@ -10,7 +10,7 @@ import {
   Spinner,
   Alert,
 } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // import { ImageWithFallback } from "../../../components/fallback/ImageWithFallback";
 import {
   AUTH_FORM_FIELDS,
@@ -18,7 +18,10 @@ import {
   PASSWORD_REQUIREMENTS,
   AUTH_SUCCESS_MESSAGES,
   AUTH_STATES,
+  AUTH_ERROR_MESSAGES,
 } from '../constants/auth.constants';
+import { useAppDispatch } from '../../../app/hooks/app.hooks';
+import { registerUser } from '../redux/slice/asyncThunkServices';
 
 interface RegisterFormInputs {
   firstName: string;
@@ -38,6 +41,8 @@ interface RegisterFormInputs {
 }
 
 export function RegisterScreen() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [authState, setAuthState] = useState<string>(AUTH_STATES.IDLE);
   const [successMessage, setSuccessMessage] = useState('');
@@ -93,14 +98,29 @@ export function RegisterScreen() {
     setIsLoading(true);
     setAuthState(AUTH_STATES.LOADING);
 
-    // Simulated registration API
-    setTimeout(() => {
-      // console.log('Registration data:', data);
+    // // Simulated registration API
+    // setTimeout(() => {
+    //   // console.log('Registration data:', data);
+    //   setIsLoading(false);
+    //   setAuthState(AUTH_STATES.SUCCESS);
+    //   setSuccessMessage(AUTH_SUCCESS_MESSAGES.REGISTER_SUCCESS);
+    //   reset();
+    // }, 1500);
+    try {
+      await dispatch(registerUser(data)).unwrap();
       setIsLoading(false);
       setAuthState(AUTH_STATES.SUCCESS);
       setSuccessMessage(AUTH_SUCCESS_MESSAGES.REGISTER_SUCCESS);
-      reset();
-    }, 1500);
+      setTimeout(() => {
+        navigate('/');
+        reset();
+      }, 1500);
+    } catch (err: any) {
+      console.log(err);
+      setError('root', {
+        message: err.message || AUTH_ERROR_MESSAGES.INVALID_CREDENTIALS,
+      });
+    }
   };
 
   return (
@@ -118,8 +138,8 @@ export function RegisterScreen() {
             style={{ width: 64, height: 64, objectFit: "cover" }}
           /> */}
         </div>
-        <h1 className='fw-bold fs-3 text-dark mb-1'>Donations Tracker</h1>
-        <p className='text-muted'>Join the Movement for Transparent Giving.</p>
+        <h1 className='fw-bold fs-3 text-dark mb-1'>Easy Meals Recipe</h1>
+        <p className='text-muted'>Join the Movement for Deliciousness.</p>
       </div>
 
       {/* Register Form Card */}
