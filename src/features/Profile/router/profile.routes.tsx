@@ -7,6 +7,12 @@ const ProfilePage = lazy(() =>
   }))
 );
 
+const AuthorPage = lazy(() =>
+  import('../pages/AuthorPage').then((m) => ({
+    default: m.default,
+  }))
+);
+
 export const profileRoutes: RouteObject[] = [
   {
     path: 'profile',
@@ -19,5 +25,13 @@ export const profileRoutes: RouteObject[] = [
   {
     path: 'settings',
     element: <ProfilePage />,
+  },
+];
+
+// Public route for viewing author profiles
+export const authorRoutes: RouteObject[] = [
+  {
+    path: 'author/:authorId',
+    element: <AuthorPage />,
   },
 ];
