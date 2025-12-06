@@ -97,24 +97,12 @@ export function RegisterScreen() {
 
     setIsLoading(true);
     setAuthState(AUTH_STATES.LOADING);
-
-    // // Simulated registration API
-    // setTimeout(() => {
-    //   // console.log('Registration data:', data);
-    //   setIsLoading(false);
-    //   setAuthState(AUTH_STATES.SUCCESS);
-    //   setSuccessMessage(AUTH_SUCCESS_MESSAGES.REGISTER_SUCCESS);
-    //   reset();
-    // }, 1500);
     try {
       await dispatch(registerUser(data)).unwrap();
       setIsLoading(false);
       setAuthState(AUTH_STATES.SUCCESS);
       setSuccessMessage(AUTH_SUCCESS_MESSAGES.REGISTER_SUCCESS);
-      setTimeout(() => {
-        navigate('/');
-        reset();
-      }, 1500);
+      navigate('/');
     } catch (err: any) {
       console.log(err);
       setError('root', {
