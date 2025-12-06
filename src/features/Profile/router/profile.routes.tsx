@@ -16,4 +16,8 @@ export const profileRoutes: RouteObject[] = [
     path: 'account',
     element: <ProfilePage />,
   },
+  {
+    path: 'settings',
+    element: <ProfilePage />,
+  },
 ];

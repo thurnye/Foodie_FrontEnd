@@ -3,6 +3,7 @@ import { lazy } from 'react';
 import { cookbookRoutes } from '../../CookBook/router/cookbook.router';
 import { templateRoutes } from '../../Templates/router/templates.router';
 import { eventRoutes } from '../../Events/router/event.router';
+import { profileRoutes } from '../../Profile/router/profile.routes';
 
 const DashboardLayout = lazy(() =>
   import('../components/DashboardLayout').then((m) => ({ default: m.default }))
@@ -58,6 +59,7 @@ export const dashboardRoutes: RouteObject[] = [
       ...cookbookRoutes,
       ...templateRoutes,
       ...eventRoutes,
+      ...profileRoutes,
 
       {
         path: 'bookmarks',

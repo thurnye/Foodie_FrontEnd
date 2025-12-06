@@ -6,7 +6,7 @@ import {
   Drawer,
   IconButton,
 } from '@mui/material';
-import { Menu as MenuIcon } from '@mui/icons-material';
+import { MoreVert } from '@mui/icons-material';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../../../app/stores/stores';
 import TeamSidebar from '../components/TeamSidebar';
@@ -161,7 +161,7 @@ const CommunicationLayout: React.FC = () => {
               }}
             >
               <IconButton onClick={handleDrawerToggle} edge='start'>
-                <MenuIcon />
+               <MoreVert fontSize='small' />
               </IconButton>
             </Box>
           )}

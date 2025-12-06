@@ -9,10 +9,7 @@ import {
   Typography,
   Avatar,
   Divider,
-  Chip,
-  List,
-  ListItem,
-  ListItemText,
+  Chip
 } from '@mui/material';
 import { ITeam, IUser } from '../types/communication.types';
 import { formatDistanceToNow } from 'date-fns';
