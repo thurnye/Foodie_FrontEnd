@@ -237,9 +237,10 @@ const RecipeSelector: React.FC<RecipeSelectorProps> = ({
             variant='contained'
             disabled={selectedRecipes.length === 0}
             sx={{
+              flexGrow: 1,
+              width:'fit-content',
               backgroundColor: '#3b82f6',
               '&:hover': { backgroundColor: '#2563eb' },
-              flex: { xs: 1, sm: 0 },
             }}
           >
             Add to Cookbook
