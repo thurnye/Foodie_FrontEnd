@@ -47,7 +47,7 @@ const Login: React.FC = () => {
   } = useForm<ILoginFormInputs>({
     mode: 'onTouched',
     defaultValues: {
-      email: '' //'testprogram404@gmail.com',
+      email: '', //'testprogram404@gmail.com',
       password: '' //'Password123!',
     },
   });
